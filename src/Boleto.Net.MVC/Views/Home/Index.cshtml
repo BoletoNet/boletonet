@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Boleto.Net.MVC";
+}
+<h2>@ViewBag.Message</h2>
+<p>
+    Alguns exemplos não foram testados o suficiente para garantir todas possíveis validações,
+    e as regras estão sendo implementadas aos poucos.
+</p>
+<p>
+    Escolha um banco:@Html.DropDownList("bancos")</p>
+<div id="BoletoCarregado">
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#bancos").change(function () {
+            var strSelected = "";
+            $("#bancos option:selected").each(function () {
+                strSelected += $(this)[0].value;
+            });
+            var url = "/Home/VisualizarBoleto/" + strSelected;
+
+            //            $.post(url, function (data) {
+            //                $("#BoletoCarregado").html(data);
+            //            });
+
+            window.open(url, "WindowPopup", 'width=668,height=780');
+        });
+    });
+</script>

@@ -1,0 +1,163 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Biblioteca", "Biblioteca", "{75FC8289-5B1E-4684-8497-54494382FA55}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Arquivos", "Arquivos", "{75C4F877-9574-43BA-9844-EAEC221DC0FA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Impressão", "Impressão", "{093054D8-8738-4790-87CC-25378443A115}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{D42D7DE1-FD70-47FD-903C-1FE7682FE900}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boleto.Net", "Boleto.Net\Boleto.Net.csproj", "{F173E80B-E36B-48AD-B483-A27F8CA86F3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boleto.Net.Arquivo", "Boleto.Net.Arquivo\Boleto.Net.Arquivo.csproj", "{98AD1B9D-47F5-432C-85BD-49A12FBD7CAD}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Boleto.Net.Site", "Boleto.Net.Site", "{3E75E02F-A49C-4C96-8A9E-8A405D8B6167}"
+	ProjectSection(WebsiteProperties) = preProject
+		SccProjectName = "SAK"
+		SccAuxPath = "SAK"
+		SccLocalPath = "SAK"
+		SccProvider = "SAK"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.1"
+		ProjectReferences = "{F173E80B-E36B-48AD-B483-A27F8CA86F3C}|Boleto.Net.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/Boleto.Net.Site"
+		Debug.AspNetCompiler.PhysicalPath = "Boleto.Net.Site\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Boleto.Net.Site\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/Boleto.Net.Site"
+		Release.AspNetCompiler.PhysicalPath = "Boleto.Net.Site\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\Boleto.Net.Site\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "3304"
+		SlnRelativePath = "Boleto.Net.Site\"
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{35783397-4008-4BA3-AEFB-244A091B3B8D}"
+	ProjectSection(SolutionItems) = preProject
+		Leiame.txt = Leiame.txt
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testes", "Testes", "{8C6CE2CA-61F8-489B-A803-27437835E300}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boleto.Net.Testes", "Boleto.Net.Testes\Boleto.Net.Testes.csproj", "{92951948-996F-4F22-AB35-74B06C45E1D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boleto.Net.MVC", "Boleto.Net.MVC\Boleto.Net.MVC.csproj", "{ED82A7C4-89F9-4481-ADE5-8B5F64DF9E5B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MVC", "MVC", "{717CBD6F-C429-445D-95B0-191CEAA7A088}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Website", "Website", "{057F8124-1BE5-46CB-B2EF-106CD4325B93}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs08
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Boleto.Net.Arquivo\\Boleto.Net.Arquivo.csproj
+		SccProjectTopLevelParentUniqueName1 = Boleto.Net.sln
+		SccProjectName1 = Boleto.Net.Arquivo
+		SccLocalPath1 = Boleto.Net.Arquivo
+		SccProjectUniqueName2 = Boleto.Net.Testes\\Boleto.Net.Testes.csproj
+		SccProjectTopLevelParentUniqueName2 = Boleto.Net.sln
+		SccProjectName2 = Boleto.Net.Testes
+		SccLocalPath2 = Boleto.Net.Testes
+		SccProjectUniqueName3 = Boleto.Net\\Boleto.Net.csproj
+		SccProjectTopLevelParentUniqueName3 = Boleto.Net.sln
+		SccProjectName3 = Boleto.Net
+		SccLocalPath3 = Boleto.Net
+		SccWebProject4 = true
+		SccProjectUniqueName4 = Boleto.Net.Site
+		SccProjectTopLevelParentUniqueName4 = Boleto.Net.sln
+		SccProjectName4 = Boleto.Net.Site
+		SccLocalPath4 = Boleto.Net.Site
+		SccProjectEnlistmentChoice4 = 2
+		SccProjectUniqueName5 = Boleto.Net.MVC\\Boleto.Net.MVC.csproj
+		SccProjectTopLevelParentUniqueName5 = Boleto.Net.sln
+		SccProjectName5 = Boleto.Net.MVC
+		SccLocalPath5 = Boleto.Net.MVC
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|.NET = Debug|.NET
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Release|.NET = Release|.NET
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F173E80B-E36B-48AD-B483-A27F8CA86F3C}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{F173E80B-E36B-48AD-B483-A27F8CA86F3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F173E80B-E36B-48AD-B483-A27F8CA86F3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F173E80B-E36B-48AD-B483-A27F8CA86F3C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F173E80B-E36B-48AD-B483-A27F8CA86F3C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F173E80B-E36B-48AD-B483-A27F8CA86F3C}.Release|.NET.ActiveCfg = Release|Any CPU
+		{F173E80B-E36B-48AD-B483-A27F8CA86F3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F173E80B-E36B-48AD-B483-A27F8CA86F3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F173E80B-E36B-48AD-B483-A27F8CA86F3C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F173E80B-E36B-48AD-B483-A27F8CA86F3C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{98AD1B9D-47F5-432C-85BD-49A12FBD7CAD}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{98AD1B9D-47F5-432C-85BD-49A12FBD7CAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98AD1B9D-47F5-432C-85BD-49A12FBD7CAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98AD1B9D-47F5-432C-85BD-49A12FBD7CAD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{98AD1B9D-47F5-432C-85BD-49A12FBD7CAD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{98AD1B9D-47F5-432C-85BD-49A12FBD7CAD}.Release|.NET.ActiveCfg = Release|Any CPU
+		{98AD1B9D-47F5-432C-85BD-49A12FBD7CAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98AD1B9D-47F5-432C-85BD-49A12FBD7CAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98AD1B9D-47F5-432C-85BD-49A12FBD7CAD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{98AD1B9D-47F5-432C-85BD-49A12FBD7CAD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3E75E02F-A49C-4C96-8A9E-8A405D8B6167}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{3E75E02F-A49C-4C96-8A9E-8A405D8B6167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E75E02F-A49C-4C96-8A9E-8A405D8B6167}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E75E02F-A49C-4C96-8A9E-8A405D8B6167}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3E75E02F-A49C-4C96-8A9E-8A405D8B6167}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3E75E02F-A49C-4C96-8A9E-8A405D8B6167}.Release|.NET.ActiveCfg = Debug|Any CPU
+		{3E75E02F-A49C-4C96-8A9E-8A405D8B6167}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E75E02F-A49C-4C96-8A9E-8A405D8B6167}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{3E75E02F-A49C-4C96-8A9E-8A405D8B6167}.Release|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3E75E02F-A49C-4C96-8A9E-8A405D8B6167}.Release|Mixed Platforms.Build.0 = Debug|Any CPU
+		{92951948-996F-4F22-AB35-74B06C45E1D4}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{92951948-996F-4F22-AB35-74B06C45E1D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92951948-996F-4F22-AB35-74B06C45E1D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92951948-996F-4F22-AB35-74B06C45E1D4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{92951948-996F-4F22-AB35-74B06C45E1D4}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{92951948-996F-4F22-AB35-74B06C45E1D4}.Release|.NET.ActiveCfg = Release|Any CPU
+		{92951948-996F-4F22-AB35-74B06C45E1D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92951948-996F-4F22-AB35-74B06C45E1D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92951948-996F-4F22-AB35-74B06C45E1D4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{92951948-996F-4F22-AB35-74B06C45E1D4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{ED82A7C4-89F9-4481-ADE5-8B5F64DF9E5B}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{ED82A7C4-89F9-4481-ADE5-8B5F64DF9E5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED82A7C4-89F9-4481-ADE5-8B5F64DF9E5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED82A7C4-89F9-4481-ADE5-8B5F64DF9E5B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{ED82A7C4-89F9-4481-ADE5-8B5F64DF9E5B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{ED82A7C4-89F9-4481-ADE5-8B5F64DF9E5B}.Release|.NET.ActiveCfg = Release|Any CPU
+		{ED82A7C4-89F9-4481-ADE5-8B5F64DF9E5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED82A7C4-89F9-4481-ADE5-8B5F64DF9E5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED82A7C4-89F9-4481-ADE5-8B5F64DF9E5B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{ED82A7C4-89F9-4481-ADE5-8B5F64DF9E5B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F173E80B-E36B-48AD-B483-A27F8CA86F3C} = {75FC8289-5B1E-4684-8497-54494382FA55}
+		{98AD1B9D-47F5-432C-85BD-49A12FBD7CAD} = {75C4F877-9574-43BA-9844-EAEC221DC0FA}
+		{3E75E02F-A49C-4C96-8A9E-8A405D8B6167} = {057F8124-1BE5-46CB-B2EF-106CD4325B93}
+		{92951948-996F-4F22-AB35-74B06C45E1D4} = {8C6CE2CA-61F8-489B-A803-27437835E300}
+		{ED82A7C4-89F9-4481-ADE5-8B5F64DF9E5B} = {717CBD6F-C429-445D-95B0-191CEAA7A088}
+		{717CBD6F-C429-445D-95B0-191CEAA7A088} = {093054D8-8738-4790-87CC-25378443A115}
+		{057F8124-1BE5-46CB-B2EF-106CD4325B93} = {093054D8-8738-4790-87CC-25378443A115}
+	EndGlobalSection
+EndGlobal

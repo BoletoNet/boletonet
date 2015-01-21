@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode url="~/Default.aspx" title="Home" description="Home">
+    <siteMapNode title="Bancos" url="~/Bancos/Default.aspx" description="Exemplos de Bancos">
+      <siteMapNode url="~/Bancos/Itau.aspx" title="Itaú" description="Boleto bancário do Itaú" />
+      <siteMapNode url="~/Bancos/BRB.aspx" title="BRB" description="Boleto bancário do BRB" />
+      <siteMapNode url="~/Bancos/Real.aspx" title="Real" description="Boleto bancário do Real" />
+      <siteMapNode url="~/Bancos/Safra.aspx" title="Safra" description="Boleto bancário do Safra" />
+      <siteMapNode url="~/Bancos/Bradesco.aspx" title="Bradesco" description="Boleto bancário do Bradesco" />
+      <siteMapNode url="~/Bancos/Sudameris.aspx" title="Sudameris" description="Boleto bancário do Sudameris" />
+      <siteMapNode url="~/Bancos/Basa.aspx" title="Sudameris" description="Boleto bancário do Banco da Amazônia" />
+      <siteMapNode url="~/Bancos/HSBC.aspx" title="Unibanco" description="Boleto bancário do HSBC" />
+      <siteMapNode url="~/Bancos/Unibanco.aspx" title="Unibanco" description="Boleto bancário do Unibanco" />
+      <siteMapNode url="~/Bancos/Caixa.aspx" title="Caixa" description="Boleto bancário da Caixa" />
+      <siteMapNode url="~/Bancos/Sicredi.aspx" title="Sicredi" description="Boleto bancário do Sicredi" />
+    </siteMapNode>
+    <siteMapNode title="Enviar por Email" url="~/EnvioEmail.aspx" description="Exemplo de envio do boleto por email">
+    </siteMapNode>
+      <siteMapNode title="Formulário" url="~/Formulario.aspx" description="Formulário para emissão do boleto">
+      </siteMapNode>
+  </siteMapNode>
+</siteMap>

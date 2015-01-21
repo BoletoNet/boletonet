@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F173E80B-E36B-48AD-B483-A27F8CA86F3C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BoletoNet</RootNamespace>
+    <AssemblyName>Boleto.Net</AssemblyName>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Arquivo\AbstractArquivoRemessa.cs" />
+    <Compile Include="Arquivo\AbstractArquivoRetorno.cs" />
+    <Compile Include="Arquivo\ArquivoRemessaCNAB400.cs" />
+    <Compile Include="Arquivo\ArquivoRemessaCNAB240.cs" />
+    <Compile Include="Arquivo\ArquivoRemessa.cs" />
+    <Compile Include="Arquivo\ArquivoRetorno.cs" />
+    <Compile Include="Arquivo\ArquivoRetornoCNAB400.cs" />
+    <Compile Include="Arquivo\ArquivoRetornoCNAB240.cs" />
+    <Compile Include="Arquivo\DetalheSegmentoERetornoCNAB240.cs" />
+    <Compile Include="Arquivo\DetalheSegmentoWRetornoCNAB240.cs" />
+    <Compile Include="Arquivo\HeaderDeArquivoCNAB240.cs" />
+    <Compile Include="Arquivo\LinhaDeArquivoGeradaArgs.cs" />
+    <Compile Include="Arquivo\DetalheRetornoCNAB240.cs" />
+    <Compile Include="Arquivo\DetalheSegmentoURetornoCNAB240.cs" />
+    <Compile Include="Arquivo\DetalheSegmentoTRetornoCNAB240.cs" />
+    <Compile Include="Arquivo\DetalheRetorno.cs" />
+    <Compile Include="Arquivo\IArquivoRemessa.cs" />
+    <Compile Include="Arquivo\IArquivoRetorno.cs" />
+    <Compile Include="Arquivo\LinhaDeArquivoLidaArgs.cs" />
+    <Compile Include="Banco\AbstractBanco.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Sicoob.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_Banestes.cs" />
+    <Compile Include="Banco\Banco_Bansirul.cs" />
+    <Compile Include="Banco\Banco_Basa.cs" />
+    <Compile Include="Banco\Banco_BRB.cs" />
+    <Compile Include="Banco\Banco_Caixa.cs" />
+    <Compile Include="Banco\Banco.cs" />
+    <Compile Include="Banco\Banco_Brasil.cs" />
+    <Compile Include="Banco\Banco_BankBoston.cs" />
+    <Compile Include="Banco\Banco_HSBC.cs" />
+    <Compile Include="Banco\Banco_Banestes.cs" />
+    <Compile Include="Banco\Banco_Sicoob.cs" />
+    <Compile Include="Banco\Banco_Sicredi.cs" />
+    <Compile Include="Banco\Banco_Unibanco.cs" />
+    <Compile Include="BoletoImpressao\BoletoBancarioDesigner.cs" />
+    <Compile Include="Boleto\Boleto.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Boleto\Carteira\AbstractCarteira.cs" />
+    <Compile Include="Boleto\Carteira\Carteira_BankBoston.cs" />
+    <Compile Include="Boleto\Carteira\Carteira_BancoBrasil.cs" />
+    <Compile Include="Boleto\Carteira\Carteira_Caixa.cs" />
+    <Compile Include="Boleto\Carteira\Carteira_HSBC.cs" />
+    <Compile Include="Boleto\Carteira\Carteira_Santander.cs" />
+    <Compile Include="Boleto\Carteira\ICarteira.cs" />
+    <Compile Include="Boleto\Carteira\Carteira.cs" />
+    <Compile Include="Boleto\Carteira\Carteira_Itau.cs" />
+    <Compile Include="Boleto\Carteira\Carteiras.cs" />
+    <Compile Include="Boleto\CodigoLiquidacao\AbstractCodigoLiquidacao.cs" />
+    <Compile Include="Boleto\CodigoLiquidacao\CodigoLiquidacao.cs" />
+    <Compile Include="Boleto\CodigoLiquidacao\CodigoLiquidacao_BancoBrasil.cs" />
+    <Compile Include="Boleto\CodigoMovimento\AbstractCodigoMovimento.cs" />
+    <Compile Include="Boleto\CodigoMovimento\CodigoMovimento.cs" />
+    <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_BancoBrasil.cs" />
+    <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Caixa.cs" />
+    <Compile Include="Boleto\CodigoMovimento\ICodigoMovimento.cs" />
+    <Compile Include="Boleto\CodigoRejeicao\AbstractCodigoRejeicao.cs" />
+    <Compile Include="Boleto\CodigoRejeicao\CodigoRejeicao.cs" />
+    <Compile Include="Boleto\CodigoRejeicao\CodigoRejeicao_BancoBrasil.cs" />
+    <Compile Include="Boleto\CodigoRejeicao\ICodigoRejeicao.cs" />
+    <Compile Include="Boleto\CodigoTarifas\AbstractCodigoTarifas.cs" />
+    <Compile Include="Boleto\CodigoTarifas\CodigoTarifas.cs" />
+    <Compile Include="Boleto\CodigoTarifas\CodigoTarifas_BancoBrasil.cs" />
+    <Compile Include="Boleto\CodigoTarifas\ICodigoTarifas.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_BancoBrasil.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_BankBoston.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Banrisul.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Bradesco.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Caixa.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_HSBC.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Real.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Santander.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Sicredi.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Sudameris.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Itau.cs" />
+    <Compile Include="Boleto\CodigoLiquidacao\ICodigoLiquidacao.cs" />
+    <Compile Include="Boleto\EspecieDocumento\AbstractEspecieDocumento.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento.cs" />
+    <Compile Include="Boleto\CodigoLiquidacao\CodigoLiquidacao_Itau.cs" />
+    <Compile Include="Boleto\EspecieDocumento\IEspecieDocumento.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspeciesDocumento.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_Banrisul.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_BRB.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_Caixa.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_HSBC.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_Itau.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_BankBoston.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_Real.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_Safra.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_Santander.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_Sicoob.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_Sicredi.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_Sudameris.cs" />
+    <Compile Include="Boleto\Remessa.cs" />
+    <Compile Include="Boleto\Sacado\InformacoesSacado.cs" />
+    <Compile Include="Boleto\Sacado\InfoSacado.cs" />
+    <Compile Include="EDI\Banco\TRegistroEDI_Sicredi_Retorno.cs" />
+    <Compile Include="EDI\Banco\TRegistroEDI_BancoBrasil_Retorno.cs" />
+    <Compile Include="EDI\Banco\TRegistroEDI_Caixa_Retorno.cs" />
+    <Compile Include="EDI\Banco\TRegistroEDI_Banrisul_Retorno.cs" />
+    <Compile Include="EDI\EDIBasicTypes.cs" />
+    <Compile Include="EDI\EDIFile.cs" />
+    <Compile Include="Enums\CategoriaLancamento.cs" />
+    <Compile Include="Enums\IsencaoCpmf.cs" />
+    <Compile Include="Enums\TipoComplementoLancamento.cs" />
+    <Compile Include="Enums\TipoLancamento.cs" />
+    <Compile Include="Enums\TipoPessoa.cs" />
+    <Compile Include="Util\BarCodeBase.cs" />
+    <Compile Include="BoletoImpressao\BoletoBancario.cs" />
+    <Compile Include="Banco\Banco_Bradesco.cs" />
+    <Compile Include="Util\C2of5i.cs" />
+    <Compile Include="Boleto\Cedente.cs" />
+    <Compile Include="Boleto\CodigoBarra.cs" />
+    <Compile Include="Boleto\ContaBancaria.cs" />
+    <Compile Include="Util\DateInterval.cs" />
+    <Compile Include="Boleto\Endereco.cs" />
+    <Compile Include="Html.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Html.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Banco\IBanco.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_Bradesco.cs" />
+    <Compile Include="Boleto\Instrucao\IInstrucao.cs" />
+    <Compile Include="BoletoImpressao\ImagemCodigoBarraHandler.cs" />
+    <Compile Include="Banco\Banco_Itau.cs" />
+    <Compile Include="Boleto\Instrucao\AbstractInstrucao.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucoes.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_BancoBrasil.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Banco\Banco_Real.cs" />
+    <Compile Include="Boleto\Sacado\Sacado.cs" />
+    <Compile Include="Banco\Banco_Safra.cs" />
+    <Compile Include="Banco\Banco_Santander.cs" />
+    <Compile Include="Banco\Banco_Sudameris.cs" />
+    <Compile Include="Enums\TipoArquivo.cs" />
+    <Compile Include="Enums\TipoMovimento.cs" />
+    <Compile Include="Enums\TipoOcorrencia.cs" />
+    <Compile Include="Enums\TipoInscricao.cs" />
+    <Compile Include="Boleto\Boletos.cs" />
+    <Compile Include="Util\LeitorLinhaPosicao.cs" />
+    <Compile Include="Util\Utils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BoletoImpressao\BoletoNet.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Imagens\corte.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Html.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Html.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Imagens\barra.gif" />
+    <EmbeddedResource Include="Imagens\ponto.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Imagens\001.jpg" />
+    <EmbeddedResource Include="Imagens\004.jpg" />
+    <EmbeddedResource Include="Imagens\008.jpg" />
+    <EmbeddedResource Include="Imagens\021.jpg" />
+    <EmbeddedResource Include="Imagens\024.jpg" />
+    <EmbeddedResource Include="Imagens\027.jpg" />
+    <EmbeddedResource Include="Imagens\029.jpg" />
+    <EmbeddedResource Include="Imagens\033.jpg" />
+    <EmbeddedResource Include="Imagens\041.jpg" />
+    <EmbeddedResource Include="Imagens\047.jpg" />
+    <EmbeddedResource Include="Imagens\070.jpg" />
+    <EmbeddedResource Include="Imagens\104.jpg" />
+    <EmbeddedResource Include="Imagens\151.jpg" />
+    <EmbeddedResource Include="Imagens\237.jpg" />
+    <EmbeddedResource Include="Imagens\244.jpg" />
+    <EmbeddedResource Include="Imagens\246.jpg" />
+    <EmbeddedResource Include="Imagens\263.jpg" />
+    <EmbeddedResource Include="Imagens\266.jpg" />
+    <EmbeddedResource Include="Imagens\275.jpg" />
+    <EmbeddedResource Include="Imagens\291.jpg" />
+    <EmbeddedResource Include="Imagens\320.jpg" />
+    <EmbeddedResource Include="Imagens\341.jpg" />
+    <EmbeddedResource Include="Imagens\347.jpg" />
+    <EmbeddedResource Include="Imagens\353.jpg" />
+    <EmbeddedResource Include="Imagens\356.jpg" />
+    <EmbeddedResource Include="Imagens\389.jpg" />
+    <EmbeddedResource Include="Imagens\392.jpg" />
+    <EmbeddedResource Include="Imagens\399.jpg" />
+    <EmbeddedResource Include="Imagens\409.jpg" />
+    <EmbeddedResource Include="Imagens\422.jpg" />
+    <EmbeddedResource Include="Imagens\424.jpg" />
+    <EmbeddedResource Include="Imagens\453.jpg" />
+    <EmbeddedResource Include="Imagens\479.jpg" />
+    <EmbeddedResource Include="Imagens\600.jpg" />
+    <EmbeddedResource Include="Imagens\604.jpg" />
+    <EmbeddedResource Include="Imagens\610.jpg" />
+    <EmbeddedResource Include="Imagens\623.jpg" />
+    <EmbeddedResource Include="Imagens\633.jpg" />
+    <EmbeddedResource Include="Imagens\637.jpg" />
+    <EmbeddedResource Include="Imagens\641.jpg" />
+    <EmbeddedResource Include="Imagens\643.jpg" />
+    <EmbeddedResource Include="Imagens\702.jpg" />
+    <EmbeddedResource Include="Imagens\707.jpg" />
+    <EmbeddedResource Include="Imagens\721.jpg" />
+    <EmbeddedResource Include="Imagens\738.jpg" />
+    <EmbeddedResource Include="Imagens\741.jpg" />
+    <EmbeddedResource Include="Imagens\745.jpg" />
+    <EmbeddedResource Include="Imagens\748.jpg" />
+    <EmbeddedResource Include="Imagens\749.jpg" />
+    <EmbeddedResource Include="Imagens\756.jpg" />
+    <EmbeddedResource Include="Imagens\barrainterna.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Imagens\BoletoBancario.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BoletoBancario.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Imagens\003.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

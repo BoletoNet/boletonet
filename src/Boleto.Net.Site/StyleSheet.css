@@ -1,0 +1,147 @@
+﻿body
+{
+	margin: 0;
+	padding-bottom: 2em;
+	background-color: #FFFFFF;
+	color: #000000;
+	font-family: Verdana , Arial, Helvetica, sans-serif;
+	border-top: 2px solid #22426e;
+}
+
+/* Header Section */
+
+#header {
+	border-top: 5px solid #5c80b1;
+	border-bottom: 1px dotted #5c80b1;
+	height: 3em;
+}
+#header .title {
+	font: 190% Verdana , Arial, Helvetica, sans-serif;
+	color: #000;
+	background-color: transparent;
+	float: left;
+	margin-right: 2em;
+	margin-top: 0.3em;
+	margin-left: .8em;
+}
+#header .breadcrumb {
+	font: 90% Verdana , Arial, Helvetica, sans-serif;
+	color: black;
+	background-color: transparent;
+	float: right;
+	margin-right: 2em;
+	margin-top: 0.8em;
+	font-weight:normal;
+	font-size:12px;
+}
+
+#header a:link, a:visited  {
+	color: #22426e;
+}
+
+h3 {
+	color:#000;
+	font-size:20px;	
+	font-weight:normal;
+}
+
+/* Navigation Content */
+
+#navigation {
+	width: 200px;
+	top: 5em;
+	left: 1em;
+	width: 13em;	
+	position:absolute;
+	font-family: Verdana , Arial, Helvetica, sans-serif;
+	font-weight:normal;
+	font-size:90%;
+}
+#navigation ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+#navigation li {
+	border-bottom: 0px solid #5c80b1;
+}
+#navigation li a  {
+	display: block;
+	padding: 5px 5px 5px 0.5em;
+	border-left: 1px solid #5c80b1;
+	border-right: 1px solid #5c80b1;
+	background-color: #22426e;
+	color: #fff;
+	text-decoration: none;
+}
+#navigation li a:hover {
+	background-color: #95afd1;
+	color: #22426e;
+}
+#navigation ul ul {
+	margin-left: 12px;
+}
+#navigation ul ul li {
+	border-bottom: 1px solid #5c80b1;
+	margin:0;
+	background-color: #22426e;
+	color: #fff;
+}
+#navigation ul ul a:link, #navigation ul ul a:visited {
+	background-color: #bcd0ea;
+	color: #22426e;
+}
+#navigation ul ul a:hover {
+	background-color: #95afd1;
+	color: #22426e;
+}
+
+#source
+{
+	padding-right:5px;
+	float:right
+}
+
+#source a:link, #source a:visited, #source a:hover
+{
+	color:#000;
+	font-size:smaller;
+}
+
+/* Main Content */
+
+#content 
+{
+	margin-top:1em;
+	margin-left: 16em;
+	margin-right: 2em;
+}
+h1 {
+	font: 150% Arial, Helvetica, Georgia, "Times New Roman", Times, serif;
+}
+#content p {
+	font-size: 80%;
+	line-height: 1.6em; 
+}
+
+#content ul {
+	font-size: 80%;
+	line-height: 1.6em; 
+}
+
+.checkbox {
+	font-size: 80%;
+	line-height: 1.6em; 
+}
+
+.info
+{
+	font-size: 70%;
+	font-weight:normal;
+}
+
+.boxinfo
+{
+    padding:20px 20px 20px 20px;
+    background-color:#f1f1f1;    
+}
