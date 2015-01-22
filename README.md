@@ -10,3 +10,14 @@ Leitura do Arquivo de Retorno (CNAB 240 e 400)
 Atualmente estamos implementando mais alguns bancos e toda colaboração será importante. Nosso objetivo é implementar todos os bancos brasileiros.
 
 A versão 2.0 está disponível. Nessa versão contempla leitura e remessa de arquivos CNAB 400/240.
+
+Para instalar o BoletoNet, utilize o Nuget:
+
+To install from Nuget, for the C# version:
+
+```powershell
+Install-Package Boleto.Net
+```
+
+Para informaçòes sobre o projeto e bancos implementados, consulte o nosso Wiki.
+
