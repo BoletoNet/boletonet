@@ -1,4 +1,5 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/tu0uy49drensdlxe?svg=true)](https://ci.appveyor.com/project/carloscds/boletonet)
+[![Issues open](http://img.shields.io/github/issues/boletonet/boletonet.svg)](https://huboard.com/boletonet/boletonet)
 
 Boleto.Net é um componente desenvolvido em C# e ASP.Net e contempla as seguintes funcionalidades:
 
