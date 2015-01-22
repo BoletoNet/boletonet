@@ -17,5 +17,5 @@ Para instalar o BoletoNet, utilize o Nuget:
 Install-Package Boleto.Net
 ```
 
-Para informaçòes sobre o projeto e bancos implementados, consulte o nosso Wiki (https://github.com/BoletoNet/boletonet/wiki).
+Para informaçòes sobre o projeto e bancos implementados, consulte o nosso [Wiki](https://github.com/BoletoNet/boletonet/wiki).
 
