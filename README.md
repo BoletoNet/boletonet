@@ -13,8 +13,6 @@ A versão 2.0 está disponível. Nessa versão contempla leitura e remessa de ar
 
 Para instalar o BoletoNet, utilize o Nuget:
 
-To install from Nuget, for the C# version:
-
 ```powershell
 Install-Package Boleto.Net
 ```
