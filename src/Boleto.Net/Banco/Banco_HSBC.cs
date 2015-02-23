@@ -43,6 +43,9 @@ namespace BoletoNet
         {
             try
             {
+                var nossoNumero = Utils.ToInt64(boleto.NossoNumero);
+                var tamanhoNossoNumero = nossoNumero.ToString().Length;
+
                 if (string.IsNullOrEmpty(boleto.Carteira))
                     throw new NotImplementedException("Carteira não informada. Utilize a carteira 'CSB' ou 'CNR'");
 
@@ -57,13 +60,14 @@ namespace BoletoNet
                     throw new NotImplementedException("Nosso número inválido");
 
                 //Verifica se o nosso número é válido
-                if (Utils.ToInt64(boleto.NossoNumero) == 0)
+                if (nossoNumero == 0)
                     throw new NotImplementedException("Nosso número inválido");
 
                 //Verifica se o tamanho para o NossoNumero são 10 dígitos (5 range + 5 numero sequencial)
-                if (Convert.ToInt32(boleto.NossoNumero).ToString().Length > 10)
+                if (tamanhoNossoNumero > 10)
                     throw new NotImplementedException("A quantidade de dígitos do nosso número para a carteira " + boleto.Carteira + ", são 10 números.");
-                else if (Convert.ToInt32(boleto.NossoNumero).ToString().Length < 10)
+
+                if (tamanhoNossoNumero < 10)
                     boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 10);
 
                 // Calcula o DAC do Nosso Número
