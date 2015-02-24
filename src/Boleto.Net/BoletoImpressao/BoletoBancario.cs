@@ -44,7 +44,7 @@ namespace BoletoNet
 
         #region Propriedades
 
-        [Browsable(true), Description("CÛdigo do banco em que ser· gerado o boleto. Ex. 341-Ita˙, 237-Bradesco")]
+        [Browsable(true), Description("C√≥digo do banco em que ser√° gerado o boleto. Ex. 341-Ita√∫, 237-Bradesco")]
         public short CodigoBanco
         {
             get { return _codigoBanco; }
@@ -52,9 +52,9 @@ namespace BoletoNet
         }
 
         /// <summary>
-        /// Mostra o cÛdigo da carteira
+        /// Mostra o c√≥digo da carteira
         /// </summary>
-        [Browsable(true), Description("Mostra a descriÁ„o da carteira")]
+        [Browsable(true), Description("Mostra a descri√ß√£o da carteira")]
         public bool MostrarCodigoCarteira
         {
             get { return _mostrarCodigoCarteira; }
@@ -62,9 +62,9 @@ namespace BoletoNet
         }
 
         /// <summary>
-        /// Mostra o cÛdigo da carteira
+        /// Mostra o c√≥digo da carteira
         /// </summary>
-        [Browsable(true), Description("Formata o boleto no layout de carnÍ")]
+        [Browsable(true), Description("Formata o boleto no layout de carn√™")]
         public bool FormatoCarne
         {
             get { return _formatoCarne; }
@@ -132,14 +132,14 @@ namespace BoletoNet
             set { ViewState["2"] = value; }
         }
 
-        [Browsable(true), Description("Oculta as intruÁıes do boleto")]
+        [Browsable(true), Description("Oculta as intru√ß√µes do boleto")]
         public bool OcultarEnderecoSacado
         {
             get { return Utils.ToBool(ViewState["3"]); }
             set { ViewState["3"] = value; }
         }
 
-        [Browsable(true), Description("Oculta as intruÁıes do boleto")]
+        [Browsable(true), Description("Oculta as intru√ß√µes do boleto")]
         public bool OcultarInstrucoes
         {
             get { return Utils.ToBool(ViewState["4"]); }
@@ -160,7 +160,7 @@ namespace BoletoNet
             set { ViewState["6"] = value; }
         }
         /// <summary> 
-        /// Mostra o termo "Contra ApresentaÁ„o" na data de vencimento do boleto
+        /// Mostra o termo "Contra Apresenta√ß√£o" na data de vencimento do boleto
         /// </summary>
         public bool MostrarContraApresentacaoNaDataVencimento
         {
@@ -168,7 +168,7 @@ namespace BoletoNet
             set { ViewState["7"] = value; }
         }
 
-        [Browsable(true), Description("Mostra o endereÁo do Cedente")]
+        [Browsable(true), Description("Mostra o endere√ßo do Cedente")]
         public bool MostrarEnderecoCedente
         {
             get { return Utils.ToBool(ViewState["8"]); }
@@ -177,7 +177,7 @@ namespace BoletoNet
         #endregion Propriedades
 
         /// <summary> 
-        /// InstruÁıes disponÌveis no Boleto
+        /// Instru√ß√µes dispon√≠veis no Boleto
         /// </summary>
         public List<IInstrucao> Instrucoes
         {
@@ -218,7 +218,7 @@ namespace BoletoNet
         {
             if (_ibanco == null)
             {
-                output.Write("<b>Erro gerando o boleto banc·rio: faltou definir o banco.</b>");
+                output.Write("<b>Erro gerando o boleto banc√°rio: faltou definir o banco.</b>");
                 return;
             }
             string urlImagemLogo = Page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens." + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg");
@@ -227,10 +227,10 @@ namespace BoletoNet
             //string urlImagemCorte = Page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens.corte.gif");
             //string urlImagemPonto = Page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens.ponto.gif");
 
-            //Atribui os valores ao html do boleto banc·rio
+            //Atribui os valores ao html do boleto banc√°rio
             //output.Write(MontaHtml(urlImagemCorte, urlImagemLogo, urlImagemBarra, urlImagemPonto, urlImagemBarraInterna,
-            //    "<img src=\"ImagemCodigoBarra.ashx?code=" + Boleto.CodigoBarra.Codigo + "\" alt=\"CÛdigo de Barras\" />"));
-            output.Write(MontaHtml(urlImagemLogo, urlImagemBarra, "<img src=\"ImagemCodigoBarra.ashx?code=" + Boleto.CodigoBarra.Codigo + "\" alt=\"CÛdigo de Barras\" />"));
+            //    "<img src=\"ImagemCodigoBarra.ashx?code=" + Boleto.CodigoBarra.Codigo + "\" alt=\"C√≥digo de Barras\" />"));
+            output.Write(MontaHtml(urlImagemLogo, urlImagemBarra, "<img src=\"ImagemCodigoBarra.ashx?code=" + Boleto.CodigoBarra.Codigo + "\" alt=\"C√≥digo de Barras\" />"));
         }
         #endregion Override
 
@@ -241,8 +241,8 @@ namespace BoletoNet
             {
                 var html = new StringBuilder();
 
-                string titulo = "InstruÁıes de Impress„o";
-                string instrucoes = "Imprimir em impressora jato de tinta (ink jet) ou laser em qualidade normal. (N„o use modo econÙmico).<br>Utilize folha A4 (210 x 297 mm) ou Carta (216 x 279 mm) - Corte na linha indicada<br>";
+                string titulo = "Instru√ß√µes de Impress√£o";
+                string instrucoes = "Imprimir em impressora jato de tinta (ink jet) ou laser em qualidade normal. (N√£o use modo econ√¥mico).<br>Utilize folha A4 (210 x 297 mm) ou Carta (216 x 279 mm) - Corte na linha indicada<br>";
 
                 html.Append(Html.Instrucoes);
                 html.Append("<br />");
@@ -253,7 +253,7 @@ namespace BoletoNet
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro durante a execuÁ„o da transaÁ„o.", ex);
+                throw new Exception("Erro durante a execu√ß√£o da transa√ß√£o.", ex);
             }
         }
 
@@ -291,7 +291,7 @@ namespace BoletoNet
                 //if (Instrucoes.Count == 0)
                 html.Append(Html.ReciboSacadoParte8);
 
-                //Limpa as intruÁıes para o Sacado
+                //Limpa as intru√ß√µes para o Sacado
                 _instrucoesHtml = "";
 
                 MontaInstrucoes(Boleto.Instrucoes);
@@ -303,7 +303,7 @@ namespace BoletoNet
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro durante a execuÁ„o da transaÁ„o.", ex);
+                throw new Exception("Erro durante a execu√ß√£o da transa√ß√£o.", ex);
             }
         }
 
@@ -326,15 +326,15 @@ namespace BoletoNet
                 html.Append(Html.ReciboCedenteParte11);
                 html.Append(Html.ReciboCedenteParte12);
 
-                //Para Banco Ita˙, o texto "(Texto de responsabilidade do cedente)" deve ser
-                //"(Todas as informaÁıes deste bloqueto s„o de exclusiva responsabilidade do cedente)".
+                //Para Banco Ita√∫, o texto "(Texto de responsabilidade do cedente)" deve ser
+                //"(Todas as informa√ß√µes deste bloqueto s√£o de exclusiva responsabilidade do cedente)".
                 if (Boleto.Banco.Codigo == 341)
                 {
-                    html.Replace("(Texto de responsabilidade do cedente)", "(Todas as informaÁıes deste bloqueto s„o de exclusiva responsabilidade do cedente)");
+                    html.Replace("(Texto de responsabilidade do cedente)", "(Todas as informa√ß√µes deste bloqueto s√£o de exclusiva responsabilidade do cedente)");
                 }
 
-                //Para carteiras "17-019" e "18-019" do Banco do Brasil, a ficha de compensaÁ„o n„o possui cÛdigo da carteira
-                //na formataÁ„o do campo.
+                //Para carteiras "17-019" e "18-019" do Banco do Brasil, a ficha de compensa√ß√£o n√£o possui c√≥digo da carteira
+                //na formata√ß√£o do campo.
                 if (Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("18-019")))
                 {
                     html.Replace("Carteira /", "");
@@ -342,12 +342,12 @@ namespace BoletoNet
                 }
                 else
                 {
-                    //Para SANTANDER, a ficha de compensaÁ„o n„o possui cÛdigo da carteira - por jsoda em 08/12/2012
+                    //Para SANTANDER, a ficha de compensa√ß√£o n√£o possui c√≥digo da carteira - por jsoda em 08/12/2012
                     if (Boleto.Banco.Codigo == 33)
                         html.Replace("Carteira /", "");
                 }
 
-                //Limpa as intruÁıes para o Cedente
+                //Limpa as intru√ß√µes para o Cedente
                 _instrucoesHtml = "";
 
                 MontaInstrucoes(Boleto.Instrucoes);
@@ -359,7 +359,7 @@ namespace BoletoNet
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro na execuÁ„o da transaÁ„o.", ex);
+                throw new Exception("Erro na execu√ß√£o da transa√ß√£o.", ex);
             }
         }
 
@@ -391,13 +391,13 @@ namespace BoletoNet
             if (instrucoes.Count > 0)
             {
                 //_instrucoesHtml = string.Empty;
-                //Flavio(fhlviana@hotmail.com) - retirei a tag <span> de cada instruÁ„o por n„o ser mais necess·ras desde que dentro
-                //da div que contem as instruÁıes a classe cpN se aplica, que È a mesma, em conteudo, da classe cp
+                //Flavio(fhlviana@hotmail.com) - retirei a tag <span> de cada instru√ß√£o por n√£o ser mais necess√°ras desde que dentro
+                //da div que contem as instru√ß√µes a classe cpN se aplica, que √© a mesma, em conteudo, da classe cp
                 foreach (IInstrucao instrucao in instrucoes)
                 {
                     _instrucoesHtml += string.Format("{0}<br />", instrucao.Descricao);
 
-                    //Adiciona a instruÁ„o as instruÁıes disponÌveis no Boleto
+                    //Adiciona a instru√ß√£o as instru√ß√µes dispon√≠veis no Boleto
                     Instrucoes.Add(instrucao);
                 }
 
@@ -410,7 +410,7 @@ namespace BoletoNet
             var html = new StringBuilder();
             string enderecoCedente = "";
 
-            //Oculta o cabeÁalho das instruÁıes do boleto
+            //Oculta o cabe√ßalho das instru√ß√µes do boleto
             if (!OcultarInstrucoes)
                 html.Append(GeraHtmlInstrucoes());
 
@@ -430,11 +430,11 @@ namespace BoletoNet
                 {
                     html.Append(GeraHtmlReciboSacado());
 
-                    //Caso mostre o EndereÁo do Cedente
+                    //Caso mostre o Endere√ßo do Cedente
                     if (MostrarEnderecoCedente)
                     {
                         if (Cedente.Endereco == null)
-                            throw new ArgumentNullException("EndereÁo do Cedente");
+                            throw new ArgumentNullException("Endere√ßo do Cedente");
 
                         string Numero = !String.IsNullOrEmpty(Cedente.Endereco.Numero) ? Cedente.Endereco.Numero + ", " : "";
                         enderecoCedente = string.Concat(Cedente.Endereco.End, " , ", Numero);
@@ -456,8 +456,8 @@ namespace BoletoNet
             }
 
             string sacado = "";
-            //Flavio(fhlviana@hotmail.com) - adicionei a possibilidade de o boleto n„o ter, necess·riamente, que informar o CPF ou CNPJ do sacado.
-            //Formata o CPF/CNPJ(se houver) e o Nome do Sacado para apresentaÁ„o
+            //Flavio(fhlviana@hotmail.com) - adicionei a possibilidade de o boleto n√£o ter, necess√°riamente, que informar o CPF ou CNPJ do sacado.
+            //Formata o CPF/CNPJ(se houver) e o Nome do Sacado para apresenta√ß√£o
             if (Sacado.CPFCNPJ == string.Empty)
             {
                 sacado = Sacado.Nome;
@@ -472,7 +472,7 @@ namespace BoletoNet
 
             String infoSacado = Sacado.InformacoesSacado.GeraHTML(false);
 
-            //Caso n„o oculte o EndereÁo do Sacado,
+            //Caso n√£o oculte o Endere√ßo do Sacado,
             if (!OcultarEnderecoSacado)
             {
                 String enderecoSacado = "";
@@ -488,21 +488,21 @@ namespace BoletoNet
                         infoSacado += InfoSacado.Render(Sacado.Endereco.End, enderecoSacado, false);
                     else
                         infoSacado += InfoSacado.Render(Sacado.Endereco.End, enderecoSacado, true);
-                //"InformaÁıes do Sacado" foi introduzido para possibilitar que o boleto na informe somente o endereÁo do sacado
-                //como em outras situaÁoes onde se imprime matriculas, codigos e etc, sobre o sacado.
-                //Sendo assim o endereÁo do sacado passa a ser uma InformaÁao do Sacado que È adicionada no momento da renderizaÁ„o
+                //"Informa√ß√µes do Sacado" foi introduzido para possibilitar que o boleto na informe somente o endere√ßo do sacado
+                //como em outras situa√ßoes onde se imprime matriculas, codigos e etc, sobre o sacado.
+                //Sendo assim o endere√ßo do sacado passa a ser uma Informa√ßao do Sacado que √© adicionada no momento da renderiza√ß√£o
                 //de acordo com a flag "OcultarEnderecoSacado"
             }
 
             string agenciaConta = Utils.FormataAgenciaConta(Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Cedente.ContaBancaria.Conta, Cedente.ContaBancaria.DigitoConta);
 
-            // Trecho adicionado por FabrÌcio Nogueira de Almeida :fna - fnalmeida@gmail.com - 09/12/2008
-            /* Esse cÛdigo foi inserido pq no campo AgÍncia/Cod Cedente, estava sendo impresso sempre a agÍncia / n˙mero da conta
-             * No boleto da caixa que eu fiz, coloquei no mÈtodo validarBoleto um trecho para calcular o dÌgito do cedente, e adicionei esse atributo na classe cedente
-             * O trecho abaixo testa se esse digito foi calculado, se foi insere no campo Agencia/Cod Cedente, a agÍncia e o cÛdigo com seu digito
-             * caso contr·rio mostra a agÍncia / conta, como era anteriormente.
-             * Com esse cÛdigo ele ira atender as necessidades do boleto caixa e n„o afetar· os demais
-             * Caso queira que apareÁa o AgÍncia/cod. cedente para outros boletos, basta calcular e setar o digito, como foi feito no boleto Caixa 
+            // Trecho adicionado por Fabr√≠cio Nogueira de Almeida :fna - fnalmeida@gmail.com - 09/12/2008
+            /* Esse c√≥digo foi inserido pq no campo Ag√™ncia/Cod Cedente, estava sendo impresso sempre a ag√™ncia / n√∫mero da conta
+             * No boleto da caixa que eu fiz, coloquei no m√©todo validarBoleto um trecho para calcular o d√≠gito do cedente, e adicionei esse atributo na classe cedente
+             * O trecho abaixo testa se esse digito foi calculado, se foi insere no campo Agencia/Cod Cedente, a ag√™ncia e o c√≥digo com seu digito
+             * caso contr√°rio mostra a ag√™ncia / conta, como era anteriormente.
+             * Com esse c√≥digo ele ira atender as necessidades do boleto caixa e n√£o afetar√° os demais
+             * Caso queira que apare√ßa o Ag√™ncia/cod. cedente para outros boletos, basta calcular e setar o digito, como foi feito no boleto Caixa 
              */
 
             string agenciaCodigoCedente;
@@ -530,15 +530,17 @@ namespace BoletoNet
             }
             else
             {
-                //Para banco SANTANDER, a formataÁ„o do campo "Agencia/Identif.Cedente" - por jsoda em 07/05/2012
+                //Para banco SANTANDER, a formata√ß√£o do campo "Agencia/Identif.Cedente" - por jsoda em 07/05/2012
                 if (Boleto.Banco.Codigo == 33)
                 {
                     agenciaCodigoCedente = string.Format("{0}-{1}/{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Utils.FormatCode(Cedente.Codigo.ToString(), 6));
                     if (String.IsNullOrEmpty(Cedente.ContaBancaria.DigitoAgencia))
                         agenciaCodigoCedente = String.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo.ToString(), 6));
                 }
-                else if (Boleto.Banco.Codigo == 399) // para Banco HSBC mostra apenas cÛdigo Cedente - por Ponce em 08/06/2012
-                    agenciaCodigoCedente = Utils.FormatCode(Cedente.Codigo.ToString(), 7);
+                else if (Boleto.Banco.Codigo == 399) 
+                    //agenciaCodigoCedente = Utils.FormatCode(Cedente.Codigo.ToString(), 7); -> para Banco HSBC mostra apenas c√≥digo Cedente - por Ponce em 08/06/2012
+                    agenciaCodigoCedente = String.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Cedente.Codigo.ToString()); //Solicita√ß√£o do HSBC que mostrasse agencia/Conta - por Transis em 24/02/15
+
                 else if (Boleto.Banco.Codigo == 748)
                     agenciaCodigoCedente = string.Format("{0}.{1}.{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.OperacaConta, Cedente.Codigo);
                 else
@@ -555,7 +557,7 @@ namespace BoletoNet
             string dataVencimento = Boleto.DataVencimento.ToString("dd/MM/yyyy");
 
             if (MostrarContraApresentacaoNaDataVencimento)
-                dataVencimento = "Contra ApresentaÁ„o";
+                dataVencimento = "Contra Apresenta√ß√£o";
 
             if (String.IsNullOrEmpty(vLocalLogoCedente))
                 vLocalLogoCedente = urlImagemLogo;
@@ -579,12 +581,12 @@ namespace BoletoNet
                 .Replace("@ESPECIEDOCUMENTO", EspecieDocumento.ValidaSigla(Boleto.EspecieDocumento))
                 .Replace("@DATAPROCESSAMENTO", Boleto.DataProcessamento.ToString("dd/MM/yyyy"))
 
-            #region ImplementaÁ„o para o Banco do Brasil
-                //Vari·vel inserida para atender ‡s especificaÁıes das carteiras "17-019" e "18-019" do Banco do Brasil
-                //apenas para a ficha de compensaÁ„o.
-                //Como a vari·vel n„o existir· se n„o forem as carteiras "17-019" e "18-019", n„o foi colocado o [if].
+            #region Implementa√ß√£o para o Banco do Brasil
+                //Vari√°vel inserida para atender √†s especifica√ß√µes das carteiras "17-019" e "18-019" do Banco do Brasil
+                //apenas para a ficha de compensa√ß√£o.
+                //Como a vari√°vel n√£o existir√° se n√£o forem as carteiras "17-019" e "18-019", n√£o foi colocado o [if].
                     .Replace("@NOSSONUMEROBB", Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("18-019")) ? Boleto.NossoNumero.Substring(3) : string.Empty)
-            #endregion ImplementaÁ„o para o Banco do Brasil
+            #endregion Implementa√ß√£o para o Banco do Brasil
 
 .Replace("@NOSSONUMERO", Boleto.NossoNumero)
                 .Replace("@CARTEIRA", FormataDescricaoCarteira())
@@ -636,14 +638,14 @@ namespace BoletoNet
                         break;
 
                     default:
-                        throw new Exception(string.Format("A descriÁ„o para o banco {0} n„o foi implementada.", Boleto.Banco));
-                        throw new Exception(string.Format("A descriÁ„o da carteira {0} / banco {1} n„o foi implementada (marque false na propriedade MostrarCodigoCarteira)", carteira, Banco.Codigo));
+                        throw new Exception(string.Format("A descri√ß√£o para o banco {0} n√£o foi implementada.", Boleto.Banco));
+                        throw new Exception(string.Format("A descri√ß√£o da carteira {0} / banco {1} n√£o foi implementada (marque false na propriedade MostrarCodigoCarteira)", carteira, Banco.Codigo));
 
                 }
 
                 if (string.IsNullOrEmpty(descricaoCarteira))
                 {
-                    throw new Exception("O cÛdigo da carteira n„o foi implementado.");
+                    throw new Exception("O c√≥digo da carteira n√£o foi implementado.");
                 }
 
                 return string.Format("{0} - {1}", Boleto.Carteira,
@@ -657,15 +659,15 @@ namespace BoletoNet
 
         #endregion Html
 
-        #region GeraÁ„o do Html OffLine
+        #region Gera√ß√£o do Html OffLine
 
         /// <summary>
-        /// FunÁ„o utilizada para gerar o html do boleto sem que o mesmo esteja dentro de uma p·gina Web.
+        /// Fun√ß√£o utilizada para gerar o html do boleto sem que o mesmo esteja dentro de uma p√°gina Web.
         /// </summary>
         /// <param name="srcLogo">Local apontado pela imagem de logo.</param>
         /// <param name="srcBarra">Local apontado pela imagem de barra.</param>
-        /// <param name="srcCodigoBarra">Local apontado pela imagem do cÛdigo de barras.</param>
-        /// <returns>StringBuilder contÈndo o cÛdigo html do boleto banc·rio.</returns>
+        /// <param name="srcCodigoBarra">Local apontado pela imagem do c√≥digo de barras.</param>
+        /// <returns>StringBuilder cont√©ndo o c√≥digo html do boleto banc√°rio.</returns>
         protected StringBuilder HtmlOffLine(string textoNoComecoDoEmail, string srcLogo, string srcBarra, string srcCodigoBarra)
         {//protected StringBuilder HtmlOffLine(string srcCorte, string srcLogo, string srcBarra, string srcPonto, string srcBarraInterna, string srcCodigoBarra)
             this.OnLoad(EventArgs.Empty);
@@ -676,7 +678,7 @@ namespace BoletoNet
             {
                 html.Append(textoNoComecoDoEmail);
             }
-            html.Append(MontaHtml(srcLogo, srcBarra, "<img src=\"" + srcCodigoBarra + "\" alt=\"CÛdigo de Barras\" />"));
+            html.Append(MontaHtml(srcLogo, srcBarra, "<img src=\"" + srcCodigoBarra + "\" alt=\"C√≥digo de Barras\" />"));
             HtmlOfflineFooter(html);
             return html;
         }
@@ -763,7 +765,7 @@ namespace BoletoNet
                     var theOutput = umBoleto.MontaHtml(
                         "cid:" + lrImagemLogo.ContentId,
                         "cid:" + lrImagemBarra.ContentId,
-                        "<img src=\"cid:" + lrImagemCodigoBarra.ContentId + "\" alt=\"CÛdigo de Barras\" />");
+                        "<img src=\"cid:" + lrImagemCodigoBarra.ContentId + "\" alt=\"C√≥digo de Barras\" />");
 
                     corpoDoEmail.Append(theOutput);
 
@@ -789,7 +791,7 @@ namespace BoletoNet
 
 
         /// <summary>
-        /// FunÁ„o utilizada gerar o AlternateView necess·rio para enviar um boleto banc·rio por e-mail.
+        /// Fun√ß√£o utilizada gerar o AlternateView necess√°rio para enviar um boleto banc√°rio por e-mail.
         /// </summary>
         /// <returns>AlternateView com os dados do boleto.</returns>
         public AlternateView HtmlBoletoParaEnvioEmail()
@@ -799,9 +801,9 @@ namespace BoletoNet
 
 
         /// <summary>
-        /// FunÁ„o utilizada gerar o AlternateView necess·rio para enviar um boleto banc·rio por e-mail.
+        /// Fun√ß√£o utilizada gerar o AlternateView necess√°rio para enviar um boleto banc√°rio por e-mail.
         /// </summary>
-        /// <param name="textoNoComecoDoEmail">Texto (em HTML) a ser incluido no comeÁo do Email.</param>
+        /// <param name="textoNoComecoDoEmail">Texto (em HTML) a ser incluido no come√ßo do Email.</param>
         /// <returns>AlternateView com os dados do boleto.</returns>
         public AlternateView HtmlBoletoParaEnvioEmail(string textoNoComecoDoEmail)
         {
@@ -821,11 +823,11 @@ namespace BoletoNet
         }
 
         /// <summary>
-        /// Gera as tres imagens necess·rias para o Boleto
+        /// Gera as tres imagens necess√°rias para o Boleto
         /// </summary>
         /// <param name="lrImagemLogo">O Logo do Banco</param>
         /// <param name="lrImagemBarra">A Barra Horizontal</param>
-        /// <param name="lrImagemCodigoBarra">O CÛdigo de Barras</param>
+        /// <param name="lrImagemCodigoBarra">O C√≥digo de Barras</param>
         void GeraGraficosParaEmailOffLine(out LinkedResource lrImagemLogo, out LinkedResource lrImagemBarra, out LinkedResource lrImagemCodigoBarra)
         {
             this.OnLoad(EventArgs.Empty);
@@ -851,9 +853,9 @@ namespace BoletoNet
 
 
         /// <summary>
-        /// FunÁ„o utilizada para gravar em um arquivo local o conte˙do do boleto. Este arquivo pode ser aberto em um browser sem que o site esteja no ar.
+        /// Fun√ß√£o utilizada para gravar em um arquivo local o conte√∫do do boleto. Este arquivo pode ser aberto em um browser sem que o site esteja no ar.
         /// </summary>
-        /// <param name="fileName">Path do arquivo que deve conter o cÛdigo html.</param>
+        /// <param name="fileName">Path do arquivo que deve conter o c√≥digo html.</param>
         public void MontaHtmlNoArquivoLocal(string fileName)
         {
             using (FileStream f = new FileStream(fileName, FileMode.Create))
@@ -866,7 +868,7 @@ namespace BoletoNet
         }
 
         /// <summary>
-        /// Monta o Html do boleto banc·rio
+        /// Monta o Html do boleto banc√°rio
         /// </summary>
         /// <returns>string</returns>
         public string MontaHtml()
@@ -876,7 +878,7 @@ namespace BoletoNet
 
 
         /// <summary>
-        /// Monta o Html do boleto banc·rio
+        /// Monta o Html do boleto banc√°rio
         /// </summary>
         /// <param name="fileName">Caminho do arquivo</param>
         /// <param name="fileName">Caminho do logo do cedente</param>
@@ -926,7 +928,7 @@ namespace BoletoNet
         }
 
         /// <summary>
-        /// Monta o Html do boleto banc·rio para View ASP.Net MVC
+        /// Monta o Html do boleto banc√°rio para View ASP.Net MVC
         /// <code>
         /// <para>Exemplo:</para>
         /// <para>public ActionResult VisualizarBoleto(string Id)</para>
@@ -947,31 +949,31 @@ namespace BoletoNet
         /// <criacao>16/11/2012</criacao>
         public string MontaHtml(string url, string fileName, bool useMapPathSecure = true)
         {
-            //Vari·vel para o caminho fÌsico do servidor
+            //Vari√°vel para o caminho f√≠sico do servidor
             string pathServer = "";
 
-            //Verifica se o usu·rio informou uma url v·lida
+            //Verifica se o usu√°rio informou uma url v√°lida
             if (url == null)
             {
-                //Obriga o usu·rio a especificar uma url v·lida
-                throw new ArgumentException("VocÍ precisa informar uma pasta padr„o.");
+                //Obriga o usu√°rio a especificar uma url v√°lida
+                throw new ArgumentException("Voc√™ precisa informar uma pasta padr√£o.");
             }
             else
             {
                 if (useMapPathSecure)
                 {
-                    //Verifica se o usu·rio usou barras no inÌcio e no final da url
+                    //Verifica se o usu√°rio usou barras no in√≠cio e no final da url
                     if (url.Substring(url.Length - 1, 1) != "/")
                         url = url + "/";
                     if (url.Substring(0, 1) != "/")
                         url = url + "/";
-                    //Mapeia o caminho fÌsico dos arquivos
+                    //Mapeia o caminho f√≠sico dos arquivos
                     pathServer = MapPathSecure(string.Format("~{0}", url));
                 }
 
                 //Verifica se o caminho existe
                 if (!Directory.Exists(pathServer))
-                    throw new ArgumentException("A o caminho fÌsico '{0}' n„o existe.", pathServer);
+                    throw new ArgumentException("A o caminho f√≠sico '{0}' n√£o existe.", pathServer);
             }
             //Verifica o nome do arquivo
             if (fileName == null)
@@ -984,7 +986,7 @@ namespace BoletoNet
                     fileName = DateTime.Now.Ticks.ToString();
             }
 
-            //Mantive o padr„o 
+            //Mantive o padr√£o 
             this.OnLoad(EventArgs.Empty);
 
             //Prepara o arquivo da logo para ser salvo
@@ -992,7 +994,7 @@ namespace BoletoNet
             //Prepara o arquivo da logo para ser usado no html
             string fnLogoUrl = url + @"BoletoNet" + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg";
 
-            //Salvo a imagem apenas 1 vez com o cÛdigo do banco
+            //Salvo a imagem apenas 1 vez com o c√≥digo do banco
             if (!System.IO.File.Exists(fnLogo))
             {
                 Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BoletoNet.Imagens." + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg");
@@ -1022,9 +1024,9 @@ namespace BoletoNet
                 }   
             }
 
-            //Prepara o arquivo do cÛdigo de barras para ser salvo
+            //Prepara o arquivo do c√≥digo de barras para ser salvo
             string fnCodigoBarras = string.Format("{0}{1}_codigoBarras.jpg", pathServer, fileName);
-            //Prepara o arquivo do cÛdigo de barras para ser usado no html
+            //Prepara o arquivo do c√≥digo de barras para ser usado no html
             string fnCodigoBarrasUrl = string.Format("{0}{1}_codigoBarras.jpg", url, fileName);
 
             C2of5i cb = new C2of5i(Boleto.CodigoBarra.Codigo, 1, 50, Boleto.CodigoBarra.Codigo.Length);
@@ -1037,12 +1039,12 @@ namespace BoletoNet
         }
 
         /// <summary>
-        /// Monta o Html do boleto banc·rio com as imagens embutidas no conte˙do, sem necessidade de links externos
-        /// de acordo com o padr„o http://en.wikipedia.org/wiki/Data_URI_scheme
+        /// Monta o Html do boleto banc√°rio com as imagens embutidas no conte√∫do, sem necessidade de links externos
+        /// de acordo com o padr√£o http://en.wikipedia.org/wiki/Data_URI_scheme
         /// </summary>
-        /// <param name="convertLinhaDigitavelToImage">Converte a Linha Digit·vel para imagem, com o objetivo de evitar malwares.</param>
+        /// <param name="convertLinhaDigitavelToImage">Converte a Linha Digit√°vel para imagem, com o objetivo de evitar malwares.</param>
         /// <returns>Html do boleto gerado</returns>
-        /// <desenvolvedor>Iuri AndrÈ Stona</desenvolvedor>
+        /// <desenvolvedor>Iuri Andr√© Stona</desenvolvedor>
         /// <criacao>23/01/2014</criacao>
         /// <alteracao>08/08/2014</alteracao>
         public string MontaHtmlEmbedded(bool convertLinhaDigitavelToImage = false)
@@ -1086,7 +1088,7 @@ namespace BoletoNet
             return s;
         }
 
-        #endregion GeraÁ„o do Html OffLine
+        #endregion Gera√ß√£o do Html OffLine
 
         public System.Drawing.Image GeraImagemCodigoBarras(Boleto boleto)
         {
