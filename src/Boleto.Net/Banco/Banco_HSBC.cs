@@ -10,7 +10,7 @@ namespace BoletoNet
     /// </summary>
     internal class Banco_HSBC : AbstractBanco, IBanco
     {
-        #region Variáveis
+        #region VariÃ¡veis
 
         private string _dacNossoNumero = string.Empty;
         private int _dacBoleto = 0;
@@ -34,10 +34,10 @@ namespace BoletoNet
         }
         #endregion
 
-        #region Métodos de Instância
+        #region MÃ©todos de InstÃ¢ncia
 
         /// <summary>
-        /// Validações particulares do banco HSBC
+        /// ValidaÃ§Ãµes particulares do banco HSBC
         /// </summary>
         public override void ValidaBoleto(Boleto boleto)
         {
@@ -47,42 +47,42 @@ namespace BoletoNet
                 var tamanhoNossoNumero = nossoNumero.ToString().Length;
 
                 if (string.IsNullOrEmpty(boleto.Carteira))
-                    throw new NotImplementedException("Carteira não informada. Utilize a carteira 'CSB' ou 'CNR'");
+                    throw new NotImplementedException("Carteira nÃ£o informada. Utilize a carteira 'CSB' ou 'CNR'");
 
                 //Verifica as carteiras implementadas
                 if (!boleto.Carteira.Equals("CSB") &
                     !boleto.Carteira.Equals("CNR"))
 
-                    throw new NotImplementedException("Carteira não implementada. Utilize a carteira 'CSB' ou 'CNR'.");
+                    throw new NotImplementedException("Carteira nÃ£o implementada. Utilize a carteira 'CSB' ou 'CNR'.");
 
-                //Verifica se o nosso número é válido
+                //Verifica se o nosso nÃºmero Ã© vÃ¡lido
                 if (Utils.ToString(boleto.NossoNumero) == string.Empty)
-                    throw new NotImplementedException("Nosso número inválido");
+                    throw new NotImplementedException("Nosso nÃºmero invÃ¡lido");
 
-                //Verifica se o nosso número é válido
+                //Verifica se o nosso nÃºmero Ã© vÃ¡lido
                 if (nossoNumero == 0)
-                    throw new NotImplementedException("Nosso número inválido");
+                    throw new NotImplementedException("Nosso nÃºmero invÃ¡lido");
 
-                //Verifica se o tamanho para o NossoNumero são 10 dígitos (5 range + 5 numero sequencial)
+                //Verifica se o tamanho para o NossoNumero sÃ£o 10 dÃ­gitos (5 range + 5 numero sequencial)
                 if (tamanhoNossoNumero > 10)
-                    throw new NotImplementedException("A quantidade de dígitos do nosso número para a carteira " + boleto.Carteira + ", são 10 números.");
+                    throw new NotImplementedException("A quantidade de dÃ­gitos do nosso nÃºmero para a carteira " + boleto.Carteira + ", sÃ£o 10 nÃºmeros.");
 
                 if (tamanhoNossoNumero < 10)
                     boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 10);
 
-                // Calcula o DAC do Nosso Número
-                // Nosso Número = Range(5) + Numero Sequencial(5)
+                // Calcula o DAC do Nosso NÃºmero
+                // Nosso NÃºmero = Range(5) + Numero Sequencial(5)
                 _dacNossoNumero = Mod11(boleto.NossoNumero, 7).ToString();
 
                 //Atribui o nome do banco ao local de pagamento
-                boleto.LocalPagamento = "PAGAR PREFERENCIALMENTE EM AGÊNCIAS DO HSBC";
+                boleto.LocalPagamento = "PAGAR EM QUALQUER AGÃŠNCIA BANCARIA ATÃ‰ O VENCIMENTO OU CANAIS ELETRONICOS DO HSBC";
 
-                //Verifica se data do processamento é valida
+                //Verifica se data do processamento Ã© valida
 				//if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
 				if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                     boleto.DataProcessamento = DateTime.Now;
 
-                //Verifica se data do documento é valida
+                //Verifica se data do documento Ã© valida
 				//if (boleto.DataDocumento.ToString("dd/MM/yyyy") == "01/01/0001")
 				if (boleto.DataDocumento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                     boleto.DataDocumento = DateTime.Now;
@@ -99,23 +99,23 @@ namespace BoletoNet
 
         # endregion
 
-        # region Métodos de formatação do boleto
+        # region MÃ©todos de formataÃ§Ã£o do boleto
 
         /// <summary>
-        /// Formata o código de barras para carteira CSB
+        /// Formata o cÃ³digo de barras para carteira CSB
         /// </summary>
         /// <example>
-        /// DE ATÉ TAMANHO CONTEÚDO
+        /// DE ATÃ‰ TAMANHO CONTEÃšDO
         /// -----------------------
-        /// 01 03 03 Código do HSBC na Câmara de Compensação, igual a 399.
-        /// 04 04 01 Tipo de Moeda (9 para moeda Real ou 0 para Moeda Variável).
-        /// 05 05 01 Dígito de Autoconferência (DAC).
+        /// 01 03 03 CÃ³digo do HSBC na CÃ¢mara de CompensaÃ§Ã£o, igual a 399.
+        /// 04 04 01 Tipo de Moeda (9 para moeda Real ou 0 para Moeda VariÃ¡vel).
+        /// 05 05 01 DÃ­gito de AutoconferÃªncia (DAC).
         /// 06 09 04 Fator de Vencimento.
-        /// 10 19 10 Valor do Documento. Se Moeda Variável, o valor deverá ser igual a zeros.
-        /// 20 30 11 Número Bancário (Nosso Número).
-        /// 31 41 11 Código da Agencia (4) + Conta de Cobrança (7).
-        /// 40 43 02 Código da carteira "00".
-        /// 44 44 01 Código do aplicativo de cobranca "1"
+        /// 10 19 10 Valor do Documento. Se Moeda VariÃ¡vel, o valor deverÃ¡ ser igual a zeros.
+        /// 20 30 11 NÃºmero BancÃ¡rio (Nosso NÃºmero).
+        /// 31 41 11 CÃ³digo da Agencia (4) + Conta de CobranÃ§a (7).
+        /// 40 43 02 CÃ³digo da carteira "00".
+        /// 44 44 01 CÃ³digo do aplicativo de cobranca "1"
         /// </example>
         public override void FormataCodigoBarra(Boleto boleto)
         {
@@ -131,7 +131,7 @@ namespace BoletoNet
                 switch (boleto.Carteira.ToUpper())
                 {
                     case "CSB": boleto.CodigoBarra.Codigo =
-                            // Código de Barras
+                            // CÃ³digo de Barras
                             //banco & moeda & fator & valor & nossonumero & dac_nossonumero & agencia & conta & "00" & "1"
                         string.Format("{0}{1}{2}{3}{4}{5}{6}001", Codigo, boleto.Moeda,
                                       FatorVencimento(boleto), valorBoleto, boleto.NossoNumero + _dacNossoNumero,
@@ -139,7 +139,7 @@ namespace BoletoNet
                                       Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 7));
                         break;
                     case "CNR":
-                        // Código de Barras
+                        // CÃ³digo de Barras
                         //banco & moeda & fator & valor & codCedente & nossonumero & diadoano & digito do ano & "2"
                         boleto.CodigoBarra.Codigo =
                         string.Format("{0}{1}{2}{3}{4}{5}{6}2",
@@ -160,30 +160,30 @@ namespace BoletoNet
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro ao formatar código de barras.", ex);
+                throw new Exception("Erro ao formatar cÃ³digo de barras.", ex);
             }
         }
 
-        /// A linha digitável será composta por cinco campos: para carteira CSB
-        ///      1º campo
-        ///         01 03 03 Código do HSBC na Câmara de Compensação, igual a 399.
-        ///         04 04 01 Tipo de Moeda (9 para moeda Real ou 0 para Moeda Variável).
-        ///         05 09 01 Primeira parte do Nosso número (5) - Numero Range.
+        /// A linha digitÃ¡vel serÃ¡ composta por cinco campos: para carteira CSB
+        ///      1Âº campo
+        ///         01 03 03 CÃ³digo do HSBC na CÃ¢mara de CompensaÃ§Ã£o, igual a 399.
+        ///         04 04 01 Tipo de Moeda (9 para moeda Real ou 0 para Moeda VariÃ¡vel).
+        ///         05 09 01 Primeira parte do Nosso nÃºmero (5) - Numero Range.
         ///         10 10 01 DV deste campo.
-        ///      2º campo
-        ///         11 16 06 Final do Nosso Número Calculado com DV (6).
-        ///         17 20 04 Início da conta cobrança - Código da agencia (4).
+        ///      2Âº campo
+        ///         11 16 06 Final do Nosso NÃºmero Calculado com DV (6).
+        ///         17 20 04 InÃ­cio da conta cobranÃ§a - CÃ³digo da agencia (4).
         ///         21 21 01 DV deste campo.
-        ///      3º campo
-        ///         22 28 07 Final da conta cobrança - Conta (7).
-        ///         29 30 02 Código da carteira "00".
-        ///         31 31 01 Código do aplicativo "1".
+        ///      3Âº campo
+        ///         22 28 07 Final da conta cobranÃ§a - Conta (7).
+        ///         29 30 02 CÃ³digo da carteira "00".
+        ///         31 31 01 CÃ³digo do aplicativo "1".
         ///         32 32 01 DV deste campo.
-        ///      4º campo
-        ///         33 33 01 DV do código da barras.
-        ///      5º campo
+        ///      4Âº campo
+        ///         33 33 01 DV do cÃ³digo da barras.
+        ///      5Âº campo
         ///         34 37 04 Fator de vencimento.
-        ///         38 47 10 Valor do documento. Zeros para Moeda Variável
+        ///         38 47 10 Valor do documento. Zeros para Moeda VariÃ¡vel
         /// </summary>
         public override void FormataLinhaDigitavel(Boleto boleto)
         {
@@ -285,7 +285,7 @@ namespace BoletoNet
                         #endregion FFFFF.GGGGGZ
                         break;
                     default:
-                        throw new NotImplementedException("Função não implementada.");
+                        throw new NotImplementedException("FunÃ§Ã£o nÃ£o implementada.");
                 }
 
 
@@ -305,7 +305,7 @@ namespace BoletoNet
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro ao formatar linha digitável.", ex);
+                throw new Exception("Erro ao formatar linha digitÃ¡vel.", ex);
             }
         }
 
@@ -321,19 +321,19 @@ namespace BoletoNet
 
                     case "CNR": boleto.NossoNumero = string.Format("{0}{1}4{2}", boleto.NossoNumero, Mod11Base9(boleto.NossoNumero).ToString(), Mod11Base9((int.Parse(boleto.NossoNumero + Mod11Base9(boleto.NossoNumero).ToString() + "4") + int.Parse(boleto.Cedente.Codigo.ToString()) + int.Parse(boleto.DataVencimento.ToString("ddMMyy"))).ToString())); break;
                     default:
-                        throw new NotImplementedException("Carteira não implementada.  Use CSB ou CNR");
+                        throw new NotImplementedException("Carteira nÃ£o implementada.  Use CSB ou CNR");
                 }
 
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro ao formatar nosso número", ex);
+                throw new Exception("Erro ao formatar nosso nÃºmero", ex);
             }
         }
 
         # endregion
 
-        # region Métodos de geração do arquivo remessa CNAB400
+        # region MÃ©todos de geraÃ§Ã£o do arquivo remessa CNAB400
 
         # region HEADER
 
@@ -343,21 +343,21 @@ namespace BoletoNet
         /// </summary>
         public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
         {
-            throw new NotImplementedException("Função não implementada.");
+            throw new NotImplementedException("FunÃ§Ã£o nÃ£o implementada.");
         }
 
         public string GerarHeaderRemessaCNAB240()
         {
-            throw new NotImplementedException("Função não implementada.");
+            throw new NotImplementedException("FunÃ§Ã£o nÃ£o implementada.");
         }
 
         public string GerarHeaderRemessaCNAB400(int numeroConvenio, Cedente cedente, int numeroArquivoRemessa)
         {
-            throw new NotImplementedException("Função não implementada.");
+            throw new NotImplementedException("FunÃ§Ã£o nÃ£o implementada.");
         }
         public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos)
         {
-            throw new NotImplementedException("Função não implementada.");
+            throw new NotImplementedException("FunÃ§Ã£o nÃ£o implementada.");
         }
         # endregion
 
@@ -369,17 +369,17 @@ namespace BoletoNet
         /// </summary>
         public override string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
         {
-            throw new NotImplementedException("Função não implementada.");
+            throw new NotImplementedException("FunÃ§Ã£o nÃ£o implementada.");
         }
 
         public string GerarDetalheRemessaCNAB240()
         {
-            throw new NotImplementedException("Função não implementada.");
+            throw new NotImplementedException("FunÃ§Ã£o nÃ£o implementada.");
         }
 
         public string GerarDetalheRemessaCNAB400(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
         {
-            throw new NotImplementedException("Função não implementada.");
+            throw new NotImplementedException("FunÃ§Ã£o nÃ£o implementada.");
         }
 
         # endregion DETALHE
@@ -392,30 +392,30 @@ namespace BoletoNet
         /// </summary>
         public override string GerarTrailerRemessa(int numeroRegistro, TipoArquivo tipoArquivo, Cedente cedente, decimal vltitulostotal)
         {
-            throw new NotImplementedException("Função não implementada.");
+            throw new NotImplementedException("FunÃ§Ã£o nÃ£o implementada.");
         }
 
         public string GerarTrailerRemessa240()
         {
-            throw new NotImplementedException("Função não implementada.");
+            throw new NotImplementedException("FunÃ§Ã£o nÃ£o implementada.");
         }
 
         public string GerarTrailerRemessa400(int numeroRegistro)
         {
-            throw new NotImplementedException("Função não implementada.");
+            throw new NotImplementedException("FunÃ§Ã£o nÃ£o implementada.");
         }
 
         # endregion
 
         #endregion
 
-        #region Métodos de processamento do arquivo retorno CNAB400
+        #region MÃ©todos de processamento do arquivo retorno CNAB400
 
         #endregion
 
 
         /// <summary>
-        /// Efetua as Validações dentro da classe Boleto, para garantir a geração da remessa
+        /// Efetua as ValidaÃ§Ãµes dentro da classe Boleto, para garantir a geraÃ§Ã£o da remessa
         /// </summary>
         public override bool ValidarRemessa(TipoArquivo tipoArquivo, string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, int numeroArquivoRemessa, out string mensagem)
         {
