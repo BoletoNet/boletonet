@@ -72,7 +72,8 @@ namespace BoletoNet
 
                 // Calcula o DAC do Nosso Número
                 // Nosso Número = Range(5) + Numero Sequencial(5)
-                _dacNossoNumero = Mod11(boleto.NossoNumero, 7).ToString();
+                //_dacNossoNumero = Mod11(boleto.NossoNumero, 7).ToString(); Estava calculando errado, de acordo com o HSBC, quando o resto fosse 1, tinha que gerar digito 0. Criei um mod11Hsbc para isso.
+                _dacNossoNumero = Mod11Hsbc(boleto.NossoNumero, 7).ToString();//por Transis em 25/02/15
 
                 //Atribui o nome do banco ao local de pagamento
                 boleto.LocalPagamento = "PAGAR EM QUALQUER AGÊNCIA BANCARIA ATÉ O VENCIMENTO OU CANAIS ELETRONICOS DO HSBC";
@@ -329,6 +330,40 @@ namespace BoletoNet
             {
                 throw new Exception("Erro ao formatar nosso número", ex);
             }
+        }
+
+        protected static int Mod11Hsbc(string seq, int b)
+        {
+            /* Variáveis
+             * -------------
+             * d - Dígito
+             * s - Soma
+             * p - Peso
+             * b - Base
+             * r - Resto
+             */
+
+            int d, s = 0, p = 2;
+
+
+            for (int i = seq.Length; i > 0; i--)
+            {
+                s = s + (Convert.ToInt32(Microsoft.VisualBasic.Strings.Mid(seq, i, 1)) * p);
+                if (p == b)
+                    p = 2;
+                else
+                    p = p + 1;
+            }
+
+            d = 11 - (s % 11);
+
+
+            if ((d == 0) || (d == 1))
+                d = 0;
+            else
+                d = 11 - d;
+
+            return d;
         }
 
         # endregion
