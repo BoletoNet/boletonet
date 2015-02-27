@@ -355,8 +355,7 @@ namespace BoletoNet
                     p = p + 1;
             }
 
-            d = 11 - (s % 11);
-
+            d = s % 11;
 
             if ((d == 0) || (d == 1))
                 d = 0;
