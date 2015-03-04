@@ -1,8 +1,23 @@
 deploy:
   provider: NuGet
-  server:                  https://www.nuget.org/packages/ExemploNuGetCDS/
   api_key: 7ccd6cc6-57f4-447c-941d-f45751213595
     secure: m49OJ7+Jdt9an3jPcTukHA==
-  skip_symbols: false
-  symbol_server:           # remove to push symbols to SymbolSource.org
-  artifact: /.*\.nupkg/
+  skip_symbols: true
+  on:
+    branch: release
+- provider: NuGet
+  server: https://www.myget.org/F/boletonetbuild/api/v2/package
+  api_key:
+    secure: 11801a2e-821b-42da-9076-08371a23c98e
+  skip_symbols: true
+  on:
+    branch: master
+
+notifications:
+- provider: Email
+  to:
+  - cds@cds-software.com.br
+  subject: BoletoNet Build
+  on_build_success: false
+  on_build_failure: true
+  on_build_status_changed: true
