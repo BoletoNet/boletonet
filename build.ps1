@@ -2,7 +2,7 @@
  $solutionFileCS = "$rootDir\src\Boleto.Net.sln"
  $srcDir = "$rootDir\src"
  $isAppVeyor = $env:APPVEYOR -eq $true
- $slns = ls "$rootDir\*.sln"
+ $slns = ls "$rootDir\src\*.sln"
  $packagesDir = "$rootDir\src\packages"
  $buildNumber = [Convert]::ToInt32($env:APPVEYOR_BUILD_NUMBER).ToString("0000")
  $nuspecPathCS = "$rootDir\src\nuget\boleto.net\boleto.net.2.0.12.nuspec"
@@ -18,9 +18,11 @@
      Write-Host -ForegroundColor DarkBlue "Creating log directory $logDir"
      mkdir $logDir | Out-Null
  }
-
+ 
+Write-Host "Restaurando pacotes..."
  Foreach($sln in $slns) {
-     RestorePkgs $sln
+     Write-Host $sln
+     nuget restore $sln
  }
 
 Write-Host "Packing nuget for $language..."
