@@ -1,0 +1,8 @@
+deploy:
+  provider: NuGet
+  server:                  https://www.nuget.org/packages/ExemploNuGetCDS/
+  api_key: 7ccd6cc6-57f4-447c-941d-f45751213595
+    secure: m49OJ7+Jdt9an3jPcTukHA==
+  skip_symbols: false
+  symbol_server:           # remove to push symbols to SymbolSource.org
+  artifact: /.*\.nupkg/
