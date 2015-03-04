@@ -1,3 +1,13 @@
+version: 1.0.0.{build}
+
+artifacts:
+  - path: src
+    name: src
+  - path: test
+    name: test
+  - path: log
+    name: log
+
 deploy:
 - provider: NuGet
   server: https://www.myget.org/F/boletonetbuild/api/v1
@@ -6,14 +16,6 @@ deploy:
   skip_symbols: true
   on:
     branch: master
-    
-artifacts:
-  - path: src
-    name: src
-  - path: test
-    name: test
-  - path: log
-    name: log
     
 notifications:
 - provider: Email
