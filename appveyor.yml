@@ -1,0 +1,24 @@
+version: 1.0.0.{build}
+
+artifacts:
+  - path: src
+    name: src
+
+deploy:
+- provider: NuGet
+  server: https://www.myget.org/F/boletonetbuild/api/v1
+  api_key:
+    secure: rH9VFKFXJsR5D07BF9PayFm7mRo7acVANtfgYkGa3S9ybX0RCWBiSM153yhLaorG
+  skip_symbols: true
+  on:
+    branch: master
+    
+notifications:
+- provider: Email
+  to:
+  - cds@cds-software.com.br
+  - stiven@outlook.com
+  subject: BoletoNet Build
+  on_build_success: false
+  on_build_failure: true
+  on_build_status_changed: true
