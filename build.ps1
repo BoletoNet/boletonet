@@ -5,7 +5,7 @@
  $slns = ls "$rootDir\src\*.sln"
  $packagesDir = "$rootDir\src\packages"
  $buildNumber = [Convert]::ToInt32($env:APPVEYOR_BUILD_NUMBER).ToString("0000")
- $nuspecPathCS = "$rootDir\src\nuget\boleto.net\boleto.net.2.0.12.nuspec"
+ $nuspecPathCS = "$rootDir\src\nuget\boleto.net\boleto.net.nuspec"
  $nugetExe = "$packagesDir\NuGet.CommandLine.2.8.3\tools\NuGet.exe"
  $nupkgPathCS = "$rootDir\src\NuGet\Boleto.Net\Boleto.Net.{0}.nupkg"
 
@@ -21,9 +21,14 @@
  
 Write-Host "Restaurando pacotes..."
  Foreach($sln in $slns) {
-     Write-Host $sln
+     Write-Host $sln 
      nuget restore $sln
  }
+ 
+ [xml]$xml = cat $nuspecPathCS
+ $xml.package.metadata.version+="-$buildNumber"
+ write-host "Nuspec versão $($xml.package.metadata.version)"
+ $xml.Save($nuspecPathCS)
 
 Write-Host "Packing nuget for $language..."
 [xml]$xml = cat $nuspecPathCS
