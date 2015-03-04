@@ -1,5 +1,9 @@
 version: 1.0.0.{build}
 
+after_build:
+  - ps: >-
+      . .\build.ps1 Pack-Nuget
+
 artifacts:
   - path: src
     name: src
