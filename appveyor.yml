@@ -11,6 +11,7 @@ notifications:
 - provider: Email
   to:
   - cds@cds-software.com.br
+  - stiven@outlook.com
   subject: BoletoNet Build
   on_build_success: false
   on_build_failure: true
