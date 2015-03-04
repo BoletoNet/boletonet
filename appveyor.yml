@@ -7,6 +7,14 @@ deploy:
   on:
     branch: master
     
+artifacts:
+  - path: src
+    name: src
+  - path: test
+    name: test
+  - path: log
+    name: log
+    
 notifications:
 - provider: Email
   to:
