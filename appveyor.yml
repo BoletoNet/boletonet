@@ -6,7 +6,7 @@ deploy:
   on:
     branch: release
 - provider: NuGet
-  server: https://www.myget.org/F/boletonetbuild/api/v2/package
+  server: https://www.myget.org/F/boletonetbuild/api/v1
   api_key:
     secure: 11801a2e-821b-42da-9076-08371a23c98e
   skip_symbols: true
