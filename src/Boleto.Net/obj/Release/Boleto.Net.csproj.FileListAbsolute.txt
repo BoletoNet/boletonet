@@ -1,0 +1,7 @@
+D:\cds\dotnet\OpenSource\boletonet\src\Boleto.Net\bin\Release\Boleto.Net.dll
+D:\cds\dotnet\OpenSource\boletonet\src\Boleto.Net\bin\Release\Boleto.Net.pdb
+D:\cds\dotnet\OpenSource\boletonet\src\Boleto.Net\obj\Release\Boleto.Net.csprojResolveAssemblyReference.cache
+D:\cds\dotnet\OpenSource\boletonet\src\Boleto.Net\obj\Release\BoletoNet.Html.resources
+D:\cds\dotnet\OpenSource\boletonet\src\Boleto.Net\obj\Release\Boleto.Net.csproj.GenerateResource.Cache
+D:\cds\dotnet\OpenSource\boletonet\src\Boleto.Net\obj\Release\Boleto.Net.dll
+D:\cds\dotnet\OpenSource\boletonet\src\Boleto.Net\obj\Release\Boleto.Net.pdb
