@@ -1,9 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Biblioteca", "Biblioteca", "{75FC8289-5B1E-4684-8497-54494382FA55}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Arquivos", "Arquivos", "{75C4F877-9574-43BA-9844-EAEC221DC0FA}"
 EndProject
@@ -15,7 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boleto.Net", "Boleto.Net\Bo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boleto.Net.Arquivo", "Boleto.Net.Arquivo\Boleto.Net.Arquivo.csproj", "{98AD1B9D-47F5-432C-85BD-49A12FBD7CAD}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Boleto.Net.Site", "Boleto.Net.Site", "{3E75E02F-A49C-4C96-8A9E-8A405D8B6167}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Boleto.Net.Site", "Boleto.Net.Site\", "{3E75E02F-A49C-4C96-8A9E-8A405D8B6167}"
 	ProjectSection(WebsiteProperties) = preProject
 		SccProjectName = "SAK"
 		SccAuxPath = "SAK"
@@ -46,7 +49,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{357833
 		Leiame.txt = Leiame.txt
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testes", "Testes", "{8C6CE2CA-61F8-489B-A803-27437835E300}"
@@ -60,34 +62,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Website", "Website", "{057F8124-1BE5-46CB-B2EF-106CD4325B93}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 6
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs08
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Boleto.Net.Arquivo\\Boleto.Net.Arquivo.csproj
-		SccProjectTopLevelParentUniqueName1 = Boleto.Net.sln
-		SccProjectName1 = Boleto.Net.Arquivo
-		SccLocalPath1 = Boleto.Net.Arquivo
-		SccProjectUniqueName2 = Boleto.Net.Testes\\Boleto.Net.Testes.csproj
-		SccProjectTopLevelParentUniqueName2 = Boleto.Net.sln
-		SccProjectName2 = Boleto.Net.Testes
-		SccLocalPath2 = Boleto.Net.Testes
-		SccProjectUniqueName3 = Boleto.Net\\Boleto.Net.csproj
-		SccProjectTopLevelParentUniqueName3 = Boleto.Net.sln
-		SccProjectName3 = Boleto.Net
-		SccLocalPath3 = Boleto.Net
-		SccWebProject4 = true
-		SccProjectUniqueName4 = Boleto.Net.Site
-		SccProjectTopLevelParentUniqueName4 = Boleto.Net.sln
-		SccProjectName4 = Boleto.Net.Site
-		SccLocalPath4 = Boleto.Net.Site
-		SccProjectEnlistmentChoice4 = 2
-		SccProjectUniqueName5 = Boleto.Net.MVC\\Boleto.Net.MVC.csproj
-		SccProjectTopLevelParentUniqueName5 = Boleto.Net.sln
-		SccProjectName5 = Boleto.Net.MVC
-		SccLocalPath5 = Boleto.Net.MVC
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
 		Debug|Any CPU = Debug|Any CPU
