@@ -3,10 +3,6 @@ version: 1.0.0.{build}
 artifacts:
   - path: src
     name: src
-  - path: test
-    name: test
-  - path: log
-    name: log
 
 deploy:
 - provider: NuGet
