@@ -19,16 +19,14 @@
      mkdir $logDir | Out-Null
  }
  
-Write-Host "Restaurando pacotes..."
- Foreach($sln in $slns) {
-     Write-Host $sln 
-     nuget restore $sln
- }
+# Write-Host "Restaurando pacotes..."
+ # Foreach($sln in $slns) {
+     # Write-Host $sln 
+     # nuget restore $sln
+ # }
 
-Write-Host "Criando pacote Nuget..."
-[xml]$xml = cat $nuspecPathCS
-$nupkgPathCS = $nupkgPathCS -f $buildNumber
-Write-Host "Nupkg arquivo =  $nupkgPathCS"
+$nupkgPathCS = $nupkgPathCS -f $buildVersion
+Write-Host "Criando pacote nuget  $nupkgPathCS"
 . $nugetExe pack $nuspecPathCS -Properties "Configuration=Debug;Platform=AnyCPU" -OutputDirectory $srcDir
 ls $nupkgPathCS
 Write-Host "Nuget criado!"
