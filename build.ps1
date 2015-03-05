@@ -24,19 +24,20 @@ Write-Host "Restaurando pacotes..."
      Write-Host $sln 
      nuget restore $sln
  }
- 
- [xml]$xml = cat $nuspecPathCS
+
+Write-Host "Mudando versao..."
+ $xml = cat $nuspecPathCS
  $xml.package.metadata.version+="-$buildNumber"
- write-host "Nuspec versão $($xml.package.metadata.version)"
+ write-host "Nuspec versao $($xml.package.metadata.version)"
  $xml.Save($nuspecPathCS)
 
-Write-Host "Packing nuget for $language..."
+Write-Host "Criando pacote Nuget..."
 [xml]$xml = cat $nuspecPathCS
 $nupkgPathCS = $nupkgPathCS -f $xml.package.metadata.version
 Write-Host "Nupkg path is $nupkgFile"
 . $nugetExe pack $nuspecPathCS -Properties "Configuration=Debug;Platform=AnyCPU" -OutputDirectory $srcDir
 ls $nupkgPathCS
-Write-Host "Nuget packed for $language!"
-Write-Host "Pushing nuget artifact for $language..."
+Write-Host "Nuget criado!"
+Write-Host "Enviado artefatos..."
 appveyor PushArtifact $nupkgPathCS
-Write-Host "Nupkg pushed for $language!"
+Write-Host "Nupkg enviado!"
