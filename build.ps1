@@ -25,16 +25,10 @@ Write-Host "Restaurando pacotes..."
      nuget restore $sln
  }
 
-Write-Host "Mudando versao..."
- $xml = cat $nuspecPathCS
- $xml.package.metadata.version+="-$buildNumber"
- write-host "Nuspec versao $($xml.package.metadata.version)"
- $xml.Save($nuspecPathCS)
-
 Write-Host "Criando pacote Nuget..."
 [xml]$xml = cat $nuspecPathCS
-$nupkgPathCS = $nupkgPathCS -f $xml.package.metadata.version
-Write-Host "Nupkg path is $nupkgFile"
+$nupkgPathCS = $nupkgPathCS -f $buildNumber
+Write-Host "Nupkg arquivo =  $nupkgPathCS"
 . $nugetExe pack $nuspecPathCS -Properties "Configuration=Debug;Platform=AnyCPU" -OutputDirectory $srcDir
 ls $nupkgPathCS
 Write-Host "Nuget criado!"
