@@ -19,11 +19,11 @@
      mkdir $logDir | Out-Null
  }
  
-# Write-Host "Restaurando pacotes..."
- # Foreach($sln in $slns) {
-     # Write-Host $sln 
-     # nuget restore $sln
- # }
+write-host "restaurando pacotes..."
+foreach($sln in $slns) {
+   write-host $sln 
+   nuget restore $sln
+}
 
 $nupkgPathCS = $nupkgPathCS -f $buildVersion
 Write-Host "Criando pacote nuget  $nupkgPathCS"
