@@ -25,7 +25,7 @@ foreach($sln in $slns) {
    nuget restore $sln
 }
 
-$nupkgPathCS = $nupkgPathCS -f $buildVersion
+$nupkgPathCS = $nupkgPathCS -f $APPVEYOR_BUILD_NUMBER 
 Write-Host "Criando pacote nuget  $nupkgPathCS"
 . $nugetExe pack $nuspecPathCS -Properties "Configuration=Debug;Platform=AnyCPU" -OutputDirectory $srcDir
 ls $nupkgPathCS
