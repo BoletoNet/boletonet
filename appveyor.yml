@@ -1,6 +1,6 @@
 version: 2.1.0.{build}
 
-after_build:
+before_build:
   - ps: >-
       . .\build.ps1 Pack-Nuget
 
