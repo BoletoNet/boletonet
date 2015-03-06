@@ -10,7 +10,7 @@ artifacts:
 
 deploy:
 - provider: NuGet
-  server: https://www.myget.org/F/boletonetbuild/api/v1
+  server: https://www.myget.org/F/boletonetbuild/
   api_key:
     secure: rH9VFKFXJsR5D07BF9PayFm7mRo7acVANtfgYkGa3S9ybX0RCWBiSM153yhLaorG
   skip_symbols: true
