@@ -1,4 +1,5 @@
  $rootDir = $env:APPVEYOR_BUILD_FOLDER
+ $buildNumber = $env:APPVEYOR_BUILD_NUMBER
  $solutionFile = "$rootDir\src\Boleto.Net.sln"
  $srcDir = "$rootDir\src\nuget\boleto.net"
  $slns = ls "$rootDir\src\*.sln"
