@@ -2,7 +2,6 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Boleto.Net</id>
-        <version>2.0.0</version>
         <title>Boleto.Net</title>
         <authors>BoletoNet</authors>
         <owners>BoletoNet</owners>
