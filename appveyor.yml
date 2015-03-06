@@ -5,7 +5,7 @@ after_build:
       . .\build.ps1 Pack-Nuget
 
 artifacts:
-  - path: src
+  - path: src\nuget
     name: src
 
 deploy:
