@@ -19,16 +19,10 @@
      mkdir $logDir | Out-Null
  }
  
-write-host "restaurando pacotes..."
 foreach($sln in $slns) {
    write-host $sln 
    nuget restore $sln
 }
 
-Write-Host "Criando pacote nuget  $nupkgPathCS"
 . $nugetExe pack $nuspecPathCS -properties "Configuration=$env:configuration;Platform=AnyCPU;Version=$($env:appveyor_build_version)" -OutputDirectory $srcDir
-ls $nupkgPathCS
-Write-Host "Nuget criado!"
-Write-Host "Enviado artefatos..."
 appveyor PushArtifact $nupkgPathCS
-Write-Host "Nupkg enviado!"
