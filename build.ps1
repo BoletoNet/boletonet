@@ -7,7 +7,7 @@
  $buildNumber = [Convert]::ToInt32($env:APPVEYOR_BUILD_NUMBER).ToString("0000")
  $nuspecPathCS = "$rootDir\src\nuget\boleto.net\boleto.net.nuspec"
  $nugetExe = "$packagesDir\NuGet.CommandLine.2.8.3\tools\NuGet.exe"
- $nupkgPathCS = "$rootDir\src\NuGet\Boleto.Net\Boleto.Net.nupkg"
+ $nupkgPathCS = "$rootDir\src\NuGet\Boleto.Net\Boleto.Net.{0}.nupkg"
 
  $logDir = "$rootDir\log"
  $isRelease = $isAppVeyor -and ($env:APPVEYOR_REPO_BRANCH -eq "release")
@@ -23,6 +23,13 @@ foreach($sln in $slns) {
    write-host $sln 
    nuget restore $sln
 }
+
+[xml]$xml = cat $nuspecPathCS
+$xml.package.metadata.version+=".$buildNumber"
+$xml.Save($nuspecPathCS)
+
+[xml]$xml = cat $nuspecPathCS
+$nupkgPathCS = $nupkgPathCS -f $xml.package.metadata.version
 
 . $nugetExe pack $nuspecPathCS -properties "Configuration=$env:configuration;Platform=AnyCPU;Version=$($env:appveyor_build_version)" -OutputDirectory $srcDir
 appveyor PushArtifact $nupkgPathCS
