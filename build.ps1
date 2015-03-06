@@ -24,9 +24,12 @@ foreach($sln in $slns) {
    nuget restore $sln
 }
 
+write-host "Fase 1 $nuspecPathCS"
 [xml]$xml = cat $nuspecPathCS
 $xml.package.metadata.version+=".$buildNumber"
+write-host "Fase 2 $nuspecPathCS"
 $xml.Save($nuspecPathCS)
+write-host "Fase 3 $nuspecPathCS"
 
 [xml]$xml = cat $nuspecPathCS
 $nupkgPathCS = $nupkgPathCS -f $xml.package.metadata.version
