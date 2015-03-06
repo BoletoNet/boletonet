@@ -1,6 +1,6 @@
  $rootDir = "."
  $solutionFileCS = "$rootDir\src\Boleto.Net.sln"
- $srcDir = "$rootDir\src\nuget"
+ $srcDir = "$rootDir\src\nuget\boleto.net"
  $isAppVeyor = $env:APPVEYOR -eq $true
  $slns = ls "$rootDir\src\*.sln"
  $packagesDir = "$rootDir\src\packages"
@@ -26,7 +26,7 @@ foreach($sln in $slns) {
 }
 
 Write-Host "Criando pacote nuget  $nupkgPathCS"
-. $nugetExe pack $nuspecPathCS -Properties "Configuration=Release;Platform=AnyCPU" -OutputDirectory $srcDir -Version $env:APPVEYOR_BUILD_VERSION
+. $nugetExe pack $nuspecPathCS -properties "Configuration=$env:configuration;Platform=AnyCPU;Version=$($env:appveyor_build_version)" -OutputDirectory $srcDir
 ls $nupkgPathCS
 Write-Host "Nuget criado!"
 Write-Host "Enviado artefatos..."
