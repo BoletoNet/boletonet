@@ -31,7 +31,7 @@ Write-Host $env:APPVEYOR_BUILD_ID
 
 $nupkgPathCS = $nupkgPathCS -f $env:APPVEYOR_BUILD_NUMBER 
 Write-Host "Criando pacote nuget  $nupkgPathCS"
-$nugetExe pack $nuspecPathCS -Properties "Configuration=Debug;Platform=AnyCPU" -OutputDirectory $srcDir
+. $nugetExe pack $nuspecPathCS -Properties "Configuration=Debug;Platform=AnyCPU" -OutputDirectory $srcDir
 ls $nupkgPathCS
 Write-Host "Nuget criado!"
 Write-Host "Enviado artefatos..."
