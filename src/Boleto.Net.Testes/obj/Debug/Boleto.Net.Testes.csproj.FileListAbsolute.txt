@@ -1,7 +1,0 @@
-D:\cds\dotnet\OpenSource\boletonet\src\Boleto.Net.Testes\bin\Debug\Boleto.Net.Testes.dll
-D:\cds\dotnet\OpenSource\boletonet\src\Boleto.Net.Testes\bin\Debug\Boleto.Net.Testes.pdb
-D:\cds\dotnet\OpenSource\boletonet\src\Boleto.Net.Testes\bin\Debug\Boleto.Net.dll
-D:\cds\dotnet\OpenSource\boletonet\src\Boleto.Net.Testes\bin\Debug\Boleto.Net.pdb
-D:\cds\dotnet\OpenSource\boletonet\src\Boleto.Net.Testes\obj\Debug\Boleto.Net.Testes.csprojResolveAssemblyReference.cache
-D:\cds\dotnet\OpenSource\boletonet\src\Boleto.Net.Testes\obj\Debug\Boleto.Net.Testes.dll
-D:\cds\dotnet\OpenSource\boletonet\src\Boleto.Net.Testes\obj\Debug\Boleto.Net.Testes.pdb
