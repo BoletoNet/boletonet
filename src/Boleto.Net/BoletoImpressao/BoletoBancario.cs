@@ -898,7 +898,7 @@ namespace BoletoNet
             if (!System.IO.File.Exists(fnLogo))
             {
                 Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BoletoNet.Imagens." + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg");
-                using (Stream file = File.Create(HttpContext.Current.Server.MapPath(fnLogo)))
+                using (Stream file = File.Create(fnLogo)) 
                 {
                     CopiarStream(stream, file);
                 }
@@ -911,7 +911,7 @@ namespace BoletoNet
                 byte[] imgBuffer = (byte[])imgConverter.ConvertTo(Html.barra, typeof(byte[]));
                 MemoryStream ms = new MemoryStream(imgBuffer);
 
-                using(Stream stream = File.Create(HttpContext.Current.Server.MapPath(fnBarra)))
+                using(Stream stream = File.Create(fnBarra)) 
                 {
                     CopiarStream(ms, stream);
                     ms.Flush();
@@ -998,7 +998,7 @@ namespace BoletoNet
             if (!System.IO.File.Exists(fnLogo))
             {
                 Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BoletoNet.Imagens." + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg");
-                using (Stream file = File.Create(HttpContext.Current.Server.MapPath(fnLogo)))
+                using (Stream file = File.Create(fnLogo)) 
                 {
                     CopiarStream(stream, file);
                 }
@@ -1016,7 +1016,7 @@ namespace BoletoNet
                 byte[] imgBuffer = (byte[])imgConverter.ConvertTo(Html.barra, typeof(byte[]));
                 MemoryStream ms = new MemoryStream(imgBuffer);
 
-                using (Stream stream = File.Create(HttpContext.Current.Server.MapPath(fnBarra)))
+                using (Stream stream = File.Create(fnBarra)) 
                 {
                     CopiarStream(ms, stream);
                     ms.Flush();
