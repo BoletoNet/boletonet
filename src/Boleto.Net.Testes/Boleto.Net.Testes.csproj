@@ -60,9 +60,10 @@
     <Compile Include="BancoItauTeste.cs" />
     <Compile Include="BancoSantanderTeste.cs" />
     <Compile Include="BancoSicoobTeste.cs" />
+    <Compile Include="BancoBrasil\BancoBrasil17019Teste.cs" />
+    <Compile Include="BancoBrasil\BancoBrasilCarteira18019Teste.cs" />
     <Compile Include="FatorVencimentoTeste.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="BancoBrasilTeste.cs" />
     <Compile Include="Banco_BanestesTeste.cs" />
   </ItemGroup>
   <ItemGroup>
