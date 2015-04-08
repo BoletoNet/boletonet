@@ -644,15 +644,14 @@ namespace BoletoNet
             #region Carteira 18
             if (boleto.Carteira.Equals("18"))
             {
-                boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}{5}{6}{7}",
+                boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}{5}{6}",
                     Utils.FormatCode(Codigo.ToString(), 3),
                     boleto.Moeda,
                     FatorVencimento(boleto),
                     valorBoleto,
+                    boleto.Cedente.Codigo.PadLeft(12, '0'),
                     boleto.NossoNumero,
-                    boleto.Cedente.ContaBancaria.Agencia,
-                    boleto.Cedente.ContaBancaria.Conta,
-                    boleto.Carteira);
+                    Utils.FormatCode(LimparCarteira(boleto.Carteira), 2));
             }
             #endregion Carteira 18
 
@@ -975,7 +974,7 @@ namespace BoletoNet
             D = Posição 25 a 34 do código de barras
             Y = DV que amarra o campo 2 (Módulo 10, contido no Anexo 7)
              */
-            campo2 = Strings.Mid(cmplivre, 6, 10);
+            campo2 = Strings.Mid(cmplivre, 5, 10);
             digitoMod = Mod10(campo2);
             campo2 = campo2 + digitoMod.ToString();
             campo2 = Strings.Mid(campo2, 1, 5) + "." + Strings.Mid(campo2, 6, 6);
