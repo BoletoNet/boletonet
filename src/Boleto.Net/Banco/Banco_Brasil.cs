@@ -1,5 +1,6 @@
 
 using System;
+using System.Data;
 using System.Globalization;
 using System.Web.UI;
 using Microsoft.VisualBasic;
@@ -184,7 +185,10 @@ namespace BoletoNet
             #region Carteira 18
             //Carteira 18 com nosso número de 11 posições
             if (boleto.Carteira.Equals("18"))
-                boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 10);
+            {
+                boleto.BancoCarteira.ValidaBoleto(boleto);
+                boleto.BancoCarteira.FormataNossoNumero(boleto);
+            }
             #endregion Carteira 18
 
             #region Carteira 18-019
@@ -644,15 +648,7 @@ namespace BoletoNet
             #region Carteira 18
             if (boleto.Carteira.Equals("18"))
             {
-                boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}{5}{6}{7}",
-                    Utils.FormatCode(Codigo.ToString(), 3),
-                    boleto.Moeda,
-                    FatorVencimento(boleto),
-                    valorBoleto,
-                    "000000",
-                    boleto.Cedente.Codigo,
-                    boleto.NossoNumero,
-                    Utils.FormatCode(LimparCarteira(boleto.Carteira), 2));
+                boleto.BancoCarteira.FormataCodigoBarra(boleto);
             }
             #endregion Carteira 18
 
@@ -1042,9 +1038,10 @@ namespace BoletoNet
                     return;
             }
 
-
-            boleto.NossoNumero = string.Format("{0}", boleto.NossoNumero);
-
+            if (boleto.BancoCarteira != null)
+                boleto.BancoCarteira.FormataNossoNumero(boleto);
+            else
+                boleto.NossoNumero = string.Format("{0}", boleto.NossoNumero);
         }
 
 
