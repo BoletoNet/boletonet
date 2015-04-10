@@ -80,7 +80,10 @@ namespace BoletoNet
                 _boleto = value;
 
                 if (_ibanco == null)
+                {
                     _boleto.Banco = this.Banco;
+                    _boleto.BancoCarteira = BancoCarteiraFactory.Fabrica(_boleto.Carteira, Banco.Codigo);
+                }
 
                 _cedente = _boleto.Cedente;
                 _sacado = _boleto.Sacado;

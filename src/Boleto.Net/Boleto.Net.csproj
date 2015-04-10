@@ -71,6 +71,11 @@
     <Compile Include="Arquivo\IArquivoRetorno.cs" />
     <Compile Include="Arquivo\LinhaDeArquivoLidaArgs.cs" />
     <Compile Include="Banco\AbstractBanco.cs" />
+    <Compile Include="Banco\Carteiras\BancoCarteiraFactory.cs" />
+    <Compile Include="Banco\Carteiras\Brasil\Carteira18Brasil.cs" />
+    <Compile Include="Banco\Carteiras\Brasil\CarteiraBrasil.cs" />
+    <Compile Include="Banco\Carteiras\IBancoCarteira.cs" />
+    <Compile Include="Banco\Carteiras\TipoCarteiraAttribute.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Sicoob.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Banestes.cs" />
     <Compile Include="Banco\Banco_Bansirul.cs" />
@@ -192,6 +197,7 @@
     <Compile Include="Enums\TipoOcorrencia.cs" />
     <Compile Include="Enums\TipoInscricao.cs" />
     <Compile Include="Boleto\Boletos.cs" />
+    <Compile Include="Util\Extensions.cs" />
     <Compile Include="Util\LeitorLinhaPosicao.cs" />
     <Compile Include="Util\Utils.cs" />
   </ItemGroup>

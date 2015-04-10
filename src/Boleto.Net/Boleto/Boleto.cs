@@ -505,6 +505,8 @@ namespace BoletoNet
             set { _remessa = value; }
         }
 
+        public IBancoCarteira BancoCarteira { get; set; }
+
         #endregion Properties
 
         public void Valida()

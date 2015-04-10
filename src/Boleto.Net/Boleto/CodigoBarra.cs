@@ -1,90 +1,91 @@
 using System;
 using System.Drawing;
 using System.Globalization;
+using BoletoNet.Util;
 using Microsoft.VisualBasic;
 
 namespace BoletoNet
 {
     public class CodigoBarra
     {
-        private string _codigo = "";
-        private string _linhaDigitavel = "";
-        private Image _imagem = null;
-        private string _chave = "";
+        public CodigoBarra()
+        {
+            Chave = "";
+            LinhaDigitavel = "";
+            Imagem = null;
+            Codigo = "";
+            Moeda = 9;
+        }
 
         /// <summary>
         /// Código de Barra
         /// </summary>
-        public string Codigo
-        {
-            get { return _codigo; }
-            set { _codigo = value; }
-        }
+        public string Codigo { get; set; }
 
-        public Image Imagem
-        {
-            get { return _imagem; }
-        }
+        public Image Imagem { get; private set; }
 
         /// <summary>
         /// Retorna a representação numérica do código de barra
         /// </summary>
-        public string LinhaDigitavel
-        {
-            get{return _linhaDigitavel;}
-            set{_linhaDigitavel = value;}
-        }
+        public string LinhaDigitavel { get; set; }
 
         /// <summary>
         /// Chave para montar Codigo de Barra
         /// </summary>
-        public string Chave
+        public string Chave { get; set; }
+
+        public string CodigoBanco { get; set; }
+
+        public int Moeda { get; set; }
+        
+        public string CampoLivre { get; set; }
+        
+        public long FatorVencimento { get; set; }
+        
+        public string ValorDocumento { get; set; }
+
+        public string DigitoVerificador
         {
-            get { return _chave; }
-            set { _chave = value; }
+            get { return (CodigoBanco + Moeda + FatorVencimento + ValorDocumento + CampoLivre).Modulo11(9); }
         }
 
-        private string FormataLinhaDigitavel(string codigo)
+        public string LinhaDigitavelFormatada
         {
-            try
+            get
             {
-                string cmplivre;
-                string campo1;
-                string campo2;
-                string campo3;
-                string campo4;
-                string campo5;
-                long icampo5;
-                int digitoMod;
+                var pt1 = (CodigoBanco + Moeda).PadRight(9, '0');
+                var mod10 = AbstractBanco.Mod10(pt1);
+                pt1 = (pt1 + mod10).Insert(5, ".");
 
-                cmplivre = Strings.Mid(codigo, 20, 25);
-                campo1 = Strings.Left(codigo, 4) + Strings.Mid(cmplivre, 1, 5);
-                digitoMod = AbstractBanco.Mod10(campo1);
-                campo1 = campo1 + digitoMod.ToString(CultureInfo.InvariantCulture);
-                campo1 = Strings.Mid(campo1, 1, 5) + "." + Strings.Mid(campo1, 6, 5);
+                var substring = CampoLivre.Substring(5);
 
-                campo2 = Strings.Mid(cmplivre, 6, 10);
-                digitoMod = AbstractBanco.Mod10(campo2);
-                campo2 = campo2 + digitoMod.ToString(CultureInfo.InvariantCulture);
-                campo2 = Strings.Mid(campo2, 1, 5) + "." + Strings.Mid(campo2, 6, 6);
+                var pt2 = substring.Substring(0, 10);
+                mod10 = AbstractBanco.Mod10(pt2);
+                pt2 = (pt2 + mod10).Insert(5, ".");
 
-                campo3 = Strings.Mid(cmplivre, 16, 10);
-                digitoMod = AbstractBanco.Mod10(campo3);
-                campo3 = campo3 + digitoMod;
-                campo3 = Strings.Mid(campo3, 1, 5) + "." + Strings.Mid(campo3, 6, 6);
+                var pt3 = substring.Substring(10);
+                mod10 = AbstractBanco.Mod10(pt3);
+                pt3 = (pt3 + mod10).Insert(5, ".");
 
-                campo4 = Strings.Mid(codigo, 5, 1);
-
-                icampo5 = Convert.ToInt64(Strings.Mid(codigo, 6, 14));
-
-                campo5 = icampo5 == 0 ? "000" : icampo5.ToString(CultureInfo.InvariantCulture);
-
-                return campo1 + "  " + campo2 + "  " + campo3 + "  " + campo4 + "  " + campo5;
+                var pt5 = FatorVencimento + ValorDocumento;
+                return string.Join(" ", new[] { pt1, pt2, pt3, DigitoVerificador, pt5 });
             }
-            catch
-            {
-                throw new Exception("Código de barras inválido");
-            }
+        }
+
+        public void PreencheValores(int codigoBanco, int moeda, long fatorVencimento, string valorDocumento, string campoLivre)
+        {
+            CodigoBanco = Utils.FormatCode(codigoBanco.ToString(), 3);
+            Moeda = moeda;
+            FatorVencimento = fatorVencimento;
+            ValorDocumento = valorDocumento;
+            CampoLivre = campoLivre;
+
+            Codigo = string.Format("{0}{1}{2}{3}{4}",
+                CodigoBanco,
+                Moeda,
+                FatorVencimento,
+                ValorDocumento,
+                CampoLivre);
         }
     }
 }
