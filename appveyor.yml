@@ -19,14 +19,6 @@ deploy:
   on:
     branch: master
     
-- provider: NuGet
-  server: https://www.nuget.org/packages/Boleto.Net/
-  api_key:
-    secure: CWS8zXxPu59w5mLFxzejcgpo9/Q/Ur6JCbPV5pPrRRR5ZCLgYWwio916aduiH2H4
-  skip_symbols: true
-  on:
-    branch: release
-
 notifications:
 - provider: Email
   to:
