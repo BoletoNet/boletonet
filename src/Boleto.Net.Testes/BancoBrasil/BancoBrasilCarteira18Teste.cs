@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using BoletoNet;
 using BoletoNet.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -74,7 +75,7 @@ namespace Boleto.Net.Testes.BancoBrasil
             var codigoBanco = "001";
             var moeda = "9";
             var fatorVencimento = "5536";
-            var valor = boletoBancario.Boleto.ValorBoleto.ToString("F").Replace(",", "").PadLeft(10, '0');
+            var valor = Regex.Replace(boletoBancario.Boleto.ValorBoleto.ToString("f"), @"[,.]", "").PadLeft(10, '0');
             var cedente = "1220950";
             var nn = "0010028528";
             var carteira = "18";
