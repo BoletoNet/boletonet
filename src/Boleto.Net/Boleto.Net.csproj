@@ -59,6 +59,7 @@
     <Compile Include="Arquivo\ArquivoRetorno.cs" />
     <Compile Include="Arquivo\ArquivoRetornoCNAB400.cs" />
     <Compile Include="Arquivo\ArquivoRetornoCNAB240.cs" />
+    <Compile Include="Arquivo\ArquivoRetornoCRB643.cs" />
     <Compile Include="Arquivo\DetalheSegmentoERetornoCNAB240.cs" />
     <Compile Include="Arquivo\DetalheSegmentoWRetornoCNAB240.cs" />
     <Compile Include="Arquivo\HeaderDeArquivoCNAB240.cs" />
