@@ -1,16 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
+using BoletoNet.Arquivo.Reader;
 
 namespace BoletoNet.Arquivo
 {
-    public class ArquivoRetornoCRB643 : AbstractArquivoRetorno, IArquivoRetorno
+    public class ArquivoRetornoCrb643 : AbstractArquivoRetorno<LinhaCbr643>, IArquivoRetorno
     {
         public override void LerArquivoRetorno(IBanco banco, Stream arquivo)
         {
-            base.LerArquivoRetorno(banco, arquivo);
+            var streamReader = new StreamReader(arquivo);
+            var linha = streamReader.ReadLine();
+            var textPosReader = new TextPosReader();
+            while (!string.IsNullOrWhiteSpace(linha))
+            {
+                var linhaCbr643 = textPosReader.Read(linha);
+                OnLinhaLida(linhaCbr643);
+                linha = streamReader.ReadLine();
+            }
         }
     }
 }
