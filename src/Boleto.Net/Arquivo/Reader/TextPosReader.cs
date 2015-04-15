@@ -8,6 +8,7 @@ namespace BoletoNet.Arquivo.Reader
 {
     public class TextPosReader
     {
+        private readonly NumberFormatInfo numberFormat = CultureInfo.GetCultureInfo("pt-BR").NumberFormat;
         public LinhaCbr643 Read(string line)
         {
             var type = typeof(LinhaCbr643);
@@ -36,12 +37,12 @@ namespace BoletoNet.Arquivo.Reader
                         tuple.Item1.SetValue(lineObject, data, null);
                 }
                 else if (typeof(int).IsAssignableFrom(tuple.Item1.PropertyType))
-                    tuple.Item1.SetValue(lineObject, int.Parse(str), null);
+                    tuple.Item1.SetValue(lineObject, int.Parse(str, numberFormat), null);
                 else if (typeof(decimal).IsAssignableFrom(tuple.Item1.PropertyType))
                 {
                     str = line.Substring(tuple.Item2.Start, tuple.Item2.Lenght + 2).Trim();
                     str = str.Insert(tuple.Item2.Lenght, ",");
-                    tuple.Item1.SetValue(lineObject, decimal.Parse(str), null);
+                    tuple.Item1.SetValue(lineObject, decimal.Parse(str, numberFormat), null);
                 }
                 else
                     tuple.Item1.SetValue(lineObject, str, null);
