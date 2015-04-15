@@ -48,7 +48,7 @@ namespace BoletoNet.Arquivo
         /// <summary>
         ///     Nosso-Número
         /// </summary>
-        [TextPos(065, 017)]
+        [TextPos(063, 017)]
         public string NossoNumero { get; set; }
 
         /// <summary>
