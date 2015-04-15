@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arquivo\AbstractArquivoRemessa.cs" />
+    <Compile Include="Arquivo\AbstractArquivoRetornoGeneric.cs" />
     <Compile Include="Arquivo\AbstractArquivoRetorno.cs" />
     <Compile Include="Arquivo\ArquivoRemessaCNAB400.cs" />
     <Compile Include="Arquivo\ArquivoRemessaCNAB240.cs" />
@@ -59,9 +60,14 @@
     <Compile Include="Arquivo\ArquivoRetorno.cs" />
     <Compile Include="Arquivo\ArquivoRetornoCNAB400.cs" />
     <Compile Include="Arquivo\ArquivoRetornoCNAB240.cs" />
+    <Compile Include="Arquivo\ArquivoRetornoCRB643.cs" />
+    <Compile Include="Arquivo\CBR643\DetalheCbr643.cs" />
+    <Compile Include="Arquivo\CBR643\TrailerCbr643.cs" />
     <Compile Include="Arquivo\DetalheSegmentoERetornoCNAB240.cs" />
     <Compile Include="Arquivo\DetalheSegmentoWRetornoCNAB240.cs" />
+    <Compile Include="Arquivo\CBR643\HeaderCbr643.cs" />
     <Compile Include="Arquivo\HeaderDeArquivoCNAB240.cs" />
+    <Compile Include="Arquivo\CBR643\LinhaCbr643.cs" />
     <Compile Include="Arquivo\LinhaDeArquivoGeradaArgs.cs" />
     <Compile Include="Arquivo\DetalheRetornoCNAB240.cs" />
     <Compile Include="Arquivo\DetalheSegmentoURetornoCNAB240.cs" />
@@ -70,6 +76,8 @@
     <Compile Include="Arquivo\IArquivoRemessa.cs" />
     <Compile Include="Arquivo\IArquivoRetorno.cs" />
     <Compile Include="Arquivo\LinhaDeArquivoLidaArgs.cs" />
+    <Compile Include="Arquivo\Reader\TextPosAttribute.cs" />
+    <Compile Include="Arquivo\Reader\TextPosReader.cs" />
     <Compile Include="Banco\AbstractBanco.cs" />
     <Compile Include="Banco\Carteiras\BancoCarteiraFactory.cs" />
     <Compile Include="Banco\Carteiras\Brasil\Carteira18Brasil.cs" />

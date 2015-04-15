@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 
 namespace BoletoNet.Util
 {
@@ -15,6 +16,10 @@ namespace BoletoNet.Util
         public static T GetFirstAttribute<T>(this Type type)
         {
             return (T)type.GetCustomAttributes(typeof(T), false).FirstOrDefault();
+        }
+        public static T GetFirstAttribute<T>(this MemberInfo memberInfo)
+        {
+            return (T)memberInfo.GetCustomAttributes(typeof(T), false).FirstOrDefault();
         }
     }
 }

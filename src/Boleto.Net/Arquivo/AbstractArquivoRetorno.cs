@@ -1,7 +1,6 @@
 using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Text;
+using BoletoNet.Arquivo;
 
 namespace BoletoNet
 {
@@ -30,16 +29,18 @@ namespace BoletoNet
             {
                 case TipoArquivo.CNAB240:
                     _arquivoRetorno = new ArquivoRetornoCNAB240();
-                    _arquivoRetorno.LinhaDeArquivoLida += new EventHandler<LinhaDeArquivoLidaArgs>(ArquivoRemessa_LinhaDeArquivoLidaCNAB240);
+                    _arquivoRetorno.LinhaDeArquivoLida += ArquivoRemessa_LinhaDeArquivoLidaCNAB240;
                     break;
                 case TipoArquivo.CNAB400:
                     _arquivoRetorno = new ArquivoRetornoCNAB400();
-                    _arquivoRetorno.LinhaDeArquivoLida += new EventHandler<LinhaDeArquivoLidaArgs>(ArquivoRemessa_LinhaDeArquivoLidaCNAB400);
+                    _arquivoRetorno.LinhaDeArquivoLida += ArquivoRemessa_LinhaDeArquivoLidaCNAB400;
+                    break;
+                case TipoArquivo.CBR643:
+                    _arquivoRetorno = new ArquivoRetornoCrb643();
                     break;
                 default:
                     throw new NotImplementedException("Arquivo não implementado.");
             }
-
         }
 
         void ArquivoRemessa_LinhaDeArquivoLidaCNAB240(object sender, LinhaDeArquivoLidaArgs e)
