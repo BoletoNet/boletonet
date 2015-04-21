@@ -117,7 +117,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Banrisul()
@@ -150,7 +150,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Basa()
@@ -176,7 +176,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Bradesco()
@@ -217,7 +217,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string BRB()
@@ -245,7 +245,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Caixa()
@@ -287,7 +287,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string HSBC()
@@ -311,7 +311,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Itau()
@@ -353,7 +353,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Real()
@@ -382,7 +382,7 @@ namespace Boleto.Net.MVC.Models
             EspeciesDocumento ed = EspecieDocumento_Real.CarregaTodas();
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Safra()
@@ -417,7 +417,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Santander()
@@ -452,7 +452,7 @@ namespace Boleto.Net.MVC.Models
 
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Sicoob()
@@ -479,7 +479,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Sicred()
@@ -514,7 +514,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Sudameris()
@@ -548,7 +548,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Unibanco()
@@ -594,7 +594,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
     }
 }
