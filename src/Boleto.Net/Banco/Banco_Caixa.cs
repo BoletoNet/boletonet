@@ -357,10 +357,6 @@ namespace BoletoNet
                 if (boleto.NossoNumero.Length == 14)
                 {
                     boleto.NossoNumero = "8" + boleto.NossoNumero;
-                } 
-                else if (boleto.NossoNumero.Length < 10) 
-                {
-                    boleto.NossoNumero = "8" + long.Parse(boleto.NossoNumero).ToString("D9");
                 }
             }
 
@@ -376,6 +372,10 @@ namespace BoletoNet
         {
             if (boleto.Carteira.Equals("SR"))
             {
+                if (boleto.NossoNumero.Length < 10) {
+                    boleto.NossoNumero = "8" + long.Parse(boleto.NossoNumero).ToString("D9");
+                }
+
                 if ((boleto.NossoNumero.Length != 10) && (boleto.NossoNumero.Length != 14) && (boleto.NossoNumero.Length != 17))
                 {
                     throw new Exception("Nosso Número inválido, Para Caixa Econômica - Carteira SR o Nosso Número deve conter 10, 14 ou 17 posições.");

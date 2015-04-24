@@ -5,7 +5,6 @@ using System.Drawing;
 using System.Text;
 using System.Web.UI;
 using Microsoft.VisualBasic;
-//Envio por email
 using System.IO;
 using System.Net.Mail;
 using System.Net.Mime;
@@ -15,6 +14,7 @@ using System.Web;
 
 [assembly: WebResource("BoletoNet.BoletoImpressao.BoletoNet.css", "text/css", PerformSubstitution = true)]
 [assembly: WebResource("BoletoNet.Imagens.barra.gif", "image/gif")]
+[assembly: WebResource("BoletoNet.Imagens.SegundaVia.png", "image/gif")]
 //[assembly: WebResource("BoletoNet.Imagens.corte.gif", "image/gif")]
 //[assembly: WebResource("BoletoNet.Imagens.barrainterna.gif", "image/gif")]
 //[assembly: WebResource("BoletoNet.Imagens.ponto.gif", "image/gif")]
@@ -43,6 +43,9 @@ namespace BoletoNet
         #endregion Variaveis
 
         #region Propriedades
+
+        [Browsable(true), Description("Representa se o boleto é uma segunda via.")]
+        public bool SegundaVia { get; set; }
 
         [Browsable(true), Description("Código do banco em que será gerado o boleto. Ex. 341-Itaú, 237-Bradesco")]
         public short CodigoBanco
@@ -233,7 +236,7 @@ namespace BoletoNet
             //Atribui os valores ao html do boleto bancário
             //output.Write(MontaHtml(urlImagemCorte, urlImagemLogo, urlImagemBarra, urlImagemPonto, urlImagemBarraInterna,
             //    "<img src=\"ImagemCodigoBarra.ashx?code=" + Boleto.CodigoBarra.Codigo + "\" alt=\"Código de Barras\" />"));
-            output.Write(MontaHtml(urlImagemLogo, urlImagemBarra, "<img src=\"ImagemCodigoBarra.ashx?code=" + Boleto.CodigoBarra.Codigo + "\" alt=\"Código de Barras\" />"));
+            output.Write(MontaHtml(urlImagemLogo, urlImagemBarra, "<img src=\"ImagemCodigoBarra.ashx?code=" + Boleto.CodigoBarra.Codigo + "\" alt=\"Código de Barras\" />", string.Empty));
         }
         #endregion Override
 
@@ -270,6 +273,7 @@ namespace BoletoNet
                 .Replace("@TELEFONE", telefone)
                 .Replace("#BOLETO#", htmlBoleto);
         }
+
         public string GeraHtmlReciboSacado()
         {
             try
@@ -408,7 +412,7 @@ namespace BoletoNet
             }
         }
 
-        private string MontaHtml(string urlImagemLogo, string urlImagemBarra, string imagemCodigoBarras)
+        private string MontaHtml(string urlImagemLogo, string urlImagemBarra, string imagemCodigoBarras, string urlImagemSegundaVia)
         {
             var html = new StringBuilder();
             string enderecoCedente = "";
@@ -591,7 +595,7 @@ namespace BoletoNet
                     .Replace("@NOSSONUMEROBB", Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("18-019")) ? Boleto.NossoNumero.Substring(3) : string.Empty)
             #endregion Implementação para o Banco do Brasil
 
-.Replace("@NOSSONUMERO", Boleto.NossoNumero)
+                .Replace("@NOSSONUMERO", Boleto.NossoNumero)
                 .Replace("@CARTEIRA", FormataDescricaoCarteira())
                 .Replace("@ESPECIE", Boleto.Especie)
                 .Replace("@QUANTIDADE", (Boleto.QuantidadeMoeda == 0 ? "" : Boleto.QuantidadeMoeda.ToString()))
@@ -610,9 +614,10 @@ namespace BoletoNet
                 .Replace("@AUTENTICACAOMECANICA", "")
                 .Replace("@USODOBANCO", Boleto.UsoBanco)
                 .Replace("@IMAGEMCODIGOBARRA", imagemCodigoBarras)
-                .Replace("@ACEITE", Boleto.Aceite).ToString()
-                .Replace("@ENDERECOCEDENTE", MostrarEnderecoCedente ? enderecoCedente : "");
-
+                .Replace("@ACEITE", Boleto.Aceite)
+                .Replace("@ENDERECOCEDENTE", MostrarEnderecoCedente ? enderecoCedente : "")
+                .Replace("@URLIMAGEMSEGUNDAVIA", SegundaVia ? urlImagemSegundaVia : string.Empty)
+                .ToString();
         }
 
         private string FormataDescricaoCarteira()
@@ -671,8 +676,8 @@ namespace BoletoNet
         /// <param name="srcBarra">Local apontado pela imagem de barra.</param>
         /// <param name="srcCodigoBarra">Local apontado pela imagem do código de barras.</param>
         /// <returns>StringBuilder conténdo o código html do boleto bancário.</returns>
-        protected StringBuilder HtmlOffLine(string textoNoComecoDoEmail, string srcLogo, string srcBarra, string srcCodigoBarra)
-        {//protected StringBuilder HtmlOffLine(string srcCorte, string srcLogo, string srcBarra, string srcPonto, string srcBarraInterna, string srcCodigoBarra)
+        protected StringBuilder HtmlOffLine(string textoNoComecoDoEmail, string srcLogo, string srcBarra, string srcCodigoBarra, string srcSegundaVia)
+        {
             this.OnLoad(EventArgs.Empty);
 
             StringBuilder html = new StringBuilder();
@@ -681,13 +686,10 @@ namespace BoletoNet
             {
                 html.Append(textoNoComecoDoEmail);
             }
-            html.Append(MontaHtml(srcLogo, srcBarra, "<img src=\"" + srcCodigoBarra + "\" alt=\"Código de Barras\" />"));
+            html.Append(MontaHtml(srcLogo, srcBarra, "<img src=\"" + srcCodigoBarra + "\" alt=\"Código de Barras\" />", srcSegundaVia));
             HtmlOfflineFooter(html);
             return html;
         }
-
-
-
 
         /// <summary>
         /// Monta o Header de um email com pelo menos um boleto dentro.
@@ -764,11 +766,13 @@ namespace BoletoNet
                     LinkedResource lrImagemLogo;
                     LinkedResource lrImagemBarra;
                     LinkedResource lrImagemCodigoBarra;
-                    umBoleto.GeraGraficosParaEmailOffLine(out lrImagemLogo, out lrImagemBarra, out lrImagemCodigoBarra);
+                    LinkedResource lrImagemSegundaVia;
+                    umBoleto.GeraGraficosParaEmailOffLine(out lrImagemLogo, out lrImagemBarra, out lrImagemCodigoBarra, out lrImagemSegundaVia);
                     var theOutput = umBoleto.MontaHtml(
                         "cid:" + lrImagemLogo.ContentId,
                         "cid:" + lrImagemBarra.ContentId,
-                        "<img src=\"cid:" + lrImagemCodigoBarra.ContentId + "\" alt=\"Código de Barras\" />");
+                        "<img src=\"cid:" + lrImagemCodigoBarra.ContentId + "\" alt=\"Código de Barras\" />",
+                        string.Empty);
 
                     corpoDoEmail.Append(theOutput);
 
@@ -813,9 +817,10 @@ namespace BoletoNet
             LinkedResource lrImagemLogo;
             LinkedResource lrImagemBarra;
             LinkedResource lrImagemCodigoBarra;
+            LinkedResource lrImagemSegundaVia;
 
-            GeraGraficosParaEmailOffLine(out lrImagemLogo, out lrImagemBarra, out lrImagemCodigoBarra);
-            StringBuilder html = HtmlOffLine(textoNoComecoDoEmail, "cid:" + lrImagemLogo.ContentId, "cid:" + lrImagemBarra.ContentId, "cid:" + lrImagemCodigoBarra.ContentId);
+            GeraGraficosParaEmailOffLine(out lrImagemLogo, out lrImagemBarra, out lrImagemCodigoBarra, out lrImagemSegundaVia);
+            StringBuilder html = HtmlOffLine(textoNoComecoDoEmail, "cid:" + lrImagemLogo.ContentId, "cid:" + lrImagemBarra.ContentId, "cid:" + lrImagemCodigoBarra.ContentId, "cid:" + lrImagemSegundaVia);
 
             AlternateView av = AlternateView.CreateAlternateViewFromString(html.ToString(), Encoding.Default, "text/html");
 
@@ -831,16 +836,16 @@ namespace BoletoNet
         /// <param name="lrImagemLogo">O Logo do Banco</param>
         /// <param name="lrImagemBarra">A Barra Horizontal</param>
         /// <param name="lrImagemCodigoBarra">O Código de Barras</param>
-        void GeraGraficosParaEmailOffLine(out LinkedResource lrImagemLogo, out LinkedResource lrImagemBarra, out LinkedResource lrImagemCodigoBarra)
+        void GeraGraficosParaEmailOffLine(out LinkedResource lrImagemLogo, out LinkedResource lrImagemBarra, out LinkedResource lrImagemCodigoBarra, out LinkedResource lrImagemSegundaVia)
         {
             this.OnLoad(EventArgs.Empty);
 
+            var assembly = Assembly.GetExecutingAssembly();
             var randomSufix = new Random().Next().ToString(); // para podermos colocar no mesmo email varios boletos diferentes
 
-            Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BoletoNet.Imagens." + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg");
+            Stream stream = assembly.GetManifestResourceStream("BoletoNet.Imagens." + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg");
             lrImagemLogo = new LinkedResource(stream, MediaTypeNames.Image.Jpeg);
             lrImagemLogo.ContentId = "logo" + randomSufix;
-
 
             MemoryStream ms = new MemoryStream(Utils.ConvertImageToByte(Html.barra));
             lrImagemBarra = new LinkedResource(ms, MediaTypeNames.Image.Gif);
@@ -852,6 +857,11 @@ namespace BoletoNet
             lrImagemCodigoBarra = new LinkedResource(ms, MediaTypeNames.Image.Gif);
             lrImagemCodigoBarra.ContentId = "codigobarra" + randomSufix; ;
 
+            using (var streamSegundaVia = assembly.GetManifestResourceStream("BoletoNet.Imagens.SegundaVia.png")) 
+            { 
+                lrImagemSegundaVia = new LinkedResource(streamSegundaVia, MediaTypeNames.Image.Jpeg);
+                lrImagemSegundaVia.ContentId = "segundaVia" + randomSufix;
+            }
         }
 
 
@@ -897,6 +907,7 @@ namespace BoletoNet
             this.OnLoad(EventArgs.Empty);
 
             string fnLogo = fileName + @"BoletoNet" + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg";
+            string fnSegundaVia = fileName + @"BoletoNetSegundaVia.png";
 
             if (!System.IO.File.Exists(fnLogo))
             {
@@ -927,7 +938,7 @@ namespace BoletoNet
             cb.ToBitmap().Save(fnCodigoBarras);
 
             //return HtmlOffLine(fnCorte, fnLogo, fnBarra, fnPonto, fnBarraInterna, fnCodigoBarras).ToString();
-            return HtmlOffLine(null, fnLogo, fnBarra, fnCodigoBarras).ToString();
+            return HtmlOffLine(null, fnLogo, fnBarra, fnCodigoBarras, fnSegundaVia).ToString();
         }
 
         /// <summary>
@@ -997,6 +1008,8 @@ namespace BoletoNet
             //Prepara o arquivo da logo para ser usado no html
             string fnLogoUrl = url + @"BoletoNet" + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg";
 
+            string fnSegundaVia = url + @"BoletoNetSegundaVia.png";
+
             //Salvo a imagem apenas 1 vez com o código do banco
             if (!System.IO.File.Exists(fnLogo))
             {
@@ -1038,7 +1051,7 @@ namespace BoletoNet
             cb.ToBitmap().Save(fnCodigoBarras);
 
             //Retorna o Html para ser usado na view
-            return HtmlOffLine(null, fnLogoUrl, fnBarraUrl, fnCodigoBarrasUrl).ToString();
+            return HtmlOffLine(null, fnLogoUrl, fnBarraUrl, fnCodigoBarrasUrl, fnSegundaVia).ToString();
         }
 
         /// <summary>
@@ -1060,6 +1073,15 @@ namespace BoletoNet
             string base64Logo = Convert.ToBase64String(new BinaryReader(streamLogo).ReadBytes((int)streamLogo.Length));
             string fnLogo = string.Format("data:image/gif;base64,{0}", base64Logo);
 
+            string fnSegundaVia;
+
+            using (var streamSegundaVia = assembly.GetManifestResourceStream("BoletoNet.Imagens.SegundaVia.png")) 
+            {
+                var base64SegundaVia = Convert.ToBase64String(new BinaryReader(streamSegundaVia).ReadBytes((int)streamLogo.Length));
+
+                fnSegundaVia = string.Format("data:image/gif;base64,{0}", base64SegundaVia);
+            }
+
             var streamBarra = assembly.GetManifestResourceStream("BoletoNet.Imagens.barra.gif");
             string base64Barra = Convert.ToBase64String(new BinaryReader(streamBarra).ReadBytes((int)streamBarra.Length));
             string fnBarra = string.Format("data:image/gif;base64,{0}", base64Barra);
@@ -1070,7 +1092,6 @@ namespace BoletoNet
 
             if (convertLinhaDigitavelToImage)
             {
-
                 string linhaDigitavel = Boleto.CodigoBarra.LinhaDigitavel.Replace("  ", " ").Trim();
 
                 var imagemLinha = Utils.DrawText(linhaDigitavel, new Font("Arial", 30, FontStyle.Bold), Color.Black, Color.White);
@@ -1081,7 +1102,7 @@ namespace BoletoNet
                 Boleto.CodigoBarra.LinhaDigitavel = @"<img style=""max-width:420px; margin-bottom: 2px"" src=" + fnLinha + " />";
             }
 
-            string s = HtmlOffLine(null, fnLogo, fnBarra, fnCodigoBarras).ToString();
+            string s = HtmlOffLine(null, fnLogo, fnBarra, fnCodigoBarras, fnSegundaVia).ToString();
 
             if (convertLinhaDigitavelToImage)
             {

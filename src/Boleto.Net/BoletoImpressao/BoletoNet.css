@@ -115,3 +115,12 @@ img{border:0}
 .mt23{margin-top:23px;}
 .pb4{padding-bottom:14px;}
 .ebc{width:4px;height:440px;border-right:dotted 1px #000000;margin-right:4px;}
+.img-segunda-via {
+    position: absolute;
+    margin-left: 400px;    
+    z-index: 1;
+    padding-top: 16px;
+}
+.img-segunda-via.recibo-cedente {
+    padding-top: 56px;
+}

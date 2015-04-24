@@ -112,12 +112,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="barra" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>imagens\barra.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -368,7 +368,8 @@
     &lt;/table&gt;</value>
   </data>
   <data name="ReciboCedenteParte6" xml:space="preserve">
-    <value>&lt;table class="w666"&gt;
+    <value>&lt;img class="img-segunda-via recibo-cedente" src="@URLIMAGEMSEGUNDAVIA" /&gt;
+&lt;table class="w666"&gt;
         &lt;tr class="rc6"&gt;
             &lt;td class="w478"&gt;
                 &lt;div class="ctN pL10"&gt;Instruções (Texto de responsabilidade do beneficiário)&lt;/div&gt;
@@ -501,7 +502,8 @@
     &lt;/table&gt;</value>
   </data>
   <data name="ReciboSacadoParte7" xml:space="preserve">
-    <value>&lt;table class="w666"&gt;
+    <value>&lt;img class="img-segunda-via" src="@URLIMAGEMSEGUNDAVIA" /&gt;
+&lt;table class="w666"&gt;
         &lt;tr class="ctN h13"&gt;
             &lt;td class="pL6"&gt;Instruções&lt;/td&gt;
             &lt;td class="w180 Ar"&gt;Autenticação mecânica&lt;/td&gt;
@@ -675,5 +677,8 @@
             &lt;td class="At"&gt;@ENDERECOCEDENTE&lt;/td&gt;
         &lt;/tr&gt;
     &lt;/table&gt;</value>
+  </data>
+  <data name="SegundaVia" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Imagens\SegundaVia.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
