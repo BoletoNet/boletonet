@@ -54,16 +54,22 @@ namespace BoletoNet
             string valorDocumento = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
             valorDocumento = Utils.FormatCode(valorDocumento, 10);
 
-
             // Inicio Campo livre
             string campoLivre = string.Empty;
 
-            //ESSA IMPLEMENTAÇÃO FOI FEITA PARA CARTEIAS SIGCB "SR" COM NOSSO NUMERO DE 14 e 17 POSIÇÕES
+            //ESSA IMPLEMENTAÇÃO FOI FEITA PARA CARTEIAS SIGCB "SR" COM NOSSO NUMERO DE 10, 14 e 17 POSIÇÕES
             if (boleto.Carteira.Equals("SR") || boleto.Carteira.Equals("RG"))
             {
-                //14 POSIÇOES
-                if (boleto.NossoNumero.Length == 14)
-                {
+                // 10 POSIÇÕES
+                if (boleto.NossoNumero.Length == 10) 
+                { 
+                    string codigoCedente = boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.Codigo;
+
+                    campoLivre = boleto.NossoNumero + codigoCedente;
+                } 
+                // 14 POSIÇOES
+                else if (boleto.NossoNumero.Length == 14) 
+                { 
                     //Posição 20 - 24
                     string contaCedente = Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 5);
 
@@ -79,11 +85,10 @@ namespace BoletoNet
                     //Posição 31 - 44
                     string nossoNumero = boleto.NossoNumero;
 
-                    campoLivre = string.Format("{0}{1}{2}{3}{4}", contaCedente, agenciaCedente, codigoCarteira,
-                                               constante, nossoNumero);
-                }
-                //17 POSIÇÕES
-                if (boleto.NossoNumero.Length == 17)
+                    campoLivre = string.Format("{0}{1}{2}{3}{4}", contaCedente, agenciaCedente, codigoCarteira, constante, nossoNumero);
+                } 
+                // 17 POSIÇÕES
+                else if (boleto.NossoNumero.Length == 17) 
                 {
                     //104 - Caixa Econômica Federal S.A. 
                     //Carteira SR - 24 (cobrança sem registro) || Carteira RG - 14 (cobrança com registro)
@@ -388,15 +393,14 @@ namespace BoletoNet
             }
             else
             {
-                if (boleto.NossoNumero.Length != 10)
+                if (boleto.NossoNumero.Length != 10) 
                 {
-                    throw new Exception(
-                        "Nosso Número inválido, Para Caixa Econômica carteira indefinida, o Nosso Número deve conter 10 caracteres.");
+                    throw new Exception("Nosso Número inválido, Para Caixa Econômica carteira indefinida, o Nosso Número deve conter 10 caracteres.");
                 }
 
                 if (!boleto.Cedente.Codigo.Equals(0))
                 {
-                    string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo.ToString(), 6);
+                    string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo, 6);
                     string dvCodigoCedente = Mod10(codigoCedente).ToString(); //Base9 
 
                     if (boleto.Cedente.DigitoCedente.Equals(-1))
@@ -408,14 +412,25 @@ namespace BoletoNet
                 }
             }
 
+            if (boleto.Sacado.Nome.Length > 40)
+                throw new Exception(string.Format("O nome do sacado \"{0}\" ultrapassa o limite de caracteres de {1}.", boleto.Sacado.Nome, 40));
+
+            if (boleto.Cedente.Carteira == null) {
+                throw new Exception("Código da carteira não pode ser vazio.");
+            }
+
+            if (!boleto.Carteira.Equals("SR") && ConverterParaInt(boleto.Cedente.Carteira) == 0) {
+                throw new Exception("Código da carteira deve ser preenchido somente com números.");
+            }
+
             if (boleto.Cedente.DigitoCedente == -1)
                 boleto.Cedente.DigitoCedente = Mod11Base9(boleto.Cedente.Codigo);
 
             if (boleto.DataDocumento == DateTime.MinValue)
                 boleto.DataDocumento = DateTime.Now;
 
-            if (boleto.Cedente.Codigo.Length > 6)
-                throw new Exception("O código do cedente deve conter apenas 6 dígitos");
+            if (boleto.Cedente.Codigo.Length > 14)
+                throw new Exception("O código do cedente deve conter até 14 dígitos");
 
             //Atribui o nome do banco ao local de pagamento
             boleto.LocalPagamento = "PREFERENCIALMENTE NAS CASAS LOTÉRICAS E AGÊNCIAS DA CAIXA";
@@ -1671,7 +1686,13 @@ namespace BoletoNet
             }
         }
         #endregion
-        
-        
+
+        public static int ConverterParaInt(string valor) {
+            int retorno;
+
+            int.TryParse(valor, out retorno);
+
+            return retorno;
+        }
     }
 }
