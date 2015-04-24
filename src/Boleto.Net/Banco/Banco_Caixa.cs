@@ -357,11 +357,14 @@ namespace BoletoNet
                 if (boleto.NossoNumero.Length == 14)
                 {
                     boleto.NossoNumero = "8" + boleto.NossoNumero;
+                } 
+                else if (boleto.NossoNumero.Length < 10) 
+                {
+                    boleto.NossoNumero = "8" + long.Parse(boleto.NossoNumero).ToString("D9");
                 }
             }
 
-            boleto.NossoNumero = string.Format("{0}-{1}", boleto.NossoNumero, Mod11Base9(boleto.NossoNumero)); //
-            //boleto.NossoNumero = string.Format("{0}{1}/{2}-{3}", boleto.Carteira, EMISSAO_CEDENTE, boleto.NossoNumero, Mod11Base9(boleto.Carteira + EMISSAO_CEDENTE + boleto.NossoNumero));
+            boleto.NossoNumero = string.Format("{0}-{1}", boleto.NossoNumero, Mod11Base9(boleto.NossoNumero)); 
         }
 
         public override void FormataNumeroDocumento(Boleto boleto)
@@ -411,6 +414,9 @@ namespace BoletoNet
                     throw new Exception("Informe o código do cedente.");
                 }
             }
+
+            if (boleto.Cedente.ContaBancaria.Agencia.Length < 4)
+                throw new Exception("A quantidade de dígitos da agência deve ser maior ou igual à 4.");
 
             if (boleto.Sacado.Nome.Length > 40)
                 throw new Exception(string.Format("O nome do sacado \"{0}\" ultrapassa o limite de caracteres de {1}.", boleto.Sacado.Nome, 40));
