@@ -96,6 +96,7 @@ namespace BoletoNet
         /// <returns></returns>
         internal static string FormatCode(string text, string with, int length, bool left)
         {
+            //Esse método já existe, é PadLeft e PadRight da string
             length -= text.Length;
             if (left)
             {
@@ -121,7 +122,7 @@ namespace BoletoNet
 
         internal static string FormatCode(string text, int length)
         {
-            return FormatCode(text, "0", length, true);
+            return text.PadLeft(length, '0'); 
         }
 
         /// <summary>
