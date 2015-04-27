@@ -27,7 +27,7 @@ img{border:0}
 }
 .ct 
 {
-	font: 9px "arial narrow"; 
+	font: 8px arial; 
 	color: #000033
 }
 .cn 
@@ -49,7 +49,7 @@ img{border:0}
 .Ab{vertical-align:bottom}
 .ct td, .cp td{padding-left:6px;border-left:solid 1px #000}
 .cpN{font:bold 10px arial;color:black}
-.ctN{font:9px "arial narrow";color:#000033}
+.ctN{font:8px arial;color:#000033}
 .pL0{padding-left:0px}
 .pL6{padding-left:6px}
 .pL10{padding-left:10px}
@@ -110,7 +110,7 @@ img{border:0}
 .EcdBar{height:50px;vertical-align:bottom}
 .rc6 td{vertical-align:top;border-bottom:solid 1px #000;border-left:solid 1px #000}
 .rc6 div{padding-left:6px}
-.rc6 .t{font:9px "arial narrow";color:#000033;height:13px}
+.rc6 .t{font:8px arial;color:#000033;height:13px}
 .rc6 .c{font:bold 10px arial;color:black;height:12px}
 .mt23{margin-top:23px;}
 .pb4{padding-bottom:14px;}
