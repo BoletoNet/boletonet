@@ -616,7 +616,7 @@ namespace BoletoNet
                 .Replace("@IMAGEMCODIGOBARRA", imagemCodigoBarras)
                 .Replace("@ACEITE", Boleto.Aceite)
                 .Replace("@ENDERECOCEDENTE", MostrarEnderecoCedente ? enderecoCedente : "")
-                .Replace("@URLIMAGEMSEGUNDAVIA", SegundaVia ? urlImagemSegundaVia : string.Empty)
+                .Replace("@URLIMAGEMSEGUNDAVIA", SegundaVia ? urlImagemSegundaVia : "sem-imagem.png")
                 .ToString();
         }
 

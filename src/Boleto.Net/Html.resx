@@ -368,7 +368,7 @@
     &lt;/table&gt;</value>
   </data>
   <data name="ReciboCedenteParte6" xml:space="preserve">
-    <value>&lt;img class="img-segunda-via recibo-cedente" src="@URLIMAGEMSEGUNDAVIA" /&gt;
+    <value>&lt;img class="img-segunda-via recibo-cedente" src="@URLIMAGEMSEGUNDAVIA" onerror="this.parentNode.removeChild(this);" /&gt;
 &lt;table class="w666"&gt;
         &lt;tr class="rc6"&gt;
             &lt;td class="w478"&gt;
@@ -502,7 +502,7 @@
     &lt;/table&gt;</value>
   </data>
   <data name="ReciboSacadoParte7" xml:space="preserve">
-    <value>&lt;img class="img-segunda-via" src="@URLIMAGEMSEGUNDAVIA" /&gt;
+    <value>&lt;img class="img-segunda-via" src="@URLIMAGEMSEGUNDAVIA" onerror="this.parentNode.removeChild(this);" /&gt;
 &lt;table class="w666"&gt;
         &lt;tr class="ctN h13"&gt;
             &lt;td class="pL6"&gt;Instruções&lt;/td&gt;

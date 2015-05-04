@@ -464,7 +464,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;img class=&quot;img-segunda-via recibo-cedente&quot; src=&quot;@URLIMAGEMSEGUNDAVIA&quot; /&gt;
+        ///   Looks up a localized string similar to &lt;img class=&quot;img-segunda-via recibo-cedente&quot; src=&quot;@URLIMAGEMSEGUNDAVIA&quot; onerror=&quot;this.parentNode.removeChild(this);&quot; /&gt;
         ///&lt;table class=&quot;w666&quot;&gt;
         ///        &lt;tr class=&quot;rc6&quot;&gt;
         ///            &lt;td class=&quot;w478&quot;&gt;
@@ -473,8 +473,7 @@ namespace BoletoNet {
         ///            &lt;/td&gt;
         ///            &lt;td class=&quot;w186&quot;&gt;
         ///                &lt;div class=&quot;t&quot;&gt;(-) Desconto / Abatimentos&lt;/div&gt;
-        ///                &lt;div class=&quot;c BB&quot;&gt;@DESCONTOS&lt;/div&gt;
-        ///                &lt;div class=&quot;t&quot;&gt;(-) [rest of string was truncated]&quot;;.
+        ///                &lt;div class=&quot;c BB&quot;&gt;@DESCON [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReciboCedenteParte6 {
             get {
@@ -659,7 +658,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;img class=&quot;img-segunda-via&quot; src=&quot;@URLIMAGEMSEGUNDAVIA&quot; /&gt;
+        ///   Looks up a localized string similar to &lt;img class=&quot;img-segunda-via&quot; src=&quot;@URLIMAGEMSEGUNDAVIA&quot; onerror=&quot;this.parentNode.removeChild(this);&quot; /&gt;
         ///&lt;table class=&quot;w666&quot;&gt;
         ///        &lt;tr class=&quot;ctN h13&quot;&gt;
         ///            &lt;td class=&quot;pL6&quot;&gt;Instruções&lt;/td&gt;
