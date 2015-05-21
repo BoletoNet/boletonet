@@ -796,6 +796,29 @@ namespace BoletoNet
             return av;
         }
 
+        /// <summary>
+        /// Monta o HTML de vários boletos.
+        /// </summary>
+        /// <param name="boletos">Boletos que terão o HTML gerado.</param>
+        public static string MontarHtml(BoletoBancario[] boletos) {
+            var htmlGerado = new StringBuilder();
+
+            HtmlOfflineHeader(htmlGerado);
+
+            foreach (var boleto in boletos) {
+                string fnLogo, fnBarra, fnCodigoBarras, fnSegundaVia;
+
+                ObterImagensBase64(boleto, out fnLogo, out fnBarra, out fnCodigoBarras, out fnSegundaVia, false);
+
+                var htmlBoleto = boleto.MontaHtml(fnLogo, fnBarra, "<img src=\"" + fnCodigoBarras + "\" alt=\"Código de Barras\" />", fnSegundaVia);
+
+                htmlGerado.Append(htmlBoleto);
+            }
+
+            HtmlOfflineFooter(htmlGerado);
+
+            return htmlGerado.ToString();
+        }
 
         /// <summary>
         /// Função utilizada gerar o AlternateView necessário para enviar um boleto bancário por e-mail.
@@ -1063,53 +1086,59 @@ namespace BoletoNet
         /// <desenvolvedor>Iuri André Stona</desenvolvedor>
         /// <criacao>23/01/2014</criacao>
         /// <alteracao>08/08/2014</alteracao>
-        public string MontaHtmlEmbedded(bool convertLinhaDigitavelToImage = false)
-        {
+        public string MontaHtmlEmbedded(bool convertLinhaDigitavelToImage = false) {
             OnLoad(EventArgs.Empty);
 
+            string fnLogo, fnBarra, fnCodigoBarras, fnSegundaVia;
+
+            ObterImagensBase64(this, out fnLogo, out fnBarra, out fnCodigoBarras, out fnSegundaVia,
+                convertLinhaDigitavelToImage);
+
+            var s = HtmlOffLine(null, fnLogo, fnBarra, fnCodigoBarras, fnSegundaVia).ToString();
+
+            if (convertLinhaDigitavelToImage) {
+                s = s.Replace(".w500", "");
+            }
+
+            return s;
+        }
+
+        private static void ObterImagensBase64(BoletoBancario boletoBancario, out string fnLogo, out string fnBarra, out string fnCodigoBarras, out string fnSegundaVia, bool convertLinhaDigitavelToImage) {
             var assembly = Assembly.GetExecutingAssembly();
 
-            var streamLogo = assembly.GetManifestResourceStream("BoletoNet.Imagens." + CodigoBanco.ToString("000") + ".jpg");
+            var streamLogo =
+                assembly.GetManifestResourceStream("BoletoNet.Imagens." + boletoBancario.CodigoBanco.ToString("000") + ".jpg");
             string base64Logo = Convert.ToBase64String(new BinaryReader(streamLogo).ReadBytes((int)streamLogo.Length));
-            string fnLogo = string.Format("data:image/gif;base64,{0}", base64Logo);
+            fnLogo = string.Format("data:image/gif;base64,{0}", base64Logo);
 
-            string fnSegundaVia;
-
-            using (var streamSegundaVia = assembly.GetManifestResourceStream("BoletoNet.Imagens.SegundaVia.png")) 
-            {
-                var base64SegundaVia = Convert.ToBase64String(new BinaryReader(streamSegundaVia).ReadBytes((int)streamLogo.Length));
+            using (var streamSegundaVia = assembly.GetManifestResourceStream("BoletoNet.Imagens.SegundaVia.png")) {
+                var base64SegundaVia =
+                    Convert.ToBase64String(new BinaryReader(streamSegundaVia).ReadBytes((int)streamLogo.Length));
 
                 fnSegundaVia = string.Format("data:image/gif;base64,{0}", base64SegundaVia);
             }
 
             var streamBarra = assembly.GetManifestResourceStream("BoletoNet.Imagens.barra.gif");
-            string base64Barra = Convert.ToBase64String(new BinaryReader(streamBarra).ReadBytes((int)streamBarra.Length));
-            string fnBarra = string.Format("data:image/gif;base64,{0}", base64Barra);
+            string base64Barra =
+                Convert.ToBase64String(new BinaryReader(streamBarra).ReadBytes((int)streamBarra.Length));
+            fnBarra = string.Format("data:image/gif;base64,{0}", base64Barra);
 
-            var cb = new C2of5i(Boleto.CodigoBarra.Codigo, 1, 50, Boleto.CodigoBarra.Codigo.Length);
+            var cb = new C2of5i(boletoBancario.Boleto.CodigoBarra.Codigo, 1, 50, boletoBancario.Boleto.CodigoBarra.Codigo.Length);
             string base64CodigoBarras = Convert.ToBase64String(cb.ToByte());
-            string fnCodigoBarras = string.Format("data:image/gif;base64,{0}", base64CodigoBarras);
+            fnCodigoBarras = string.Format("data:image/gif;base64,{0}", base64CodigoBarras);
 
-            if (convertLinhaDigitavelToImage)
-            {
-                string linhaDigitavel = Boleto.CodigoBarra.LinhaDigitavel.Replace("  ", " ").Trim();
+            if (convertLinhaDigitavelToImage) {
+                string linhaDigitavel = boletoBancario.Boleto.CodigoBarra.LinhaDigitavel.Replace("  ", " ").Trim();
 
-                var imagemLinha = Utils.DrawText(linhaDigitavel, new Font("Arial", 30, FontStyle.Bold), Color.Black, Color.White);
+                var imagemLinha = Utils.DrawText(linhaDigitavel, new Font("Arial", 30, FontStyle.Bold), Color.Black,
+                    Color.White);
                 string base64Linha = Convert.ToBase64String(Utils.ConvertImageToByte(imagemLinha));
 
                 string fnLinha = string.Format("data:image/gif;base64,{0}", base64Linha);
 
-                Boleto.CodigoBarra.LinhaDigitavel = @"<img style=""max-width:420px; margin-bottom: 2px"" src=" + fnLinha + " />";
+                boletoBancario.Boleto.CodigoBarra.LinhaDigitavel = @"<img style=""max-width:420px; margin-bottom: 2px"" src=" + fnLinha +
+                                                    " />";
             }
-
-            string s = HtmlOffLine(null, fnLogo, fnBarra, fnCodigoBarras, fnSegundaVia).ToString();
-
-            if (convertLinhaDigitavelToImage)
-            {
-                s = s.Replace(".w500", "");
-            }
-
-            return s;
         }
 
         #endregion Geração do Html OffLine
