@@ -805,16 +805,23 @@ namespace BoletoNet
 
             HtmlOfflineHeader(htmlGerado);
 
-            foreach (var boleto in boletos) {
+            for (var i = 0; i < boletos.Length; i++) {
+                var boleto = boletos[i];
                 string fnLogo, fnBarra, fnCodigoBarras, fnSegundaVia;
 
                 ObterImagensBase64(boleto, out fnLogo, out fnBarra, out fnCodigoBarras, out fnSegundaVia, false);
 
+                boleto.OcultarInstrucoes = i > 0;
+
                 var htmlBoleto = boleto.MontaHtml(fnLogo, fnBarra, "<img src=\"" + fnCodigoBarras + "\" alt=\"Código de Barras\" />", fnSegundaVia);
 
                 htmlGerado.Append(htmlBoleto);
+                if (i < (boletos.Length - 1)) {
+                    htmlGerado.Append("<p style=\"page-break-after:always;\"></p>");
+                }
+                
             }
-
+            
             HtmlOfflineFooter(htmlGerado);
 
             return htmlGerado.ToString();
