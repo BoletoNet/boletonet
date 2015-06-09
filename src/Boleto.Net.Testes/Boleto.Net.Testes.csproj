@@ -57,6 +57,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BancoBradescoTeste.cs" />
+    <Compile Include="BancoBrasil\BancoBrasil17027Teste.cs" />
     <Compile Include="BancoBrasil\BancoBrasilCarteira18Teste.cs" />
     <Compile Include="BancoItauTeste.cs" />
     <Compile Include="BancoSantanderTeste.cs" />
