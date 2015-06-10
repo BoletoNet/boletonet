@@ -21,6 +21,7 @@ using System.Web;
 
 namespace BoletoNet
 {
+<<<<<<< HEAD
 	using System.Collections.ObjectModel;
 	using System.Globalization;
 	using System.Linq;
@@ -671,6 +672,577 @@ namespace BoletoNet
 				//Como a variável não existirá se não forem as carteiras "17-019" e "18-019", não foi colocado o [if].
 					.Replace("@NOSSONUMEROBB", Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("18-019")) ? Boleto.NossoNumero.Substring(3) : string.Empty)
 			#endregion Implementação para o Banco do Brasil
+=======
+    [Serializable(),
+    Designer(typeof(BoletoBancarioDesigner)),
+    ToolboxBitmap(typeof(BoletoBancario)),
+    ToolboxData("<{0}:BoletoBancario Runat=\"server\"></{0}:BoletoBancario>")]
+    public class BoletoBancario : System.Web.UI.Control
+    {
+        String vLocalLogoCedente = String.Empty;
+
+        #region Variaveis
+
+        private Banco _ibanco = null;
+        private short _codigoBanco = 0;
+        private Boleto _boleto;
+        private Cedente _cedente;
+        private Sacado _sacado;
+        private List<IInstrucao> _instrucoes = new List<IInstrucao>();
+        private string _instrucoesHtml = string.Empty;
+        private bool _mostrarCodigoCarteira = false;
+        private bool _formatoCarne = false;
+        #endregion Variaveis
+
+        #region Propriedades
+
+        [Browsable(true), Description("Código do banco em que será gerado o boleto. Ex. 341-Itaú, 237-Bradesco")]
+        public short CodigoBanco
+        {
+            get { return _codigoBanco; }
+            set { _codigoBanco = value; }
+        }
+
+        /// <summary>
+        /// Mostra o código da carteira
+        /// </summary>
+        [Browsable(true), Description("Mostra a descrição da carteira")]
+        public bool MostrarCodigoCarteira
+        {
+            get { return _mostrarCodigoCarteira; }
+            set { _mostrarCodigoCarteira = value; }
+        }
+
+        /// <summary>
+        /// Mostra o código da carteira
+        /// </summary>
+        [Browsable(true), Description("Formata o boleto no layout de carnê")]
+        public bool FormatoCarne
+        {
+            get { return _formatoCarne; }
+            set { _formatoCarne = value; }
+        }
+
+        [Browsable(false)]
+        public Boleto Boleto
+        {
+            get { return _boleto; }
+            set
+            {
+                _boleto = value;
+
+                if (_ibanco == null)
+                {
+                    _boleto.Banco = this.Banco;
+                    _boleto.BancoCarteira = BancoCarteiraFactory.Fabrica(_boleto.Carteira, Banco.Codigo);
+                }
+
+                _cedente = _boleto.Cedente;
+                _sacado = _boleto.Sacado;
+            }
+        }
+
+        [Browsable(false)]
+        public Sacado Sacado
+        {
+            get { return _sacado; }
+        }
+
+        [Browsable(false)]
+        public Cedente Cedente
+        {
+            get { return _cedente; }
+        }
+
+        [Browsable(false)]
+        public Banco Banco
+        {
+            get
+            {
+                if ((_ibanco == null) ||
+                    (_ibanco.Codigo != _codigoBanco))
+                {
+                    _ibanco = new Banco(_codigoBanco);
+                }
+
+                if (_boleto != null)
+                    _boleto.Banco = _ibanco;
+
+                return _ibanco;
+            }
+        }
+
+        #region Propriedades
+        [Browsable(true), Description("Mostra o comprovante de entrega sem dados para marcar")]
+        public bool MostrarComprovanteEntregaLivre
+        {
+            get { return Utils.ToBool(ViewState["1"]); }
+            set { ViewState["1"] = value; }
+        }
+
+        [Browsable(true), Description("Mostra o comprovante de entrega")]
+        public bool MostrarComprovanteEntrega
+        {
+            get { return Utils.ToBool(ViewState["2"]); }
+            set { ViewState["2"] = value; }
+        }
+
+        [Browsable(true), Description("Oculta as intruções do boleto")]
+        public bool OcultarEnderecoSacado
+        {
+            get { return Utils.ToBool(ViewState["3"]); }
+            set { ViewState["3"] = value; }
+        }
+
+        [Browsable(true), Description("Oculta as intruções do boleto")]
+        public bool OcultarInstrucoes
+        {
+            get { return Utils.ToBool(ViewState["4"]); }
+            set { ViewState["4"] = value; }
+        }
+
+        [Browsable(true), Description("Oculta o recibo do sacado do boleto")]
+        public bool OcultarReciboSacado
+        {
+            get { return Utils.ToBool(ViewState["5"]); }
+            set { ViewState["5"] = value; }
+        }
+
+        [Browsable(true), Description("Gerar arquivo de remessa")]
+        public bool GerarArquivoRemessa
+        {
+            get { return Utils.ToBool(ViewState["6"]); }
+            set { ViewState["6"] = value; }
+        }
+        /// <summary> 
+        /// Mostra o termo "Contra Apresentação" na data de vencimento do boleto
+        /// </summary>
+        public bool MostrarContraApresentacaoNaDataVencimento
+        {
+            get { return Utils.ToBool(ViewState["7"]); }
+            set { ViewState["7"] = value; }
+        }
+
+        [Browsable(true), Description("Mostra o endereço do Cedente")]
+        public bool MostrarEnderecoCedente
+        {
+            get { return Utils.ToBool(ViewState["8"]); }
+            set { ViewState["8"] = value; }
+        }
+        #endregion Propriedades
+
+        /// <summary> 
+        /// Instruções disponíveis no Boleto
+        /// </summary>
+        public List<IInstrucao> Instrucoes
+        {
+            get
+            {
+                return _instrucoes;
+            }
+        }
+
+
+        #endregion Propriedades
+
+        public static string UrlLogo(int banco)
+        {
+            var page = System.Web.HttpContext.Current.CurrentHandler as Page;
+            return page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens." + Utils.FormatCode(banco.ToString(), 3) + ".jpg");
+        }
+
+        #region Override
+        protected override void OnPreRender(EventArgs e)
+        {
+            string alias = "BoletoNet.BoletoImpressao.BoletoNet.css";
+            string csslink = "<link rel=\"stylesheet\" type=\"text/css\" href=\"" +
+                Page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), alias) + "\" />";
+
+            var include = new LiteralControl(csslink);
+            Page.Header.Controls.Add(include);
+
+            base.OnPreRender(e);
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+        }
+
+        [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "Execution")]
+        protected override void Render(HtmlTextWriter output)
+        {
+            if (_ibanco == null)
+            {
+                output.Write("<b>Erro gerando o boleto bancário: faltou definir o banco.</b>");
+                return;
+            }
+            string urlImagemLogo = Page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens." + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg");
+            string urlImagemBarra = Page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens.barra.gif");
+            //string urlImagemBarraInterna = Page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens.barrainterna.gif");
+            //string urlImagemCorte = Page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens.corte.gif");
+            //string urlImagemPonto = Page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens.ponto.gif");
+
+            //Atribui os valores ao html do boleto bancário
+            //output.Write(MontaHtml(urlImagemCorte, urlImagemLogo, urlImagemBarra, urlImagemPonto, urlImagemBarraInterna,
+            //    "<img src=\"ImagemCodigoBarra.ashx?code=" + Boleto.CodigoBarra.Codigo + "\" alt=\"Código de Barras\" />"));
+            output.Write(MontaHtml(urlImagemLogo, urlImagemBarra, "<img src=\"ImagemCodigoBarra.ashx?code=" + Boleto.CodigoBarra.Codigo + "\" alt=\"Código de Barras\" />"));
+        }
+        #endregion Override
+
+        #region Html
+        public string GeraHtmlInstrucoes()
+        {
+            try
+            {
+                var html = new StringBuilder();
+
+                string titulo = "Instruções de Impressão";
+                string instrucoes = "Imprimir em impressora jato de tinta (ink jet) ou laser em qualidade normal. (Não use modo econômico).<br>Utilize folha A4 (210 x 297 mm) ou Carta (216 x 279 mm) - Corte na linha indicada<br>";
+
+                html.Append(Html.Instrucoes);
+                html.Append("<br />");
+
+                return html.ToString()
+                    .Replace("@TITULO", titulo)
+                    .Replace("@INSTRUCAO", instrucoes);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a execução da transação.", ex);
+            }
+        }
+
+        private string GeraHtmlCarne(string telefone, string htmlBoleto)
+        {
+            var html = new StringBuilder();
+
+            html.Append(Html.Carne);
+
+            return html.ToString()
+                .Replace("@TELEFONE", telefone)
+                .Replace("#BOLETO#", htmlBoleto);
+        }
+        public string GeraHtmlReciboSacado()
+        {
+            try
+            {
+                var html = new StringBuilder();
+
+                html.Append(Html.ReciboSacadoParte1);
+                html.Append("<br />");
+                html.Append(Html.ReciboSacadoParte2);
+                html.Append(Html.ReciboSacadoParte3);
+
+                if (MostrarEnderecoCedente)
+                {
+                    html.Append(Html.ReciboSacadoParte10);
+                }
+
+                html.Append(Html.ReciboSacadoParte4);
+                html.Append(Html.ReciboSacadoParte5);
+                html.Append(Html.ReciboSacadoParte6);
+                html.Append(Html.ReciboSacadoParte7);
+
+                //if (Instrucoes.Count == 0)
+                html.Append(Html.ReciboSacadoParte8);
+
+                //Limpa as intruções para o Sacado
+                _instrucoesHtml = "";
+
+                MontaInstrucoes(Boleto.Instrucoes);
+
+                if (Boleto.Sacado.Instrucoes.Count > 0)
+                    MontaInstrucoes(Boleto.Sacado.Instrucoes);
+
+                return html.ToString().Replace("@INSTRUCOES", _instrucoesHtml);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a execução da transação.", ex);
+            }
+        }
+
+        public string GeraHtmlReciboCedente()
+        {
+            try
+            {
+                var html = new StringBuilder();
+
+                html.Append(Html.ReciboCedenteParte1);
+                html.Append(Html.ReciboCedenteParte2);
+                html.Append(Html.ReciboCedenteParte3);
+                html.Append(Html.ReciboCedenteParte4);
+                html.Append(Html.ReciboCedenteParte5);
+                html.Append(Html.ReciboCedenteParte6);
+                html.Append(Html.ReciboCedenteParte7);
+                html.Append(Html.ReciboCedenteParte8);
+                html.Append(Html.ReciboCedenteParte9);
+                html.Append(Html.ReciboCedenteParte10);
+                html.Append(Html.ReciboCedenteParte11);
+                html.Append(Html.ReciboCedenteParte12);
+
+                //Para Banco Itaú, o texto "(Texto de responsabilidade do cedente)" deve ser
+                //"(Todas as informações deste bloqueto são de exclusiva responsabilidade do cedente)".
+                if (Boleto.Banco.Codigo == 341)
+                {
+                    html.Replace("(Texto de responsabilidade do cedente)", "(Todas as informações deste bloqueto são de exclusiva responsabilidade do cedente)");
+                }
+
+                //Para carteiras "17-019" e "18-019" do Banco do Brasil, a ficha de compensação não possui código da carteira
+                //na formatação do campo.
+                if (Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("17-027") | Boleto.Carteira.Equals("18-019")))
+                {
+                    html.Replace("Carteira /", "");
+                    html.Replace("@NOSSONUMERO", "@NOSSONUMEROBB");
+                }
+                else
+                {
+                    //Para SANTANDER, a ficha de compensação não possui código da carteira - por jsoda em 08/12/2012
+                    if (Boleto.Banco.Codigo == 33)
+                        html.Replace("Carteira /", "");
+                }
+
+                //Limpa as intruções para o Cedente
+                _instrucoesHtml = "";
+
+                MontaInstrucoes(Boleto.Instrucoes);
+
+                if (Boleto.Cedente.Instrucoes.Count > 0)
+                    MontaInstrucoes(Boleto.Cedente.Instrucoes);
+
+                return html.ToString().Replace("@INSTRUCOES", _instrucoesHtml);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro na execução da transação.", ex);
+            }
+        }
+
+        public string HtmlComprovanteEntrega
+        {
+            get
+            {
+                var html = new StringBuilder();
+
+                html.Append(Html.ComprovanteEntrega1);
+                html.Append(Html.ComprovanteEntrega2);
+                html.Append(Html.ComprovanteEntrega3);
+                html.Append(Html.ComprovanteEntrega4);
+                html.Append(Html.ComprovanteEntrega5);
+                html.Append(Html.ComprovanteEntrega6);
+
+                html.Append(MostrarComprovanteEntregaLivre ? Html.ComprovanteEntrega71 : Html.ComprovanteEntrega7);
+
+                html.Append("<br />");
+                return html.ToString();
+            }
+        }
+
+        private void MontaInstrucoes(IList<IInstrucao> instrucoes)
+        {
+            if (!string.IsNullOrEmpty(_instrucoesHtml))
+                _instrucoesHtml = string.Concat(_instrucoesHtml, "<br />");
+
+            if (instrucoes.Count > 0)
+            {
+                //_instrucoesHtml = string.Empty;
+                //Flavio(fhlviana@hotmail.com) - retirei a tag <span> de cada instrução por não ser mais necessáras desde que dentro
+                //da div que contem as instruções a classe cpN se aplica, que é a mesma, em conteudo, da classe cp
+                foreach (IInstrucao instrucao in instrucoes)
+                {
+                    _instrucoesHtml += string.Format("{0}<br />", instrucao.Descricao);
+
+                    //Adiciona a instrução as instruções disponíveis no Boleto
+                    Instrucoes.Add(instrucao);
+                }
+
+                _instrucoesHtml = Strings.Left(_instrucoesHtml, _instrucoesHtml.Length - 6);
+            }
+        }
+
+        private string MontaHtml(string urlImagemLogo, string urlImagemBarra, string imagemCodigoBarras)
+        {
+            var html = new StringBuilder();
+            string enderecoCedente = "";
+
+            //Oculta o cabeçalho das instruções do boleto
+            if (!OcultarInstrucoes)
+                html.Append(GeraHtmlInstrucoes());
+
+            if (!FormatoCarne)
+            {
+                //Mostra o comprovante de entrega
+                if (MostrarComprovanteEntrega | MostrarComprovanteEntregaLivre)
+                {
+                    html.Append(HtmlComprovanteEntrega);
+                    //Html da linha pontilhada
+                    if (OcultarReciboSacado)
+                        html.Append(Html.ReciboSacadoParte8);
+                }
+
+                //Oculta o recibo do sacabo do boleto
+                if (!OcultarReciboSacado)
+                {
+                    html.Append(GeraHtmlReciboSacado());
+
+                    //Caso mostre o Endereço do Cedente
+                    if (MostrarEnderecoCedente)
+                    {
+                        if (Cedente.Endereco == null)
+                            throw new ArgumentNullException("Endereço do Cedente");
+
+                        string Numero = !String.IsNullOrEmpty(Cedente.Endereco.Numero) ? Cedente.Endereco.Numero + ", " : "";
+                        enderecoCedente = string.Concat(Cedente.Endereco.End, " , ", Numero);
+
+                        if (Cedente.Endereco.CEP == String.Empty)
+                        {
+                            enderecoCedente += string.Format("{0} - {1}/{2}", Cedente.Endereco.Bairro,
+                                                             Cedente.Endereco.Cidade, Cedente.Endereco.UF);
+                        }
+                        else
+                        {
+                            enderecoCedente += string.Format("{0} - {1}/{2} - CEP: {3}", Cedente.Endereco.Bairro,
+                                                             Cedente.Endereco.Cidade, Cedente.Endereco.UF,
+                                                             Utils.FormataCEP(Cedente.Endereco.CEP));
+                        }
+
+                    }
+                }
+            }
+
+            string sacado = "";
+            //Flavio(fhlviana@hotmail.com) - adicionei a possibilidade de o boleto não ter, necessáriamente, que informar o CPF ou CNPJ do sacado.
+            //Formata o CPF/CNPJ(se houver) e o Nome do Sacado para apresentação
+            if (Sacado.CPFCNPJ == string.Empty)
+            {
+                sacado = Sacado.Nome;
+            }
+            else
+            {
+                if (Sacado.CPFCNPJ.Length <= 11)
+                    sacado = string.Format("{0}  CPF: {1}", Sacado.Nome, Utils.FormataCPF(Sacado.CPFCNPJ));
+                else
+                    sacado = string.Format("{0}  CNPJ: {1}", Sacado.Nome, Utils.FormataCNPJ(Sacado.CPFCNPJ));
+            }
+
+            String infoSacado = Sacado.InformacoesSacado.GeraHTML(false);
+
+            //Caso não oculte o Endereço do Sacado,
+            if (!OcultarEnderecoSacado)
+            {
+                String enderecoSacado = "";
+
+                if (Sacado.Endereco.CEP == String.Empty)
+                    enderecoSacado = string.Format("{0} - {1}/{2}", Sacado.Endereco.Bairro, Sacado.Endereco.Cidade, Sacado.Endereco.UF);
+                else
+                    enderecoSacado = string.Format("{0} - {1}/{2} - CEP: {3}", Sacado.Endereco.Bairro,
+                    Sacado.Endereco.Cidade, Sacado.Endereco.UF, Utils.FormataCEP(Sacado.Endereco.CEP));
+
+                if (Sacado.Endereco.End != string.Empty && enderecoSacado != string.Empty)
+                    if (infoSacado == string.Empty)
+                        infoSacado += InfoSacado.Render(Sacado.Endereco.End, enderecoSacado, false);
+                    else
+                        infoSacado += InfoSacado.Render(Sacado.Endereco.End, enderecoSacado, true);
+                //"Informações do Sacado" foi introduzido para possibilitar que o boleto na informe somente o endereço do sacado
+                //como em outras situaçoes onde se imprime matriculas, codigos e etc, sobre o sacado.
+                //Sendo assim o endereço do sacado passa a ser uma Informaçao do Sacado que é adicionada no momento da renderização
+                //de acordo com a flag "OcultarEnderecoSacado"
+            }
+
+            string agenciaConta = Utils.FormataAgenciaConta(Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Cedente.ContaBancaria.Conta, Cedente.ContaBancaria.DigitoConta);
+
+            // Trecho adicionado por Fabrício Nogueira de Almeida :fna - fnalmeida@gmail.com - 09/12/2008
+            /* Esse código foi inserido pq no campo Agência/Cod Cedente, estava sendo impresso sempre a agência / número da conta
+             * No boleto da caixa que eu fiz, coloquei no método validarBoleto um trecho para calcular o dígito do cedente, e adicionei esse atributo na classe cedente
+             * O trecho abaixo testa se esse digito foi calculado, se foi insere no campo Agencia/Cod Cedente, a agência e o código com seu digito
+             * caso contrário mostra a agência / conta, como era anteriormente.
+             * Com esse código ele ira atender as necessidades do boleto caixa e não afetará os demais
+             * Caso queira que apareça o Agência/cod. cedente para outros boletos, basta calcular e setar o digito, como foi feito no boleto Caixa 
+             */
+
+            string agenciaCodigoCedente;
+
+            if (!Cedente.DigitoCedente.Equals(-1))
+            {
+                if (!String.IsNullOrEmpty(Cedente.ContaBancaria.OperacaConta))
+                    agenciaCodigoCedente = string.Format("{0}/{1}.{2}-{3}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.OperacaConta, Utils.FormatCode(Cedente.Codigo.ToString(), 6), Cedente.DigitoCedente.ToString());
+
+                switch (Boleto.Banco.Codigo)
+                {
+                    case 748:
+                        agenciaCodigoCedente = string.Format("{0}.{1}.{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.OperacaConta, Cedente.Codigo);
+                        break;
+                    case 41:
+                        agenciaCodigoCedente = string.Format("{0}.{1}/{2}.{3}.{4}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Cedente.Codigo.Substring(4, 6), Cedente.Codigo.Substring(10, 1), Cedente.DigitoCedente);
+                        break;
+                    case 1:
+                        agenciaCodigoCedente = string.Format("{0}-{1}/{2}-{3}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Utils.FormatCode(Cedente.ContaBancaria.Conta, 6), Cedente.ContaBancaria.DigitoConta);
+                        break;
+                    default:
+                        agenciaCodigoCedente = string.Format("{0}/{1}-{2}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo.ToString(), 6), Cedente.DigitoCedente.ToString());
+                        break;
+                }
+            }
+            else
+            {
+                //Para banco SANTANDER, a formatação do campo "Agencia/Identif.Cedente" - por jsoda em 07/05/2012
+                if (Boleto.Banco.Codigo == 33)
+                {
+                    agenciaCodigoCedente = string.Format("{0}-{1}/{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Utils.FormatCode(Cedente.Codigo.ToString(), 6));
+                    if (String.IsNullOrEmpty(Cedente.ContaBancaria.DigitoAgencia))
+                        agenciaCodigoCedente = String.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo.ToString(), 6));
+                }
+                else if (Boleto.Banco.Codigo == 399) 
+                    //agenciaCodigoCedente = Utils.FormatCode(Cedente.Codigo.ToString(), 7); -> para Banco HSBC mostra apenas código Cedente - por Ponce em 08/06/2012
+                    agenciaCodigoCedente = String.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Cedente.Codigo.ToString()); //Solicitação do HSBC que mostrasse agencia/Conta - por Transis em 24/02/15
+
+                else if (Boleto.Banco.Codigo == 748)
+                    agenciaCodigoCedente = string.Format("{0}.{1}.{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.OperacaConta, Cedente.Codigo);
+                else
+                    agenciaCodigoCedente = agenciaConta;
+            }
+
+            if (!FormatoCarne)
+                html.Append(GeraHtmlReciboCedente());
+            else
+            {
+                html.Append(GeraHtmlCarne("", GeraHtmlReciboCedente()));
+            }
+
+            string dataVencimento = Boleto.DataVencimento.ToString("dd/MM/yyyy");
+
+            if (MostrarContraApresentacaoNaDataVencimento)
+                dataVencimento = "Contra Apresentação";
+
+            if (String.IsNullOrEmpty(vLocalLogoCedente))
+                vLocalLogoCedente = urlImagemLogo;
+
+
+            return html
+                .Replace("@CODIGOBANCO", Utils.FormatCode(_ibanco.Codigo.ToString(), 3))
+                .Replace("@DIGITOBANCO", _ibanco.Digito.ToString())
+                //.Replace("@URLIMAGEMBARRAINTERNA", urlImagemBarraInterna)
+                //.Replace("@URLIMAGEMCORTE", urlImagemCorte)
+                //.Replace("@URLIMAGEMPONTO", urlImagemPonto)
+                .Replace("@URLIMAGEMLOGO", urlImagemLogo)
+                .Replace("@URLIMGCEDENTE", vLocalLogoCedente)
+                .Replace("@URLIMAGEMBARRA", urlImagemBarra)
+                .Replace("@LINHADIGITAVEL", Boleto.CodigoBarra.LinhaDigitavel)
+                .Replace("@LOCALPAGAMENTO", Boleto.LocalPagamento)
+                .Replace("@DATAVENCIMENTO", dataVencimento)
+                .Replace("@CEDENTE", Cedente.Nome)
+                .Replace("@DATADOCUMENTO", Boleto.DataDocumento.ToString("dd/MM/yyyy"))
+                .Replace("@NUMERODOCUMENTO", Boleto.NumeroDocumento)
+                .Replace("@ESPECIEDOCUMENTO", EspecieDocumento.ValidaSigla(Boleto.EspecieDocumento))
+                .Replace("@DATAPROCESSAMENTO", Boleto.DataProcessamento.ToString("dd/MM/yyyy"))
+
+            #region Implementação para o Banco do Brasil
+                //Variável inserida para atender às especificações das carteiras "17-019", "17-027" e "18-019" do Banco do Brasil
+                //apenas para a ficha de compensação.
+                //Como a variável não existirá se não forem as carteiras "17-019", "17-027" e "18-019", não foi colocado o [if].
+                    .Replace("@NOSSONUMEROBB", Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("17-027") | Boleto.Carteira.Equals("18-019")) ? Boleto.NossoNumero.Substring(3) : string.Empty)
+            #endregion Implementação para o Banco do Brasil
+>>>>>>> boletonet_original/master
 
 .Replace("@NOSSONUMERO", Boleto.NossoNumero)
 				.Replace("@CARTEIRA", FormataDescricaoCarteira())
