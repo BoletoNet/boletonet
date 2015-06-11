@@ -380,6 +380,10 @@ namespace BoletoNet
                 {
                     throw new Exception("Nosso Número inválido, Para Caixa Econômica - Carteira SR o Nosso Número deve conter 10, 14 ou 17 posições.");
                 }
+
+                if (boleto.Cedente.Codigo.Length < 11) {
+                    throw new Exception("O código do cedente deve conter pelo menos 11 dígitos");
+                }
             }
             else if (boleto.Carteira.Equals("RG"))
             {
