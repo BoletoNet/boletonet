@@ -52,14 +52,9 @@ namespace BoletoNet
             {
                 boleto.DigitoNossoNumero = DigNossoNumeroSicredi(boleto);
                 boleto.NossoNumero += boleto.DigitoNossoNumero;
-                boleto.DigitoNossoNumero += DigNossoNumeroSicredi(boleto);
+                //boleto.DigitoNossoNumero += DigNossoNumeroSicredi(boleto);
             }
-            else if (boleto.NossoNumero.Length == 6)
-            {
-                boleto.NossoNumero = String.Concat(DateTime.Today.ToString("yy"), boleto.NossoNumero);
-                boleto.DigitoNossoNumero += DigNossoNumeroSicredi(boleto);
-                boleto.NossoNumero += DigNossoNumeroSicredi(boleto);
-            }
+
 
             //Verifica se data do processamento é valida
 			if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
@@ -199,7 +194,7 @@ namespace BoletoNet
                 detalhe += Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 12);
                 detalhe += boleto.Cedente.ContaBancaria.DigitoConta;
                 detalhe += " ";
-                detalhe += Utils.FormatCode(boleto.NossoNumero,20);
+                detalhe += Utils.FormatCode(boleto.NossoNumero.Replace("/", "").Replace("-", ""),20);
                 detalhe += "1";
                 detalhe += (Convert.ToInt16(boleto.Carteira) == 1 ? "1" : "2");
                 detalhe += "122";
@@ -761,7 +756,8 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0019, 001, 0, "A", ' '));                                       //019-019  Tipo de juros: 'A' - VALOR
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0020, 028, 0, string.Empty, ' '));                              //020-047
                 #region Nosso Número + DV
-                string vAuxNossoNumeroComDV = String.Concat(boleto.NossoNumero, boleto.DigitoNossoNumero);
+
+                string vAuxNossoNumeroComDV = boleto.NossoNumero.Replace("/", "").Replace("-", "");
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0048, 009, 0, vAuxNossoNumeroComDV, '0'));                      //048-056
                 #endregion
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0057, 006, 0, string.Empty, ' '));                              //057-062
