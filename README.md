@@ -2,6 +2,7 @@
 [![Issues open](http://img.shields.io/github/issues/boletonet/boletonet.svg)](https://huboard.com/boletonet/boletonet)
 [![Nuget count](http://img.shields.io/nuget/v/Boleto.Net.svg)](http://www.nuget.org/packages/Boleto.Net/)
 [![Nuget downloads](http://img.shields.io/nuget/dt/Boleto.Net.svg)](http://www.nuget.org/packages/Boleto.Net/)
+[![Join the chat at https://gitter.im/BoletoNet](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/BoletoNet?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Boleto.Net é um componente desenvolvido em C# e ASP.Net e contempla as seguintes funcionalidades:
 
