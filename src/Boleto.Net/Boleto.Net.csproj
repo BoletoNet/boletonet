@@ -158,6 +158,8 @@
     <Compile Include="Boleto\Instrucao\Instrucao_Sicredi.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Sudameris.cs" />
     <Compile Include="Boleto\Remessa.cs" />
+    <Compile Include="Boleto\DemonstrativoValoresBoleto\GrupoDemonstrativo.cs" />
+    <Compile Include="Boleto\DemonstrativoValoresBoleto\ItemDemonstrativo.cs" />
     <Compile Include="Boleto\Sacado\InformacoesSacado.cs" />
     <Compile Include="Boleto\Sacado\InfoSacado.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_Sicredi_Retorno.cs" />
