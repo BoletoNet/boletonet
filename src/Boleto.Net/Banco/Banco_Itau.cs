@@ -171,6 +171,7 @@ namespace BoletoNet
             {
                 string numeroDocumento = Utils.FormatCode(boleto.NumeroDocumento.ToString(), 7);
                 string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo.ToString(), 5);
+                string agencia = Utils.FormatCode(boleto.Cedente.ContaBancaria.Agencia, 4);
 
                 string AAA = Utils.FormatCode(Codigo.ToString(), 3);
                 string B = boleto.Moeda.ToString();
@@ -245,7 +246,7 @@ namespace BoletoNet
                     #region DDDDD.DEFFFY
 
                     string E = _dacNossoNumero.ToString();
-                    string FFF = boleto.Cedente.ContaBancaria.Agencia.Substring(0, 3);
+                    string FFF = agencia.Substring(0, 3);
                     string Y = Mod10(DDDDDD + E + FFF).ToString();
 
                     C2 = string.Format("{0}.", DDDDDD.Substring(0, 5));
@@ -255,7 +256,7 @@ namespace BoletoNet
 
                     #region FGGGG.GGHHHZ
 
-                    string F = boleto.Cedente.ContaBancaria.Agencia.Substring(3, 1);
+                    string F = agencia.Substring(3, 1);
                     string GGGGGG = boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta;
                     string HHH = "000";
                     string Z = Mod10(F + GGGGGG + HHH).ToString();
