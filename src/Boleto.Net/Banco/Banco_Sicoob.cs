@@ -88,8 +88,12 @@ namespace BoletoNet
             {
                 dv = 11 - resto;
             }
-            //Montando nosso número
-            boleto.NossoNumero = boleto.NossoNumero + "-" + dv.ToString();
+            
+			// Montando nosso número
+            // diego.ribeiro
+			// Retirei esta linha pois estava dando erro na geração da remessa
+			// Agora a montagem do nosso número com dígito ocorre apenas na impressão do boleto
+			boleto.NossoNumero = boleto.NossoNumero + "-" + dv;
             boleto.DigitoNossoNumero = dv.ToString();
         }
 
@@ -379,7 +383,9 @@ namespace BoletoNet
             {
                 string _detalhe = " ";
 
-                FormataNossoNumero(boleto);
+				FormataCodigoCliente(boleto);
+				FormataNossoNumero(boleto);
+	            
                 base.GerarDetalheRemessa(boleto, numeroRegistro, tipoArquivo);
 
                 switch (tipoArquivo)

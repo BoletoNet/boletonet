@@ -1,4 +1,4 @@
-﻿namespace BoletoNet.RelatorioValoresBoleto
+﻿namespace BoletoNet.DemonstrativoValoresBoleto
 {
 	public class ItemDemonstrativo
 	{

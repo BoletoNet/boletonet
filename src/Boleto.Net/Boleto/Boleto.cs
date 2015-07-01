@@ -295,7 +295,7 @@ namespace BoletoNet
 		}
 
 		/// <summary> 
-		/// Recupara o digito nosso número 
+		/// Recupera o digito nosso número 
 		/// </summary>        
 		public string DigitoNossoNumero
 		{
