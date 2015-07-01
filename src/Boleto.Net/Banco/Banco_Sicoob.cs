@@ -90,9 +90,6 @@ namespace BoletoNet
             }
             
 			// Montando nosso número
-            // diego.ribeiro
-			// Retirei esta linha pois estava dando erro na geração da remessa
-			// Agora a montagem do nosso número com dígito ocorre apenas na impressão do boleto
 			boleto.NossoNumero = boleto.NossoNumero + "-" + dv;
             boleto.DigitoNossoNumero = dv.ToString();
         }
@@ -383,6 +380,9 @@ namespace BoletoNet
             {
                 string _detalhe = " ";
 
+				// diego.ribeiro 
+				// Adicionei a linha abaixo pois não estava corrigindo o digito verificador
+				// do código do cliente e estava dando erro na hora de formatar o nosso número
 				FormataCodigoCliente(boleto);
 				FormataNossoNumero(boleto);
 	            
