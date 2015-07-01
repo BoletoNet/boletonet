@@ -1,9 +1,7 @@
 ﻿namespace BoletoNet.DemonstrativoValoresBoleto
 {
 	using System.Collections.ObjectModel;
-
-	using global::BoletoNet.RelatorioValoresBoleto;
-
+	
 	public class GrupoDemonstrativo
 	{
 		#region Fields
