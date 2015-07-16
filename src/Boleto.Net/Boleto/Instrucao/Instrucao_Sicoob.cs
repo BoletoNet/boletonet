@@ -129,7 +129,10 @@ namespace BoletoNet
 						this.Descricao = "Devolver após 30 dias vencido";
 						break;
 					default:
-						throw new ArgumentOutOfRangeException(nameof(idInstrucao), idInstrucao, null);
+						this.Codigo = 0;
+						this.Descricao = " (Selecione) ";
+						break;
+
 				}
 
 				this.QuantidadeDias = nrDias;
