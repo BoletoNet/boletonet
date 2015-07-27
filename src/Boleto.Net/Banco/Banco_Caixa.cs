@@ -533,6 +533,14 @@ namespace BoletoNet
 				switch (tipoArquivo)
 				{
 					case TipoArquivo.CNAB240:
+				        if (boletos.Remessa == null) {
+                            throw new Exception("Remessa não foi preenchida.");
+				        }
+
+				        if (boletos.Remessa.TipoDocumento == null) {
+                            throw new Exception("Código da forma de cadastramento da remessa foi preenchido.");
+				        }
+
 						if (boletos.Remessa.TipoDocumento.Equals("2") || boletos.Remessa.TipoDocumento.Equals("1"))
 							_header = GerarHeaderRemessaCNAB240SIGCB(cedente);
 						else
