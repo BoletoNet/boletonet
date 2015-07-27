@@ -52,9 +52,9 @@ namespace BoletoNet
                 int numeroRegistro = 3;
                 int numeroRegistroDetalhe = 1;
                 string strline;                
-                    StreamWriter incluiLinha = new StreamWriter(arquivo);
+                    var incluiLinha = new StreamWriter(arquivo);
                     if (banco.Codigo == 104)//quando é caixa verifica o modelo de leiatue que é está em boletos.remssa.tipodocumento
-                    strline = banco.GerarHeaderRemessa(numeroConvenio, cedente, TipoArquivo.CNAB240, numeroArquivoRemessa, boletos[0]);
+                        strline = banco.GerarHeaderRemessa(numeroConvenio, cedente, TipoArquivo.CNAB240, numeroArquivoRemessa, boletos[0]);
                 else
                     strline = banco.GerarHeaderRemessa(numeroConvenio, cedente, TipoArquivo.CNAB240, numeroArquivoRemessa);
                 //
@@ -94,7 +94,7 @@ namespace BoletoNet
                     incluiLinha.WriteLine(strline);
                     OnLinhaGerada(null, strline, EnumTipodeLinha.TraillerDeArquivo);
 
-                    incluiLinha.Close();
+                    //incluiLinha.Close();
                     #endregion
                 }
                 else if (banco.Codigo == 104) // Só validar boleto.Remessa quando o banco for Caixa porque quando o banco for diferente de 104 a propriedade "Remessa" fica null
@@ -139,7 +139,7 @@ namespace BoletoNet
                         incluiLinha.WriteLine(strline);
                         OnLinhaGerada(null, strline, EnumTipodeLinha.TraillerDeArquivo);
 
-                        incluiLinha.Close();
+                        //incluiLinha.Close();
                     }
                     #endregion
                 }
@@ -171,7 +171,6 @@ namespace BoletoNet
                         }
                     }
 
-
                     numeroRegistro--;
                     strline = banco.GerarTrailerLoteRemessa(numeroRegistro);
                     incluiLinha.WriteLine(strline);
@@ -184,10 +183,11 @@ namespace BoletoNet
                     incluiLinha.WriteLine(strline);
                     OnLinhaGerada(null, strline, EnumTipodeLinha.TraillerDeArquivo);
 
-                    incluiLinha.Close();
+                    //incluiLinha.Close();
                     #endregion                                 
                 }
 
+                arquivo.Position = 0;
             }
             catch (Exception ex)
             {
