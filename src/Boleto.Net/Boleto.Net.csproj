@@ -162,6 +162,8 @@
     <Compile Include="Boleto\DemonstrativoValoresBoleto\ItemDemonstrativo.cs" />
     <Compile Include="Boleto\Sacado\InformacoesSacado.cs" />
     <Compile Include="Boleto\Sacado\InfoSacado.cs" />
+    <Compile Include="DepositoIdentificado\DepositoIdentificado.cs" />
+    <Compile Include="DepositoIdentificado\DI_Itau.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_Sicredi_Retorno.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_BancoBrasil_Retorno.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_Caixa_Retorno.cs" />
@@ -288,6 +290,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Imagens\003.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
