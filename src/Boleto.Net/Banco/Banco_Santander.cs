@@ -853,7 +853,7 @@ namespace BoletoNet
                 {
                     if (boleto.Instrucoes[0].Codigo == (int)EnumInstrucoes_Santander.Protestar)
                         diasProtesto = Utils.FitStringLength(boleto.Instrucoes[0].QuantidadeDias.ToString(), 2, 2, '0', 0, true, true, true);
-                    else if (boleto.Instrucoes[1].Codigo == (int)EnumInstrucoes_Santander.Protestar)
+                    else if (boleto.Instrucoes.Count > 1 && boleto.Instrucoes[1].Codigo == (int)EnumInstrucoes_Santander.Protestar)
                         diasProtesto = Utils.FitStringLength(boleto.Instrucoes[1].QuantidadeDias.ToString(), 2, 2, '0', 0, true, true, true);
                     else
                         diasProtesto = "00"; //Nº de dias para protesto 9(02)
