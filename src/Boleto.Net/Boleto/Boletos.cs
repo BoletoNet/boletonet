@@ -8,17 +8,17 @@ namespace BoletoNet
 
         # region Variáveis
 
-	    # endregion
+        # endregion
 
         # region Propriedades
 
-	    public Banco Banco { get; set; }
+        public Banco Banco { get; set; }
 
-	    public ContaBancaria ContaBancaria { get; set; }
+        public ContaBancaria ContaBancaria { get; set; }
 
-	    public Cedente Cedente { get; set; }
+        public Cedente Cedente { get; set; }
 
-	    # endregion
+        # endregion
 
         # region Métodos
 

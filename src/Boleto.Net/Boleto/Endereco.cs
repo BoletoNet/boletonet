@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 namespace BoletoNet
 {
     /// <summary>
@@ -139,7 +140,8 @@ namespace BoletoNet
             set
             {
                 //this._cep = value;
-                this._cep = value.Replace(".", "").Replace("-", "");
+                //this._cep = value.Replace(".", "").Replace("-", "");
+                this._cep = Regex.Replace(value ?? "", @"\D", "");
             }
         }
 
