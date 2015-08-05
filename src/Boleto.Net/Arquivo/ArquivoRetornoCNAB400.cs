@@ -19,7 +19,7 @@ namespace BoletoNet
         #region Construtores
 
         public ArquivoRetornoCNAB400()
-		{
+        {
             this.TipoArquivo = TipoArquivo.CNAB400;
         }
 
@@ -29,6 +29,7 @@ namespace BoletoNet
 
         public override void LerArquivoRetorno(IBanco banco, Stream arquivo)
         {
+            this.Banco = banco;
             try
             {
                 StreamReader stream = new StreamReader(arquivo, System.Text.Encoding.UTF8);

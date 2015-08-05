@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace BoletoNet
@@ -70,12 +71,12 @@ namespace BoletoNet
         {
             throw new NotImplementedException("Função não implementada");
         }
-        
+
         public virtual bool ValidarRemessa(TipoArquivo tipoArquivo, string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, int numeroArquivoRemessa, out string mensagem)
         {
             throw new NotImplementedException("Função não implementada na classe filha. Implemente na classe que está sendo criada.");
         }
-        
+
         /// <summary>
         /// Gera os registros de header do aquivo de remessa
         /// </summary>
@@ -389,6 +390,10 @@ namespace BoletoNet
         }
 
         #region Mod
+        private static bool isNumeric(string seq)
+        {
+            return Regex.IsMatch(seq, "\\d+");
+        }
         internal static int Mod10(string seq)
         {
             /* Variáveis
@@ -399,27 +404,26 @@ namespace BoletoNet
              * b - Base
              * r - Resto
              */
+            if (!isNumeric(seq))
+                throw new Exception("O parâmetro contém caracteres inválidos!");
+
 
             int d, s = 0, p = 2, r;
 
             for (int i = seq.Length; i > 0; i--)
             {
-                r = (Convert.ToInt32(Microsoft.VisualBasic.Strings.Mid(seq, i, 1)) * p);
+                r = (Convert.ToInt32(seq[i]) * p);
 
                 if (r > 9)
                     r = (r / 10) + (r % 10);
 
                 s += r;
 
-                if (p == 2)
-                    p = 1;
-                else
-                    p = p + 1;
+                p = (p == 2) ? 1 : 2;
             }
             d = ((10 - (s % 10)) % 10);
             return d;
         }
-
         protected static int Mod11(string seq)
         {
             /* Variáveis
@@ -430,16 +434,14 @@ namespace BoletoNet
              * b - Base
              * r - Resto
              */
+            if (!isNumeric(seq))
+                throw new Exception("O parâmetro contém caracteres inválidos!");
 
             int d, s = 0, p = 2, b = 9;
-
             for (int i = 0; i < seq.Length; i++)
             {
                 s = s + (Convert.ToInt32(seq[i]) * p);
-                if (p < b)
-                    p = p + 1;
-                else
-                    p = 2;
+                p = (p < b) ? p + 1 : 2;
             }
 
             d = 11 - (s % 11);
@@ -458,30 +460,18 @@ namespace BoletoNet
              * b - Base
              * r - Resto
              */
+            if (!isNumeric(seq))
+                throw new Exception("O parâmetro contém caracteres inválidos!");
 
-            int d, r, s = 0, p = 2, b = 9;
-            string n;
-
+            int r, s = 0, p = 2, b = 9;
             for (int i = seq.Length; i > 0; i--)
             {
-                n = Microsoft.VisualBasic.Strings.Mid(seq, i, 1);
-
-                s = s + (Convert.ToInt32(n) * p);
-
-                if (p < b)
-                    p = p + 1;
-                else
-                    p = 2;
+                s = s + (Convert.ToInt32(seq[i]) * p);
+                p = (p < b) ? p + 1 : 2;
             }
 
             r = ((s * 10) % 11);
-
-            if (r == 0 || r == 1 || r == 10)
-                d = 1;
-            else
-                d = r;
-
-            return d;
+            return (r == 0 || r == 1 || r == 10) ? 1 : r;
 
         }
 
@@ -495,22 +485,17 @@ namespace BoletoNet
              * b - Base
              * r - Resto
              */
+            if (!isNumeric(seq))
+                throw new Exception("O parâmetro contém caracteres inválidos!");
 
             int d, s = 0, p = 2;
-
-
             for (int i = seq.Length; i > 0; i--)
             {
-                s = s + (Convert.ToInt32(Microsoft.VisualBasic.Strings.Mid(seq, i, 1)) * p);
-                if (p == b)
-                    p = 2;
-                else
-                    p = p + 1;
+                s = s + (Convert.ToInt32(seq[i]) * p);
+                p = (p == b) ? 2 : p + 1;
             }
 
             d = 11 - (s % 11);
-
-
             if ((d > 9) || (d == 0) || (d == 1))
                 d = 1;
 
@@ -527,18 +512,14 @@ namespace BoletoNet
              * b - Base
              * r - Resto
              */
+            if (!isNumeric(seq))
+                throw new Exception("O parâmetro contém caracteres inválidos!");
 
             int d, s = 0, p = 2, b = 9;
-
-
             for (int i = seq.Length - 1; i >= 0; i--)
             {
-                string aux = Convert.ToString(seq[i]);
-                s += (Convert.ToInt32(aux) * p);
-                if (p >= b)
-                    p = 2;
-                else
-                    p = p + 1;
+                s += (Convert.ToInt32(seq[i]) * p);
+                p = (p >= b) ? 2 : p + 1;
             }
 
             if (s < 11)
