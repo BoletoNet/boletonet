@@ -1410,7 +1410,7 @@ namespace BoletoNet
                 string codigo_protesto = "3";
                 string dias_protesto = "00";
 
-                foreach (Instrucao_BancoBrasil instrucao in boleto.Instrucoes)
+                foreach (var instrucao in boleto.Instrucoes)
                 {
                     switch ((EnumInstrucoes_BancoBrasil)instrucao.Codigo)
                     {
