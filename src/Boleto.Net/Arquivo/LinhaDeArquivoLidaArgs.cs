@@ -14,6 +14,8 @@ namespace BoletoNet
         TraillerDeArquivo = 6,
         DetalheSegmentoW = 7,
         DetalheSegmentoE = 8,
+        DetalheSegmento10 = 10,
+        DetalheSegmento20 = 20
     }
 
     public class LinhaDeArquivoLidaArgs : EventArgs
