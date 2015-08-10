@@ -24,7 +24,7 @@ namespace BoletoNet
             this.Banco = banco;
         }
 
-        public string GetHtml()
+        public string MontaHtml()
         {
             string html = Properties.Resources.Html_DI;
 
