@@ -155,7 +155,7 @@ namespace BoletoNet
                 }
 
 
-                _dacBoleto = Mod11(boleto.CodigoBarra.Codigo, 9, 0);
+                _dacBoleto = Mod11Hsbc(boleto.CodigoBarra.Codigo, 9, 0);
 
                 boleto.CodigoBarra.Codigo = Strings.Left(boleto.CodigoBarra.Codigo, 4) + _dacBoleto + Strings.Right(boleto.CodigoBarra.Codigo, 39);
             }
@@ -191,8 +191,7 @@ namespace BoletoNet
             //AAABC.CCCCX DDDDD.DEEEEY FFFFF.FF001Z W GGGGHHHHHHHHHH
 
             try
-            {
-                //string numeroDocumento = Utils.FormatCode(boleto.NumeroDocumento.ToString(), 13);
+            { 
                 string nossoNumero = Utils.FormatCode(boleto.NossoNumero.ToString(), 13);
                 string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo.ToString(), 7);
 
@@ -374,16 +373,97 @@ namespace BoletoNet
         /// <summary>
         /// HEADER do arquivo CNAB
         /// Gera o HEADER do arquivo remessa de acordo com o lay-out informado
-        /// </summary>
-        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
-        {
-            throw new NotImplementedException("Função não implementada.");
-        }
+        /// </summary> 
+		public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
+		{
+			try
+			{
+				string _header = " ";
 
-        public string GerarHeaderRemessaCNAB240()
-        {
-            throw new NotImplementedException("Função não implementada.");
-        }
+				//base.GerarHeaderRemessa(numeroConvenio, cedente, tipoArquivo, numeroArquivoRemessa);
+
+				switch (tipoArquivo)
+				{
+
+					case TipoArquivo.CNAB240:
+						_header = GerarHeaderRemessaCNAB240(numeroConvenio, cedente, numeroArquivoRemessa);
+						break;
+					case TipoArquivo.CNAB400:
+						_header = GerarHeaderRemessaCNAB400();
+						break;
+					case TipoArquivo.Outro:
+						throw new Exception("Tipo de arquivo inexistente.");
+				}
+
+				return _header;
+
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Erro durante a geração do HEADER do arquivo de REMESSA.", ex);
+			}
+		}
+
+		public string GerarHeaderRemessaCNAB240(string numeroConvenio, Cedente cedente, int numeroArquivoRemessa)
+		{
+			try
+			{
+				string registro;
+				// O sistema não aceita contas com dois dígitos. Quando existe salva-se conta+dígito juntos no campo conta.
+				// Esse tratamento visa verificar se isso ocorreu para esta conta.
+				string contaBancaria = cedente.ContaBancaria.Conta;
+				string digitoContaBancaria = cedente.ContaBancaria.DigitoConta;
+				string contaBancariaComDigito = contaBancaria + digitoContaBancaria;
+
+				if (contaBancaria.Contains("-"))
+				{
+					string[] contaComDigitoArray = cedente.ContaBancaria.Conta.Split('-');
+					contaBancaria = contaComDigitoArray[0];
+					digitoContaBancaria = contaComDigitoArray[1];
+					contaBancariaComDigito = contaBancaria + digitoContaBancaria;
+				}
+
+				registro = "399";                                                                                                               // Código do banco
+				registro += "0000";                                                                                                             // Sequencial do Lote de Serviço - 0000 para header
+				registro += "0";                                                                                                                // Tipo de registro - 0 para header
+				registro += new string(' ', 9);                                                                                                 // Brancos
+				registro += (cedente.CPFCNPJ.Length <= 11) ? "1" : "2";                                                                         // Tipo de inscrição: 1 - Física | 2 - Jurídica
+				registro += Utils.FitStringLength(cedente.CPFCNPJ, 14, 14, '0', 0, true, true, true);                                           // CPF ou CNPJ
+				registro += "COB";                                                                                                              // Convênio - Código do aplicativo no banco
+				registro += "CNAB";                                                                                                             // Convênio - Fixo literal igual à CNAB
+				registro += Utils.FitStringLength(cedente.ContaBancaria.Agencia + contaBancariaComDigito, 13, 13, '0', 0, true, true, true);    // Convênio - Código da cobrança
+				registro += Utils.FitStringLength(cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true);                               // Número da agência da conta bancária
+				registro += Utils.FitStringLength(cedente.ContaBancaria.DigitoAgencia, 1, 1, '0', 0, true, true, false);                        // Dígito da agência da conta bancária
+				registro += Utils.FitStringLength(contaBancariaComDigito, 12, 12, '0', 0, true, true, true);                                    // Número da conta bancária
+				registro += "0";                                                                                                                // Dígito da conta bancária (Orientação do banco: colocar a conta com o dígito no campo anterior e preencher esse campo com 0)
+				registro += "0";                                                                                                                // Dígito verificador da Agência/Conta Bancária
+				registro += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false);                                             // Nome da empresa
+				registro += Utils.FitStringLength("BANCO HSBC", 30, 30, ' ', 0, true, true, false);                                             // Nome do banco
+				registro += new string(' ', 10);                                                                                                // Brancos
+				registro += "1";                                                                                                                // Código: 1 - Remessa | 2 - Retorno | 3 - Retorno Operação (Desc)
+				registro += DateTime.Now.ToString("ddMMyyyy");                                                                                  // Data de geração
+				registro += DateTime.Now.ToString("hhMMss");                                                                                    // Hora de geração
+				registro += Utils.FitStringLength(numeroArquivoRemessa.ToString(), 6, 6, '0', 0, true, true, true);                             // Número sequencial do arquivo
+				registro += "010";                                                                                                              // Número da versão do layout
+				registro += "01600";                                                                                                            // Densidade de gravação do arquivo
+				registro += "0";                                                                                                                // Duplic não aceitar - Envio para cart cobrança simples
+				registro += new string(' ', 11);                                                                                                // Número contrato limite - Apenas para operações de desconto.
+				registro += "0";                                                                                                                // Liberação automática Operação Desconto
+				registro += new string(' ', 7);                                                                                                 // Reservado banco
+				registro += new string(' ', 20);                                                                                                // Reservado empresa
+				registro += new string(' ', 29);                                                                                                // Brancos - Uso exclusivo Febraban/CNAB
+
+				registro = Utils.SubstituiCaracteresEspeciais(registro);
+
+
+				return registro;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Erro durante a geração do HEADER DE ARQUIVO do arquivo de REMESSA.", ex);
+			}
+		}
+
 
         public string GerarHeaderRemessaCNAB400(int numeroConvenio, Cedente cedente, int numeroArquivoRemessa)
         {
@@ -393,53 +473,410 @@ namespace BoletoNet
         {
             throw new NotImplementedException("Função não implementada.");
         }
+		
+		# endregion
+		
+		# region HEADER DE LOTE
+
+		/// <summary>
+		/// HEADER DE LOTE do arquivo CNAB
+		/// Gera o HEADER de Lote do arquivo remessa de acordo com o lay-out informado
+		/// </summary>
+		public override string GerarHeaderLoteRemessa(string numeroConvenio, Cedente cedente, int numeroArquivoRemessa, TipoArquivo tipoArquivo)
+		{
+			try
+			{
+				string header = " ";
+
+				base.GerarHeaderLoteRemessa(numeroConvenio, cedente, numeroArquivoRemessa, tipoArquivo);
+
+				switch (tipoArquivo)
+				{
+					case TipoArquivo.CNAB240:
+						header = GerarHeaderLoteRemessaCNAB240(numeroConvenio, cedente, numeroArquivoRemessa);
+						break;
+					case TipoArquivo.CNAB400:
+						header = GerarHeaderLoteRemessaCNAB400();
+						break;
+					case TipoArquivo.Outro:
+						throw new Exception("Tipo de arquivo inexistente.");
+				}
+
+				return header;
+
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Erro durante a geração do HEADER DO LOTE do arquivo de REMESSA.", ex);
+			}
+		}
+
+		// HEADER DE LOTE REMESSA CNAB240
+		private string GerarHeaderLoteRemessaCNAB240(string numeroConvenio, Cedente cedente, int numeroArquivoRemessa)
+		{
+			try
+			{
+
+				// O sistema não aceita contas com dois dígitos. Quando existe salva-se conta+dígito juntos no campo conta.
+				// Esse tratamento visa verificar se isso ocorreu para esta conta.
+				string contaBancaria = cedente.ContaBancaria.Conta;
+				string digitoContaBancaria = cedente.ContaBancaria.DigitoConta;
+				string contaBancariaComDigito = contaBancaria + digitoContaBancaria;
+
+				if (contaBancaria.Contains("-"))
+				{
+					string[] contaComDigitoArray = cedente.ContaBancaria.Conta.Split('-');
+					contaBancaria = contaComDigitoArray[0];
+					digitoContaBancaria = contaComDigitoArray[1];
+					contaBancariaComDigito = contaBancaria + digitoContaBancaria;
+				}
+
+				string registro;
+
+				registro = "399";                                                                                                               // Código do banco
+				registro += "0001";                                                                                                             // Número sequencial do lote
+				registro += "1";                                                                                                                // Código do Registro: 1 - Header de Lote
+				registro += "R";                                                                                                                // Tipo de operação: R - Remessa
+				registro += "01";                                                                                                               // Tipo de serviço
+				registro += "00";                                                                                                               // Forma de lançamento
+				registro += "010";                                                                                                              // Número da versão do layout do lote
+				registro += " ";                                                                                                                // Uso exclusivo Febraban/CNAB
+				registro += (cedente.CPFCNPJ.Length <= 11) ? "1" : "2";                                                                         // Tipo de inscrição: 1 - Física | 2 - Jurídica
+				registro += Utils.FitStringLength(cedente.CPFCNPJ, 15, 15, '0', 0, true, true, true);                                           // CPF ou CNPJ
+				registro += "COB";                                                                                                              // Convênio - Código do aplicativo no banco
+				registro += "CNAB";                                                                                                             // Convênio - Fixo literal igual à CNAB
+				registro += Utils.FitStringLength(cedente.ContaBancaria.Agencia + contaBancariaComDigito, 13, 13, '0', 0, true, true, true);    // Convênio - Código da cobrança
+				registro += Utils.FitStringLength(cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true);                               // Número da agência da conta bancária
+				registro += Utils.FitStringLength(cedente.ContaBancaria.DigitoAgencia, 1, 1, '0', 0, true, true, false);                        // Dígito da agência da conta bancária
+				registro += Utils.FitStringLength(contaBancariaComDigito, 12, 12, '0', 0, true, true, true);                                    // Número da conta bancária
+				registro += "0";                                                                                                                // Dígito da conta bancária (Orientação do banco: colocar a conta com o dígito no campo anterior e preencher esse campo com 0)
+				registro += "0";                                                                                                                // Dígito verificador da Agência/Conta Bancária
+				registro += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false);                                             // Nome da empresa
+				registro += new string(' ', 40);                                                                                                // Brancos - Mensagem 1
+				registro += new string(' ', 40);                                                                                                // Brancos - Mensagem 2
+				registro += Utils.FitStringLength(numeroArquivoRemessa.ToString(), 8, 8, '0', 0, true, true, true);                             // Número sequencial do arquivo
+				registro += DateTime.Now.ToString("ddMMyyyy");                                                                                  // Data de gravação
+				registro += "00000000";                                                                                                         // Data do crédito
+				registro += new string(' ', 11);                                                                                                // Número contrato limite - Apenas para operações de desconto.
+				registro += new string(' ', 22);                                                                                                // Brancos - Uso exclusivo Febraban/CNAB
+
+				registro = Utils.SubstituiCaracteresEspeciais(registro);
+
+				return registro;
+
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Erro durante a geração do HEADER DE LOTE do arquivo de REMESSA.", ex);
+			}
+		}
+
+		private string GerarHeaderLoteRemessaCNAB400()
+		{
+			throw new Exception("Função não implementada.");
+		}
+
+		
+		
         # endregion
 
         # region DETALHE
 
-        /// <summary>
-        /// DETALHE do arquivo CNAB
-        /// Gera o DETALHE do arquivo remessa de acordo com o lay-out informado
-        /// </summary>
-        public override string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
-        {
-            throw new NotImplementedException("Função não implementada.");
-        }
+		/// <summary>
+		/// DETALHE do arquivo CNAB
+		/// Gera o DETALHE do arquivo remessa de acordo com o lay-out informado
+		/// </summary>
+		public override string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+		{
+			throw new NotImplementedException("Função não implementada.");
+		}
 
-        public string GerarDetalheRemessaCNAB240()
-        {
-            throw new NotImplementedException("Função não implementada.");
-        }
+		public override string GerarDetalheSegmentoPRemessa(Boleto boleto, int numeroRegistro, string numeroConvenio)
+		{
+			try
+			{
+				string registro;
 
-        public string GerarDetalheRemessaCNAB400(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
-        {
-            throw new NotImplementedException("Função não implementada.");
-        }
+				// O sistema não aceita contas com dois dígitos. Quando existe salva-se conta+dígito juntos no campo conta.
+				// Esse tratamento visa verificar se isso ocorreu para esta conta.
+				string contaBancaria = boleto.Cedente.ContaBancaria.Conta;
+				string digitoContaBancaria = boleto.Cedente.ContaBancaria.DigitoConta;
 
-        # endregion DETALHE
+				if (contaBancaria.Contains("-"))
+				{
+					string contaDigito = boleto.Cedente.ContaBancaria.Conta.Replace("-", "");
+					contaBancaria = contaDigito.Substring(0, contaDigito.Length-1);
+					digitoContaBancaria = contaDigito.Substring(contaDigito.Length-1);
+				}
 
-        # region TRAILER
+				registro = "399";                                                                                                               // Código do banco
+				registro += "0001";                                                                                                             // Número sequencial do lote
+				registro += "3";                                                                                                                // Código do Registro: 1 - Header de Lote
+				registro += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);                                   // Número sequencial do registro do lote
+				registro += "P";                                                                                                                // Código do segmento do registro de detalhe
+				registro += " ";                                                                                                                // Uso exclusivo Febraban/CNAB
+				registro += "01";                                                                                                               // Código de movimento
+				registro += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true);                        // Número da agência da conta bancária
+				registro += Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoAgencia, 1, 1, '0', 0, true, true, false);                 // Dígito da agência da conta bancária
+				registro += Utils.FitStringLength(contaBancaria, 12, 12, '0', 0, true, true, true);                                             // Número da conta bancária
+				registro += Utils.FitStringLength(digitoContaBancaria, 1, 1, '0', 0, true, true, false);                                        // Dígito da conta bancária
+				registro += "0";                                                                                                                // Dígito verificador da Agência/Conta Bancária
+                int dacNossoNumero = Mod11Hsbc(boleto.NossoNumero, 7);
 
-        /// <summary>
-        /// TRAILER do arquivo CNAB
-        /// Gera o TRAILER do arquivo remessa de acordo com o lay-out informado
-        /// </summary>
-        public override string GerarTrailerRemessa(int numeroRegistro, TipoArquivo tipoArquivo, Cedente cedente, decimal vltitulostotal)
-        {
-            throw new NotImplementedException("Função não implementada.");
-        }
+				registro += Utils.FitStringLength(boleto.NossoNumero+dacNossoNumero.ToString(), 11, 11, '0', 0, true, true, true);              // Nosso número      
+                registro += new string(' ', 9);                                                                                                 // Nosso número      
+				registro += "1";                                                                                                                // Código da carteira: 1 - Cobrança Simples
+				registro += "1";                                                                                                                // Forma de cadastramento do título no banco
+				registro += "1";                                                                                                                // Tipo de documento
+				registro += "2";                                                                                                                // Identificação da emissão do bloqueto: 2 - Cliente emite
+				registro += "2";                                                                                                                // Identificação da distribuição do bloqueto: 2 - Cliente distribui
+				registro += Utils.FitStringLength(boleto.NumeroDocumento, 15, 15, ' ', 0, true, true, false);                                   // Número do documento de cobrança
+				registro += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);                 // Data do vencimento
+				registro += Utils.FitStringLength(boleto.ValorBoleto.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);      // Valor nominal do título
+				registro += "00000";                                                                                                            // Agência encarregada da cobrança
+				registro += " ";                                                                                                                // Dígito verificador da agência acima
+				registro += Utils.FitStringLength(boleto.EspecieDocumento.Codigo.ToString(), 2, 2, '0', 0, true, true, true);                   // Espécie do título
+				registro += "N";                                                                                                                // Aceite
+				registro += Utils.FitStringLength(boleto.DataDocumento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);                  // Data de emissão do título
 
-        public string GerarTrailerRemessa240()
-        {
-            throw new NotImplementedException("Função não implementada.");
-        }
+				if (boleto.JurosMora > 0)
+				{
+					registro += "1";                                                                                                            // Código do juros de mora: 1 - Valor por dia
+					registro += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);             // Data do juros de mora
+					registro += Utils.FitStringLength(boleto.JurosMora.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);    // Valor do juros de mora
+				}
+				else
+				{
+					registro += "3";                                                                                                            // Código do juros de mora: 3 - Isento
+					registro += new string('0', 8);                                                                                             // Brancos
+					registro += new string('0', 15);                                                                                            // Brancos
+				}
 
-        public string GerarTrailerRemessa400(int numeroRegistro)
-        {
-            throw new NotImplementedException("Função não implementada.");
-        }
+				if (boleto.ValorDesconto > 0)
+				{
+					registro += "1";                                                                                                            // Código do desconto: 1 - Valor fixo até a data informada
+					registro += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);             // Data do desconto
+					registro += Utils.FitStringLength(boleto.ValorDesconto.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);// Valor do desconto
+				}
+				else
+				{
+					registro += new string('0', 24);                                                                                            // Brancos
+				}
 
-        # endregion
+				registro += new string('0', 15);                                                                                                // Valor do IOF a ser recolhido
+				registro += new string('0', 15);                                                                                                // Valor do abatimento
+				registro += Utils.FitStringLength(boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, false);                                   // Identificação do título na empresa
+				registro += "3";                                                                                                                // Código para protesto
+				registro += "00";                                                                                                               // Número de dias para protesto
+				registro += "0";                                                                                                                // Código para baixa/devolução
+				registro += "000";                                                                                                              // Número de dias para baixa/devolução
+				registro += "09";                                                                                                               // Código da moeda
+				registro += "0000000000";                                                                                                       // Número do contrato da operação de crédito
+				registro += " ";                                                                                                                // Uso exclusivo Febraban/CNAB
+
+				registro = Utils.SubstituiCaracteresEspeciais(registro);
+
+				return registro;
+
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Erro durante a geração do SEGMENTO P DO DETALHE do arquivo de REMESSA.", ex);
+			}
+		}
+
+		public override string GerarDetalheSegmentoQRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+		{
+			try
+			{
+				string registro;
+
+				registro = "399";                                                                                                               // Código do banco
+				registro += "0001";                                                                                                             // Número sequencial do lote
+				registro += "3";                                                                                                                // Código do Registro: 1 - Header de Lote
+				registro += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);                                   // Número sequencial do registro do lote
+				registro += "Q";                                                                                                                // Código do segmento do registro de detalhe
+				registro += " ";                                                                                                                // Uso exclusivo Febraban/CNAB
+				registro += "01";                                                                                                               // Código de movimento
+				registro += (boleto.Sacado.CPFCNPJ.Length <= 11) ? "1" : "2";                                                                   // Tipo de inscrição: 1 - Física | 2 - Jurídica
+				registro += Utils.FitStringLength(boleto.Sacado.CPFCNPJ, 15, 15, '0', 0, true, true, true);                                     // CPF ou CNPJ
+				registro += Utils.FitStringLength(boleto.Sacado.Nome.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();              // Nome do sacado
+				registro += Utils.FitStringLength(boleto.Sacado.Endereco.End.TrimStart(' '), 38, 38, ' ', 0, true, true, false).ToUpper();      // Endereço do sacado
+				registro += "  ";                                                                                                               // Uso banco
+				registro += Utils.FitStringLength(boleto.Sacado.Endereco.Bairro.TrimStart(' '), 15, 15, ' ', 0, true, true, false).ToUpper();   // Bairro do endereço do sacado
+				registro += Utils.FitStringLength(boleto.Sacado.Endereco.CEP, 8, 8, ' ', 0, true, true, false);                                 // CEP do endereço do sacado
+				registro += Utils.FitStringLength(boleto.Sacado.Endereco.Cidade.TrimStart(' '), 15, 15, ' ', 0, true, true, false).ToUpper();   // Cidade do endereço do sacado
+				registro += Utils.FitStringLength(boleto.Sacado.Endereco.UF, 2, 2, ' ', 0, true, true, false).ToUpper();                        // UF do endereço do sacado
+				registro += "0";                                                                                                                // Tipo inscrição do avalista do sacado
+				registro += new string('0', 15);                                                                                                // Número de inscrição do avalista do sacado
+				registro += new string('0', 40);                                                                                                // Nome do avalista do sacado
+				registro += "   ";                                                                                                              // Código banco correspondente na compensação
+				registro += new string(' ', 20);                                                                                                // Nosso número no banco correspondente
+				registro += new string(' ', 8);                                                                                                 // Uso exclusivo Febraban/CNAB
+
+				registro = Utils.SubstituiCaracteresEspeciais(registro);
+
+				return registro;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Erro durante a geração do SEGMENTO Q DO DETALHE do arquivo de REMESSA.", ex);
+			}
+		}
+
+		public string GerarDetalheRemessaCNAB240()
+		{
+			throw new NotImplementedException("Função não implementada.");
+		}
+
+		public string GerarDetalheRemessaCNAB400(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+		{
+			throw new NotImplementedException("Função não implementada.");
+		}
+
+		# endregion DETALHE
+
+		# endregion DETALHE
+
+		# region TRAILER DE LOTE
+
+		/// <summary>
+		/// TRAILER DE LOTE do arquivo CNAB
+		/// Gera o TRAILER de Lote do arquivo remessa de acordo com o lay-out informado
+		/// </summary>
+		public override string GerarTrailerLoteRemessa(int quantidadeDeRegistros)
+		{
+			try
+			{
+				string registro = "";
+
+				/*switch (tipoArquivo)
+				{
+					case TipoArquivo.CNAB240:*/
+						registro = GerarTrailerLoteRemessaCNAB240(quantidadeDeRegistros);
+				/*		break;
+					case TipoArquivo.CNAB400:
+						registro = GerarTrailerLoteRemessaCNAB400(quantidadeDeRegistros);
+						break;
+					case TipoArquivo.Outro:
+						throw new Exception("Tipo de arquivo inexistente.");
+				}*/
+
+				return registro;
+
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Erro durante a geração do TRAILER DO LOTE do arquivo de REMESSA.", ex);
+			}
+		}
+
+		// TRAILER DE LOTE REMESSA CNAB240
+		private string GerarTrailerLoteRemessaCNAB240(int quantidadeDeRegistros)
+		{
+			try
+			{
+
+				string registro;
+
+				registro = "399";                                                                                           // Código do banco
+				registro += "0001";                                                                                         // Número sequencial do lote
+				registro += "5";                                                                                            // Código do Registro: 5 - Trailer de Lote
+				registro += new string(' ', 9);                                                                             // Brancos - Uso exclusivo Febraban/CNAB
+				registro += Utils.FitStringLength(quantidadeDeRegistros.ToString(), 6, 6, '0', 0, true, true, true);        // Tipo de operação: R - Remessa
+				registro += new string(' ', 217);                                                                           // Brancos - Uso exclusivo Febraban/CNAB
+
+				registro = Utils.SubstituiCaracteresEspeciais(registro);
+
+				return registro;
+
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Erro durante a geração do TRAILER DE LOTE do arquivo de REMESSA.", ex);
+			}
+		}
+
+		private string GerarTrailerLoteRemessaCNAB400(int quantidadeDeRegistros)
+		{
+			throw new Exception("Função não implementada.");
+		}
+
+		# endregion
+				
+		# region TRAILER
+
+		/// <summary>
+		/// Gera o Trailer de arquivo do arquivo de remessa
+		/// </summary>
+		public override string GerarTrailerArquivoRemessa(int numeroRegistro)
+		{
+			try
+			{
+				return GerarTrailerRemessa240(numeroRegistro); ;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("", ex);
+			}
+		}
+
+		public override string GerarTrailerRemessa(int numeroRegistro, TipoArquivo tipoArquivo, Cedente cedente, decimal vltitulostotal)
+		{
+			try
+			{
+				string _trailer = " ";
+
+				switch (tipoArquivo)
+				{
+					case TipoArquivo.CNAB240:
+						_trailer = GerarTrailerRemessa240(numeroRegistro);
+						break;
+					case TipoArquivo.CNAB400:
+						_trailer = GerarTrailerRemessa400(numeroRegistro);
+						break;
+					case TipoArquivo.Outro:
+						throw new Exception("Tipo de arquivo inexistente.");
+				}
+
+				return _trailer;
+
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Erro durante a geração do TRAILER do arquivo de REMESSA.", ex);
+			}
+		}
+
+		public string GerarTrailerRemessa240(int quantidadeDeRegistros)
+		{
+			try
+			{
+				string registro;
+				
+				registro = "399";                                                                                           // Código do banco
+				registro += "9999";                                                                                         // Número do trailer
+				registro += "9";                                                                                            // Código do Registro: 9 - Trailer de Arquivo
+				registro += new string(' ', 9);                                                                             // Brancos - Uso exclusivo Febraban/CNAB
+				registro += "000001";                                                                                       // Quantidade de lotes (Registros tipo 1)
+				registro += Utils.FitStringLength(quantidadeDeRegistros.ToString(), 6, 6, '0', 0, true, true, true);        // Quantidade de registros (Registros tipo: 0+1+3+5+9)
+				registro += "000000";                                                                                       // Quantidade de contas para conciliação
+				registro += new string(' ', 205);                                                                           // Brancos - Uso exclusivo Febraban/CNAB
+
+				return registro;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("", ex);
+			}
+		}
+
+		public string GerarTrailerRemessa400(int numeroRegistro)
+		{
+			throw new NotImplementedException("Função não implementada.");
+		}
+
+		# endregion
 
         #endregion
 
