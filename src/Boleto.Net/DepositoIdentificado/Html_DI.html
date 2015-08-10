@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style type="text/css">
+        td{
+            border: 1px solid black;
+            font-family: Arial;
+            font-size: 11pt;
+        }
+        label{
+            padding-bottom: 2px;
+        }
+        .div_logo{
+            width: 50%;
+            min-height: 100px;
+            float: left;
+        }
+        .razao, 
+        .cnpj, 
+        .endereco {
+            width: 50%;
+            float: right;
+        }
+        .razao{
+            font-size: 14pt;
+            font-weight: bold;
+        }
+        .cnpj, .endereco{
+            font-size: 11pt;
+        }
+        .titulo, .info{
+            display: block;
+            width: 98%;
+            padding: 2px 2px 3px 2px;
+        }
+        .centro{
+            text-align: center;
+        }
+        .direita{
+            text-align:right;
+        }
+        ul{
+            padding: 0 0 0 2px;
+            margin: 2px 0 0 2px;
+        }
+    </style>
+</head>
+<body>
+    <table cellpadding="0" cellspacing="0" width="800">
+        <tr>
+            <td colspan="3">
+                <div class="div_logo">
+                    <img src="@LOGO" class="logo" title="" />
+                </div>
+                <label class="razao">@RAZAO</label>
+                <label class="cnpj">@CNPJ</label>
+                <label class="endereco">@ENDERECO1</label>
+                <label class="endereco">@ENDERECO2</label>
+            </td>
+        </tr>
+        <tr>
+            <td width="25%">
+                <label class="titulo">AGÊNCIA</label>
+                <label class="info centro">@AGENCIA</label>
+            </td>
+            <td width="25%">
+                <label class="titulo">C/C</label>
+                <label class="info centro">@CONTA</label>
+            </td>
+            <td width="50%">
+                <label class="titulo">NÚMERO DO DOCUMENTO</label>
+                <label class="info direita">@NUMERO_DOCUMENTO</label>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <label class="titulo">VENCIMENTO</label>
+                <label class="info centro">@VENCIMENTO</label>
+            </td>
+            <td>
+                <label class="titulo">VALOR</label>
+                <label class="info direita">@VALOR</label>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <label class="titulo">SACADO</label>
+                <label class="info">@SACADO</label>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" height="250" valign="top">
+                <ul class="instrucoes">@INSTRUCOES_PAGAMENTO</ul>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" height="100" valign="top">
+                <label class="titulo">INSTRUÇÕES DE RECEBIMENTO</label>
+                <ul class="instrucoes">@INSTRUCOES_RECEBIMENTO</ul>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" height="100" valign="top">
+                <label class="titulo">AUTENTICAÇÃO MECÂNICA</label>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
