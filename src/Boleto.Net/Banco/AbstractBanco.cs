@@ -410,7 +410,7 @@ namespace BoletoNet
 
             int d, s = 0, p = 2, r;
 
-            for (int i = seq.Length; i > 0; i--)
+            for (int i = seq.Length - 1; i >= 0; i--)
             {
                 r = (Convert.ToInt32(seq[i]) * p);
 

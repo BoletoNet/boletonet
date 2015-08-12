@@ -22,6 +22,7 @@ namespace BoletoNet
                 {
                     case 11: //Se for CPF
                     case 14: //Ou CNPJ simplesmente atribui à variável
+                    case 16:
                         _numeroDocumento = n;
                         break;
                     case 15:
