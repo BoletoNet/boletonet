@@ -66,14 +66,14 @@ namespace BoletoNet
 
         private string CalcularNCNossoNumero(String nossoNumero)
         {
-            int dv1 = Mod10BanriMod10BanriMod10BanriMod10Banri(nossoNumero);
+            int dv1 = Mod10Banri(nossoNumero);
             int dv1e2 = Mod11Banri(nossoNumero, dv1); // O módulo 11 sempre devolve os dois Dígitos, pois, as vezes o dígito calculado no mod10 será incrementado em 1
             return nossoNumero + dv1e2.ToString("00");
         }
 
         private string CalcularNCCodBarras(String seq)
         {
-            int dv1 = Mod10BanriMod10BanriMod10Banri(seq);
+            int dv1 = Mod10Banri(seq);
             int dv2 = Mod11Banri(seq, dv1);// O módulo 11 sempre devolve os dois Dígitos, pois, as vezes, o dígito calculado no mod10 será incrementado em 1
             return dv2.ToString("00");
         }
