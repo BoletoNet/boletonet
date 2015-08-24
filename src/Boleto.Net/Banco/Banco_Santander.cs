@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.UI;
 using BoletoNet;
+using System.Globalization;
 
 [assembly: WebResource("BoletoNet.Imagens.033.jpg", "image/jpg")]
 
@@ -1118,8 +1119,9 @@ namespace BoletoNet
                 detalhe.NossoNumero = registro.Substring(40, 13);
                 detalhe.CodigoCarteira = Convert.ToInt32(registro.Substring(43, 1));
                 detalhe.NumeroDocumento = registro.Substring(54, 15);
-                int dataVencimento = Convert.ToInt32(registro.Substring(69, 8));
-                detalhe.DataVencimento = Convert.ToDateTime(dataVencimento.ToString("##-##-####"));
+                string dataVencimento = registro.Substring(69, 8);
+                //detalhe.DataVencimento = Convert.ToDateTime(dataVencimento.ToString("##-##-####"));
+                detalhe.DataVencimento = DateTime.ParseExact(dataVencimento, "ddMMyyyy", CultureInfo.InvariantCulture);
                 decimal valorTitulo = Convert.ToInt64(registro.Substring(77, 15));
                 detalhe.ValorTitulo = valorTitulo / 100;
                 detalhe.IdentificacaoTituloEmpresa = registro.Substring(100, 25);
