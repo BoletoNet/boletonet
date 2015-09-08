@@ -266,7 +266,7 @@ namespace BoletoNet
         {
             try
             {
-                return Convert.ToDateTime(value);
+                return Convert.ToDateTime(value, CultureInfo.GetCultureInfo("pt-BR"));
             }
             catch
             {
