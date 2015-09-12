@@ -192,6 +192,7 @@ namespace Boleto.Net.MVC.Models
             //Carteiras 
             BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 1.01m, "09", "01000000001", c);
             b.NumeroDocumento = "01000000001";
+            b.DataVencimento = new DateTime(2015, 09, 12);
 
             b.Sacado = new Sacado("000.000.000-00", "Nome do seu Cliente ");
             b.Sacado.Endereco.End = "Endereço do seu Cliente ";
