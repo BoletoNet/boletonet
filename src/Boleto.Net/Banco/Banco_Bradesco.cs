@@ -116,7 +116,7 @@ namespace BoletoNet
             //if (boleto.Carteira == "06" && !Utils.DataValida(boleto.DataVencimento))
             //    FFFF = "0000";
 
-            string VVVVVVVVVV = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
+            string VVVVVVVVVV = boleto.ValorBoleto.ToString("N2").Replace(",", "").Replace(".", "");
             VVVVVVVVVV = Utils.FormatCode(VVVVVVVVVV, 10);
 
             //if (Utils.ToInt64(VVVVVVVVVV) == 0)
@@ -148,7 +148,7 @@ namespace BoletoNet
         /// 
         public override void FormataCodigoBarra(Boleto boleto)
         {
-            string valorBoleto = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
+            var valorBoleto = boleto.ValorBoleto.ToString("N2").Replace(",", "").Replace(".", "");
             valorBoleto = Utils.FormatCode(valorBoleto, 10);
 
             if (boleto.Carteira == "02" || boleto.Carteira == "03" || boleto.Carteira == "09" || boleto.Carteira == "19")
