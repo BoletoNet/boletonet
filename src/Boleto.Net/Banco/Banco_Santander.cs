@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.UI;
 using BoletoNet;
+using System.Globalization;
 
 [assembly: WebResource("BoletoNet.Imagens.033.jpg", "image/jpg")]
 
@@ -853,7 +854,7 @@ namespace BoletoNet
                 {
                     if (boleto.Instrucoes[0].Codigo == (int)EnumInstrucoes_Santander.Protestar)
                         diasProtesto = Utils.FitStringLength(boleto.Instrucoes[0].QuantidadeDias.ToString(), 2, 2, '0', 0, true, true, true);
-                    else if (boleto.Instrucoes[1].Codigo == (int)EnumInstrucoes_Santander.Protestar)
+                    else if (boleto.Instrucoes.Count > 1 && boleto.Instrucoes[1].Codigo == (int)EnumInstrucoes_Santander.Protestar)
                         diasProtesto = Utils.FitStringLength(boleto.Instrucoes[1].QuantidadeDias.ToString(), 2, 2, '0', 0, true, true, true);
                     else
                         diasProtesto = "00"; //Nº de dias para protesto 9(02)
@@ -1118,8 +1119,9 @@ namespace BoletoNet
                 detalhe.NossoNumero = registro.Substring(40, 13);
                 detalhe.CodigoCarteira = Convert.ToInt32(registro.Substring(43, 1));
                 detalhe.NumeroDocumento = registro.Substring(54, 15);
-                int dataVencimento = Convert.ToInt32(registro.Substring(69, 8));
-                detalhe.DataVencimento = Convert.ToDateTime(dataVencimento.ToString("##-##-####"));
+                string dataVencimento = registro.Substring(69, 8);
+                //detalhe.DataVencimento = Convert.ToDateTime(dataVencimento.ToString("##-##-####"));
+                detalhe.DataVencimento = DateTime.ParseExact(dataVencimento, "ddMMyyyy", CultureInfo.InvariantCulture);
                 decimal valorTitulo = Convert.ToInt64(registro.Substring(77, 15));
                 detalhe.ValorTitulo = valorTitulo / 100;
                 detalhe.IdentificacaoTituloEmpresa = registro.Substring(100, 25);

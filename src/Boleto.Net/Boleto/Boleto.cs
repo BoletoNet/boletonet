@@ -545,7 +545,7 @@ namespace BoletoNet
 
 			// Verifica se data do documento é valida
 			////if (this.DataDocumento.ToString("dd/MM/yyyy") == "01/01/0001")
-			if (this.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
+			if (this.DataDocumento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
 				this.DataDocumento = DateTime.Now;
 
 			this.Banco.ValidaBoleto(this);

@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Drawing.Imaging;
 using System.Web;
 
+
 [assembly: WebResource("BoletoNet.BoletoImpressao.BoletoNet.css", "text/css", PerformSubstitution = true)]
 [assembly: WebResource("BoletoNet.Imagens.barra.gif", "image/gif")]
 //[assembly: WebResource("BoletoNet.Imagens.corte.gif", "image/gif")]
@@ -718,12 +719,12 @@ namespace BoletoNet
 		/// <param name="srcBarra">Local apontado pela imagem de barra.</param>
 		/// <param name="srcCodigoBarra">Local apontado pela imagem do código de barras.</param>
 		/// <returns>StringBuilder conténdo o código html do boleto bancário.</returns>
-		protected StringBuilder HtmlOffLine(string textoNoComecoDoEmail, string srcLogo, string srcBarra, string srcCodigoBarra)
+        protected StringBuilder HtmlOffLine(string textoNoComecoDoEmail, string srcLogo, string srcBarra, string srcCodigoBarra, bool usaCSSPDF = false)
 		{//protected StringBuilder HtmlOffLine(string srcCorte, string srcLogo, string srcBarra, string srcPonto, string srcBarraInterna, string srcCodigoBarra)
 			this.OnLoad(EventArgs.Empty);
 
 			StringBuilder html = new StringBuilder();
-			HtmlOfflineHeader(html);
+            HtmlOfflineHeader(html, usaCSSPDF);
 			if (textoNoComecoDoEmail != null && textoNoComecoDoEmail != "")
 			{
 				html.Append(textoNoComecoDoEmail);
@@ -740,16 +741,19 @@ namespace BoletoNet
 		/// Monta o Header de um email com pelo menos um boleto dentro.
 		/// </summary>
 		/// <param name="saida">StringBuilder onde o conteudo sera salvo.</param>
-		protected static void HtmlOfflineHeader(StringBuilder html)
+        protected static void HtmlOfflineHeader(StringBuilder html, bool usaCSSPDF = false)
 		{
 			html.Append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n");
 			html.Append("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
+            html.Append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n");
+            html.Append("<meta charset=\"utf-8\"/>\n");
 			html.Append("<head>");
 			html.Append("    <title>Boleto.Net</title>\n");
 
 			#region Css
 			{
-				Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BoletoNet.BoletoImpressao.BoletoNet.css");
+                string arquivoCSS = usaCSSPDF ? "BoletoNet.BoletoImpressao.BoletoNetPDF.css" : "BoletoNet.BoletoImpressao.BoletoNet.css";
+				Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(arquivoCSS);
 
 				using (StreamReader sr = new StreamReader(stream))
 				{
@@ -1097,7 +1101,8 @@ namespace BoletoNet
 		/// <desenvolvedor>Iuri André Stona</desenvolvedor>
 		/// <criacao>23/01/2014</criacao>
 		/// <alteracao>08/08/2014</alteracao>
-		public string MontaHtmlEmbedded(bool convertLinhaDigitavelToImage = false)
+        
+		public string MontaHtmlEmbedded(bool convertLinhaDigitavelToImage = false, bool usaCSSPDF = false)
 		{
 			OnLoad(EventArgs.Empty);
 
@@ -1128,7 +1133,7 @@ namespace BoletoNet
 				Boleto.CodigoBarra.LinhaDigitavel = @"<img style=""max-width:420px; margin-bottom: 2px"" src=" + fnLinha + " />";
 			}
 
-			string s = HtmlOffLine(null, fnLogo, fnBarra, fnCodigoBarras).ToString();
+			string s = HtmlOffLine(null, fnLogo, fnBarra, fnCodigoBarras, usaCSSPDF).ToString();
 
 			if (convertLinhaDigitavelToImage)
 			{
@@ -1138,6 +1143,11 @@ namespace BoletoNet
 			return s;
 		}
 
+        public byte[] MontaBytesPDF(bool convertLinhaDigitavelToImage = false)
+        {
+
+            return (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(this.MontaHtmlEmbedded(convertLinhaDigitavelToImage,true));
+        }
 		#endregion Geração do Html OffLine
 
 		public System.Drawing.Image GeraImagemCodigoBarras(Boleto boleto)
