@@ -439,7 +439,7 @@ namespace BoletoNet
                 _detalhe.Append("0"); //Posição 095
                 _detalhe.Append(Utils.FitStringLength(boleto.Cedente.NumeroBordero.ToString(), 6, 6, '0', 0, true, true, true)); //Posição 096 a 101
                 _detalhe.Append(new string(' ', 5)); //Posição 102 a 106
-                _detalhe.Append(Utils.FitStringLength(boleto.Carteira, 2, 2, '0', 0, true, true, true)); //Posição 107 a 108
+                _detalhe.Append(Utils.FitStringLength(boleto.TipoModalidade, 2, 2, '0', 0, true, true, true));  //Posição 107 a 108
                 _detalhe.Append("01"); //Posição 109 a 110 - REGISTRO DE TITULOS
                 _detalhe.Append(Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, '0', 0, true, true, true)); //Posição 111 a 120
                 _detalhe.Append(boleto.DataVencimento.ToString("ddMMyy")); //Posição 121 a 126
@@ -534,7 +534,19 @@ namespace BoletoNet
                 detalhe.NossoNumero = registro.Substring(62, 11);
                 detalhe.DACNossoNumero = registro.Substring(73, 1);
 
-                detalhe.Carteira = registro.Substring(106, 2); //Carteira
+                switch (registro.Substring(106, 2)) // Carteira
+	        {
+	          case "01":
+	            detalhe.Carteira = "1";
+	            break;
+	          case "02":
+	            detalhe.Carteira = "1";
+	            break;
+	          case "03":
+	            detalhe.Carteira = "3";
+	            break;
+	        }
+	        
                 detalhe.CodigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2)); //Identificação de Ocorrência
                 detalhe.DescricaoOcorrencia = this.Ocorrencia(registro.Substring(108, 2)); //Descrição da ocorrência
                 detalhe.DataOcorrencia = Utils.ToDateTime(Utils.ToInt32(registro.Substring(110, 6)).ToString("##-##-##")); //Data da ocorrencia
