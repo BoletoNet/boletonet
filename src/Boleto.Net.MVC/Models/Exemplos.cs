@@ -299,7 +299,7 @@ namespace Boleto.Net.MVC.Models
             // Código fornecido pela agencia, NÃO é o numero da conta
             c.Codigo = "0000000"; // 7 posicoes
 
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 2, "CNR", "888888888", c); //cod documento
+            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 2, "CNR", "1330001490684", c); //cod documento
             b.NumeroDocumento = "9999999999999"; // nr documento
 
             b.Sacado = new Sacado("000.000.000-00", "Nome do seu Cliente ");

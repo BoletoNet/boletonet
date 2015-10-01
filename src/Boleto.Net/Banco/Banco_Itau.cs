@@ -65,10 +65,18 @@ namespace BoletoNet
                     }
                     throw new NotImplementedException("Carteira não implementada: " + boleto.Carteira + carteirasImplementadas.ToString());
                 }
+
+                //Verifica se o NossoNumero é um inteiro válido.
+                int intNossoNumero;
+                if (!Int32.TryParse(boleto.NossoNumero, out intNossoNumero))
+                    throw new NotImplementedException("Nosso número para a carteira " + boleto.Carteira + " inválido.");
+
                 //Verifica se o tamanho para o NossoNumero são 8 dígitos
-                if (Convert.ToInt32(boleto.NossoNumero).ToString().Length > 8)
-                    throw new NotImplementedException("A quantidade de dígitos do nosso número para a carteira " + boleto.Carteira + ", são 8 números.");
-                else if (Convert.ToInt32(boleto.NossoNumero).ToString().Length < 8)
+                if (boleto.NossoNumero.Length > 8)
+                    throw new NotImplementedException("A quantidade de dígitos do nosso número para a carteira "
+                        + boleto.Carteira + ", são 8 números.");
+
+                if (boleto.NossoNumero.Length < 8)
                     boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 8);
 
                 //É obrigatório o preenchimento do número do documento
