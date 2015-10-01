@@ -62,16 +62,16 @@ namespace BoletoNet
                 //Verifica se o nosso número é válido
                 if (nossoNumero == 0)
                     throw new NotImplementedException("Nosso número inválido");
+                // Correção: O campo “Código do Documento” deve ser composto somente de código numérico 
+                // com até 13 posições e 3 posições para os dígitos verificadores, utilizando 16 posições no máximo. 
+                if (tamanhoNossoNumero > 13)
+                    throw new NotImplementedException("A quantidade de dígitos do nosso número para a carteira " + boleto.Carteira + ", são 13 números.");
 
-                //Verifica se o tamanho para o NossoNumero são 10 dígitos (5 range + 5 numero sequencial)
-                if (tamanhoNossoNumero > 10)
-                    throw new NotImplementedException("A quantidade de dígitos do nosso número para a carteira " + boleto.Carteira + ", são 10 números.");
-
-                if (tamanhoNossoNumero < 10)
-                    boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 10);
+                if (tamanhoNossoNumero < 13)
+                    boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 13);
 
                 // Calcula o DAC do Nosso Número
-                // Nosso Número = Range(5) + Numero Sequencial(5)
+                // Nosso Número = Range(5) + Numero Sequencial(8)
                 //_dacNossoNumero = Mod11(boleto.NossoNumero, 7).ToString(); Estava calculando errado, de acordo com o HSBC, quando o resto fosse 1, tinha que gerar digito 0. Criei um mod11Hsbc para isso.
                 _dacNossoNumero = Mod11Hsbc(boleto.NossoNumero, 7).ToString();//por Transis em 25/02/15
 
@@ -320,7 +320,7 @@ namespace BoletoNet
                         boleto.NossoNumero = string.Format("{0}{1}", boleto.NossoNumero, _dacNossoNumero);
                         break;
 
-                    case "CNR": boleto.NossoNumero = string.Format("{0}{1}4{2}", boleto.NossoNumero, Mod11Base9(boleto.NossoNumero).ToString(), Mod11Base9((int.Parse(boleto.NossoNumero + Mod11Base9(boleto.NossoNumero).ToString() + "4") + int.Parse(boleto.Cedente.Codigo.ToString()) + int.Parse(boleto.DataVencimento.ToString("ddMMyy"))).ToString())); break;
+                    case "CNR": boleto.NossoNumero = string.Format("{0}{1}4{2}", boleto.NossoNumero, Mod11Base9(boleto.NossoNumero).ToString(), Mod11Base9((Int64.Parse(boleto.NossoNumero + Mod11Base9(boleto.NossoNumero).ToString() + "4") + int.Parse(boleto.Cedente.Codigo.ToString()) + int.Parse(boleto.DataVencimento.ToString("ddMMyy"))).ToString())); break;
                     default:
                         throw new NotImplementedException("Carteira não implementada.  Use CSB ou CNR");
                 }
