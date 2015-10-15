@@ -100,9 +100,7 @@ namespace BoletoNet
         string GerarTrailerLoteRemessa(int numeroRegistro, Boleto boletos);
 
         DetalheSegmentoTRetornoCNAB240 LerDetalheSegmentoTRetornoCNAB240(string registro);
-
         DetalheSegmentoURetornoCNAB240 LerDetalheSegmentoURetornoCNAB240(string registro);
-
         DetalheSegmentoWRetornoCNAB240 LerDetalheSegmentoWRetornoCNAB240(string registro);
 
         DetalheRetorno LerDetalheRetornoCNAB400(string registro);

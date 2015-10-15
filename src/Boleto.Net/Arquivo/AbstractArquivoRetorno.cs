@@ -27,6 +27,9 @@ namespace BoletoNet
         {
             switch (tipoArquivo)
             {
+                case TipoArquivo.CNAB100:
+                    _arquivoRetorno = new ArquivoRetornoCNAB100();
+                    break;
                 case TipoArquivo.CNAB240:
                     _arquivoRetorno = new ArquivoRetornoCNAB240();
                     _arquivoRetorno.LinhaDeArquivoLida += ArquivoRemessa_LinhaDeArquivoLidaCNAB240;
@@ -100,7 +103,18 @@ namespace BoletoNet
         #endregion
 
         #region Disparadores de Eventos
-
+        public virtual void OnLinhaLida(AbstractDetalheSegmento detalheRetornoCNAB100, string linha)
+        {
+            try
+            {
+                if (this.LinhaDeArquivoLida != null)
+                    this.LinhaDeArquivoLida(this, new LinhaDeArquivoLidaArgs(detalheRetornoCNAB100, linha));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao gerar evento.", ex);
+            }
+        }
         public virtual void OnLinhaLida(DetalheRetornoCNAB240 detalheRetornoCNAB240, string linha, EnumTipodeLinhaLida tipoLinha)
         {
             try
@@ -113,7 +127,6 @@ namespace BoletoNet
                 throw new Exception("Erro ao gerar evento.", ex);
             }
         }
-
         public virtual void OnLinhaLida(DetalheRetorno detalheRetorno, string linha)
         {
             try
