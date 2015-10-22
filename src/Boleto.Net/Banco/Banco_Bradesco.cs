@@ -156,7 +156,7 @@ namespace BoletoNet
                 boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}", Codigo.ToString(), boleto.Moeda,
                 FatorVencimento(boleto), valorBoleto, FormataCampoLivre(boleto));
             }
-            else if (boleto.Carteira == "06" || boleto.Carteira == "16")
+            else if (boleto.Carteira == "06" || boleto.Carteira == "16" || boleto.Carteira == "25")
             {
                 if (boleto.ValorBoleto == 0)
                 {
@@ -217,8 +217,8 @@ namespace BoletoNet
 
         public override void ValidaBoleto(Boleto boleto)
         {
-            if (boleto.Carteira != "02" && boleto.Carteira != "03" && boleto.Carteira != "06" && boleto.Carteira != "09" && boleto.Carteira != "16" && boleto.Carteira != "19")
-                throw new NotImplementedException("Carteira não implementada. Carteiras implementadas 02, 03, 06, 09, 16, 19.");
+            if (boleto.Carteira != "02" && boleto.Carteira != "03" && boleto.Carteira != "06" && boleto.Carteira != "09" && boleto.Carteira != "16" && boleto.Carteira != "19" && boleto.Carteira != "25")
+                throw new NotImplementedException("Carteira não implementada. Carteiras implementadas 02, 03, 06, 09, 16, 19, 25.");
 
             //O valor é obrigatório para a carteira 03
             if (boleto.Carteira == "03")
