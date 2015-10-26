@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using Microsoft.VisualBasic;
 using System.Drawing;
 using System.ComponentModel;
+using System.Drawing.Imaging;
 
 namespace BoletoNet
 {
@@ -24,7 +25,7 @@ namespace BoletoNet
             drawing.Dispose();
 
             //create a new image of the right size
-            img = new Bitmap((int)textSize.Width - Convert.ToInt32(font.Size * 1.5), (int)textSize.Height);
+            img = new Bitmap((int)textSize.Width - Convert.ToInt32(font.Size * 1.5), (int)textSize.Height, PixelFormat.Format24bppRgb);
 
             drawing = Graphics.FromImage(img);
 
@@ -96,6 +97,7 @@ namespace BoletoNet
         /// <returns></returns>
         internal static string FormatCode(string text, string with, int length, bool left)
         {
+            //Esse método já existe, é PadLeft e PadRight da string
             length -= text.Length;
             if (left)
             {
@@ -121,7 +123,7 @@ namespace BoletoNet
 
         internal static string FormatCode(string text, int length)
         {
-            return FormatCode(text, "0", length, true);
+            return text.PadLeft(length, '0'); 
         }
 
         /// <summary>
@@ -264,7 +266,7 @@ namespace BoletoNet
         {
             try
             {
-                return Convert.ToDateTime(value);
+                return Convert.ToDateTime(value, CultureInfo.GetCultureInfo("pt-BR"));
             }
             catch
             {

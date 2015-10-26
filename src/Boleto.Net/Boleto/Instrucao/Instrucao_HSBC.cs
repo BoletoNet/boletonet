@@ -12,7 +12,7 @@ namespace BoletoNet
 
     #endregion
 
-    class Instrucao_HSBC : AbstractInstrucao, IInstrucao
+    public class Instrucao_HSBC : AbstractInstrucao, IInstrucao
     {
 
         #region Construtores

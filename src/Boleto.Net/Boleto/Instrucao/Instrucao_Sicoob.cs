@@ -1,105 +1,153 @@
-using System;
-
 namespace BoletoNet
 {
-    public class Instrucao_Sicoob : AbstractInstrucao, IInstrucao
-    {
+	using System;
 
-        #region Construtores
+	public class Instrucao_Sicoob : AbstractInstrucao, IInstrucao
+	{
+		#region EnumInstrucoes_Sicoob enum
 
-        public Instrucao_Sicoob()
-        {
-            try
-            {
-                this.Banco = new Banco(756);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Erro ao carregar objeto", ex);
-            }
-        }
+		public enum EnumInstrucoes_Sicoob
+		{
+			AusenciaDeInstrucoes = 0, 
 
-        public Instrucao_Sicoob(int codigo)
-        {
-            //this.carregar(codigo, 0, 0);
-        }
+			CobrarJuros = 1, 
 
-        public Instrucao_Sicoob(int codigo, int nrDias)
-        {
-            //this.carregar(codigo, nrDias, (double)0.0);
-        }
+			Protestar3DiasUteis = 3, 
 
-        public Instrucao_Sicoob(int codigo, double percentualMultaDia)
-        {
-            //this.carregar(codigo, 0, percentualMultaDia);
-        }
+			Protestar4DiasUteis = 4, 
 
-        public Instrucao_Sicoob(int codigo, int nrDias, double percentualMultaDia)
-        {
-            //this.carregar(codigo, nrDias, percentualMultaDia);
-        }
+			Protestar5DiasUteis = 5, 
 
-        #endregion
+			NaoProtestar = 7, 
 
-        #region Metodos Privados
+			Protestar10DiasUteis = 10, 
 
-        //private void carregar(int idInstrucao, int nrDias, double percentualMultaDia)
-        //{
-        //    try
-        //    {
-        //        this.Banco = new Banco_Banrisul();
-        //        this.Valida();
+			Protestar15DiasUteis = 15, 
 
-        //        switch ((EnumInstrucoes_Banrisul)idInstrucao)
-        //        {
-        //            case EnumInstrucoes_Banrisul.NaoDispensarComissaoPermanencia:
-        //                this.Codigo = (int)EnumInstrucoes_Banrisul.NaoDispensarComissaoPermanencia;
-        //                this.Descricao = "Não dispensar comissão de permanência"; //01
-        //                break;
-        //            case EnumInstrucoes_Banrisul.NaoCobrarComissaoPermanencia:
-        //                this.Codigo = (int)EnumInstrucoes_Banrisul.NaoCobrarComissaoPermanencia;
-        //                this.Descricao = "Não cobrar comissão de permanência"; //08
-        //                break;
-        //            case EnumInstrucoes_Banrisul.Protestar:
-        //                this.Codigo = (int)EnumInstrucoes_Banrisul.Protestar;
-        //                this.Descricao = "Protestar caso impago " + nrDias + " dias após vencimento"; //09
-        //                break;
-        //            case EnumInstrucoes_Banrisul.DevolverAposNDias:
-        //                this.Codigo = (int)EnumInstrucoes_Banrisul.DevolverAposNDias;
-        //                this.Descricao = "Devolver se impago após " + nrDias + " dias do vencimento"; //15
-        //                break;
-        //            case EnumInstrucoes_Banrisul.CobrarMultaAposNDias:
-        //                this.Codigo = (int)EnumInstrucoes_Banrisul.CobrarMultaAposNDias;
-        //                this.Descricao = "Após " + nrDias + " dias do vencimento, cobrar " + percentualMultaDia + "% de multa"; //18
-        //                break;
-        //            case EnumInstrucoes_Banrisul.CobrarMultaOuFracaoAposNDias:
-        //                this.Codigo = (int)EnumInstrucoes_Banrisul.CobrarMultaOuFracaoAposNDias;
-        //                this.Descricao = "Após " + nrDias + " dias do vencimento, cobrar " + percentualMultaDia + "% de multa ao mês ou fração"; //20
-        //                break;
-        //            case EnumInstrucoes_Banrisul.NaoProtestar:
-        //                this.Codigo = (int)EnumInstrucoes_Banrisul.NaoProtestar;
-        //                this.Descricao = "Não protestar"; //23
-        //                break;
-        //            default:
-        //                this.Codigo = 0;
-        //                this.Descricao = "( Selecione )";
-        //                break;
-        //        }
+			Protestar20DiasUteis = 20, 
 
-        //        this.QuantidadeDias = nrDias;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception("Erro ao carregar objeto", ex);
-        //    }
-        //}
+			ConcederDescontoApenasAteDataEstipulada = 22, 
 
-        public override void Valida()
-        {
-            //base.Valida();
-        }
+			DevolverApos15DiasVencido = 42, 
 
-        #endregion
+			DevolverApos30DiasVencido = 43
+		}
 
-    }
+		#endregion
+
+		#region Construtores
+
+		public Instrucao_Sicoob()
+		{
+			try
+			{
+				this.Banco = new Banco(756);
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Erro ao carregar objeto", ex);
+			}
+		}
+
+		public Instrucao_Sicoob(int codigo)
+		{
+			this.carregar(codigo, 0, 0);
+		}
+
+		public Instrucao_Sicoob(int codigo, int nrDias)
+		{
+			this.carregar(codigo, nrDias, (double)0.0);
+		}
+
+		public Instrucao_Sicoob(int codigo, double percentualMultaDia)
+		{
+			this.carregar(codigo, 0, percentualMultaDia);
+		}
+
+		public Instrucao_Sicoob(int codigo, int nrDias, double percentualMultaDia)
+		{
+			this.carregar(codigo, nrDias, percentualMultaDia);
+		}
+
+		#endregion
+
+		#region Metodos Privados
+
+		private void carregar(int idInstrucao, int nrDias, double percentualMultaDia)
+		{
+			try
+			{
+				this.Banco = new Banco_Banrisul();
+				this.Valida();
+
+				switch ((EnumInstrucoes_Sicoob)idInstrucao)
+				{
+					case EnumInstrucoes_Sicoob.AusenciaDeInstrucoes:
+						break;
+					case EnumInstrucoes_Sicoob.CobrarJuros:
+						this.Codigo = (int)EnumInstrucoes_Sicoob.CobrarJuros;
+						this.Descricao = "Cobrar Juros";
+						break;
+					case EnumInstrucoes_Sicoob.Protestar3DiasUteis:
+						this.Codigo = (int)EnumInstrucoes_Sicoob.Protestar3DiasUteis;
+						this.Descricao = "Protestar 3 dias úteis após vencimento";
+						break;
+					case EnumInstrucoes_Sicoob.Protestar4DiasUteis:
+						this.Codigo = (int)EnumInstrucoes_Sicoob.Protestar4DiasUteis;
+						this.Descricao = "Protestar 4 dias úteis após vencimento";
+						break;
+					case EnumInstrucoes_Sicoob.Protestar5DiasUteis:
+						this.Codigo = (int)EnumInstrucoes_Sicoob.Protestar5DiasUteis;
+						this.Descricao = "Protestar 5 dias úteis após vencimento";
+						break;
+					case EnumInstrucoes_Sicoob.NaoProtestar:
+						this.Codigo = (int)EnumInstrucoes_Sicoob.NaoProtestar;
+						this.Descricao = "Não protestar";
+						break;
+					case EnumInstrucoes_Sicoob.Protestar10DiasUteis:
+						this.Codigo = (int)EnumInstrucoes_Sicoob.Protestar10DiasUteis;
+						this.Descricao = "Protestar 10 dias úteis após vencimento";
+						break;
+					case EnumInstrucoes_Sicoob.Protestar15DiasUteis:
+						this.Codigo = (int)EnumInstrucoes_Sicoob.Protestar15DiasUteis;
+						this.Descricao = "Protestar 15 dias úteis após vencimento";
+						break;
+					case EnumInstrucoes_Sicoob.Protestar20DiasUteis:
+						this.Codigo = (int)EnumInstrucoes_Sicoob.Protestar20DiasUteis;
+						this.Descricao = "Protestar 20 dias úteis após vencimento";
+						break;
+					case EnumInstrucoes_Sicoob.ConcederDescontoApenasAteDataEstipulada:
+						this.Codigo = (int)EnumInstrucoes_Sicoob.ConcederDescontoApenasAteDataEstipulada;
+						this.Descricao = "Conceder desconto só até a data estipulada";
+						break;
+					case EnumInstrucoes_Sicoob.DevolverApos15DiasVencido:
+						this.Codigo = (int)EnumInstrucoes_Sicoob.DevolverApos15DiasVencido;
+						this.Descricao = "Devolver após 15 dias vencido";
+						break;
+					case EnumInstrucoes_Sicoob.DevolverApos30DiasVencido:
+						this.Codigo = (int)EnumInstrucoes_Sicoob.DevolverApos30DiasVencido;
+						this.Descricao = "Devolver após 30 dias vencido";
+						break;
+					default:
+						this.Codigo = 0;
+						this.Descricao = " (Selecione) ";
+						break;
+
+				}
+
+				this.QuantidadeDias = nrDias;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Erro ao carregar objeto", ex);
+			}
+		}
+
+		public override void Valida()
+		{
+			// base.Valida();
+		}
+
+		#endregion
+	}
 }

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-16"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Boleto.Net</id>
+        <title>Boleto.Net</title>
+        <version>2.1.0</version>
+        <authors>BoletoNet</authors>
+        <owners>BoletoNet</owners>
+        <licenseUrl>https://github.com/BoletoNet/boletonet/blob/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/BoletoNet/boletonet/</projectUrl>
+        <iconUrl>https://https://avatars2.githubusercontent.com/u/10621326?v=3amp;s=200</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>Boleto.net is a library developed for use in Brazil, given it has been programmed with Brazilian retail legislation and business rules for bank registered billing integration.
+
+Boleto.Net é um componente desenvolvido em C# e ASP.Net e contempla as seguintes funcionalidades:
+Emissão e Impressão de Boletos Bancários
+Geração de Arquivo de Remessa (CNAB 240 e 400)
+Leitura do Arquivo de Retorno (CNAB 240 e 400)</description>
+        <summary>Boleto.net is a library developed for use in Brazil, given it has been programmed with Brazilian retail legislation and business rules for bank registered billing integration.</summary>
+        <releaseNotes>A versão 2.0 está disponível. Nessa versão contempla leitura e remessa de arquivos CNAB 400/240.</releaseNotes>
+        <tags>boleto cnab banco</tags>
+    </metadata>
+    <files>
+        <file src="..\..\Boleto.Net\bin\Release\Boleto.Net.dll" target="lib\Boleto.Net.dll" />
+    </files>
+</package>

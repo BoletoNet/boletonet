@@ -117,7 +117,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Banrisul()
@@ -150,7 +150,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Basa()
@@ -176,7 +176,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Bradesco()
@@ -192,6 +192,7 @@ namespace Boleto.Net.MVC.Models
             //Carteiras 
             BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 1.01m, "09", "01000000001", c);
             b.NumeroDocumento = "01000000001";
+            b.DataVencimento = new DateTime(2015, 09, 12);
 
             b.Sacado = new Sacado("000.000.000-00", "Nome do seu Cliente ");
             b.Sacado.Endereco.End = "Endereço do seu Cliente ";
@@ -217,7 +218,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string BRB()
@@ -245,7 +246,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Caixa()
@@ -287,7 +288,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string HSBC()
@@ -298,7 +299,7 @@ namespace Boleto.Net.MVC.Models
             // Código fornecido pela agencia, NÃO é o numero da conta
             c.Codigo = "0000000"; // 7 posicoes
 
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 2, "CNR", "888888888", c); //cod documento
+            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 2, "CNR", "1330001490684", c); //cod documento
             b.NumeroDocumento = "9999999999999"; // nr documento
 
             b.Sacado = new Sacado("000.000.000-00", "Nome do seu Cliente ");
@@ -311,7 +312,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Itau()
@@ -353,7 +354,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Real()
@@ -382,7 +383,7 @@ namespace Boleto.Net.MVC.Models
             EspeciesDocumento ed = EspecieDocumento_Real.CarregaTodas();
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Safra()
@@ -417,7 +418,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Santander()
@@ -452,7 +453,7 @@ namespace Boleto.Net.MVC.Models
 
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Sicoob()
@@ -479,7 +480,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Sicred()
@@ -514,7 +515,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Sudameris()
@@ -548,7 +549,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
         }
 
         public string Unibanco()
@@ -594,7 +595,49 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtml("/Content/Boletos/", "");
+            return boletoBancario.MontaHtmlEmbedded();
+        }
+
+        public byte[] ItauPDF()
+        {
+            DateTime vencimento = DateTime.Now.AddDays(1);
+
+            Instrucao_Itau item1 = new Instrucao_Itau(9, 5);
+            Instrucao_Itau item2 = new Instrucao_Itau(81, 10);
+            Cedente c = new Cedente("10.823.650/0001-90", "SAFIRALIFE", "4406", "22324");
+            //Na carteira 198 o código do Cedente é a conta bancária
+            c.Codigo = "13000";
+
+            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 0.1m, "176", "00000001", c, new EspecieDocumento(341, "1"));
+            b.NumeroDocumento = "00000001";
+
+            b.Sacado = new Sacado("000.000.000-00", "Nome do seu Cliente ");
+            b.Sacado.Endereco.End = "Endereço do seu Cliente ";
+            b.Sacado.Endereco.Bairro = "Bairro";
+            b.Sacado.Endereco.Cidade = "Cidade";
+            b.Sacado.Endereco.CEP = "00000000";
+            b.Sacado.Endereco.UF = "UF";
+
+            // Exemplo de como adicionar mais informações ao sacado
+            b.Sacado.InformacoesSacado.Add(new InfoSacado("TÍTULO: " + "2541245"));
+
+            item2.Descricao += " " + item2.QuantidadeDias.ToString() + " dias corridos do vencimento.";
+            b.Instrucoes.Add(item1);
+            b.Instrucoes.Add(item2);
+
+            // juros/descontos
+
+            if (b.ValorDesconto == 0)
+            {
+                Instrucao_Itau item3 = new Instrucao_Itau(999, 1);
+                item3.Descricao += ("1,00 por dia de antecipação.");
+                b.Instrucoes.Add(item3);
+            }
+
+            boletoBancario.Boleto = b;
+            boletoBancario.Boleto.Valida();
+
+            return boletoBancario.MontaBytesPDF();
         }
     }
 }
