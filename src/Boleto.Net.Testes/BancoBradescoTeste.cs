@@ -175,5 +175,63 @@ namespace BoletoNet.Testes
             Assert.AreEqual( boletoBancario.Boleto.CodigoBarra.Codigo, codigoBarraValida, "Código de Barra inválido" );
         }
         #endregion
+
+        #region Carteira 26
+
+        private BoletoBancario GerarBoletoCarteira26()
+        {
+            DateTime vencimento = new DateTime(2015, 10, 21);
+
+            var cedente = new Cedente("00.000.000/0000-00", "Empresa Teste", "054", "0", "148870", "8");
+
+            Boleto boleto = new Boleto(vencimento, (decimal)469.4, "26", "97000005287", cedente);
+
+            boleto.NumeroDocumento = "5..287";
+
+            var boletoBancario = new BoletoBancario();
+
+            boletoBancario.CodigoBanco = 237;
+
+            boletoBancario.Boleto = boleto;
+
+            return boletoBancario;
+        }
+
+        [TestMethod]
+        public void Bradesco_Carteira_26_NossoNumero()
+        {
+            var boletoBancario = GerarBoletoCarteira26();
+
+            boletoBancario.Boleto.Valida();
+
+            string nossoNumeroValido = "26/97000005287-3";
+
+            Assert.AreEqual(boletoBancario.Boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido");
+        }
+
+        [TestMethod]
+        public void Bradesco_Carteira_26_LinhaDigitavel()
+        {
+            var boletoBancario = GerarBoletoCarteira26();
+
+            boletoBancario.Boleto.Valida();
+
+            string linhaDigitavelValida = "23790.05420 69700.000529 87014.887001 5 65880000046940";
+
+            Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.LinhaDigitavel, linhaDigitavelValida, "Linha digitável inválida");
+        }
+
+        [TestMethod]
+        public void Bradesco_Carteira_26_CodigoBarra()
+        {
+            var boletoBancario = GerarBoletoCarteira26();
+
+            boletoBancario.Boleto.Valida();
+
+            string codigoBarraValida = "23795658800000469400054269700000528701488700";
+
+            Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.Codigo, codigoBarraValida, "Código de Barra inválido");
+        }
+        #endregion
     }
 }
