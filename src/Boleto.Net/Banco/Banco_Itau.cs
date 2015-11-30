@@ -65,10 +65,18 @@ namespace BoletoNet
                     }
                     throw new NotImplementedException("Carteira não implementada: " + boleto.Carteira + carteirasImplementadas.ToString());
                 }
+
+                //Verifica se o NossoNumero é um inteiro válido.
+                int intNossoNumero;
+                if (!Int32.TryParse(boleto.NossoNumero, out intNossoNumero))
+                    throw new NotImplementedException("Nosso número para a carteira " + boleto.Carteira + " inválido.");
+
                 //Verifica se o tamanho para o NossoNumero são 8 dígitos
-                if (Convert.ToInt32(boleto.NossoNumero).ToString().Length > 8)
-                    throw new NotImplementedException("A quantidade de dígitos do nosso número para a carteira " + boleto.Carteira + ", são 8 números.");
-                else if (Convert.ToInt32(boleto.NossoNumero).ToString().Length < 8)
+                if (boleto.NossoNumero.Length > 8)
+                    throw new NotImplementedException("A quantidade de dígitos do nosso número para a carteira "
+                        + boleto.Carteira + ", são 8 números.");
+
+                if (boleto.NossoNumero.Length < 8)
                     boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 8);
 
                 //É obrigatório o preenchimento do número do documento
@@ -171,6 +179,7 @@ namespace BoletoNet
             {
                 string numeroDocumento = Utils.FormatCode(boleto.NumeroDocumento.ToString(), 7);
                 string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo.ToString(), 5);
+                string agencia = Utils.FormatCode(boleto.Cedente.ContaBancaria.Agencia, 4);
 
                 string AAA = Utils.FormatCode(Codigo.ToString(), 3);
                 string B = boleto.Moeda.ToString();
@@ -245,7 +254,7 @@ namespace BoletoNet
                     #region DDDDD.DEFFFY
 
                     string E = _dacNossoNumero.ToString();
-                    string FFF = boleto.Cedente.ContaBancaria.Agencia.Substring(0, 3);
+                    string FFF = agencia.Substring(0, 3);
                     string Y = Mod10(DDDDDD + E + FFF).ToString();
 
                     C2 = string.Format("{0}.", DDDDDD.Substring(0, 5));
@@ -255,7 +264,7 @@ namespace BoletoNet
 
                     #region FGGGG.GGHHHZ
 
-                    string F = boleto.Cedente.ContaBancaria.Agencia.Substring(3, 1);
+                    string F = agencia.Substring(3, 1);
                     string GGGGGG = boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta;
                     string HHH = "000";
                     string Z = Mod10(F + GGGGGG + HHH).ToString();

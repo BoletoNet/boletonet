@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using Microsoft.VisualBasic;
 using System.Drawing;
 using System.ComponentModel;
+using System.Drawing.Imaging;
 
 namespace BoletoNet
 {
@@ -24,7 +25,7 @@ namespace BoletoNet
             drawing.Dispose();
 
             //create a new image of the right size
-            img = new Bitmap((int)textSize.Width - Convert.ToInt32(font.Size * 1.5), (int)textSize.Height);
+            img = new Bitmap((int)textSize.Width - Convert.ToInt32(font.Size * 1.5), (int)textSize.Height, PixelFormat.Format24bppRgb);
 
             drawing = Graphics.FromImage(img);
 
@@ -265,7 +266,7 @@ namespace BoletoNet
         {
             try
             {
-                return Convert.ToDateTime(value);
+                return Convert.ToDateTime(value, CultureInfo.GetCultureInfo("pt-BR"));
             }
             catch
             {

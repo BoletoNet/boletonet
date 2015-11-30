@@ -1,4 +1,4 @@
-body {
+﻿body {
 	color: #000000;
 	background-color: #ffffff;
 	margin-top: 0;
@@ -311,7 +311,7 @@ img {
 }
 
 .w666 {
-	width: 666px;
+	width: 100%;
 }
 
 .w667 {
