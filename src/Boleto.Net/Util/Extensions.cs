@@ -43,19 +43,5 @@ namespace BoletoNet.Util
                 while (e1.MoveNext() && e2.MoveNext())
                     yield return resultSelector(e1.Current, e2.Current);
         }
-
-        public static bool IsNullOrWhiteSpace(String value)
-        {
-            if (value == null) return true;
-
-            for (int i = 0; i < value.Length; i++)
-            {
-                if (!Char.IsWhiteSpace(value[i])) return false;
-            }
-
-            return true;
-        }
     }
-
-
 }
