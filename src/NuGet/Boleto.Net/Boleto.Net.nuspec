@@ -22,5 +22,6 @@ Leitura do Arquivo de Retorno (CNAB 240 e 400)</description>
     </metadata>
     <files>
         <file src="..\..\Boleto.Net\bin\Release\Boleto.Net.dll" target="lib\Boleto.Net.dll" />
+		<file src="..\..\Boleto.Net\bin\Release\NReco.PdfGenerator.dll" target="lib\NReco.PdfGenerator.dll" />
     </files>
 </package>
