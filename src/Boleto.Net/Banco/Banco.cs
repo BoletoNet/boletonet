@@ -237,7 +237,7 @@ namespace BoletoNet
                 throw new Exception("Erro durante a geração do registro HEADER do arquivo de REMESSA.", ex);
             }
         }
-        public  string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos)
+        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos)
         {
             try
             {

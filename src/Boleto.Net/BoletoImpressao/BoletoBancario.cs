@@ -535,10 +535,14 @@ namespace BoletoNet
 					Sacado.Endereco.Cidade, Sacado.Endereco.UF, Utils.FormataCEP(Sacado.Endereco.CEP));
 
 				if (Sacado.Endereco.End != string.Empty && enderecoSacado != string.Empty)
-					if (infoSacado == string.Empty)
-						infoSacado += InfoSacado.Render(Sacado.Endereco.End, enderecoSacado, false);
+                {
+                    string Numero = !String.IsNullOrEmpty(Sacado.Endereco.Numero) ? ", "  + Sacado.Endereco.Numero : "";
+
+                    if (infoSacado == string.Empty)
+						infoSacado += InfoSacado.Render(Sacado.Endereco.End + Numero, enderecoSacado, false);
 					else
-						infoSacado += InfoSacado.Render(Sacado.Endereco.End, enderecoSacado, true);
+						infoSacado += InfoSacado.Render(Sacado.Endereco.End + Numero, enderecoSacado, true);
+                }
 				//"Informações do Sacado" foi introduzido para possibilitar que o boleto na informe somente o endereço do sacado
 				//como em outras situaçoes onde se imprime matriculas, codigos e etc, sobre o sacado.
 				//Sendo assim o endereço do sacado passa a ser uma Informaçao do Sacado que é adicionada no momento da renderização
@@ -626,6 +630,7 @@ namespace BoletoNet
 				.Replace("@LINHADIGITAVEL", Boleto.CodigoBarra.LinhaDigitavel)
 				.Replace("@LOCALPAGAMENTO", Boleto.LocalPagamento)
 				.Replace("@DATAVENCIMENTO", dataVencimento)
+                .Replace("@CEDENTE_BOLETO", !Cedente.MostrarCNPJnoBoleto ? Cedente.Nome : string.Format("{0}&nbsp;&nbsp;&nbsp;CNPJ: {1}", Cedente.Nome, Cedente.CPFCNPJ))
 				.Replace("@CEDENTE", Cedente.Nome)
 				.Replace("@DATADOCUMENTO", Boleto.DataDocumento.ToString("dd/MM/yyyy"))
 				.Replace("@NUMERODOCUMENTO", Boleto.NumeroDocumento)

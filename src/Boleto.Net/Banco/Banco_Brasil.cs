@@ -687,6 +687,10 @@ namespace BoletoNet
                         boleto.Cedente.ContaBancaria.Conta,
                         LimparCarteira(boleto.Carteira));
                 }
+                else
+                {
+                    throw new Exception("Código do convênio informado é inválido. O código do convenio deve ter 4, 6, ou 7 dígitos.");
+                }
             }
             #endregion Carteira 17-019
 
@@ -743,6 +747,10 @@ namespace BoletoNet
                         boleto.Cedente.ContaBancaria.Agencia,
                         boleto.Cedente.ContaBancaria.Conta,
                         LimparCarteira(boleto.Carteira));
+                }
+                else
+                {
+                    throw new Exception("Código do convênio informado é inválido. O código do convenio deve ter 4, 6, ou 7 dígitos.");
                 }
             }
             #endregion Carteira 17-027
@@ -818,6 +826,11 @@ namespace BoletoNet
                         boleto.Cedente.ContaBancaria.Conta,
                         LimparCarteira(boleto.Carteira));
                 }
+                else
+                {
+                    throw new Exception("Código do convênio informado é inválido. O código do convenio deve ter 4, 6, ou 7 dígitos.");
+                }
+
             }
             #endregion Carteira 18-019
 
@@ -886,6 +899,10 @@ namespace BoletoNet
                         boleto.Cedente.ContaBancaria.Conta,
                         LimparCarteira(boleto.Carteira));
                 }
+                else
+                {
+                    throw new Exception("Código do convênio informado é inválido. O código do convenio deve ter 4, 6, ou 7 dígitos.");
+                }
             }
             #endregion Carteira 18-027
 
@@ -953,6 +970,10 @@ namespace BoletoNet
                         boleto.Cedente.ContaBancaria.Conta,
                         LimparCarteira(boleto.Carteira));
                 }
+                else
+                {
+                    throw new Exception("Código do convênio informado é inválido. O código do convenio deve ter 4, 6, ou 7 dígitos.");
+                }
             }
             #endregion Carteira 18-035
 
@@ -1019,6 +1040,10 @@ namespace BoletoNet
                         boleto.Cedente.ContaBancaria.Agencia,
                         boleto.Cedente.ContaBancaria.Conta,
                         LimparCarteira(boleto.Carteira));
+                }
+                else
+                {
+                    throw new Exception("Código do convênio informado é inválido. O código do convenio deve ter 4, 6, ou 7 dígitos.");
                 }
             }
             #endregion Carteira 18-140
