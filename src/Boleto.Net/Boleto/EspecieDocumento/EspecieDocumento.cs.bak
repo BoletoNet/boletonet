@@ -123,10 +123,6 @@ namespace BoletoNet
                     case 41:
                         _IEspecieDocumento = new EspecieDocumento_Banrisul(codigoEspecie);
                         break;
-                    //756 - Sicoob
-                    case 756:
-                        _IEspecieDocumento = new EspecieDocumento_Sicoob(codigoEspecie);
-                        break;
                     default:
                         throw new Exception("Código do banco não implementando: " + codigoBanco);
                 }
