@@ -447,7 +447,8 @@ namespace BoletoNet
                 _detalhe.Append(boleto.Banco.Codigo); //Posição 140 a 142
                 _detalhe.Append(Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true)); //Posição 143 a 146
                 _detalhe.Append(Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoAgencia, 1, 1, '0', 0, true, true, true)); //Posição 147
-                _detalhe.Append(boleto.EspecieDocumento.Codigo); //Posição 148 a 149
+                _detalhe.Append(Utils.FitStringLength(boleto.EspecieDocumento.Codigo.ToString(), 2, 2, '0', 0, true, true, true)); //Posição 148 a 149
+
                 _detalhe.Append(boleto.Aceite == "N" ? "0" : "1"); //Posição 150
                 _detalhe.Append(boleto.DataProcessamento.ToString("ddMMyy")); //Posição 151 a 156
                 _detalhe.Append("07"); //Posição 157 a 158 - NÂO PROTESTAR

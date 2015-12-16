@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using BoletoNet.Arquivo.Reader;
-using BoletoNet.Util;
 
 namespace BoletoNet.Arquivo
 {
@@ -11,7 +10,7 @@ namespace BoletoNet.Arquivo
             var streamReader = new StreamReader(arquivo);
             var linha = streamReader.ReadLine();
             var textPosReader = new TextPosReader();
-            while (!Utils.IsNullOrWhiteSpace(linha))
+            while (!string.IsNullOrWhiteSpace(linha))
             {
                 var linhaCbr643 = textPosReader.Read(linha);
                 OnLinhaLida(linhaCbr643);
