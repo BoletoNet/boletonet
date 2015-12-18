@@ -69,7 +69,7 @@ namespace BoletoNet
                 {
                     case "CSB":
                         if (tamanhoNossoNumero > 10)
-                            throw new NotImplementedException("A quantidade de dígitos do nosso número para a carteira " + boleto.Carteira + ", são 10 números.");
+                            boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 13);
 
                         if (tamanhoNossoNumero < 10)
                             boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 10);
