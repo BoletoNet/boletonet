@@ -266,7 +266,7 @@ namespace BoletoNet
         {
             try
             {
-                return Convert.ToDateTime(value);
+                return Convert.ToDateTime(value, CultureInfo.GetCultureInfo("pt-BR"));
             }
             catch
             {
@@ -530,6 +530,19 @@ namespace BoletoNet
             final = Strings.Right(seq, qtde);
             return FitStringLength(final, qtde, qtde, ch, 0, true, true, completaPelaEsquerda);
             ;
+        }
+
+
+        public static bool IsNullOrWhiteSpace(String value)
+        {
+            if (value == null) return true;
+
+            for (int i = 0; i < value.Length; i++)
+            {
+                if (!Char.IsWhiteSpace(value[i])) return false;
+            }
+
+            return true;
         }
     }
 }

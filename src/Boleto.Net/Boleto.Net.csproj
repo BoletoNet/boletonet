@@ -43,12 +43,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="NReco.PdfGenerator, Version=1.1.10.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
+      <HintPath>..\packages\NReco.PdfGenerator.1.1.10.0\lib\net20\NReco.PdfGenerator.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arquivo\AbstractArquivoRemessa.cs" />
@@ -158,6 +163,8 @@
     <Compile Include="Boleto\Instrucao\Instrucao_Sicredi.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Sudameris.cs" />
     <Compile Include="Boleto\Remessa.cs" />
+    <Compile Include="Boleto\DemonstrativoValoresBoleto\GrupoDemonstrativo.cs" />
+    <Compile Include="Boleto\DemonstrativoValoresBoleto\ItemDemonstrativo.cs" />
     <Compile Include="Boleto\Sacado\InformacoesSacado.cs" />
     <Compile Include="Boleto\Sacado\InfoSacado.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_Sicredi_Retorno.cs" />
@@ -288,6 +295,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Imagens\SegundaVia.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BoletoImpressao\BoletoNetPDF.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

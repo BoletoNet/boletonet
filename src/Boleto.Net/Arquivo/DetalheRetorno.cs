@@ -58,7 +58,6 @@ namespace BoletoNet
         private string _numeroDocumento = string.Empty;
         private int _codigoRateio = 0;
         private DateTime _dataVencimento = new DateTime(1, 1, 1);
-        private decimal _valoTitulo = 0;
         private int _bancoCobrador = 0;
         private int _agencia = 0;
         private string _especieTitulo = string.Empty;

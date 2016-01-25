@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace BoletoNet
@@ -151,9 +152,9 @@ namespace BoletoNet
                 if (registro.Substring(13, 1) != "U")
                     throw new Exception("Registro inválido. O detalhe não possuí as características do segmento U.");
 
-                int dataOcorrenciaSacado = 0;
+                string dataOcorrenciaSacado = "";
                 if (registro.Substring(153, 4) != "    ")
-                    dataOcorrenciaSacado = Convert.ToInt32(registro.Substring(157, 8));
+                    dataOcorrenciaSacado = registro.Substring(157, 8);
 
                 decimal jurosMultaEncargos = Convert.ToInt64(registro.Substring(17, 15));
                 JurosMultaEncargos = jurosMultaEncargos / 100;
@@ -171,14 +172,22 @@ namespace BoletoNet
                 ValorOutrasDespesas = valorOutrasDespesas / 100;
                 decimal valorOutrosCreditos = Convert.ToInt64(registro.Substring(122, 15));
                 ValorOutrosCreditos = valorOutrosCreditos / 100;
-                int dataOcorrencia = Convert.ToInt32(registro.Substring(137, 8));
-                DataOcorrencia = Convert.ToDateTime(dataOcorrencia.ToString("##-##-####"));
-                int dataCredito = Convert.ToInt32(registro.Substring(145, 8));
-                if (dataCredito != 0)
-                    DataCredito = Convert.ToDateTime(dataCredito.ToString("##-##-####"));
+                string dataOcorrencia = registro.Substring(137, 8);
+                //DataOcorrencia = Convert.ToDateTime(dataOcorrencia.ToString("##-##-####"));
+                DataOcorrencia = DateTime.ParseExact(dataOcorrencia, "ddMMyyyy", CultureInfo.InvariantCulture);
+                string dataCredito = registro.Substring(145, 8);
+                if (!string.IsNullOrEmpty(dataCredito))
+                {
+                    //DataCredito = Convert.ToDateTime(dataCredito.ToString("##-##-####"));
+                    DataCredito = DateTime.ParseExact(dataCredito, "ddMMyyyy", CultureInfo.InvariantCulture);
+                }
+
                 CodigoOcorrenciaSacado = registro.Substring(153, 4);
-                if (dataOcorrenciaSacado != 0)
-                    DataOcorrenciaSacado = Convert.ToDateTime(dataOcorrenciaSacado.ToString("##-##-####"));
+                if (!string.IsNullOrEmpty(dataOcorrenciaSacado) && Convert.ToInt16(dataOcorrenciaSacado) != 0)
+                {
+                    //DataOcorrenciaSacado = Convert.ToDateTime(dataOcorrenciaSacado.ToString("##-##-####"));
+                    DataOcorrenciaSacado = DateTime.ParseExact(dataOcorrenciaSacado, "ddMMyyyy", CultureInfo.InvariantCulture);
+                }
                 decimal valorOcorrenciaSacado = Convert.ToInt64(registro.Substring(165, 15));
                 ValorOcorrenciaSacado = valorOcorrenciaSacado / 100;
             }

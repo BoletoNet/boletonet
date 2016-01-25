@@ -55,7 +55,7 @@ namespace BoletoNet
                 string strline;
                 decimal vltitulostotal = 0;                 //Uso apenas no registro TRAILER do banco Santander - jsoda em 09/05/2012 - Add no registro TRAILER do banco Banrisul - sidneiklein em 08/08/2013
 
-                StreamWriter incluiLinha = new StreamWriter(arquivo, Encoding.GetEncoding("ISO-8859-1"));
+                var incluiLinha = new StreamWriter(arquivo, Encoding.GetEncoding("ISO-8859-1"));
                 strline = banco.GerarHeaderRemessa(numeroConvenio, cedente, TipoArquivo.CNAB400, numeroArquivoRemessa);
                 incluiLinha.WriteLine(strline);
 
@@ -71,10 +71,8 @@ namespace BoletoNet
                 strline = banco.GerarTrailerRemessa(numeroRegistro, TipoArquivo.CNAB400, cedente, vltitulostotal);
 
                 incluiLinha.WriteLine(strline);
-
-                incluiLinha.Close();
-                incluiLinha.Dispose(); // Incluido por Luiz Ponce 07/07/2012.
-                incluiLinha = null; // Incluido por Luiz Ponce 07/07/2012.
+                
+                arquivo.Position = 0;
             }
             catch (Exception ex)
             {

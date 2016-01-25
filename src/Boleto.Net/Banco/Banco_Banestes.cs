@@ -38,7 +38,7 @@ namespace BoletoNet
             try
             {
                 //Carteiras válidas
-                // 00 - Sem registro; 
+                // 00 - Sem registro;
 
                 //Atribui o nome do banco ao local de pagamento
                 boleto.LocalPagamento += Nome + ". Após o vencimento, somente no BANESTES";
@@ -49,11 +49,11 @@ namespace BoletoNet
 
                 //Verifica se data do processamento é valida
 
-                if (boleto.DataProcessamento == DateTime.MinValue) 
+                if (boleto.DataProcessamento == DateTime.MinValue)
                     boleto.DataProcessamento = DateTime.Now;
 
                 //Verifica se data do documento é valida
-                if (boleto.DataDocumento == DateTime.MinValue) 
+                if (boleto.DataDocumento == DateTime.MinValue)
                     boleto.DataDocumento = DateTime.Now;
 
                 boleto.FormataCampos();
@@ -74,13 +74,13 @@ namespace BoletoNet
         /// - Dígito Verificador 	     01 Posição (descrito abaixo)
         /// - Fator de Vencimento....... 04 Posições  (descrito na página 19)
         /// - Valor do Título	10 Posições (8,2)
-        /// - Chave ASBACE 	 25 Posições. 
+        /// - Chave ASBACE 	 25 Posições.
         /// No BANESTES ficou assim o Código de Barras.
         /// 0219DVVVVVVVVVVVVVVCCCCCCCCCCCCCCCCCCCCCCCCC
         /// Onde:
         /// 021	> Código do BANESTES
         /// 9 	> Moeda (Real)
-        /// D 	> Dígito Verificador 
+        /// D 	> Dígito Verificador
         /// FFFF------------------------------------------------------------- > Fator de Vencimento
         /// VVVVVVVVVV-----	> Valor
         /// CCCCCCCCCCCCCCCCCCCCCCCCC 	> Chave ASBACE.
@@ -105,7 +105,6 @@ namespace BoletoNet
                 int S = 0;
                 int P = 0;
                 int N = 0;
-                int d = 0;
 
                 for (int i = 0; i < chave.Length; i++)
                 {
@@ -185,7 +184,7 @@ namespace BoletoNet
 
                 //var linhaDigitavel = string.Concat("0219", _dacBoleto, FatorVencimento(boleto), _valorMoeda, _chaveASBACE);
 
-                boleto.CodigoBarra.LinhaDigitavel = string.Format("{0}.{1} {2}.{3} {4}.{5} {6} {7}", 
+                boleto.CodigoBarra.LinhaDigitavel = string.Format("{0}.{1} {2}.{3} {4}.{5} {6} {7}",
                     parte1.Substring(0, 5),
                     parte1.Substring(5, 5),
                     parte2.Substring(0, 5),

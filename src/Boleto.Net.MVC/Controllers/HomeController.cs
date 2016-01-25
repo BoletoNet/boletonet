@@ -80,5 +80,11 @@ namespace Boleto.Net.MVC.Controllers
             }
             return View();
         }
+
+        public FileResult GeraPDF()
+        {
+            Exemplos exemplos = new Exemplos(341);
+            return File(exemplos.ItauPDF(), "application/pdf");
+        }
     }
 }

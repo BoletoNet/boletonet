@@ -116,7 +116,7 @@ namespace BoletoNet
             //if (boleto.Carteira == "06" && !Utils.DataValida(boleto.DataVencimento))
             //    FFFF = "0000";
 
-            string VVVVVVVVVV = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
+            string VVVVVVVVVV = boleto.ValorBoleto.ToString("N2").Replace(",", "").Replace(".", "");
             VVVVVVVVVV = Utils.FormatCode(VVVVVVVVVV, 10);
 
             //if (Utils.ToInt64(VVVVVVVVVV) == 0)
@@ -148,15 +148,15 @@ namespace BoletoNet
         /// 
         public override void FormataCodigoBarra(Boleto boleto)
         {
-            string valorBoleto = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
+            var valorBoleto = boleto.ValorBoleto.ToString("N2").Replace(",", "").Replace(".", "");
             valorBoleto = Utils.FormatCode(valorBoleto, 10);
 
-            if (boleto.Carteira == "02" || boleto.Carteira == "03" || boleto.Carteira == "09" || boleto.Carteira == "19")
+            if (boleto.Carteira == "02" || boleto.Carteira == "03" || boleto.Carteira == "09" || boleto.Carteira == "19" || boleto.Carteira == "26") // Com registro
             {
                 boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}", Codigo.ToString(), boleto.Moeda,
                 FatorVencimento(boleto), valorBoleto, FormataCampoLivre(boleto));
             }
-            else if (boleto.Carteira == "06" || boleto.Carteira == "16")
+            else if (boleto.Carteira == "06" || boleto.Carteira == "16" || boleto.Carteira == "25") // Sem Registro
             {
                 if (boleto.ValorBoleto == 0)
                 {
@@ -217,8 +217,8 @@ namespace BoletoNet
 
         public override void ValidaBoleto(Boleto boleto)
         {
-            if (boleto.Carteira != "02" && boleto.Carteira != "03" && boleto.Carteira != "06" && boleto.Carteira != "09" && boleto.Carteira != "16" && boleto.Carteira != "19")
-                throw new NotImplementedException("Carteira não implementada. Carteiras implementadas 02, 03, 06, 09, 16, 19.");
+            if (boleto.Carteira != "02" && boleto.Carteira != "03" && boleto.Carteira != "06" && boleto.Carteira != "09" && boleto.Carteira != "16" && boleto.Carteira != "19" && boleto.Carteira != "25" && boleto.Carteira != "26")
+                throw new NotImplementedException("Carteira não implementada. Carteiras implementadas 02, 03, 06, 09, 16, 19, 25, 26.");
 
             //O valor é obrigatório para a carteira 03
             if (boleto.Carteira == "03")

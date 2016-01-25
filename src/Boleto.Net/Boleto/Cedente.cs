@@ -20,6 +20,8 @@ namespace BoletoNet
         private string _carteira;
         private Endereco _endereco;
         private IList<IInstrucao> _instrucoes = new List<IInstrucao>();
+        private bool _mostrarCNPJnoBoleto = false;
+
         #endregion Variaveis
 
         public Cedente()
@@ -242,6 +244,21 @@ namespace BoletoNet
             }
         }
 
+
+        public bool MostrarCNPJnoBoleto
+        {
+            get
+            {
+                return _mostrarCNPJnoBoleto;
+            }
+            set
+            {
+                _mostrarCNPJnoBoleto = value;
+            }
+        }
+
+
+        
         #endregion Propriedades
     }
 }
