@@ -226,7 +226,9 @@ namespace BoletoNet
             if (boleto.Cedente.Codigo.ToString().Length > 7)
                 throw new NotImplementedException("Código cedente deve ter 7 posições.");
 
-            boleto.LocalPagamento += "Grupo Santander - GC";
+            // Atribui o nome do banco ao local de pagamento
+            if (string.IsNullOrEmpty(boleto.LocalPagamento))
+                boleto.LocalPagamento = "Grupo Santander - GC";
 
             if (EspecieDocumento.ValidaSigla(boleto.EspecieDocumento) == "")
                boleto.EspecieDocumento = new EspecieDocumento_Santander("2");

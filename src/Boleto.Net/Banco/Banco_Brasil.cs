@@ -497,8 +497,9 @@ namespace BoletoNet
             #endregion Agência e Conta Corrente
 
             //Atribui o nome do banco ao local de pagamento
-            if (boleto.LocalPagamento == "Até o vencimento, preferencialmente no ")
-                boleto.LocalPagamento += Nome;
+            //Atribui o nome do banco ao local de pagamento
+            if (string.IsNullOrEmpty(boleto.LocalPagamento))
+                boleto.LocalPagamento = "Até o vencimento, preferencialmente no " + Nome;
 
             //Verifica se data do processamento é valida
             //if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
