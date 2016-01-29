@@ -256,11 +256,6 @@ namespace BoletoNet
             else if (boleto.Cedente.ContaBancaria.Conta.Length < 7)
                 boleto.Cedente.ContaBancaria.Conta = Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 7);
 
-
-            //Atribui o nome do banco ao local de pagamento
-            boleto.LocalPagamento += Nome + "";
-
-
             //Verifica se data do processamento é valida
 			//if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
 			if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
@@ -274,8 +269,10 @@ namespace BoletoNet
 
             boleto.QuantidadeMoeda = 0;
 
-            //Atribui o nome do banco ao local de pagamento
-            boleto.LocalPagamento = "PAGÁVEL PREFERENCIALMENTE NAS AGÊNCIAS DO BRADESCO";
+            // Atribui o nome do banco ao local de pagamento
+            if (string.IsNullOrEmpty(boleto.LocalPagamento))
+                boleto.LocalPagamento = "PAGÁVEL PREFERENCIALMENTE NAS AGÊNCIAS DO BRADESCO";
+
 
             // Calcula o DAC do Nosso Número
             _dacNossoNumero = CalcularDigitoNossoNumero(boleto);

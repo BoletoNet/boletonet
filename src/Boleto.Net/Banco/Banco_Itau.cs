@@ -103,8 +103,10 @@ namespace BoletoNet
 
                 // Calcula o DAC da Conta Corrente
                 boleto.Cedente.ContaBancaria.DigitoConta = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta).ToString();
+
                 //Atribui o nome do banco ao local de pagamento
-                boleto.LocalPagamento += Nome + ". Após o vencimento, somente no ITAÚ";
+                if (string.IsNullOrEmpty(boleto.LocalPagamento))
+                    boleto.LocalPagamento = "Até o vencimento no ITAÚ. Após o vencimento, somente no ITAÚ";
 
                 //Verifica se o nosso número é válido
                 if (Utils.ToInt64(boleto.NossoNumero) == 0)
