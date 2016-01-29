@@ -131,6 +131,17 @@ namespace BoletoNet
         }
 
         /// <summary>
+        /// Retona o CPF ou CNPJ do Cedente com máscara
+        /// </summary>
+        public string CPFCNPJcomMascara
+        {
+            get
+            {
+                return _cpfcnpj;
+            }
+        }
+
+        /// <summary>
         /// Nome do Cedente
         /// </summary>
         public String Nome
