@@ -617,7 +617,6 @@ namespace BoletoNet
 			if (String.IsNullOrEmpty(vLocalLogoCedente))
 				vLocalLogoCedente = urlImagemLogo;
 
-
 			return html
 				.Replace("@CODIGOBANCO", Utils.FormatCode(_ibanco.Codigo.ToString(), 3))
 				.Replace("@DIGITOBANCO", _ibanco.Digito.ToString())

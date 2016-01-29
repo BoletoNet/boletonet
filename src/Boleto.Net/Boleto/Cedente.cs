@@ -112,7 +112,7 @@ namespace BoletoNet
         }
 
         /// <summary>
-        /// Retona o CPF ou CNPJ do Cedente
+        /// Retona o CPF ou CNPJ do Cedente (sem máscara)
         /// </summary>
         public string CPFCNPJ
         {
@@ -131,7 +131,7 @@ namespace BoletoNet
         }
 
         /// <summary>
-        /// Retona o CPF ou CNPJ do Cedente com máscara
+        /// Retona o CPF ou CNPJ do Cedente (com máscara)
         /// </summary>
         public string CPFCNPJcomMascara
         {
