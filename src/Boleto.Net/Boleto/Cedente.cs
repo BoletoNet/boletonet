@@ -112,7 +112,7 @@ namespace BoletoNet
         }
 
         /// <summary>
-        /// Retona o CPF ou CNPJ do Cedente
+        /// Retona o CPF ou CNPJ do Cedente (sem máscara)
         /// </summary>
         public string CPFCNPJ
         {
@@ -127,6 +127,17 @@ namespace BoletoNet
                     throw new ArgumentException("O CPF/CNPJ inválido. Utilize 11 dígitos para CPF ou 14 para CPNJ.");
 
                 _cpfcnpj = value;
+            }
+        }
+
+        /// <summary>
+        /// Retona o CPF ou CNPJ do Cedente (com máscara)
+        /// </summary>
+        public string CPFCNPJcomMascara
+        {
+            get
+            {
+                return _cpfcnpj;
             }
         }
 
