@@ -198,7 +198,10 @@ namespace BoletoNet
         {
             //throw new NotImplementedException("Função não implementada.");
             if (!((boleto.Carteira == "102") || (boleto.Carteira == "101") || (boleto.Carteira == "201")))
-                throw new NotImplementedException("Carteira não implementada.");
+            {
+                string exceptionMessage = String.Format("A carteira '{0}' não foi implementada. Carteiras válidas: 101, 102 e 201.", boleto.Carteira);
+                throw new NotImplementedException(exceptionMessage);
+            }
 
             //Banco 353  - Utilizar somente 08 posições do Nosso Numero (07 posições + DV), zerando os 05 primeiros dígitos
             if (this.Codigo == 353)
