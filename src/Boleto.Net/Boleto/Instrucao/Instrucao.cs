@@ -96,6 +96,10 @@ namespace BoletoNet
                     case 756:
                         _IInstrucao = new Instrucao_Sicoob();
                         break;
+                    //85 - CECRED
+                    case 85:
+                        _IInstrucao = new Instrucao_Cecred();
+                        break;
                     default:
                         throw new Exception("Código do banco não implementando: " + codigoBanco);
                 }
