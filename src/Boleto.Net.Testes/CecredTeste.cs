@@ -51,13 +51,13 @@ namespace Boleto.Net.Testes {
                 boletoBancario.Boleto.Valida();
                 var htmlString = boletoBancario.MontaHtml();
 
-                string _arquivo = string.Empty;
-                _arquivo = string.Format(@"C:\temp\boleto_{0}.html", boletoBancario.Boleto.NumeroDocumento);
+                //string _arquivo = string.Empty;
+                //_arquivo = string.Format(@"C:\temp\boleto_{0}.html", boletoBancario.Boleto.NumeroDocumento);
 
-                using (System.IO.FileStream f = new System.IO.FileStream(_arquivo, System.IO.FileMode.Create)) {
-                    System.IO.StreamWriter w = new System.IO.StreamWriter(f, System.Text.Encoding.UTF8);
-                    w.Write(htmlString);
-                }
+                //using (System.IO.FileStream f = new System.IO.FileStream(_arquivo, System.IO.FileMode.Create)) {
+                //    System.IO.StreamWriter w = new System.IO.StreamWriter(f, System.Text.Encoding.UTF8);
+                //    w.Write(htmlString);
+                //}
 
                 Assert.IsFalse(string.IsNullOrEmpty(htmlString));
             } catch (Exception ex) {
