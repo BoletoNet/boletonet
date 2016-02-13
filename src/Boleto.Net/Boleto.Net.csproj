@@ -85,6 +85,7 @@
     <Compile Include="Arquivo\Reader\TextPosAttribute.cs" />
     <Compile Include="Arquivo\Reader\TextPosReader.cs" />
     <Compile Include="Banco\AbstractBanco.cs" />
+    <Compile Include="Banco\Banco_Nordeste.cs" />
     <Compile Include="Banco\Carteiras\BancoCarteiraFactory.cs" />
     <Compile Include="Banco\Carteiras\Brasil\Carteira18Brasil.cs" />
     <Compile Include="Banco\Carteiras\Brasil\CarteiraBrasil.cs" />
