@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using BoletoNet.Util;
 
 namespace BoletoNet
 {
@@ -434,7 +435,7 @@ namespace BoletoNet
 
             for (int i = seq.Length; i > 0; i--)
             {
-                r = (Convert.ToInt32(Microsoft.VisualBasic.Strings.Mid(seq, i, 1)) * p);
+                r = (Convert.ToInt32(seq.Mid(i, 1)) * p);
 
                 if (r > 9)
                     r = (r / 10) + (r % 10);
@@ -494,7 +495,7 @@ namespace BoletoNet
 
             for (int i = seq.Length; i > 0; i--)
             {
-                n = Microsoft.VisualBasic.Strings.Mid(seq, i, 1);
+                n = seq.Mid(i, 1);
 
                 s = s + (Convert.ToInt32(n) * p);
 
@@ -531,7 +532,7 @@ namespace BoletoNet
 
             for (int i = seq.Length; i > 0; i--)
             {
-                s = s + (Convert.ToInt32(Microsoft.VisualBasic.Strings.Mid(seq, i, 1)) * p);
+                s = s + (Convert.ToInt32(seq.Mid( i, 1)) * p);
                 if (p == b)
                     p = 2;
                 else
@@ -604,7 +605,7 @@ namespace BoletoNet
 
             while (pos <= seq.Length)
             {
-                num = Microsoft.VisualBasic.Strings.Mid(seq, pos, 1);
+                num = seq.Mid( pos, 1);
                 total += Convert.ToInt32(num) * mult;
 
                 mult -= 1;
@@ -643,7 +644,7 @@ namespace BoletoNet
 
             while (pos <= seq.Length)
             {
-                num = Microsoft.VisualBasic.Strings.Mid(seq, pos, 1);
+                num = seq.Mid( pos, 1);
                 total += Convert.ToInt32(num) * mult;
 
                 mult -= 1;

@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using Microsoft.VisualBasic;
+using BoletoNet.Util;
 using System.Drawing;
 using System.ComponentModel;
 using System.Drawing.Imaging;

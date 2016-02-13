@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Text;
 using System.Web.UI;
-using Microsoft.VisualBasic;
+using BoletoNet.Util;
 //Envio por email
 using System.IO;
 using System.Net.Mail;
