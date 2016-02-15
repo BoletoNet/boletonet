@@ -531,5 +531,23 @@ namespace BoletoNet
             return FitStringLength(final, qtde, qtde, ch, 0, true, true, completaPelaEsquerda);
             ;
         }
+
+        public static string Transform(string text, string mask, char charMask = 'X') {
+            string retorno = text;
+
+            if (!string.IsNullOrEmpty(mask)) {
+
+                int idx = 0;
+                foreach (var m in mask) {
+                    if (m != charMask) {
+                        retorno = retorno.Insert(idx, m.ToString());
+                    }
+                    idx++;
+                }
+
+            }
+
+            return retorno;
+        }
     }
 }

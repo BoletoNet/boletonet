@@ -352,8 +352,15 @@ namespace BoletoNet
 				else
 				{
 					//Para SANTANDER, a ficha de compensação não possui código da carteira - por jsoda em 08/12/2012
-					if (Boleto.Banco.Codigo == 33)
-						html.Replace("Carteira /", "");
+                    if (Boleto.Banco.Codigo == 33) {
+                        html.Replace("Carteira /", "");
+                    } 
+                    // 85 - CECRED
+                    if (Boleto.Banco.Codigo == 85) {
+                        html.Replace("@ADICNSTRUCAO", "Após o vencimento acesso o site www.credifoz.coop.br para atualizar seu boleto.");
+                    } else {
+                        html.Replace("@ADICNSTRUCAO", string.Empty);
+                    }
 				}
 
 				//Limpa as intruções para o Cedente
