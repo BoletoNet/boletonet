@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Globalization;
 using System.Web.UI;
+using BoletoNet.Util;
 
 [assembly: WebResource("BoletoNet.Imagens.033.jpg", "image/jpg")]
-
 namespace BoletoNet
 {
     /// <author>  
@@ -326,7 +326,7 @@ namespace BoletoNet
 
             while (pos <= seq.Length)
             {
-                num = Microsoft.VisualBasic.Strings.Mid(seq, pos, 1);
+                num = seq.Mid( pos, 1);
                 total += Convert.ToInt32(num) * mult;
 
                 mult -= 1;

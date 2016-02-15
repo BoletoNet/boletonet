@@ -1,6 +1,6 @@
 using System;
 using System.Web.UI;
-using Microsoft.VisualBasic;
+using BoletoNet.Util;
 
 [assembly: WebResource("BoletoNet.Imagens.070.jpg", "image/jpg")]
 namespace BoletoNet
@@ -161,7 +161,7 @@ namespace BoletoNet
 
             for (int i = value.Length; i > 0; i--)
             {
-                Soma = Soma + (Convert.ToInt32(Strings.Mid(value, i, 1)) * Peso);
+                Soma = Soma + (Convert.ToInt32(value.Mid(i, 1)) * Peso);
                 if (Peso == Base)
                     Peso = 2;
                 else
@@ -187,7 +187,7 @@ namespace BoletoNet
 
             for (int i = value.Length; i > 0; i--)
             {
-                Soma = Soma + (Convert.ToInt32(Strings.Mid(value, i, 1)) * Peso);
+                Soma = Soma + (Convert.ToInt32(value.Mid(i, 1)) * Peso);
                 if (Peso == Base)
                     Peso = 2;
                 else

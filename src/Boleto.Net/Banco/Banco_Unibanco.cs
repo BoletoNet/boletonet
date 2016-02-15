@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using BoletoNet;
-using Microsoft.VisualBasic;
+using BoletoNet.Util;
 
 [assembly: WebResource("BoletoNet.Imagens.409.jpg", "image/jpg")]
 
