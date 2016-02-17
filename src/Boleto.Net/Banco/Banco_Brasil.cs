@@ -2,11 +2,10 @@
 using System;
 using System.Data;
 using System.Globalization;
-using System.Web.UI;
 using BoletoNet.Util;
 using BoletoNet.EDI.Banco;
+using System.Text;
 
-[assembly: WebResource("BoletoNet.Imagens.001.jpg", "image/jpg")]
 namespace BoletoNet
 {
     /// <summary>
@@ -526,6 +525,54 @@ namespace BoletoNet
         }
 
         #region Métodos de formatação do boleto
+
+        public override void OnGeraHtmlReciboCedente(StringBuilder html, Boleto boleto)
+        {
+            //Para carteiras "17-019" e "18-019" do Banco do Brasil, a ficha de compensação não possui código da carteira
+            //na formatação do campo.
+            if (boleto.Carteira.Equals("17-019") | boleto.Carteira.Equals("17-027") | boleto.Carteira.Equals("18-019"))
+            {
+                html.Replace("Carteira /", "");
+                html.Replace("@NOSSONUMERO", "@NOSSONUMEROBB");
+            }
+
+        }
+
+        public override string FormataAgenciaCodigoCedente(Cedente cedente)
+        {
+            if (!cedente.DigitoCedente.Equals(-1))
+            {
+                return string.Format("{0}-{1}/{2}-{3}", cedente.ContaBancaria.Agencia, cedente.ContaBancaria.DigitoAgencia, Utils.FormatCode(cedente.ContaBancaria.Conta, 6), cedente.ContaBancaria.DigitoConta);
+            }
+            else
+            {
+                return base.FormataAgenciaCodigoCedente(cedente);
+            }
+        }
+
+        public override string FormataDescricaoCarteira(Boleto boleto)
+        {
+            string descricaoCarteira = new Carteira_BancoBrasil(Utils.ToInt32(boleto.Carteira)).Codigo;
+
+            if (string.IsNullOrEmpty(descricaoCarteira))
+            {
+                throw new Exception("O código da carteira não foi implementado.");
+            }
+
+            return string.Format("{0} - {1}", boleto.Carteira,
+                    descricaoCarteira);
+
+        }
+
+        public override StringBuilder RenderizaBoleto(StringBuilder html, BoletoBancario.BoletoRenderParams boletoBancario)
+        {
+            var boleto = boletoBancario.Boleto;
+            //Variável inserida para atender às especificações das carteiras "17-019", "17-027" e "18-019" do Banco do Brasil
+            //apenas para a ficha de compensação.
+            //Como a variável não existirá se não forem as carteiras "17-019", "17-027" e "18-019", não foi colocado o [if].
+            html.Replace("@NOSSONUMEROBB", boleto.Banco.Codigo == 1 & (boleto.Carteira.Equals("17-019") | boleto.Carteira.Equals("17-027") | boleto.Carteira.Equals("18-019")) ? boleto.NossoNumero.Substring(3) : string.Empty);
+            return base.RenderizaBoleto(html, boletoBancario);
+        }
 
         public override void FormataCodigoBarra(Boleto boleto)
         {

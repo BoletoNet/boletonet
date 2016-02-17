@@ -1,9 +1,7 @@
 using System;
-using System.Web.UI;
 using BoletoNet.Util;
 using System.Text;
 
-[assembly: WebResource("BoletoNet.Imagens.341.jpg", "image/jpg")]
 namespace BoletoNet
 {
     /// <summary>
@@ -1292,6 +1290,13 @@ namespace BoletoNet
             ////IMPLEMENTACAO PENDENTE...
             mensagem = vMsg;
             return vRetorno;
+        }
+
+        public override void OnGeraHtmlReciboCedente(StringBuilder html, Boleto boleto)
+        {
+            //Para Banco Itaú, o texto "(Texto de responsabilidade do cedente)" deve ser
+            //"(Todas as informações deste bloqueto são de exclusiva responsabilidade do cedente)".
+            html.Replace("(Texto de responsabilidade do cedente)", "(Todas as informações deste bloqueto são de exclusiva responsabilidade do cedente)");
         }
 
     }

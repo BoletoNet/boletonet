@@ -125,7 +125,8 @@ namespace BoletoNet {
         ///														&lt;/td&gt;
         ///												&lt;/tr&gt;
         ///												&lt;tr class=&quot;cp h12 At rBb&quot;&gt;
-        ///														&lt;td&gt;        /// [rest of string was truncated]&quot;;.
+        ///														&lt;td&gt;
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Carne {
             get {

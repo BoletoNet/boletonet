@@ -1,10 +1,8 @@
 using System;
-using System.Web.UI;
 using BoletoNet.Util;
 using System.Text;
 using BoletoNet.EDI.Banco;
 
-[assembly: WebResource("BoletoNet.Imagens.748.jpg", "image/jpg")]
 namespace BoletoNet
 {
     /// <Author>
@@ -85,6 +83,12 @@ namespace BoletoNet
         {
             throw new NotImplementedException("Função do fomata número do documento não implementada.");
         }
+
+        public override string FormataAgenciaCodigoCedente(Cedente cedente)
+        {
+            return string.Format("{0}.{1}.{2}", cedente.ContaBancaria.Agencia, cedente.ContaBancaria.OperacaConta, cedente.Codigo);
+        }
+
         public override void FormataLinhaDigitavel(Boleto boleto)
         {
             //041M2.1AAAd1  CCCCC.CCNNNd2  NNNNN.041XXd3  V FFFF9999999999
