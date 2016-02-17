@@ -1,12 +1,9 @@
 using System;
 using System.ComponentModel;
 using System.Threading;
-using System.Web.UI;
 using BoletoNet;
 using BoletoNet.Util;
 using System.Text;
-
-[assembly: WebResource("BoletoNet.Imagens.356.jpg", "image/jpg")]
 
 namespace BoletoNet
 {

@@ -1,7 +1,5 @@
 using System;
-using System.Web.UI;
 
-[assembly: WebResource("BoletoNet.Imagens.021.jpg", "image/jpg")]
 namespace BoletoNet
 {
     /// <summary>

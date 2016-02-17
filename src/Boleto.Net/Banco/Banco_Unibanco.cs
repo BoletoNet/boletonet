@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Web.UI;
 using BoletoNet;
 using BoletoNet.Util;
-
-[assembly: WebResource("BoletoNet.Imagens.409.jpg", "image/jpg")]
 
 namespace BoletoNet
 { 

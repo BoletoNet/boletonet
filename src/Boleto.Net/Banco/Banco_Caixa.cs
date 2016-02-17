@@ -1,11 +1,8 @@
 using System;
 using System.Globalization;
-using System.Web.UI;
 using BoletoNet;
 using BoletoNet.Util;
 using BoletoNet.EDI.Banco;
-
-[assembly: WebResource("BoletoNet.Imagens.104.jpg", "image/jpg")]
 
 namespace BoletoNet
 {
@@ -362,6 +359,19 @@ namespace BoletoNet
         public override void FormataNumeroDocumento(Boleto boleto)
         {
 
+        }
+
+        public override string FormataDescricaoCarteira(Boleto boleto)
+        {
+            var descricaoCarteira = new Carteira_Caixa(Utils.ToInt32(boleto.Carteira)).Codigo;
+                  
+            if (string.IsNullOrEmpty(descricaoCarteira))
+            {
+                throw new Exception("O código da carteira não foi implementado.");
+            }
+
+            return string.Format("{0} - {1}", boleto.Carteira,
+                    descricaoCarteira);
         }
 
         public override void ValidaBoleto(Boleto boleto)

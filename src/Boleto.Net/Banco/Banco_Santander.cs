@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Globalization;
-using System.Web.UI;
 using BoletoNet.Util;
+using System.Text;
 
-[assembly: WebResource("BoletoNet.Imagens.033.jpg", "image/jpg")]
 namespace BoletoNet
 {
     /// <author>  
@@ -1163,6 +1162,47 @@ namespace BoletoNet
             mensagem = vMsg;
             return vRetorno;
         }
+
+        public override void OnGeraHtmlReciboCedente(StringBuilder html, Boleto boleto)
+        {
+            //Para SANTANDER, a ficha de compensação não possui código da carteira - por jsoda em 08/12/2012
+            html.Replace("Carteira /", "");
+        }
+
+        public override string FormataAgenciaCodigoCedente(Cedente cedente)
+        {
+            if (!cedente.DigitoCedente.Equals(-1))
+            {
+                return base.FormataAgenciaCodigoCedente(cedente);
+            }
+            else
+            {
+                if (String.IsNullOrEmpty(cedente.ContaBancaria.DigitoAgencia))
+                {
+                    return String.Format("{0}/{1}", cedente.ContaBancaria.Agencia, Utils.FormatCode(cedente.Codigo.ToString(), 6));
+                }
+                else {
+                    //Para banco SANTANDER, a formatação do campo "Agencia/Identif.Cedente" - por jsoda em 07/05/2012
+                    return string.Format("{0}-{1}/{2}", cedente.ContaBancaria.Agencia, cedente.ContaBancaria.DigitoAgencia, Utils.FormatCode(cedente.Codigo.ToString(), 6));
+                }
+                
+            }
+        }
+
+        public override string FormataDescricaoCarteira(Boleto boleto)
+        {
+            string descricaoCarteira = new Carteira_Santander(Utils.ToInt32(boleto.Carteira)).Codigo;
+
+            if (string.IsNullOrEmpty(descricaoCarteira))
+            {
+                throw new Exception("O código da carteira não foi implementado.");
+            }
+
+            return string.Format("{0} - {1}", boleto.Carteira,
+                    descricaoCarteira);
+        }
+
+
 
     }
 }

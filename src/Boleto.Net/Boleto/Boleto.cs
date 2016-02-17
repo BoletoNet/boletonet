@@ -1,14 +1,14 @@
 namespace BoletoNet
 {
-	using System;
-	using System.Collections.Generic;
-	using System.ComponentModel;
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
 
-	using System.Collections.ObjectModel;
+    using System.Collections.ObjectModel;
 
-	using global::BoletoNet.DemonstrativoValoresBoleto;
-
-	[Serializable, Browsable(false)]
+    using global::BoletoNet.DemonstrativoValoresBoleto;
+    using System.Text;
+    [Serializable, Browsable(false)]
 	public class Boleto
 	{
 		#region Variaveis
@@ -64,7 +64,7 @@ namespace BoletoNet
 		private string _tipoModalidade = string.Empty;
 		private Remessa _remessa;
 
-		private ObservableCollection<GrupoDemonstrativo> _demonstrativos;
+		private List<GrupoDemonstrativo> _demonstrativos;
 
 		#endregion
 
@@ -133,11 +133,11 @@ namespace BoletoNet
 
 		#region Properties
 
-		public ObservableCollection<GrupoDemonstrativo> Demonstrativos
+		public List<GrupoDemonstrativo> Demonstrativos
 		{
 			get
 			{
-				return this._demonstrativos ?? (this._demonstrativos = new ObservableCollection<GrupoDemonstrativo>());
+				return this._demonstrativos ?? (this._demonstrativos = new List<GrupoDemonstrativo>());
 			}
 		}
 
@@ -565,5 +565,6 @@ namespace BoletoNet
 				throw new Exception("Erro durante a formatação dos campos.", ex);
 			}
 		}
-	}
+
+    }
 }

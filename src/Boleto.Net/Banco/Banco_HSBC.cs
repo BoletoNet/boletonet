@@ -1,8 +1,6 @@
 using System;
-using System.Web.UI;
 using BoletoNet.Util;
 
-[assembly: WebResource("BoletoNet.Imagens.399.jpg", "image/jpg")]
 namespace BoletoNet
 {
     /// <summary>
@@ -697,6 +695,18 @@ namespace BoletoNet
             return vRetorno;
         }
 
+        public override string FormataAgenciaCodigoCedente(Cedente cedente)
+        {
+            if (!cedente.DigitoCedente.Equals(-1))
+            {
+                return base.FormataAgenciaCodigoCedente(cedente);
+            }
+            else
+            {
+                //agenciaCodigoCedente = Utils.FormatCode(Cedente.Codigo.ToString(), 7); -> para Banco HSBC mostra apenas código Cedente - por Ponce em 08/06/2012
+                return String.Format("{0}/{1}", cedente.ContaBancaria.Agencia, cedente.Codigo.ToString()); //Solicitação do HSBC que mostrasse agencia/Conta - por Transis em 24/02/15
+            }
+        }
     }
 }
 

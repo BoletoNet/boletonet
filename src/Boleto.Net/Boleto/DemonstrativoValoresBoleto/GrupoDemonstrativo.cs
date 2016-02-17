@@ -1,14 +1,14 @@
 ﻿namespace BoletoNet.DemonstrativoValoresBoleto
 {
-	using System.Collections.ObjectModel;
+    using System.Collections.ObjectModel;
 
-	using global::BoletoNet.RelatorioValoresBoleto;
-
-	public class GrupoDemonstrativo
+    using global::BoletoNet.RelatorioValoresBoleto;
+    using System.Collections.Generic;
+    public class GrupoDemonstrativo
 	{
 		#region Fields
 
-		private ObservableCollection<ItemDemonstrativo> _itens;
+		private List<ItemDemonstrativo> _itens;
 
 		#endregion
 
@@ -16,11 +16,11 @@
 
 		public string Descricao { get; set; }
 
-		public ObservableCollection<ItemDemonstrativo> Itens
+		public List<ItemDemonstrativo> Itens
 		{
 			get
 			{
-				return this._itens ?? (this._itens = new ObservableCollection<ItemDemonstrativo>());
+				return this._itens ?? (this._itens = new List<ItemDemonstrativo>());
 			}
 		}
 

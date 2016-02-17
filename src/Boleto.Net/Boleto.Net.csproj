@@ -50,11 +50,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arquivo\AbstractArquivoRemessa.cs" />
@@ -84,20 +80,21 @@
     <Compile Include="Arquivo\LinhaDeArquivoLidaArgs.cs" />
     <Compile Include="Arquivo\Reader\TextPosAttribute.cs" />
     <Compile Include="Arquivo\Reader\TextPosReader.cs" />
-    <Compile Include="Banco\AbstractBanco.cs" />
+    <Compile Include="Banco\Common\AbstractBanco.cs" />
     <Compile Include="Banco\Banco_Nordeste.cs" />
     <Compile Include="Banco\Carteiras\BancoCarteiraFactory.cs" />
     <Compile Include="Banco\Carteiras\Brasil\Carteira18Brasil.cs" />
     <Compile Include="Banco\Carteiras\Brasil\CarteiraBrasil.cs" />
     <Compile Include="Banco\Carteiras\IBancoCarteira.cs" />
     <Compile Include="Banco\Carteiras\TipoCarteiraAttribute.cs" />
+    <Compile Include="BoletoImpressao\BoletoBancario.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Sicoob.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Banestes.cs" />
     <Compile Include="Banco\Banco_Bansirul.cs" />
     <Compile Include="Banco\Banco_Basa.cs" />
     <Compile Include="Banco\Banco_BRB.cs" />
     <Compile Include="Banco\Banco_Caixa.cs" />
-    <Compile Include="Banco\Banco.cs" />
+    <Compile Include="Banco\Common\Banco.cs" />
     <Compile Include="Banco\Banco_Brasil.cs" />
     <Compile Include="Banco\Banco_BankBoston.cs" />
     <Compile Include="Banco\Banco_HSBC.cs" />
@@ -105,7 +102,6 @@
     <Compile Include="Banco\Banco_Sicoob.cs" />
     <Compile Include="Banco\Banco_Sicredi.cs" />
     <Compile Include="Banco\Banco_Unibanco.cs" />
-    <Compile Include="BoletoImpressao\BoletoBancarioDesigner.cs" />
     <Compile Include="Boleto\Boleto.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -181,7 +177,6 @@
     <Compile Include="Enums\TipoLancamento.cs" />
     <Compile Include="Enums\TipoPessoa.cs" />
     <Compile Include="Util\BarCodeBase.cs" />
-    <Compile Include="BoletoImpressao\BoletoBancario.cs" />
     <Compile Include="Banco\Banco_Bradesco.cs" />
     <Compile Include="Util\C2of5i.cs" />
     <Compile Include="Boleto\Cedente.cs" />
@@ -194,10 +189,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Html.resx</DependentUpon>
     </Compile>
-    <Compile Include="Banco\IBanco.cs" />
+    <Compile Include="Banco\Common\IBanco.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Bradesco.cs" />
     <Compile Include="Boleto\Instrucao\IInstrucao.cs" />
-    <Compile Include="BoletoImpressao\ImagemCodigoBarraHandler.cs" />
     <Compile Include="Banco\Banco_Itau.cs" />
     <Compile Include="Boleto\Instrucao\AbstractInstrucao.cs" />
     <Compile Include="Boleto\Instrucao\Instrucoes.cs" />
@@ -217,9 +211,6 @@
     <Compile Include="Util\Extensions.cs" />
     <Compile Include="Util\LeitorLinhaPosicao.cs" />
     <Compile Include="Util\Utils.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="BoletoImpressao\BoletoNet.css" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Imagens\corte.gif" />
@@ -296,10 +287,11 @@
     <EmbeddedResource Include="Imagens\003.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="BoletoImpressao\BoletoNetPDF.css" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <EmbeddedResource Include="BoletoImpressao\BoletoNet.css" />
+    <EmbeddedResource Include="BoletoImpressao\BoletoNetPDF.css" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
