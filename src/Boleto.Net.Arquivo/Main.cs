@@ -83,7 +83,7 @@ namespace BoletoNet.Arquivo
             //Na carteira 198 o código do Cedente é a conta bancária
             c.Codigo = "13000";
 
-            Boleto b = new Boleto(vencimento, 1642, "198", "92082835", c);
+            Boleto b = new Boleto(ListaBancos.Itau, vencimento, 1642, "198", "92082835", c);
             b.NumeroDocumento = "1008073";
 
             b.DataVencimento = Convert.ToDateTime("12-12-12");
@@ -106,7 +106,7 @@ namespace BoletoNet.Arquivo
             Boletos boletos = new Boletos();
             boletos.Add(b);
 
-            Boleto b2 = new Boleto(vencimento, 1642, "198", "92082835", c);
+            Boleto b2 = new Boleto(ListaBancos.Itau, vencimento, 1642, "198", "92082835", c);
             b2.NumeroDocumento = "1008073";
 
             b2.DataVencimento = Convert.ToDateTime("12-12-12");
@@ -244,7 +244,7 @@ namespace BoletoNet.Arquivo
             Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "2269", "130000946");
             c.Codigo = "1795082";
 
-            Boleto b = new Boleto(vencimento, 0.20m, "101", "566612457800", c);
+            Boleto b = new Boleto(ListaBancos.Santander, vencimento, 0.20m, "101", "566612457800", c);
 
             //NOSSO NÚMERO
             //############################################################################################################################

@@ -39,12 +39,12 @@ namespace BoletoNet.Arquivo
         }
 
         #region GERA LAYOUT DO BOLETO
-        private void GeraLayout(List<BoletoBancario> boletos)
+        private void GeraLayout(List<BoletoBancarioEmail> boletos)
         {
             StringBuilder html = new StringBuilder();
-            foreach (BoletoBancario o in boletos)
+            foreach (BoletoBancarioEmail o in boletos)
             {
-                html.Append(o.MontaHtml());
+                html.Append(o.MontaHtmlEmbedded());
                 html.Append("</br></br></br></br></br></br></br></br></br></br>");
             }
 
@@ -54,8 +54,6 @@ namespace BoletoNet.Arquivo
             {
                 StreamWriter w = new StreamWriter(f, System.Text.Encoding.Default);
                 w.Write(html.ToString());
-                w.Close();
-                f.Close();
             }
         }
         #endregion
@@ -64,22 +62,22 @@ namespace BoletoNet.Arquivo
         private void GeraBoletoCaixa(int qtde)
         {
             // Cria o boleto, e passa os parâmetros usuais
-            BoletoBancario bb;
+            BoletoBancarioEmail bb;
 
-            List<BoletoBancario> boletos = new List<BoletoBancario>();
+            List<BoletoBancarioEmail> boletos = new List<BoletoBancarioEmail>();
             for (int i = 0; i < qtde; i++)
             {
 
-                bb = new BoletoBancario();
+                bb = new BoletoBancarioEmail();
                 bb.CodigoBanco = _codigoBanco;
-                bb.MostrarEnderecoCedente = true;
+                bb.Boleto.Opcoes.MostrarEnderecoCedente = true;
                 DateTime vencimento = new DateTime(2010, 2, 28);
 
                 Instrucao_Caixa item1 = new Instrucao_Caixa(9, 5);
                 Instrucao_Caixa item2 = new Instrucao_Caixa(81, 10);
                 Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "0132", "00542");
 
-                Boleto b = new Boleto(vencimento, 460, "SR", "00000000010001", c);
+                Boleto b = new Boleto(ListaBancos.Caixa, vencimento, 460, "SR", "00000000010001", c);
                 Endereco endCed = new Endereco();
 
                 endCed.End = "Rua Testando o Boleto";
@@ -125,13 +123,13 @@ namespace BoletoNet.Arquivo
         private void GeraBoletoItau(int qtde)
         {
             // Cria o boleto, e passa os parâmetros usuais
-            BoletoBancario bb;
+            BoletoBancarioEmail bb;
 
-            List<BoletoBancario> boletos = new List<BoletoBancario>();
+            List<BoletoBancarioEmail> boletos = new List<BoletoBancarioEmail>();
             for (int i = 0; i < qtde; i++)
             {
 
-                bb = new BoletoBancario();
+                bb = new BoletoBancarioEmail();
                 bb.CodigoBanco = _codigoBanco;
 
                 DateTime vencimento = new DateTime(2007, 9, 10);
@@ -142,7 +140,7 @@ namespace BoletoNet.Arquivo
                 //Na carteira 198 o código do Cedente é a conta bancária
                 c.Codigo = "13000";
 
-                Boleto b = new Boleto(vencimento, 1642, "198", "92082835", c, new EspecieDocumento(341, "1"));
+                Boleto b = new Boleto(ListaBancos.Itau, vencimento, 1642, "198", "92082835", c, new EspecieDocumento(341, "1"));
                 b.NumeroDocumento = Convert.ToString(10000 + i);
 
                 b.Sacado = new Sacado("000.000.000-00", "Fulano de Silva");
@@ -181,13 +179,13 @@ namespace BoletoNet.Arquivo
         {
 
             // Cria o boleto, e passa os parâmetros usuais
-            BoletoBancario bb;
+            BoletoBancarioEmail bb;
 
-            List<BoletoBancario> boletos = new List<BoletoBancario>();
+            List<BoletoBancarioEmail> boletos = new List<BoletoBancarioEmail>();
             for (int i = 0; i < qtde; i++)
             {
 
-                bb = new BoletoBancario();
+                bb = new BoletoBancarioEmail();
                 bb.CodigoBanco = _codigoBanco;
 
                 DateTime vencimento = new DateTime(2007, 9, 10);
@@ -196,7 +194,7 @@ namespace BoletoNet.Arquivo
                 Cedente c = new Cedente("00.000.000/0000-00", "Next Consultoria Ltda.", "0123", "100618", "9");
                 c.Codigo = "203167";
 
-                Boleto b = new Boleto(vencimento, 2952.95m, "20", "1803029901", c);
+                Boleto b = new Boleto(ListaBancos.Unibanco, vencimento, 2952.95m, "20", "1803029901", c);
                 b.NumeroDocumento = b.NossoNumero;
 
                 b.Sacado = new Sacado("000.000.000-00", "Marlon Oliveira");
@@ -228,13 +226,13 @@ namespace BoletoNet.Arquivo
         {
 
             // Cria o boleto, e passa os parâmetros usuais
-            BoletoBancario bb;
+            BoletoBancarioEmail bb;
 
-            List<BoletoBancario> boletos = new List<BoletoBancario>();
+            List<BoletoBancarioEmail> boletos = new List<BoletoBancarioEmail>();
             for (int i = 0; i < qtde; i++)
             {
 
-                bb = new BoletoBancario();
+                bb = new BoletoBancarioEmail();
                 bb.CodigoBanco = _codigoBanco;
 
                 DateTime vencimento = new DateTime(2007, 9, 10);
@@ -248,7 +246,7 @@ namespace BoletoNet.Arquivo
                 //Nosso número com 13 dígitos
                 //nn = "0000000003025";
 
-                Boleto b = new Boleto(vencimento, 1642, "198", nn, c);// EnumEspecieDocumento_Sudameris.DuplicataMercantil);
+                Boleto b = new Boleto(ListaBancos.Sudameris, vencimento, 1642, "198", nn, c);// EnumEspecieDocumento_Sudameris.DuplicataMercantil);
                 b.NumeroDocumento = "1008073";
 
                 b.Sacado = new Sacado("000.000.000-00", "Fulano de Silva");
@@ -277,13 +275,13 @@ namespace BoletoNet.Arquivo
         {
 
             // Cria o boleto, e passa os parâmetros usuais
-            BoletoBancario bb;
+            BoletoBancarioEmail bb;
 
-            List<BoletoBancario> boletos = new List<BoletoBancario>();
+            List<BoletoBancarioEmail> boletos = new List<BoletoBancarioEmail>();
             for (int i = 0; i < qtde; i++)
             {
 
-                bb = new BoletoBancario();
+                bb = new BoletoBancarioEmail();
                 bb.CodigoBanco = _codigoBanco;
 
                 DateTime vencimento = new DateTime(2007, 9, 10);
@@ -292,7 +290,7 @@ namespace BoletoNet.Arquivo
                 Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "0542", "5413000");
                 c.Codigo = "13000";
 
-                Boleto b = new Boleto(vencimento, 1642, "198", "02592082835", c);
+                Boleto b = new Boleto(ListaBancos.Safra, vencimento, 1642, "198", "02592082835", c);
                 b.NumeroDocumento = "1008073";
 
                 b.Sacado = new Sacado("000.000.000-00", "Eduardo Frare");
@@ -320,13 +318,13 @@ namespace BoletoNet.Arquivo
         {
 
             // Cria o boleto, e passa os parâmetros usuais
-            BoletoBancario bb;
+            BoletoBancarioEmail bb;
 
-            List<BoletoBancario> boletos = new List<BoletoBancario>();
+            List<BoletoBancarioEmail> boletos = new List<BoletoBancarioEmail>();
             for (int i = 0; i < qtde; i++)
             {
 
-                bb = new BoletoBancario();
+                bb = new BoletoBancarioEmail();
                 bb.CodigoBanco = _codigoBanco;
 
                 DateTime vencimento = new DateTime(2007, 9, 10);
@@ -334,7 +332,7 @@ namespace BoletoNet.Arquivo
                 Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "0542", "13000");
                 c.Codigo = "13000";
 
-                Boleto b = new Boleto(vencimento, 1642, "57", "92082835", c);
+                Boleto b = new Boleto(ListaBancos.Real, vencimento, 1642, "57", "92082835", c);
                 b.NumeroDocumento = "1008073";
 
                 b.Sacado = new Sacado("000.000.000-00", "Fulano de Silva");
@@ -363,13 +361,13 @@ namespace BoletoNet.Arquivo
         {
 
             // Cria o boleto, e passa os parâmetros usuais
-            BoletoBancario bb;
+            BoletoBancarioEmail bb;
 
-            List<BoletoBancario> boletos = new List<BoletoBancario>();
+            List<BoletoBancarioEmail> boletos = new List<BoletoBancarioEmail>();
             for (int i = 0; i < qtde; i++)
             {
 
-                bb = new BoletoBancario();
+                bb = new BoletoBancarioEmail();
                 bb.CodigoBanco = _codigoBanco;
 
                 DateTime vencimento = new DateTime(2007, 9, 10);
@@ -378,7 +376,7 @@ namespace BoletoNet.Arquivo
                 // Código fornecido pela agencia, NÃO é o numero da conta
                 c.Codigo = "0000000"; // 7 posicoes
 
-                Boleto b = new Boleto(vencimento, 2, "CNR", "888888888", c); //cod documento
+                Boleto b = new Boleto(ListaBancos.HSBC, vencimento, 2, "CNR", "888888888", c); //cod documento
                 b.NumeroDocumento = "9999999999999"; // nr documento
 
                 b.Sacado = new Sacado("000.000.000-00", "Fulano de Tal");
@@ -407,20 +405,20 @@ namespace BoletoNet.Arquivo
         {
 
             // Cria o boleto, e passa os parâmetros usuais
-            BoletoBancario bb;
+            BoletoBancarioEmail bb;
 
-            List<BoletoBancario> boletos = new List<BoletoBancario>();
+            List<BoletoBancarioEmail> boletos = new List<BoletoBancarioEmail>();
             for (int i = 0; i < qtde; i++)
             {
 
-                bb = new BoletoBancario();
+                bb = new BoletoBancarioEmail();
                 bb.CodigoBanco = _codigoBanco;
 
                 DateTime vencimento = new DateTime(2007, 9, 10);
                 Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "1234", "5", "12345678", "9");
 
                 c.Codigo = "00000000504";
-                Boleto b = new Boleto(vencimento, 45.50m, "11", "12345678901", c);                
+                Boleto b = new Boleto(ListaBancos.BancodoBrasil, vencimento, 45.50m, "11", "12345678901", c);                
                 
                 b.Sacado = new Sacado("000.000.000-00", "Fulano de Silva");
                 b.Sacado.Endereco.End = "SSS 154 Bloco J Casa 23";
@@ -458,13 +456,13 @@ namespace BoletoNet.Arquivo
         {
 
             // Cria o boleto, e passa os parâmetros usuais
-            BoletoBancario bb;
+            BoletoBancarioEmail bb;
 
-            List<BoletoBancario> boletos = new List<BoletoBancario>();
+            List<BoletoBancarioEmail> boletos = new List<BoletoBancarioEmail>();
             for (int i = 0; i < qtde; i++)
             {
 
-                bb = new BoletoBancario();
+                bb = new BoletoBancarioEmail();
                 bb.CodigoBanco = _codigoBanco;
 
                 DateTime vencimento = new DateTime(2007, 9, 10);
@@ -483,7 +481,7 @@ namespace BoletoNet.Arquivo
                 end.Numero = "55";
                 end.UF = "DF";
 
-                Boleto b = new Boleto(vencimento, 1.01m, "02", "01000000001", c);
+                Boleto b = new Boleto(ListaBancos.Bradesco, vencimento, 1.01m, "02", "01000000001", c);
                 b.NumeroDocumento = "01000000001";
 
                 b.Sacado = new Sacado("000.000.000-00", "Eduardo Frare");

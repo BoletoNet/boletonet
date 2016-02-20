@@ -5,7 +5,7 @@ using BoletoNet;
 using BoletoNet.Arquivo;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Boleto.Net.Testes.Retorno
+namespace BoletoNet.Testes.Retorno
 {
     [TestClass]
     public class ArquivoRetornoCrb643Teste

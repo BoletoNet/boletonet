@@ -35,10 +35,9 @@ namespace BoletoNet
 
         #region Propriedades da Interface
 
-        public override int Codigo
+        public override short Codigo
         {
             get { return _IBanco.Codigo; }
-            set { _IBanco.Codigo = value; }
         }
 
         public override string Digito
@@ -493,8 +492,34 @@ namespace BoletoNet
             return _IBanco.LerDetalheRetornoCNAB400(registro);
         }
 
-        
+
 
         #endregion Métodos de Leitura do arquivo de Retorno
+
+    }
+
+    public enum ListaBancos
+    {
+        BancodoBrasil = 1,
+        Basa = 3,
+        Banestes = 21,
+        Santander = 33,
+        Banrisul = 41,
+        BRB = 70,
+        Caixa = 104,
+        Bradesco = 237,
+
+        Itau = 341,
+        Sudameris = 347,
+        Real = 356,
+        HSBC = 399,
+        Unibanco = 409,
+        Safra = 422,
+        Sicred = 748,
+        Sicoob = 756
+       
+        
+        
+        
     }
 }

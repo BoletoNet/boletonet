@@ -135,7 +135,7 @@ namespace BoletoNet
         DetalheRetorno LerDetalheRetornoCNAB400(string registro);
 
         Cedente Cedente { get; }
-        int Codigo { get; set;}
+        short Codigo { get; set;}
         string Nome { get; }
         string Digito { get; }
 

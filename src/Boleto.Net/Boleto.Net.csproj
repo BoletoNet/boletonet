@@ -87,6 +87,7 @@
     <Compile Include="Banco\Carteiras\Brasil\CarteiraBrasil.cs" />
     <Compile Include="Banco\Carteiras\IBancoCarteira.cs" />
     <Compile Include="Banco\Carteiras\TipoCarteiraAttribute.cs" />
+    <Compile Include="BoletoImpressao\BoletoBancarioEmail.cs" />
     <Compile Include="BoletoImpressao\BoletoBancario.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Sicoob.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Banestes.cs" />
@@ -165,6 +166,7 @@
     <Compile Include="Boleto\DemonstrativoValoresBoleto\ItemDemonstrativo.cs" />
     <Compile Include="Boleto\Sacado\InformacoesSacado.cs" />
     <Compile Include="Boleto\Sacado\InfoSacado.cs" />
+    <Compile Include="Config\BoletoNetConfig.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_Sicredi_Retorno.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_BancoBrasil_Retorno.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_Caixa_Retorno.cs" />
@@ -292,6 +294,10 @@
   <ItemGroup>
     <EmbeddedResource Include="BoletoImpressao\BoletoNet.css" />
     <EmbeddedResource Include="BoletoImpressao\BoletoNetPDF.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BoletoImpressao\Modelos\Boleto.html" />
+    <Content Include="BoletoImpressao\Modelos\Carne.html" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -10,7 +10,7 @@ namespace BoletoNet
 
         #region Variaveis
 
-        private int _codigo = 0;
+        private short _codigo = 0;
         private string _digito = "0";
         private string _nome = string.Empty;
         private Cedente _cedente = null;
@@ -23,7 +23,7 @@ namespace BoletoNet
         /// Código do Banco
         /// 237 - Bradesco; 341 - Itaú
         /// </summary>
-        public virtual int Codigo
+        public virtual short Codigo
         {
             get { return _codigo; }
             set { _codigo = value; }
