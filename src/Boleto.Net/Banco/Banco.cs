@@ -134,6 +134,10 @@ namespace BoletoNet
                     case 21:
                         _IBanco = new Banco_Banestes();
                         break;
+                    //004 - Nordeste
+                    case 4:
+                        _IBanco = new Banco_Nordeste();
+                        break;
                     //85 - CECRED
                     case 85:
                         _IBanco = new Banco_Cecred();
@@ -241,7 +245,7 @@ namespace BoletoNet
                 throw new Exception("Erro durante a geração do registro HEADER do arquivo de REMESSA.", ex);
             }
         }
-        public  string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos)
+        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos)
         {
             try
             {
@@ -276,6 +280,19 @@ namespace BoletoNet
                 throw new Exception("Erro durante a geração do registro TRAILER do arquivo de REMESSA.", ex);
             }
         }
+
+        public override string GerarTrailerRemessaComDetalhes(int numeroRegistro, int numeroRegistroDetalhes, TipoArquivo tipoArquivo, Cedente cedente, decimal vltitulostotal)
+        {
+            try
+            {
+                return _IBanco.GerarTrailerRemessaComDetalhes(numeroRegistro, numeroRegistroDetalhes, tipoArquivo, cedente, vltitulostotal);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do registro TRAILER do arquivo de REMESSA.", ex);
+            }
+        }
+
 
         public override string GerarHeaderRemessa(Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
         {
@@ -322,6 +339,30 @@ namespace BoletoNet
             catch (Exception ex)
             {
                 throw new Exception("Erro durante a geração do registro HEADER do arquivo de REMESSA.", ex);
+            }
+        }
+
+        public override string GerarDetalheSegmentoARemessa(Boleto boleto, int numeroRegistro)
+        {
+            try
+            {
+                return _IBanco.GerarDetalheSegmentoARemessa(boleto, numeroRegistro);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração dos registros de DETALHE do arquivo de REMESSA.", ex);
+            }
+        }
+
+        public override string GerarDetalheSegmentoBRemessa(Boleto boleto, int numeroRegistro)
+        {
+            try
+            {
+                return _IBanco.GerarDetalheSegmentoBRemessa(boleto, numeroRegistro);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração dos registros de DETALHE do arquivo de REMESSA.", ex);
             }
         }
 

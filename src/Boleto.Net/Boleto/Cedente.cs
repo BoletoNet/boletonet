@@ -20,6 +20,8 @@ namespace BoletoNet
         private string _carteira;
         private Endereco _endereco;
         private IList<IInstrucao> _instrucoes = new List<IInstrucao>();
+        private bool _mostrarCNPJnoBoleto = false;
+
         #endregion Variaveis
 
         public Cedente()
@@ -127,7 +129,18 @@ namespace BoletoNet
                 _cpfcnpj = value;
             }
         }
-
+		
+        /// <summary>
+        /// Retona o CPF ou CNPJ do Cedente (com máscara)
+        /// </summary>
+        public string CPFCNPJcomMascara
+        {
+            get
+            {
+                return _cpfcnpj;
+            }
+        }
+		
         /// <summary>
         /// Nome do Cedente
         /// </summary>
@@ -242,6 +255,21 @@ namespace BoletoNet
             }
         }
 
+
+        public bool MostrarCNPJnoBoleto
+        {
+            get
+            {
+                return _mostrarCNPJnoBoleto;
+            }
+            set
+            {
+                _mostrarCNPJnoBoleto = value;
+            }
+        }
+
+
+        
         #endregion Propriedades
     }
 }

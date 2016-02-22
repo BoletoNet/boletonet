@@ -1,6 +1,6 @@
 using System;
 using System.Web.UI;
-using Microsoft.VisualBasic;
+using BoletoNet.Util;
 using System.Text;
 using BoletoNet.EDI.Banco;
 

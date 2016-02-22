@@ -1,6 +1,6 @@
 using System;
 using System.Web.UI;
-using Microsoft.VisualBasic;
+using BoletoNet.Util;
 using System.Text;
 
 [assembly: WebResource("BoletoNet.Imagens.341.jpg", "image/jpg")]
@@ -103,8 +103,10 @@ namespace BoletoNet
 
                 // Calcula o DAC da Conta Corrente
                 boleto.Cedente.ContaBancaria.DigitoConta = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta).ToString();
+
                 //Atribui o nome do banco ao local de pagamento
-                boleto.LocalPagamento += Nome + ". Após o vencimento, somente no ITAÚ";
+                if (string.IsNullOrEmpty(boleto.LocalPagamento))
+                    boleto.LocalPagamento = "Até o vencimento no ITAÚ. Após o vencimento, somente no ITAÚ";
 
                 //Verifica se o nosso número é válido
                 if (Utils.ToInt64(boleto.NossoNumero) == 0)
@@ -588,24 +590,25 @@ namespace BoletoNet
                 header += Utils.FormatCode("", " ", 9);
                 header += (cedente.CPFCNPJ.Length == 11 ? "1" : "2");
                 header += Utils.FormatCode(cedente.CPFCNPJ, "0", 14, true);
-                header += Utils.FormatCode(cedente.Convenio.ToString(), " ", 13);
-                header += Utils.FormatCode("", " ", 7);
+                header += Utils.FormatCode("", " ", 20);
                 header += "0";
                 header += Utils.FormatCode(cedente.ContaBancaria.Agencia, " ", 4, true);
                 header += " ";
-                header += Utils.FormatCode("", "0", 7);
+                header += "0000000";
                 header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 5, true);
-                header += Utils.FormatCode("", " ", 1);
-                header += Utils.FormatCode("", "0", 1);
-                header += Utils.FormatCode(cedente.Nome, " ", 30);
-                header += Utils.FormatCode("BANCO ITAU", " ", 30);
+                header += " ";
+                header += " ";
+                header += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false);                
+                header += Utils.FormatCode("BANCO ITAU SA", " ", 30);
                 header += Utils.FormatCode("", " ", 10);
                 header += "1";
                 header += DateTime.Now.ToString("ddMMyyyyHHmmss");
                 header += Utils.FormatCode("", "0", 6, true);
                 header += "040";
                 header += "00000";
-                header += Utils.FormatCode("", " ", 69);
+                header += Utils.FormatCode("", " ", 54);
+                header += "000";
+                header += Utils.FormatCode("", " ", 12);
                 header = Utils.SubstituiCaracteresEspeciais(header);
                 return header;
 
@@ -719,32 +722,27 @@ namespace BoletoNet
                 string header = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
                 header += Utils.FormatCode("", "0", 4, true);
                 header += "1";
-                header += "D";
-                header += "05";
-                header += "50";
+                header += "R";
+                header += "01";
+                header += "00";
                 header += "030";
                 header += " ";
                 header += (cedente.CPFCNPJ.Length == 11 ? "1" : "2");
-                header += Utils.FormatCode(cedente.CPFCNPJ, "0", 14, true);
-                header += Utils.FormatCode("", " ", 13);
-                header += Utils.FormatCode("", " ", 7);
+                header += Utils.FormatCode(cedente.CPFCNPJ, "0", 15, true);
+                header += Utils.FormatCode("", " ", 20);
                 header += "0";
-                header += Utils.FormatCode("", "0", 4, true);
+                header += Utils.FormatCode(cedente.ContaBancaria.Agencia, "0", 4, true);
                 header += " ";
                 header += Utils.FormatCode("", "0", 7);
-                header += Utils.FormatCode("", "0", 5, true);
+                header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 5, true);
                 header += " ";
-                header += "0";
-                header += Utils.FormatCode(cedente.Nome, " ", 30);
-                header += Utils.FormatCode("", " ", 40);
-                header += Utils.FormatCode("RUA DE TESTE", " ", 30);
-                header += Utils.FormatCode("999", "0", 5, true);
-                header += Utils.FormatCode("15o. ANDAR", " ", 15);
-                header += Utils.FormatCode("SAO PAULO", " ", 20);
-                header += Utils.FormatCode("00000000", "0", 8, true);
-                header += "SP";
-                header += Utils.FormatCode("", " ", 8);
-                header += Utils.FormatCode("", " ", 10);
+                header += " ";
+                header += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false);
+                header += Utils.FormatCode("", " ", 80);
+                header += Utils.FormatCode("", "0", 8, true);
+                header += DateTime.Now.ToString("ddMMyyyy");
+                header += DateTime.Now.ToString("ddMMyyyy");
+                header += Utils.FormatCode("", " ", 33);
                 header = Utils.SubstituiCaracteresEspeciais(header);
                 return header;
             }
@@ -850,7 +848,7 @@ namespace BoletoNet
                 detalhe += Utils.FormatCode("", "4", 5, true);
                 detalhe += " ";
                 detalhe += Utils.FormatCode("", "0", 1);
-                detalhe += Utils.FormatCode(boleto.Sacado.Nome, " ", 30);
+                detalhe += Utils.FitStringLength(boleto.Sacado.Nome, 30, 30, ' ', 0, true, true, false);
                 detalhe += Utils.FormatCode(boleto.NossoNumero, " ", 15);
                 detalhe += Utils.FormatCode("", " ", 5);
                 detalhe += DateTime.Now.ToString("ddMMyyyy");

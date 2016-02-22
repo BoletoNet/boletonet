@@ -461,7 +461,7 @@ namespace BoletoNet {
         ///						&lt;td class=&quot;w180&quot;&gt;Agência / Código Beneficiário&lt;/td&gt;
         ///				&lt;/tr&gt;
         ///				&lt;tr class=&quot;cp h12 rBb&quot;&gt;
-        ///						&lt;td&gt;@CEDENTE&lt;/td&gt;
+        ///						&lt;td&gt;@CEDENTE_BOLETO&lt;/td&gt;
         ///						&lt;td class=&quot;Ar&quot;&gt;@AGENCIACONTA&lt;/td&gt;
         ///				&lt;/tr&gt;
         ///		&lt;/table&gt;.
