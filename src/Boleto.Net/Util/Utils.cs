@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using Microsoft.VisualBasic;
+using BoletoNet.Util;
 using System.Drawing;
 using System.ComponentModel;
 using System.Drawing.Imaging;
@@ -548,6 +548,19 @@ namespace BoletoNet
             }
 
             return retorno;
+        }
+
+
+        public static bool IsNullOrWhiteSpace(String value)
+        {
+            if (value == null) return true;
+
+            for (int i = 0; i < value.Length; i++)
+            {
+                if (!Char.IsWhiteSpace(value[i])) return false;
+            }
+
+            return true;
         }
     }
 }
