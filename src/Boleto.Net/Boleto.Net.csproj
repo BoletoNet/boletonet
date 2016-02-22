@@ -86,11 +86,13 @@
     <Compile Include="Arquivo\Reader\TextPosReader.cs" />
     <Compile Include="Banco\AbstractBanco.cs" />
     <Compile Include="Banco\Banco_Nordeste.cs" />
+    <Compile Include="Banco\Banco_Cecred.cs" />
     <Compile Include="Banco\Carteiras\BancoCarteiraFactory.cs" />
     <Compile Include="Banco\Carteiras\Brasil\Carteira18Brasil.cs" />
     <Compile Include="Banco\Carteiras\Brasil\CarteiraBrasil.cs" />
     <Compile Include="Banco\Carteiras\IBancoCarteira.cs" />
     <Compile Include="Banco\Carteiras\TipoCarteiraAttribute.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Cecred.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Sicoob.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Banestes.cs" />
     <Compile Include="Banco\Banco_Bansirul.cs" />
@@ -155,6 +157,7 @@
     <Compile Include="Boleto\Instrucao\Instrucao_Banrisul.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_BRB.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Caixa.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_Cecred.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_HSBC.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Itau.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_BankBoston.cs" />
@@ -169,6 +172,7 @@
     <Compile Include="Boleto\DemonstrativoValoresBoleto\ItemDemonstrativo.cs" />
     <Compile Include="Boleto\Sacado\InformacoesSacado.cs" />
     <Compile Include="Boleto\Sacado\InfoSacado.cs" />
+    <Compile Include="EDI\Banco\TRegistroEDI_Cecred_Retorno.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_Sicredi_Retorno.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_BancoBrasil_Retorno.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_Caixa_Retorno.cs" />
@@ -300,6 +304,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Imagens\085.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
