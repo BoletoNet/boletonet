@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BoletoNet.EDI.Banco {
     class TRegistroEDI_Cecred_Retorno : TRegistroEDI {
