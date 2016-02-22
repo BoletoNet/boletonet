@@ -8,6 +8,20 @@ namespace BoletoNet.Testes
     {
         #region Carteira 16
 
+        private BoletoBancario GerarBoletoBancarioCarteira16()
+        {
+            var vencimento = new DateTime(2015, 7, 20);
+            var cedente = new Cedente("00.000.000/0000-00", "Empresa Teste", "0413", "8", "0002916", "5");
+            var boleto = new Boleto(vencimento, 123, "16", "00970171092", cedente);
+            boleto.NumeroDocumento = "970171092";
+
+            var boletoBancario = new BoletoBancario();
+            boletoBancario.CodigoBanco = 237;
+            boletoBancario.Boleto = boleto;
+
+            return boletoBancario;
+        }
+
         private Boleto GerarBoletoCarteira16()
         {
             var vencimento = new DateTime(2015, 7, 20);
@@ -38,6 +52,7 @@ namespace BoletoNet.Testes
             string nossoNumeroValido = "16/00970171092-1";
 
             Assert.AreEqual(boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido");
+            
         }
 
         [TestMethod]
@@ -222,4 +237,5 @@ namespace BoletoNet.Testes
         }
         #endregion
     }
+
 }

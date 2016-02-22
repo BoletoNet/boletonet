@@ -39,11 +39,11 @@ namespace BoletoNet
             }
             set
             {
-                this.Boleto.Banco.Codigo = value;
-                if ( this.Boleto.Banco.Codigo != value)
-                {
-                    this.Boleto.Banco = new Banco(value);
-                } 
+                if (this.Boleto == null)
+                    this._boleto = new Boleto() { Banco = new Banco(value) };
+                else {
+                    this._boleto.ResetBanco(value);
+                }
             }
         }
 
@@ -52,9 +52,20 @@ namespace BoletoNet
         /// </summary>
         public Boleto Boleto
         {
-            get { return _boleto; }
+            get {
+                return _boleto; }
             set
             {
+                if (_boleto != null)
+                {
+                    if ( _boleto.Banco != null && value.Banco == null)
+                    {
+                        //aplica um merge do banco no boleto exitente antes de atribuir (por razões de legado) desde que o valor inicial seja nulo
+                        value.BancoCarteira = null; //zera o conteudo de BancoCarteira antes
+                        value.Banco = _boleto.Banco;
+                    }
+                }
+
                 _boleto = value;
             }
         }
