@@ -532,6 +532,24 @@ namespace BoletoNet
             ;
         }
 
+        public static string Transform(string text, string mask, char charMask = 'X') {
+            string retorno = text;
+
+            if (!string.IsNullOrEmpty(mask)) {
+
+                int idx = 0;
+                foreach (var m in mask) {
+                    if (m != charMask) {
+                        retorno = retorno.Insert(idx, m.ToString());
+                    }
+                    idx++;
+                }
+
+            }
+
+            return retorno;
+        }
+
 
         public static bool IsNullOrWhiteSpace(String value)
         {
