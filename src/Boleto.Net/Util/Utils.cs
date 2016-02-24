@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using Microsoft.VisualBasic;
+using BoletoNet.Util;
 using System.Drawing;
 using System.ComponentModel;
 using System.Drawing.Imaging;
@@ -530,6 +530,24 @@ namespace BoletoNet
             final = Strings.Right(seq, qtde);
             return FitStringLength(final, qtde, qtde, ch, 0, true, true, completaPelaEsquerda);
             ;
+        }
+
+        public static string Transform(string text, string mask, char charMask = 'X') {
+            string retorno = text;
+
+            if (!string.IsNullOrEmpty(mask)) {
+
+                int idx = 0;
+                foreach (var m in mask) {
+                    if (m != charMask) {
+                        retorno = retorno.Insert(idx, m.ToString());
+                    }
+                    idx++;
+                }
+
+            }
+
+            return retorno;
         }
 
 
