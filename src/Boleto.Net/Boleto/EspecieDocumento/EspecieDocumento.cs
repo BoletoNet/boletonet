@@ -123,6 +123,10 @@ namespace BoletoNet
                     case 41:
                         _IEspecieDocumento = new EspecieDocumento_Banrisul(codigoEspecie);
                         break;
+                    //085 - Cecred
+                    case 85:
+                        _IEspecieDocumento = new EspecieDocumento_Cecred(codigoEspecie);
+                        break;
                     //756 - Sicoob
                     case 756:
                         _IEspecieDocumento = new EspecieDocumento_Sicoob(codigoEspecie);
@@ -168,6 +172,8 @@ namespace BoletoNet
                         return EspecieDocumento_Sicredi.CarregaTodas();
                     case 756:
                         return EspecieDocumento_Sicoob.CarregaTodas();
+                    case 85:
+                        return EspecieDocumento_Cecred.CarregaTodas();
                     default:
                         throw new Exception("Espécies do Documento não implementado para o banco : " + codigoBanco);
                 }

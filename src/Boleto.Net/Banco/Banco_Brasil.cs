@@ -3,7 +3,7 @@ using System;
 using System.Data;
 using System.Globalization;
 using System.Web.UI;
-using Microsoft.VisualBasic;
+using BoletoNet.Util;
 using BoletoNet.EDI.Banco;
 
 [assembly: WebResource("BoletoNet.Imagens.001.jpg", "image/jpg")]

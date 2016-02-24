@@ -134,6 +134,14 @@ namespace BoletoNet
                     case 21:
                         _IBanco = new Banco_Banestes();
                         break;
+                    //004 - Nordeste
+                    case 4:
+                        _IBanco = new Banco_Nordeste();
+                        break;
+                    //85 - CECRED
+                    case 85:
+                        _IBanco = new Banco_Cecred();
+                        break;
                     default:
                         throw new Exception("Código do banco não implementando: " + codigoBanco);
                 }

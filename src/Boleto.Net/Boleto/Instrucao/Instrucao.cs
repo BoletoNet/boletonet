@@ -96,6 +96,10 @@ namespace BoletoNet
                     case 756:
                         _IInstrucao = new Instrucao_Sicoob();
                         break;
+                    //85 - CECRED
+                    case 85:
+                        _IInstrucao = new Instrucao_Cecred();
+                        break;
                     //748 - Sicredi
                     case 748:
                         _IInstrucao = new Instrucao_Sicredi();
