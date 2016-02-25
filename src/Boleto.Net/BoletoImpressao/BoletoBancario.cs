@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Text;
 using System.Web.UI;
-using Microsoft.VisualBasic;
+using BoletoNet.Util;
 using System.IO;
 using System.Net.Mail;
 using System.Net.Mime;
@@ -354,8 +354,15 @@ namespace BoletoNet
 				else
 				{
 					//Para SANTANDER, a ficha de compensação não possui código da carteira - por jsoda em 08/12/2012
-					if (Boleto.Banco.Codigo == 33)
+                    if (Boleto.Banco.Codigo == 33) {
 						html.Replace("Carteira /", "");
+				}
+                    // 85 - CECRED
+                    if (Boleto.Banco.Codigo == 85) {
+                        html.Replace("@ADICNSTRUCAO", "Após o vencimento acesso o site www.credifoz.coop.br para atualizar seu boleto.");
+                    } else {
+                        html.Replace("@ADICNSTRUCAO", string.Empty);
+                    }
 				}
 
 				//Limpa as intruções para o Cedente
@@ -543,7 +550,7 @@ namespace BoletoNet
                 {
                     string Numero = !String.IsNullOrEmpty(Sacado.Endereco.Numero) ? ", "  + Sacado.Endereco.Numero : "";
 
-                    if (infoSacado == string.Empty)
+					if (infoSacado == string.Empty)
 						infoSacado += InfoSacado.Render(Sacado.Endereco.End + Numero, enderecoSacado, false);
 					else
 						infoSacado += InfoSacado.Render(Sacado.Endereco.End + Numero, enderecoSacado, true);
@@ -635,7 +642,7 @@ namespace BoletoNet
 				.Replace("@LINHADIGITAVEL", Boleto.CodigoBarra.LinhaDigitavel)
 				.Replace("@LOCALPAGAMENTO", Boleto.LocalPagamento)
 				.Replace("@DATAVENCIMENTO", dataVencimento)
-                .Replace("@CEDENTE_BOLETO", !Cedente.MostrarCNPJnoBoleto ? Cedente.Nome : string.Format("{0}&nbsp;&nbsp;&nbsp;CNPJ: {1}", Cedente.Nome, Cedente.CPFCNPJ))
+                .Replace("@CEDENTE_BOLETO", !Cedente.MostrarCNPJnoBoleto ? Cedente.Nome : string.Format("{0}&nbsp;&nbsp;&nbsp;CNPJ: {1}", Cedente.Nome, Cedente.CPFCNPJcomMascara))
 				.Replace("@CEDENTE", Cedente.Nome)
 				.Replace("@DATADOCUMENTO", Boleto.DataDocumento.ToString("dd/MM/yyyy"))
 				.Replace("@NUMERODOCUMENTO", Boleto.NumeroDocumento)

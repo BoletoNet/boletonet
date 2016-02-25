@@ -129,7 +129,18 @@ namespace BoletoNet
                 _cpfcnpj = value;
             }
         }
-
+		
+        /// <summary>
+        /// Retona o CPF ou CNPJ do Cedente (com máscara)
+        /// </summary>
+        public string CPFCNPJcomMascara
+        {
+            get
+            {
+                return _cpfcnpj;
+            }
+        }
+		
         /// <summary>
         /// Nome do Cedente
         /// </summary>

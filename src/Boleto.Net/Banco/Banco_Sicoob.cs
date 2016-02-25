@@ -379,7 +379,10 @@ namespace BoletoNet
             {
                 string _detalhe = " ";
 
-                FormataNossoNumero(boleto);
+                if (string.IsNullOrEmpty(boleto.NossoNumero))
+                {
+                    FormataNossoNumero(boleto);
+                }
                 base.GerarDetalheRemessa(boleto, numeroRegistro, tipoArquivo);
 
                 switch (tipoArquivo)
