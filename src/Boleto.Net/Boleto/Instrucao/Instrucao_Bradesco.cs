@@ -52,15 +52,20 @@ namespace BoletoNet
         {
             this.carregar(codigo, valor);
         }
+
+        public Instrucao_Bradesco(int codigo, double valor, EnumTipoMulta tipoMulta)
+        {
+            this.carregar(codigo, valor, tipoMulta);
+        }
         #endregion Construtores
 
         #region Metodos Privados
 
-        private void carregar(int idInstrucao, double valor)
+        private void carregar(int idInstrucao, double valor, EnumTipoMulta tipoMulta = EnumTipoMulta.Percentual)
         {
             try
             {
-                this.Banco = new Banco_Sicredi();
+                this.Banco = new Banco_Bradesco();
                 this.Valida();
 
                 switch ((EnumInstrucoes_Bradesco)idInstrucao)
@@ -71,7 +76,9 @@ namespace BoletoNet
                         break;
                     case EnumInstrucoes_Bradesco.OutrasInstrucoes_ExibeMensagem_MultaVencimento:
                         this.Codigo = 0;
-                        this.Descricao = "Após vencimento cobrar multa de " + valor + "%";
+                        this.Descricao = String.Format("Após vencimento cobrar multa de {0} {1}",
+                            (tipoMulta.Equals(EnumTipoMulta.Reais) ? "R$ " : valor.ToString("F2")),
+                            (tipoMulta.Equals(EnumTipoMulta.Percentual) ? "%" : valor.ToString("F2")));
                         break;
                     default:
                         this.Codigo = 0;
