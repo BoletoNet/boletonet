@@ -19,7 +19,7 @@ namespace BoletoNet
     /// Nenhum código de Banco específico deve ser incluído nesta classe. Caso haja a necessidade de incluir um ponto de customização, procure implementar o recurso pela interface IBanco
     /// Atualizada por Olavo Rocha Neto  olavo at exodus.eti.br
     /// </remarks>
-    public class BoletoBancario
+    public partial class BoletoBancario
     {
         #region Variaveis
 
