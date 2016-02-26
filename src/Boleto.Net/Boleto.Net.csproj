@@ -88,7 +88,6 @@
     <Compile Include="Banco\Carteiras\IBancoCarteira.cs" />
     <Compile Include="Banco\Carteiras\TipoCarteiraAttribute.cs" />
     <Compile Include="Banco\Common\Legado\BoletoBancarioHelpers.cs" />
-    <Compile Include="BoletoImpressao\BoletoBancarioEmail.cs" />
     <Compile Include="BoletoImpressao\BoletoBancario.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Sicoob.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Banestes.cs" />

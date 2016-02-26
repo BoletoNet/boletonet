@@ -18,7 +18,7 @@ namespace BoletoNet.Testes
         [TestMethod]
         public void Valida_Boleto_Banco_Banestes()
         {
-            var boleto = new Boleto(21, new DateTime(2014, 1, 18), 2952.95m, "00", "21487805", "123", "1.222.333");
+            var boleto = new Boleto(ListaBancos.Banestes, new DateTime(2014, 1, 18), 2952.95m, "00", "21487805", "123", "1.222.333");
 
             boleto.Banco = new Banco(21);
             boleto.NumeroDocumento = "18.030299.01";

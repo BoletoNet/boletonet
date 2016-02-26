@@ -468,7 +468,7 @@ namespace BoletoNet
         /// Monta o Header de um email com pelo menos um boleto dentro.
         /// </summary>
         /// <param name="saida">StringBuilder onde o conteudo sera salvo.</param>
-        protected static void HtmlOfflineHeader(StringBuilder html, bool usaPdf = false)
+        public static void HtmlOfflineHeader(StringBuilder html, bool usaPdf = false)
         {
             html.Append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n");
             html.Append("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
@@ -502,7 +502,7 @@ namespace BoletoNet
         /// Monta o Footer de um email com pelo menos um boleto dentro.
         /// </summary>
         /// <param name="saida">StringBuilder onde o conteudo sera salvo.</param>
-        protected static void HtmlOfflineFooter(StringBuilder saida)
+        public static void HtmlOfflineFooter(StringBuilder saida)
         {
             saida.Append("</body>\n");
             saida.Append("</html>\n");
