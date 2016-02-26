@@ -62,16 +62,16 @@ namespace BoletoNet
             this.carregar(codigo, valor);
         }
 
-        public Instrucao_Sicredi(int codigo, double valor, EnumTipoMulta tipoMulta)
+        public Instrucao_Sicredi(int codigo, double valor, EnumTipoValor tipoValor)
         {
-            this.carregar(codigo, valor, tipoMulta);
+            this.carregar(codigo, valor, tipoValor);
         }
         #endregion
 
         #region Metodos Privados
 
 
-        private void carregar(int idInstrucao, double valor, EnumTipoMulta tipoMulta = EnumTipoMulta.Percentual)
+        private void carregar(int idInstrucao, double valor, EnumTipoValor tipoValor = EnumTipoValor.Percentual)
         {
             try
             {
@@ -82,13 +82,15 @@ namespace BoletoNet
                 {
                     case EnumInstrucoes_Sicredi.OutrasInstrucoes_ExibeMensagem_MoraDiaria:
                         this.Codigo = (int)EnumInstrucoes_Sicredi.AlteracaoOutrosDados;
-                        this.Descricao = "  - APÓS VENCIMENTO COBRAR MORA DIÁRIA DE R$ " + valor;
+                        this.Descricao = String.Format("  - APÓS VENCIMENTO COBRAR JUROS DE {0} {1} POR DIA DE ATRASO",
+                            (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("F2")),
+                            (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
                         break;
                     case EnumInstrucoes_Sicredi.OutrasInstrucoes_ExibeMensagem_MultaVencimento:
                         this.Codigo = (int)EnumInstrucoes_Sicredi.AlteracaoOutrosDados;
                         this.Descricao = String.Format("  - APÓS VENCIMENTO COBRAR MULTA DE {0} {1}",
-                            (tipoMulta.Equals(EnumTipoMulta.Reais) ? "R$ " : valor.ToString("F2")),
-                            (tipoMulta.Equals(EnumTipoMulta.Percentual) ? "%" : valor.ToString("F2")));
+                            (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("F2")),
+                            (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
                         break;
                     case EnumInstrucoes_Sicredi.AlteracaoOutrosDados_Desconto:
                         this.Codigo = (int)EnumInstrucoes_Sicredi.AlteracaoOutrosDados;

@@ -55,16 +55,16 @@ namespace BoletoNet
             this.carregar(codigo, valor);
         }
 
-        public Instrucao_BancoBrasil(int codigo, double valor, EnumTipoMulta tipoMulta)
+        public Instrucao_BancoBrasil(int codigo, double valor, EnumTipoValor tipoValor)
         {
-            this.carregar(codigo, valor, tipoMulta);
+            this.carregar(codigo, valor, tipoValor);
         }
 
         #endregion
 
         #region Metodos Privados
 
-        private void carregar(int idInstrucao, double valor, EnumTipoMulta tipoMulta = EnumTipoMulta.Percentual)
+        private void carregar(int idInstrucao, double valor, EnumTipoValor tipoValor = EnumTipoValor.Percentual)
         {
             try
             {
@@ -76,12 +76,14 @@ namespace BoletoNet
                     case EnumInstrucoes_BancoBrasil.Multa:
                         this.Codigo = (int)EnumInstrucoes_BancoBrasil.Multa;
                         this.Descricao = String.Format("Após vencimento cobrar multa de {0} {1}",
-                            (tipoMulta.Equals(EnumTipoMulta.Reais) ? "R$ " : valor.ToString("F2")),
-                            (tipoMulta.Equals(EnumTipoMulta.Percentual) ? "%" : valor.ToString("F2")));
+                            (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("F2")),
+                            (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
                         break;
                     case EnumInstrucoes_BancoBrasil.JurosdeMora:
-                        this.Codigo = (int)EnumInstrucoes_BancoBrasil.JurosdeMora;
-                        this.Descricao = "Após vencimento cobrar R$ " + valor + " por dia de atraso";
+                        this.Codigo = 0;
+                        this.Descricao = String.Format("Após vencimento cobrar juros de {0} {1} por dia de atraso",
+                            (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("F2")),
+                            (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
                         break;
                     default:
                         this.Codigo = 0;
