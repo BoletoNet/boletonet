@@ -56,16 +56,16 @@ namespace BoletoNet
             this.carregar(codigo, 0, valor);
         }
 
-        public Instrucao_Caixa(int codigo, decimal valor, EnumTipoMulta tipoMulta)
+        public Instrucao_Caixa(int codigo, decimal valor, EnumTipoValor tipoValor)
         {
-            this.carregar(codigo, 0, valor, tipoMulta);
+            this.carregar(codigo, 0, valor, tipoValor);
         }
 
         #endregion
 
         #region Metodos Privados
 
-        private void carregar(int idInstrucao, int nrDias, decimal valor, EnumTipoMulta tipoMulta = EnumTipoMulta.Percentual)
+        private void carregar(int idInstrucao, int nrDias, decimal valor, EnumTipoValor tipoValor = EnumTipoValor.Percentual)
         {
             try
             {
@@ -109,13 +109,15 @@ namespace BoletoNet
                         break;
                     case EnumInstrucoes_Caixa.JurosdeMora:
                         this.Codigo = (int)EnumInstrucoes_Caixa.JurosdeMora;
-                        this.Descricao = "Após vencimento cobrar Juros de " + valor + "%";
+                        this.Descricao = String.Format("Após vencimento cobrar juros de {0} {1} por dia de atraso",
+                            (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("F2")),
+                            (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
                         break;
                     case EnumInstrucoes_Caixa.Multa:
                         this.Codigo = (int)EnumInstrucoes_Caixa.Multa;
                         this.Descricao = String.Format("Após vencimento cobrar multa de {0} {1}",
-                            (tipoMulta.Equals(EnumTipoMulta.Reais) ? "R$ " : valor.ToString("F2")),
-                            (tipoMulta.Equals(EnumTipoMulta.Percentual) ? "%" : valor.ToString("F2")));
+                            (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("F2")),
+                            (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
                         break;
                     case EnumInstrucoes_Caixa.DescontoporDia:
                         this.Codigo = (int)EnumInstrucoes_Caixa.DescontoporDia;

@@ -9,7 +9,7 @@ namespace BoletoNet
 
         #region Enum
 
-        public enum EnumTipoMulta
+        public enum EnumTipoValor
         {
             Percentual = 1,
             Reais = 2

@@ -14,7 +14,8 @@ namespace BoletoNet
         Protestar = 06,
         NaoProtestar = 07,
         NaoCobrarJurosDeMora = 08,
-        MultaVencimento = 99,
+        JurosAoDia = 98,
+        MultaVencimento = 99,        
     }
 
     #endregion
@@ -45,16 +46,16 @@ namespace BoletoNet
             this.carregar(codigo, nrDias);
         }
 
-        public Instrucao_Santander(int codigo, double valor, EnumTipoMulta tipoMulta)
+        public Instrucao_Santander(int codigo, double valor, EnumTipoValor tipoValor)
         {
-            this.carregar(codigo, 0, valor, tipoMulta);
+            this.carregar(codigo, 0, valor, tipoValor);
         }
 
         #endregion
 
         #region Metodos Privados
 
-        private void carregar(int idInstrucao, int nrDias, double valor = 0, EnumTipoMulta tipoMulta = EnumTipoMulta.Percentual)
+        private void carregar(int idInstrucao, int nrDias, double valor = 0, EnumTipoValor tipoValor = EnumTipoValor.Percentual)
         {
             try
             {
@@ -87,11 +88,17 @@ namespace BoletoNet
                         this.Codigo = (int)EnumInstrucoes_Santander.NaoCobrarJurosDeMora;
                         this.Descricao = "Não cobrar juros de mora";
                         break;
+                    case EnumInstrucoes_Santander.JurosAoDia:
+                        this.Codigo = 0;
+                        this.Descricao = String.Format("Após vencimento cobrar juros de {0} {1} por dia de atraso",
+                            (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("F2")),
+                            (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
+                        break;
                     case EnumInstrucoes_Santander.MultaVencimento:
                         this.Codigo = 0;
                         this.Descricao = String.Format("Após vencimento cobrar multa de {0} {1}",
-                            (tipoMulta.Equals(EnumTipoMulta.Reais) ? "R$ " : valor.ToString("F2")),
-                            (tipoMulta.Equals(EnumTipoMulta.Percentual) ? "%" : valor.ToString("F2")));
+                            (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("F2")),
+                            (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
                         break;
                     default:
                         this.Codigo = 0;
