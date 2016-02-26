@@ -689,6 +689,8 @@ namespace BoletoNet
                 // USO DO BANCO - Identificação da operação no Banco (posição 87 a 107)
                 string identificaOperacaoBanco = new string(' ', 10);
                 string nrDeControle = new string(' ', 25);
+                //string nrDeControle = boleto.NumeroDocumento // new string(' ', 25);
+
                 string mensagem = new string(' ', 12);
                 string mensagem2 = new string(' ', 60);
 
@@ -773,7 +775,12 @@ namespace BoletoNet
                 68..Acerto nos dados do rateio de Crédito
                 69..Cancelamento do rateio de crédito.
                 */
-                _detalhe += "01";
+                if (string.IsNullOrEmpty(boleto.Remessa.CodigoOcorrencia.Trim())) {
+                    _detalhe += "01";
+                } else {
+                    _detalhe += boleto.Remessa.CodigoOcorrencia.PadLeft(2, '0') ;
+                }
+                
 
                 _detalhe += Utils.Right(boleto.NumeroDocumento, 10, '0', true); //Nº do Documento (10, A)
                 _detalhe += boleto.DataVencimento.ToString("ddMMyy"); //Data do Vencimento do Título (10, N) DDMMAA
@@ -805,7 +812,7 @@ namespace BoletoNet
                 string vInstrucao1 = "00"; //1ª instrução (2, N) Caso Queira colocar um cod de uma instrução. ver no Manual caso nao coloca 00
                 string vInstrucao2 = "00"; //2ª instrução (2, N) Caso Queira colocar um cod de uma instrução. ver no Manual caso nao coloca 00
                 
-                foreach (Instrucao_Bradesco instrucao in boleto.Instrucoes)
+                foreach (IInstrucao instrucao in boleto.Instrucoes)
                 {
                     switch ((EnumInstrucoes_Bradesco)instrucao.Codigo)
                     {
