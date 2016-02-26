@@ -13,7 +13,8 @@ namespace BoletoNet
         NaoBaixar = 04,
         Protestar = 06,
         NaoProtestar = 07,
-        NaoCobrarJurosDeMora = 08
+        NaoCobrarJurosDeMora = 08,
+        MultaVencimento = 99,
     }
 
     #endregion
@@ -43,11 +44,17 @@ namespace BoletoNet
         {
             this.carregar(codigo, nrDias);
         }
+
+        public Instrucao_Santander(int codigo, double valor, EnumTipoMulta tipoMulta)
+        {
+            this.carregar(codigo, 0, valor, tipoMulta);
+        }
+
         #endregion
 
         #region Metodos Privados
 
-        private void carregar(int idInstrucao, int nrDias)
+        private void carregar(int idInstrucao, int nrDias, double valor = 0, EnumTipoMulta tipoMulta = EnumTipoMulta.Percentual)
         {
             try
             {
@@ -79,6 +86,12 @@ namespace BoletoNet
                     case EnumInstrucoes_Santander.NaoCobrarJurosDeMora:
                         this.Codigo = (int)EnumInstrucoes_Santander.NaoCobrarJurosDeMora;
                         this.Descricao = "Não cobrar juros de mora";
+                        break;
+                    case EnumInstrucoes_Santander.MultaVencimento:
+                        this.Codigo = 0;
+                        this.Descricao = String.Format("Após vencimento cobrar multa de {0} {1}",
+                            (tipoMulta.Equals(EnumTipoMulta.Reais) ? "R$ " : valor.ToString("F2")),
+                            (tipoMulta.Equals(EnumTipoMulta.Percentual) ? "%" : valor.ToString("F2")));
                         break;
                     default:
                         this.Codigo = 0;

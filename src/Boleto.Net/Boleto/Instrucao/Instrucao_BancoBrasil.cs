@@ -11,7 +11,7 @@ namespace BoletoNet
         Protestar = 9,                      // Emite aviso ao sacado após N dias do vencto, e envia ao cartório após 5 dias úteis
         NaoProtestar = 10,                  // Inibe protesto, quando houver instrução permanente na conta corrente
         ImportanciaporDiaDesconto = 30,
-        Percentual_Multa = 35,
+        Multa = 35,
         ProtestoFinsFalimentares = 42,
         ProtestarAposNDiasCorridos = 81,
         ProtestarAposNDiasUteis = 82,
@@ -54,11 +54,17 @@ namespace BoletoNet
         {
             this.carregar(codigo, valor);
         }
+
+        public Instrucao_BancoBrasil(int codigo, double valor, EnumTipoMulta tipoMulta)
+        {
+            this.carregar(codigo, valor, tipoMulta);
+        }
+
         #endregion
 
         #region Metodos Privados
 
-        private void carregar(int idInstrucao, double valor)
+        private void carregar(int idInstrucao, double valor, EnumTipoMulta tipoMulta = EnumTipoMulta.Percentual)
         {
             try
             {
@@ -67,9 +73,11 @@ namespace BoletoNet
 
                 switch ((EnumInstrucoes_BancoBrasil)idInstrucao)
                 {
-                    case EnumInstrucoes_BancoBrasil.Percentual_Multa:
-                        this.Codigo = (int)EnumInstrucoes_BancoBrasil.Percentual_Multa;
-                        this.Descricao = "Após vencimento cobrar multa de " + valor + " %";
+                    case EnumInstrucoes_BancoBrasil.Multa:
+                        this.Codigo = (int)EnumInstrucoes_BancoBrasil.Multa;
+                        this.Descricao = String.Format("Após vencimento cobrar multa de {0} {1}",
+                            (tipoMulta.Equals(EnumTipoMulta.Reais) ? "R$ " : valor.ToString("F2")),
+                            (tipoMulta.Equals(EnumTipoMulta.Percentual) ? "%" : valor.ToString("F2")));
                         break;
                     case EnumInstrucoes_BancoBrasil.JurosdeMora:
                         this.Codigo = (int)EnumInstrucoes_BancoBrasil.JurosdeMora;
