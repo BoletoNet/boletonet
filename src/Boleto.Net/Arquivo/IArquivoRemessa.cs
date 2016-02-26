@@ -15,7 +15,7 @@ namespace BoletoNet
         /// <summary>
         /// Gera arquivo de remessa
         /// </summary>
-        void GerarArquivoRemessa(string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, Stream arquivo, int numeroArquivoRemessa);
+        string GerarArquivoRemessa(string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, int numeroArquivoRemessa);
 
         Boletos Boletos { get; }
         Cedente Cedente { get; }

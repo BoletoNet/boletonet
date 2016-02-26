@@ -130,14 +130,14 @@ namespace BoletoNet
         /// <summary>
         /// Gera o arquivo de remessa
         /// </summary>
-        public virtual void GerarArquivoRemessa(string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, Stream arquivo, int numeroArquivoRemessa)
+        public virtual string GerarArquivoRemessa(string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, int numeroArquivoRemessa)
         {
             _banco = banco;
             _cedente = cedente;
             _boletos = boletos;
             _numeroConvenio = numeroConvenio;
             _numeroArquivoRemessa = numeroArquivoRemessa;
-            _arquivoRemessa.GerarArquivoRemessa(numeroConvenio, banco, cedente, boletos, arquivo, numeroArquivoRemessa);
+            return _arquivoRemessa.GerarArquivoRemessa(numeroConvenio, banco, cedente, boletos, numeroArquivoRemessa);
         }
 
         #endregion

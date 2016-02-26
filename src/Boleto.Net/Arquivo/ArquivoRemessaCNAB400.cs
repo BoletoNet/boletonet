@@ -47,7 +47,7 @@ namespace BoletoNet
                 throw ex;
             }
         }
-        public override void GerarArquivoRemessa(string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, Stream arquivo, int numeroArquivoRemessa)
+        public override string GerarArquivoRemessa(string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, int numeroArquivoRemessa)
         {
             try
             {
@@ -55,15 +55,16 @@ namespace BoletoNet
                 string strline;
                 decimal vltitulostotal = 0;                 //Uso apenas no registro TRAILER do banco Santander - jsoda em 09/05/2012 - Add no registro TRAILER do banco Banrisul - sidneiklein em 08/08/2013
 
-                var incluiLinha = new StreamWriter(arquivo, Encoding.GetEncoding("ISO-8859-1"));
+                var arquivoBuilder = new StringBuilder();
+
                 strline = banco.GerarHeaderRemessa(numeroConvenio, cedente, TipoArquivo.CNAB400, numeroArquivoRemessa);
-                incluiLinha.WriteLine(strline);
+                arquivoBuilder.AppendLine(strline);
 
                 foreach (Boleto boleto in boletos)
                 {
                     boleto.Banco = banco;
                     strline = boleto.Banco.GerarDetalheRemessa(boleto, numeroRegistro, TipoArquivo.CNAB400);
-                    incluiLinha.WriteLine(strline);
+                    arquivoBuilder.AppendLine(strline);
                     vltitulostotal += boleto.ValorBoleto;   //Uso apenas no registro TRAILER do banco Santander - jsoda em 09/05/2012 - Add no registro TRAILER do banco Banrisul - sidneiklein em 08/08/2013
                     numeroRegistro++;
 
@@ -72,7 +73,7 @@ namespace BoletoNet
                         if (boleto.PercMulta > 0 || boleto.ValorMulta > 0) {
                             Banco_Cecred _banco = new Banco_Cecred();
                             string linhaCECREDRegistroDetalhe5 = _banco.GerarRegistroDetalhe5(boleto, numeroRegistro, TipoArquivo.CNAB400);
-                            incluiLinha.WriteLine(linhaCECREDRegistroDetalhe5);
+                            arquivoBuilder.AppendLine(linhaCECREDRegistroDetalhe5);
                             numeroRegistro++;
                         }
                     }
@@ -81,9 +82,9 @@ namespace BoletoNet
 
                 strline = banco.GerarTrailerRemessa(numeroRegistro, TipoArquivo.CNAB400, cedente, vltitulostotal);
 
-                incluiLinha.WriteLine(strline);
-                
-                arquivo.Position = 0;
+                arquivoBuilder.AppendLine(strline);
+
+                return arquivoBuilder.ToString();
             }
             catch (Exception ex)
             {
