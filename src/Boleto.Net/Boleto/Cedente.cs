@@ -243,6 +243,8 @@ namespace BoletoNet
             }
         }
 
+        public string NumeroInscricaoConvenio { get; set; }
+
         public IList<IInstrucao> Instrucoes
         {
             get
@@ -254,7 +256,6 @@ namespace BoletoNet
                 _instrucoes = value;
             }
         }
-
 
         public bool MostrarCNPJnoBoleto
         {
@@ -268,8 +269,6 @@ namespace BoletoNet
             }
         }
 
-
-        
         #endregion Propriedades
     }
 }

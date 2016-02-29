@@ -158,6 +158,14 @@ namespace BoletoNet
             }
         }
 
+        public override bool Carregar(int idInstrucao, decimal valor) {
+            return _IInstrucao.Carregar(idInstrucao, valor);
+        }
+
+        public override bool Carregar(int idInstrucao, int nrDias) {
+            return _IInstrucao.Carregar(idInstrucao, nrDias);
+        }
+
         #endregion
 
     }

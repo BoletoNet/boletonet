@@ -32,7 +32,7 @@ namespace BoletoNet
         {
             try
             {
-                this.Banco = new Banco(001);
+                Banco = new Banco(001);
             }
             catch (Exception ex)
             {
@@ -42,23 +42,23 @@ namespace BoletoNet
 
         public Instrucao_BancoBrasil(int codigo)
         {
-            this.carregar(codigo, 0);
+            Carregar(codigo, 0);
         }
 
         public Instrucao_BancoBrasil(int codigo, int nrDias)
         {
-            this.carregar(codigo, nrDias);
+            Carregar(codigo, nrDias);
         }
 
-        public Instrucao_BancoBrasil(int codigo, double valor)
+        public Instrucao_BancoBrasil(int codigo, decimal valor)
         {
-            this.carregar(codigo, valor);
+            Carregar(codigo, valor);
         }
         #endregion
 
         #region Metodos Privados
 
-        private void carregar(int idInstrucao, double valor)
+        public override bool Carregar(int idInstrucao, decimal valor)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace BoletoNet
                         this.Descricao = "Após vencimento cobrar multa de " + valor + " %";
                         break;
                     case EnumInstrucoes_BancoBrasil.JurosdeMora:
-                        this.Codigo = (int)EnumInstrucoes_BancoBrasil.JurosdeMora;
+                        this.Codigo = 1;
                         this.Descricao = "Após vencimento cobrar R$ " + valor + " por dia de atraso";
                         break;
                     default:
@@ -80,15 +80,15 @@ namespace BoletoNet
                         this.Descricao = " (Selecione) ";
                         break;
                 }
-            }
-            catch (Exception ex)
+
+                return true;
+            } catch (Exception ex)
             {
                 throw new Exception("Erro ao carregar objeto", ex);
             }
         }
 
-
-        private void carregar(int idInstrucao, int nrDias)
+        public override bool Carregar(int idInstrucao, int nrDias)
         {
             try
             {
@@ -102,7 +102,7 @@ namespace BoletoNet
                         this.Descricao = "Protestar após " + nrDias + " dias úteis.";
                         break;
                     case EnumInstrucoes_BancoBrasil.NaoProtestar:
-                        this.Codigo = (int)EnumInstrucoes_BancoBrasil.NaoProtestar;
+                        this.Codigo = 7;
                         this.Descricao = "Não protestar";
                         break;
                     case EnumInstrucoes_BancoBrasil.ImportanciaporDiaDesconto:
@@ -114,12 +114,34 @@ namespace BoletoNet
                         this.Descricao = "Protesto para fins falimentares";
                         break;
                     case EnumInstrucoes_BancoBrasil.ProtestarAposNDiasCorridos:
-                        this.Codigo = (int)EnumInstrucoes_BancoBrasil.ProtestarAposNDiasCorridos;
-                        this.Descricao = "Protestar no " + nrDias + "º dia corrido após vencimento";
+                        if (nrDias >= 45) {
+                            Codigo = 45;
+                        } else if (nrDias >= 30) {
+                            Codigo = 30;
+                        } else if (nrDias >= 25) {
+                            Codigo = 25;
+                        } else if (nrDias >= 20) {
+                            Codigo = 20;
+                        } else if (nrDias >= 15) {
+                            Codigo = 15;
+                        } else if (nrDias <= 14) {
+                            Codigo = 10;
+                        }
+
+                        Descricao = "Protestar no " + nrDias + "º dia corrido após vencimento";
+
                         break;
                     case EnumInstrucoes_BancoBrasil.ProtestarAposNDiasUteis:
-                        this.Codigo = (int)EnumInstrucoes_BancoBrasil.ProtestarAposNDiasUteis;
-                        this.Descricao = "Protestar no " + nrDias + "º dia útil após vencimento";/*Jéferson (jefhtavares) em 02/12/2013 a pedido do setor de homologação do BB*/
+                        if(nrDias == 3) {
+                            Codigo = 3;
+                        } else if(nrDias == 4) {
+                            Codigo = 4;
+                        } else if(nrDias >= 5) {
+                            Codigo = 5;
+                        }
+
+                        Descricao = "Protestar no " + nrDias + "º dia útil após vencimento";
+
                         break;
                     case EnumInstrucoes_BancoBrasil.NaoReceberAposNDias:
                         this.Codigo = (int)EnumInstrucoes_BancoBrasil.NaoReceberAposNDias;
@@ -130,21 +152,23 @@ namespace BoletoNet
                         this.Descricao = "Devolver após " + nrDias + " dias do vencimento";
                         break;
                     case EnumInstrucoes_BancoBrasil.JurosdeMora:
-                        this.Codigo = (int)EnumInstrucoes_BancoBrasil.JurosdeMora;
+                        this.Codigo = 1;
                         this.Descricao = "Após vencimento cobrar R$ "; // por dia de atraso
                         break;
                     case EnumInstrucoes_BancoBrasil.DescontoporDia:
-                        this.Codigo = (int)EnumInstrucoes_BancoBrasil.DescontoporDia;
+                        this.Codigo = 22;
                         this.Descricao = "Conceder desconto de R$ "; // por dia de antecipação
                         break;
                     default:
                         this.Codigo = 0;
-                        this.Descricao = "( Selecione )";
+                        this.Descricao = "Ausência de instruções";
                         break;
                 }
 
                 this.QuantidadeDias = nrDias;
-            }
+
+                return true;
+            } 
             catch (Exception ex)
             {
                 throw new Exception("Erro ao carregar objeto", ex);

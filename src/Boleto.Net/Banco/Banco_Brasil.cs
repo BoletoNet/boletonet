@@ -1159,7 +1159,6 @@ namespace BoletoNet
             {
                 case "17-019":
                 case "17-027":
-                case "18-019":
                     boleto.NossoNumero = string.Format("{0}/{1}", LimparCarteira(boleto.Carteira), boleto.NossoNumero);
                     return;
                 case "31":
@@ -1986,6 +1985,29 @@ namespace BoletoNet
             return d;
         }
 
+        /// <summary>
+        /// Retorna a carteira e variação da carteira do boleto.
+        /// </summary>
+        /// <param name="boleto">Boleto que está sendo gerado.</param>
+        /// <remarks>
+        /// Fará a extração da variação da carteira caso a propriedade <see cref="Boleto.VariacaoCarteira"/> não esteja preenchida.
+        /// 
+        /// No Banco do Brasil, algumas carteiras possuem o padrão de preenchimento '00-000', e no arquivo de remessa existe 
+        /// o conceito de Carteira e Variação de carteira, por exemplo: Carteira: 18-019, a carteira representa 18 e a variação 019.
+        /// É necessário fazer a separação dessas informações para que as colunas sejam preenchidas com os valores corretos.
+        /// </remarks>
+        private static System.Tuple<string, string> ObterCarteiraEVariacao(Boleto boleto) {
+            var carteira = boleto.Cedente.Carteira;
+
+            if(string.IsNullOrEmpty(boleto.VariacaoCarteira)) {
+                var carteiraSeparada = carteira.Split('-');
+
+                return Tuple.Create(carteiraSeparada[0], carteiraSeparada?[1]);
+            } else {
+                return Tuple.Create(carteira, boleto.VariacaoCarteira);
+            }
+        }
+
         #region Métodos de processamento do arquivo retorno CNAB400
 
 
@@ -2085,15 +2107,22 @@ namespace BoletoNet
                 //
                 base.GerarDetalheRemessa(boleto, numeroRegistro, tipoArquivo);
                 //
-                TRegistroEDI reg = new TRegistroEDI();
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0001, 001, 0, "7", '0'));                                       //001-001
+                var reg = new TRegistroEDI();
+                var numeroInscricaoConvenio = boleto.Cedente.NumeroInscricaoConvenio ?? boleto.Cedente.CPFCNPJ;
+
                 #region Regra Tipo de Inscrição Cedente
-                string vCpfCnpjEmi = "00";
-                if (boleto.Cedente.CPFCNPJ.Length.Equals(11)) vCpfCnpjEmi = "01"; //Cpf é sempre 11;
-                else if (boleto.Cedente.CPFCNPJ.Length.Equals(14)) vCpfCnpjEmi = "02"; //Cnpj é sempre 14;
+                var vCpfCnpjEmi = "00";
+                if (numeroInscricaoConvenio.Length.Equals(11)) vCpfCnpjEmi = "01"; //Cpf é sempre 11;
+                else if (numeroInscricaoConvenio.Length.Equals(14)) vCpfCnpjEmi = "02"; //Cnpj é sempre 14;
                 #endregion
+
+                var carteiraSeparada = ObterCarteiraEVariacao(boleto);
+                var carteira = carteiraSeparada.Item1;
+                var variacaoCarteira = carteiraSeparada.Item2;
+
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0001, 001, 0, "7", '0'));                                       //001-001
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0002, 002, 0, vCpfCnpjEmi, '0'));                               //002-003
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0004, 014, 0, boleto.Cedente.CPFCNPJ, '0'));                    //004-017
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0004, 014, 0, numeroInscricaoConvenio, '0'));                   //004-017
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0018, 004, 0, boleto.Cedente.ContaBancaria.Agencia, '0'));      //018-021
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0022, 001, 0, boleto.Cedente.ContaBancaria.DigitoAgencia, ' '));//022-022
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0023, 008, 0, boleto.Cedente.ContaBancaria.Conta, '0'));        //023-030
@@ -2106,11 +2135,11 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0085, 003, 0, string.Empty, ' '));                              //085-087
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0088, 001, 0, string.Empty, ' '));                              //088-088
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0089, 003, 0, string.Empty, ' '));                              //089-091
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0092, 003, 0, boleto.VariacaoCarteira, '0'));                   //092-094
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0092, 003, 0, variacaoCarteira, '0'));                          //092-094
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0095, 001, 0, "0", '0'));                                       //095-095
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0096, 006, 0, "0", '0'));                                       //096-101
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0102, 005, 0, string.Empty, ' '));                              //102-106
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0107, 002, 0, boleto.Cedente.Carteira, '0'));                   //107-108
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0107, 002, 0, carteira, '0'));                                  //107-108
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0109, 002, 0, boleto.Remessa.CodigoOcorrencia, ' '));           //109-110
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0111, 010, 0, boleto.NumeroDocumento, '0'));                    //111-120
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAA___________, 0121, 006, 0, boleto.DataVencimento, ' '));                     //121-126
@@ -2118,7 +2147,7 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0140, 003, 0, "001", '0'));                                     //140-142   
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0143, 004, 0, "0000", '0'));                                    //143-146
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0147, 001, 0, string.Empty, ' '));                              //147-147 
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0148, 002, 0, boleto.Especie, '0'));                            //148-149
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0148, 002, 0, boleto.EspecieDocumento.Codigo, '0'));            //148-149
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0150, 001, 0, boleto.Aceite, ' '));                             //150-150
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAA___________, 0151, 006, 0, boleto.DataProcessamento, ' '));                  //151-156
                 //

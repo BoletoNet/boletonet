@@ -6,7 +6,6 @@ namespace BoletoNet
 {
     public abstract class AbstractInstrucao : IInstrucao
     {
-
         #region Variaveis
 
         private IBanco _banco;
@@ -46,9 +45,17 @@ namespace BoletoNet
 
         # region Metodos
 
+        public virtual bool Carregar(int idInstrucao, decimal valor) {
+            return false;
+        }
+
+        public virtual bool Carregar(int idInstrucao, int nrDias) {
+            return false;
+        }
+
         public virtual void Valida()
         {
-            throw new NotImplementedException("Função não implementada");
+            throw new NotImplementedException("Função não implementada.");
         }
 
         #endregion
