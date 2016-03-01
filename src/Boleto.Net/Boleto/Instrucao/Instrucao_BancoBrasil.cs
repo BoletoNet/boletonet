@@ -8,10 +8,10 @@ namespace BoletoNet
 
     public enum EnumInstrucoes_BancoBrasil
     {
+        Multa = 8,
         Protestar = 9,                      // Emite aviso ao sacado após N dias do vencto, e envia ao cartório após 5 dias úteis
         NaoProtestar = 10,                  // Inibe protesto, quando houver instrução permanente na conta corrente
         ImportanciaporDiaDesconto = 30,
-        Percentual_Multa = 35,
         ProtestoFinsFalimentares = 42,
         ProtestarAposNDiasCorridos = 81,
         ProtestarAposNDiasUteis = 82,
@@ -67,9 +67,9 @@ namespace BoletoNet
 
                 switch ((EnumInstrucoes_BancoBrasil)idInstrucao)
                 {
-                    case EnumInstrucoes_BancoBrasil.Percentual_Multa:
-                        this.Codigo = (int)EnumInstrucoes_BancoBrasil.Percentual_Multa;
-                        this.Descricao = "Após vencimento cobrar multa de " + valor + " %";
+                    case EnumInstrucoes_BancoBrasil.Multa:
+                        this.Codigo = (int)EnumInstrucoes_BancoBrasil.Multa;
+                        this.Descricao = "Após vencimento cobrar Multa de " + valor + "%";
                         break;
                     case EnumInstrucoes_BancoBrasil.JurosdeMora:
                         this.Codigo = 1;
@@ -77,7 +77,7 @@ namespace BoletoNet
                         break;
                     default:
                         this.Codigo = 0;
-                        this.Descricao = " (Selecione) ";
+                        this.Descricao = "";
                         break;
                 }
 
@@ -161,7 +161,7 @@ namespace BoletoNet
                         break;
                     default:
                         this.Codigo = 0;
-                        this.Descricao = "Ausência de instruções";
+                        this.Descricao = "";
                         break;
                 }
 

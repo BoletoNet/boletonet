@@ -497,7 +497,6 @@ namespace BoletoNet
             #endregion Agência e Conta Corrente
 
             //Atribui o nome do banco ao local de pagamento
-            //Atribui o nome do banco ao local de pagamento
             if (string.IsNullOrEmpty(boleto.LocalPagamento))
                 boleto.LocalPagamento = "Até o vencimento, preferencialmente no " + Nome;
 
