@@ -13,7 +13,7 @@ namespace BoletoNet
         private string _cpfcnpj;
         private string _nome;
         private ContaBancaria _contaBancaria;
-        private long _convenio = 0;
+        private string _convenio;
         private int _numeroSequencial;
         private int _numeroBordero;
         private int _digitoCedente = -1;
@@ -174,7 +174,7 @@ namespace BoletoNet
         /// <summary>
         /// Número do Convênio
         /// </summary>
-        public long Convenio
+        public string Convenio
         {
             get
             {
