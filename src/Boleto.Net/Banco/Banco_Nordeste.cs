@@ -1,9 +1,8 @@
-﻿
-using System;
+﻿using System;
 using System.Data;
 using System.Globalization;
 using System.Web.UI;
-using Microsoft.VisualBasic;
+//using Microsoft.VisualBasic;
 using BoletoNet.EDI.Banco;
 using System.Collections.Generic;
 using BoletoNet.Util;
