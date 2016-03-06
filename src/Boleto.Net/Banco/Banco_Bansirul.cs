@@ -28,7 +28,7 @@ namespace BoletoNet
 
         public override void ValidaBoleto(Boleto boleto)
         {
-            boleto.ContaBancaria = boleto.Cedente.ContaBancaria;
+            //boleto.ContaBancaria = boleto.Cedente.ContaBancaria; não é mais necessário desde que a a modificação no Boleto.cs determina que as propriedades apontam pra mesma variável.
 
             //Formata o tamanho do número da agência
             if (boleto.Cedente.ContaBancaria.Conta.Length < 4)

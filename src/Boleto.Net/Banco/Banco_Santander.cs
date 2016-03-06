@@ -29,10 +29,10 @@ namespace BoletoNet
             this.Nome = "Santander";
         }
 
-        internal Banco_Santander(int Codigo)
+        internal Banco_Santander(short Codigo)
         {
 
-            this.Codigo = ((Codigo != 353) && (Codigo != 8)) ? 033 : Codigo;
+            this.Codigo = (short) (((Codigo != 353) && (Codigo != 8)) ? 033 : Codigo);
             this.Digito = "0";
             this.Nome = "Banco_Santander";
         }

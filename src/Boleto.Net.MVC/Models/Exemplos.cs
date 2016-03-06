@@ -32,10 +32,8 @@ namespace Boleto.Net.MVC.Models
     {
         public Exemplos(int Banco)
         {
-            boletoBancario = new BoletoBancario();
-            boletoBancario.CodigoBanco = (short)Banco;
         }
-        public BoletoBancario boletoBancario { get; set; }
+
         public string BancodoBrasil()
         {
             DateTime vencimento = new DateTime(2008, 11, 11);
@@ -48,7 +46,7 @@ namespace Boleto.Net.MVC.Models
          */
 
             Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "1234", "1", "123456", "1");
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 0.01m, "16", "09876543210", c);
+            BoletoNet.Boleto b = new BoletoNet.Boleto(ListaBancos.BancodoBrasil, vencimento, 0.01m, "16", "09876543210", c);
 
             #endregion Exemplo Carteira 16, com nosso número de 11 posições
 
@@ -114,10 +112,8 @@ namespace Boleto.Net.MVC.Models
             b.Instrucoes.Add(item);
             #endregion Instruções
 
-            boletoBancario.Boleto = b;
-            boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtmlEmbedded();
+            return b.ToString();
         }
 
         public string Banrisul()
@@ -128,7 +124,7 @@ namespace Boleto.Net.MVC.Models
 
             c.Codigo = "00000000504";
 
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 45.50m, "18", "12345678901", c);
+            BoletoNet.Boleto b = new BoletoNet.Boleto(ListaBancos.Banrisul, vencimento, 45.50m, "18", "12345678901", c);
 
             b.Sacado = new Sacado("000.000.000-00", "Fulano de Silva");
             b.Sacado.Endereco.End = "SSS 154 Bloco J Casa 23";
@@ -146,11 +142,7 @@ namespace Boleto.Net.MVC.Models
 
             b.NumeroDocumento = "12345678901";
 
-
-            boletoBancario.Boleto = b;
-            boletoBancario.Boleto.Valida();
-
-            return boletoBancario.MontaHtmlEmbedded();
+            return b.ToString();
         }
 
         public string Basa()
@@ -161,7 +153,7 @@ namespace Boleto.Net.MVC.Models
 
             c.Codigo = "12548";
 
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 45.50m, "CNR", "125478", c);
+            BoletoNet.Boleto b = new BoletoNet.Boleto(ListaBancos.Basa, vencimento, 45.50m, "CNR", "125478", c);
 
             b.Sacado = new Sacado("000.000.000-00", "Nome do seu Cliente ");
             b.Sacado.Endereco.End = "Endereço do seu Cliente ";
@@ -173,10 +165,7 @@ namespace Boleto.Net.MVC.Models
 
             b.NumeroDocumento = "12345678901";
 
-            boletoBancario.Boleto = b;
-            boletoBancario.Boleto.Valida();
-
-            return boletoBancario.MontaHtmlEmbedded();
+            return b.ToString();
         }
 
         public string Bradesco()
@@ -190,7 +179,7 @@ namespace Boleto.Net.MVC.Models
 
 
             //Carteiras 
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 1.01m, "09", "01000000001", c);
+            BoletoNet.Boleto b = new BoletoNet.Boleto(ListaBancos.Bradesco, vencimento, 1.01m, "09", "01000000001", c);
             b.NumeroDocumento = "01000000001";
             b.DataVencimento = new DateTime(2015, 09, 12);
 
@@ -213,12 +202,9 @@ namespace Boleto.Net.MVC.Models
              * Usado para mostrar no lugar da data de vencimento o termo "Contra Apresentação";
              * Usado na carteira 06
              */
-            boletoBancario.MostrarContraApresentacaoNaDataVencimento = true;
+            b.Opcoes.MostrarContraApresentacaoNaDataVencimento = true;
 
-            boletoBancario.Boleto = b;
-            boletoBancario.Boleto.Valida();
-
-            return boletoBancario.MontaHtmlEmbedded();
+            return b.ToString();
         }
 
         public string BRB()
@@ -228,7 +214,7 @@ namespace Boleto.Net.MVC.Models
             Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "208", "", "010357", "6");
             c.Codigo = "13000";
 
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 0.01m, "COB", "119964", c);
+            BoletoNet.Boleto b = new BoletoNet.Boleto(ListaBancos.BRB, vencimento, 0.01m, "COB", "119964", c);
             b.NumeroDocumento = "119964";
 
             b.Sacado = new Sacado("000.000.000-00", "Nome do seu Cliente ");
@@ -243,10 +229,7 @@ namespace Boleto.Net.MVC.Models
             //b.Instrucoes.Add("Instrução 2");
             //b.Instrucoes.Add("Instrução 3");
 
-            boletoBancario.Boleto = b;
-            boletoBancario.Boleto.Valida();
-
-            return boletoBancario.MontaHtmlEmbedded();
+            return b.ToString();
         }
 
         public string Caixa()
@@ -258,7 +241,7 @@ namespace Boleto.Net.MVC.Models
             c.Codigo = "112233";
 
 
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 20.00m, "2", "0123456789", c);
+            BoletoNet.Boleto b = new BoletoNet.Boleto(ListaBancos.Caixa, vencimento, 20.00m, "2", "0123456789", c);
 
             b.Sacado = new Sacado("000.000.000-00", "Nome do seu Cliente ");
             b.Sacado.Endereco.End = "Endereço do seu Cliente ";
@@ -285,10 +268,7 @@ namespace Boleto.Net.MVC.Models
             b.DataProcessamento = DateTime.Now;
             b.DataDocumento = DateTime.Now;
 
-            boletoBancario.Boleto = b;
-            boletoBancario.Boleto.Valida();
-
-            return boletoBancario.MontaHtmlEmbedded();
+            return b.ToString();
         }
 
         public string HSBC()
@@ -299,7 +279,7 @@ namespace Boleto.Net.MVC.Models
             // Código fornecido pela agencia, NÃO é o numero da conta
             c.Codigo = "0000000"; // 7 posicoes
 
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 2, "CNR", "1330001490684", c); //cod documento
+            BoletoNet.Boleto b = new BoletoNet.Boleto(ListaBancos.HSBC, vencimento, 2, "CNR", "1330001490684", c); //cod documento
             b.NumeroDocumento = "9999999999999"; // nr documento
 
             b.Sacado = new Sacado("000.000.000-00", "Nome do seu Cliente ");
@@ -309,10 +289,7 @@ namespace Boleto.Net.MVC.Models
             b.Sacado.Endereco.CEP = "00000000";
             b.Sacado.Endereco.UF = "UF";
 
-            boletoBancario.Boleto = b;
-            boletoBancario.Boleto.Valida();
-
-            return boletoBancario.MontaHtmlEmbedded();
+            return b.ToString();
         }
 
         public string Itau()
@@ -325,7 +302,7 @@ namespace Boleto.Net.MVC.Models
             //Na carteira 198 o código do Cedente é a conta bancária
             c.Codigo = "13000";
 
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 0.1m, "176", "00000001", c, new EspecieDocumento(341, "1"));
+            BoletoNet.Boleto b = new BoletoNet.Boleto(ListaBancos.Itau, vencimento, 0.1m, "176", "00000001", c, new EspecieDocumento(341, "1"));
             b.NumeroDocumento = "00000001";
 
             b.Sacado = new Sacado("000.000.000-00", "Nome do seu Cliente ");
@@ -351,10 +328,7 @@ namespace Boleto.Net.MVC.Models
                 b.Instrucoes.Add(item3);
             }
 
-            boletoBancario.Boleto = b;
-            boletoBancario.Boleto.Valida();
-
-            return boletoBancario.MontaHtmlEmbedded();
+            return b.ToString();
         }
 
         public string Real()
@@ -364,7 +338,7 @@ namespace Boleto.Net.MVC.Models
             Cedente c = new Cedente("00.000.000/0000-00", "Coloque a Razão Social da sua empresa aqui", "1234", "12345");
             c.Codigo = "12345";
 
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 0.1m, "57", "123456", c, new EspecieDocumento(356, "9"));
+            BoletoNet.Boleto b = new BoletoNet.Boleto(ListaBancos.Real, vencimento, 0.1m, "57", "123456", c, new EspecieDocumento(356, "9"));
             b.NumeroDocumento = "1234567";
 
             b.Sacado = new Sacado("000.000.000-00", "Nome do seu Cliente ");
@@ -378,12 +352,8 @@ namespace Boleto.Net.MVC.Models
             //b.Instrucoes.Add("Após o Vencimento pague somente no Real");
             //b.Instrucoes.Add("Instrução 2");
             //b.Instrucoes.Add("Instrução 3");
-            boletoBancario.Boleto = b;
 
-            EspeciesDocumento ed = EspecieDocumento_Real.CarregaTodas();
-            boletoBancario.Boleto.Valida();
-
-            return boletoBancario.MontaHtmlEmbedded();
+            return b.ToString();
         }
 
         public string Safra()
@@ -394,7 +364,7 @@ namespace Boleto.Net.MVC.Models
 
             c.Codigo = "13000";
 
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 1642, "198", "02592082835", c);
+            BoletoNet.Boleto b = new BoletoNet.Boleto(ListaBancos.Safra, vencimento, 1642, "198", "02592082835", c);
             b.NumeroDocumento = "1008073";
 
             b.Sacado = new Sacado("000.000.000-00", "Nome do seu Cliente ");
@@ -415,10 +385,8 @@ namespace Boleto.Net.MVC.Models
             b.Instrucoes.Add(instrucao);
 
 
-            boletoBancario.Boleto = b;
-            boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtmlEmbedded();
+            return b.ToString();
         }
 
         public string Santander()
@@ -428,7 +396,7 @@ namespace Boleto.Net.MVC.Models
             Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "2269", "130000946");
             c.Codigo = "1795082";
 
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 0.20m, "101", "566612457800", c);
+            BoletoNet.Boleto b = new BoletoNet.Boleto(ListaBancos.Santander, vencimento, 0.20m, "101", "566612457800", c);
 
             //NOSSO NÚMERO
             //############################################################################################################################
@@ -448,12 +416,10 @@ namespace Boleto.Net.MVC.Models
             //Espécie Documento - [R] Recibo
             b.EspecieDocumento = new EspecieDocumento_Santander("17");
 
-            boletoBancario.Boleto = b;
-            boletoBancario.MostrarCodigoCarteira = true;
+            b.Opcoes.MostrarCodigoCarteira = true;
 
-            boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtmlEmbedded();
+            return b.ToString();
         }
 
         public string Sicoob()
@@ -467,7 +433,7 @@ namespace Boleto.Net.MVC.Models
             c.DigitoCedente = 7;
             c.Carteira = "1";
 
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 10, "1", "897654321", c);
+            BoletoNet.Boleto b = new BoletoNet.Boleto(ListaBancos.Sicoob, vencimento, 10, "1", "897654321", c);
             b.NumeroDocumento = "119964";
 
             b.Sacado = new Sacado("000.000.000-00", "Nome do seu Cliente ");
@@ -477,10 +443,7 @@ namespace Boleto.Net.MVC.Models
             b.Sacado.Endereco.CEP = "00000000";
             b.Sacado.Endereco.UF = "UF";
 
-            boletoBancario.Boleto = b;
-            boletoBancario.Boleto.Valida();
-
-            return boletoBancario.MontaHtmlEmbedded();
+            return b.Montar();
         }
 
         public string Sicred()
@@ -494,7 +457,7 @@ namespace Boleto.Net.MVC.Models
             Cedente c = new Cedente("10.823.650/0001-90", "SAFIRALIFE", "4406", "22324");
             c.Codigo = "13000";
 
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 0.1m, "176", "00000001", c);
+            BoletoNet.Boleto b = new BoletoNet.Boleto(ListaBancos.Sicred, vencimento, 0.1m, "176", "00000001", c);
             b.NumeroDocumento = "00000001";
 
             b.Sacado = new Sacado("000.000.000-00", "Nome do seu Cliente ");
@@ -510,12 +473,7 @@ namespace Boleto.Net.MVC.Models
             item2.Descricao += " " + item1.QuantidadeDias.ToString() + " dias corridos do vencimento.";
             b.Instrucoes.Add(item1);
 
-
-
-            boletoBancario.Boleto = b;
-            boletoBancario.Boleto.Valida();
-
-            return boletoBancario.MontaHtmlEmbedded();
+            return b.Montar();
         }
 
         public string Sudameris()
@@ -531,7 +489,7 @@ namespace Boleto.Net.MVC.Models
             //Nosso número com 13 dígitos
             //nn = "0000000003025";
 
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 1642, "198", nn, c);// EnumEspecieDocumento_Sudameris.DuplicataMercantil);
+            BoletoNet.Boleto b = new BoletoNet.Boleto(ListaBancos.Sudameris, vencimento, 1642, "198", nn, c);// EnumEspecieDocumento_Sudameris.DuplicataMercantil);
             b.NumeroDocumento = "1008073";
 
             b.Sacado = new Sacado("000.000.000-00", "Nome do seu Cliente ");
@@ -546,10 +504,7 @@ namespace Boleto.Net.MVC.Models
             //b.Instrucoes.Add("Instrução 2");
             //b.Instrucoes.Add("Instrução 3");
 
-            boletoBancario.Boleto = b;
-            boletoBancario.Boleto.Valida();
-
-            return boletoBancario.MontaHtmlEmbedded();
+            return b.Montar();
         }
 
         public string Unibanco()
@@ -573,7 +528,7 @@ namespace Boleto.Net.MVC.Models
             Cedente c = new Cedente("00.000.000/0000-00", "Next Consultoria Ltda.", "0123", "100618", "9");
             c.Codigo = "203167";
 
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 2952.95m, "20", "1803029901", c);
+            BoletoNet.Boleto b = new BoletoNet.Boleto(ListaBancos.Unibanco, vencimento, 2952.95m, "20", "1803029901", c);
             b.NumeroDocumento = b.NossoNumero;
 
             // ----------------------------------------------------------------------------------------
@@ -592,10 +547,7 @@ namespace Boleto.Net.MVC.Models
             b.Sacado.Endereco.CEP = "00000000";
             b.Sacado.Endereco.UF = "UF";
 
-            boletoBancario.Boleto = b;
-            boletoBancario.Boleto.Valida();
-
-            return boletoBancario.MontaHtmlEmbedded();
+            return b.Montar();
         }
 
         public byte[] ItauPDF()
@@ -608,7 +560,7 @@ namespace Boleto.Net.MVC.Models
             //Na carteira 198 o código do Cedente é a conta bancária
             c.Codigo = "13000";
 
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 0.1m, "176", "00000001", c, new EspecieDocumento(341, "1"));
+            BoletoNet.Boleto b = new BoletoNet.Boleto(ListaBancos.Itau, vencimento, 0.1m, "176", "00000001", c, new EspecieDocumento(341, "1"));
             b.NumeroDocumento = "00000001";
 
             b.Sacado = new Sacado("000.000.000-00", "Nome do seu Cliente ");
@@ -634,10 +586,7 @@ namespace Boleto.Net.MVC.Models
                 b.Instrucoes.Add(item3);
             }
 
-            boletoBancario.Boleto = b;
-            boletoBancario.Boleto.Valida();
-
-            return boletoBancario.MontaBytesPDF();
+            return b.MontarPdf();
         }
     }
 }

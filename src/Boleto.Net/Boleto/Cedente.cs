@@ -268,8 +268,10 @@ namespace BoletoNet
             }
         }
 
+        public string Logo { get; internal set; }
 
-        
+
+
         #endregion Propriedades
     }
 }

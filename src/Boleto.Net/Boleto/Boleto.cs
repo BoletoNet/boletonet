@@ -8,7 +8,7 @@ namespace BoletoNet
 
     using global::BoletoNet.DemonstrativoValoresBoleto;
     using System.Text;
-    [Serializable, Browsable(false)]
+    [Serializable]
 	public class Boleto
 	{
 		#region Variaveis
@@ -39,8 +39,16 @@ namespace BoletoNet
 		private Cedente _cedente;
 		private int _categoria;
 
-		// private string _instrucoesHtml = string.Empty;
-		private IBanco _banco;
+        internal void ResetBanco(short value)
+        {
+            if ( this.Banco != null && this.Banco.Codigo != value)
+            {
+                this.Banco = new Banco(value);
+            }
+        }
+
+        // private string _instrucoesHtml = string.Empty;
+        private IBanco _banco;
 		private ContaBancaria _contaBancaria = new ContaBancaria();
 		private decimal _valorDesconto;
 		private Sacado _sacado;
@@ -73,62 +81,90 @@ namespace BoletoNet
 		{
 		}
 
-		public Boleto(DateTime dataVencimento, decimal valorBoleto, string carteira, string nossoNumero, Cedente cedente, EspecieDocumento especieDocumento)
-		{
-			this._carteira = carteira;
-			this._nossoNumero = nossoNumero;
-			this._dataVencimento = dataVencimento;
-			this._valorBoleto = valorBoleto;
-			this._valorBoleto = valorBoleto;
-			this._valorCobrado = this.ValorCobrado;
-			this._cedente = cedente;
+        public Boleto(short? codBanco, DateTime dataVencimento, decimal valorBoleto, string carteira, string nossoNumero, Cedente cedente, EspecieDocumento especieDocumento = null)
+            : this(dataVencimento, valorBoleto, carteira, nossoNumero, cedente, especieDocumento)
+        {
+            InitBanco(codBanco, carteira);
+        }
 
-			this._especieDocumento = especieDocumento;
+        public Boleto(ListaBancos banco, DateTime dataVencimento, decimal valorBoleto, string carteira, string nossoNumero, Cedente cedente, EspecieDocumento especieDocumento = null)
+            : this((short)banco, dataVencimento, valorBoleto, carteira, nossoNumero, cedente, especieDocumento)
+        {
+            
+        }
+
+        public Boleto(DateTime dataVencimento, decimal valorBoleto, string carteira, string nossoNumero, Cedente cedente, EspecieDocumento especieDocumento = null)
+        {
+            this._carteira = carteira;
+            this._nossoNumero = nossoNumero;
+            this._dataVencimento = dataVencimento;
+            this._valorBoleto = valorBoleto;
+            this._valorCobrado = this.ValorCobrado;
+            this._cedente = cedente;
+            this._especieDocumento = especieDocumento;
+        }
+
+        internal void InitBanco(short? codBanco, string carteira)
+        {
+            this._carteira = carteira;
+            if (codBanco.HasValue)
+            {
+                this._banco = new Banco(codBanco.Value);
+                this.BancoCarteira = BancoCarteiraFactory.Fabrica(this.Carteira, codBanco.Value);
+            }
+        }
+
+        public Boleto(short? codBanco, decimal valorBoleto, string carteira, string nossoNumero, Cedente cedente)
+            : this(valorBoleto, carteira,nossoNumero,cedente)
+        {
+            InitBanco(codBanco, carteira);
+        }
+
+
+        public Boleto( decimal valorBoleto, string carteira, string nossoNumero, Cedente cedente)
+        {
+            this._carteira = carteira;
+            this._nossoNumero = nossoNumero;
+        	this._valorBoleto = valorBoleto;
+        	this._valorCobrado = this.ValorCobrado;
+        	this._cedente = cedente;
+        }
+
+		public Boleto(short? codBanco, DateTime dataVencimento, decimal valorBoleto, string carteira, string nossoNumero, string digitoNossoNumero, Cedente cedente)
+            : this(   dataVencimento,  valorBoleto,  carteira,  nossoNumero, digitoNossoNumero, cedente)
+		{
+            InitBanco(codBanco, carteira);
 		}
 
-		public Boleto(decimal valorBoleto, string carteira, string nossoNumero, Cedente cedente)
-		{
-			this._carteira = carteira;
-			this._nossoNumero = nossoNumero;
-			this._valorBoleto = valorBoleto;
-			this._valorBoleto = valorBoleto;
-			this._valorCobrado = this.ValorCobrado;
-			this._cedente = cedente;
-		}
+        public Boleto(ListaBancos codBanco, DateTime dataVencimento, decimal valorBoleto, string carteira, string nossoNumero, string digitoNossoNumero, Cedente cedente)
+            : this((short)codBanco, dataVencimento, valorBoleto, carteira, nossoNumero, digitoNossoNumero, cedente)
+        {
+        }
 
-		public Boleto(DateTime dataVencimento, decimal valorBoleto, string carteira, string nossoNumero, Cedente cedente)
-		{
-			this._carteira = carteira;
-			this._nossoNumero = nossoNumero;
-			this._dataVencimento = dataVencimento;
-			this._valorBoleto = valorBoleto;
-			this._valorBoleto = valorBoleto;
-			this._valorCobrado = this.ValorCobrado;
-			this._cedente = cedente;
-		}
+        public Boleto( DateTime dataVencimento, decimal valorBoleto, string carteira, string nossoNumero, string digitoNossoNumero, Cedente cedente)
+            : this(dataVencimento, valorBoleto, carteira, nossoNumero, cedente)
+        {
+            this._digitoNossoNumero = digitoNossoNumero;
+        }
 
-		public Boleto(DateTime dataVencimento, decimal valorBoleto, string carteira, string nossoNumero, string digitoNossoNumero, Cedente cedente)
-		{
-			this._carteira = carteira;
-			this._nossoNumero = nossoNumero;
-			this._digitoNossoNumero = digitoNossoNumero;
-			this._dataVencimento = dataVencimento;
-			this._valorBoleto = valorBoleto;
-			this._valorBoleto = valorBoleto;
-			this._valorCobrado = this.ValorCobrado;
-			this._cedente = cedente;
-		}
+        public Boleto(short? codBanco, DateTime dataVencimento, decimal valorBoleto, string carteira, string nossoNumero, string agencia, string conta)
+            : this((short)codBanco,dataVencimento, valorBoleto, carteira, nossoNumero, new Cedente() { ContaBancaria = new ContaBancaria(agencia, conta) })
+        {
+            
+        }
 
-		public Boleto(DateTime dataVencimento, decimal valorBoleto, string carteira, string nossoNumero, string agencia, string conta)
-		{
-			this._carteira = carteira;
-			this._nossoNumero = nossoNumero;
-			this._dataVencimento = dataVencimento;
-			this._valorBoleto = valorBoleto;
-			this._valorBoleto = valorBoleto;
-			this._valorCobrado = this.ValorCobrado;
-			this._cedente = new Cedente(new ContaBancaria(agencia, conta));
-		}
+        public Boleto(ListaBancos codBanco, DateTime dataVencimento, decimal valorBoleto, string carteira, string nossoNumero, string agencia, string conta)
+            : this((short)codBanco, dataVencimento, valorBoleto, carteira, nossoNumero, new Cedente() { ContaBancaria = new ContaBancaria(agencia, conta) })
+        {
+            
+        }
+
+        public Boleto(DateTime dataVencimento, decimal valorBoleto, string carteira, string nossoNumero, string agencia, string conta)
+            : this( dataVencimento, valorBoleto, carteira, nossoNumero, new Cedente() { ContaBancaria = new ContaBancaria(agencia, conta) })
+        {
+
+        }
+
 		#endregion Construtor
 
 		#region Properties
@@ -338,10 +374,14 @@ namespace BoletoNet
 			set { this._banco = value; }
 		}
 
-		public ContaBancaria ContaBancaria
+        public ContaBancaria ContaBancaria
 		{
-			get { return this._contaBancaria; }
-			set { this._contaBancaria = value; }
+			get { return this.Cedente?.ContaBancaria; }
+			set {
+                if (this.Cedente == null)
+                    this.Cedente = new Cedente();
+                this.Cedente.ContaBancaria = value;
+            }
 		}
 
 		/// <summary> 
@@ -524,11 +564,26 @@ namespace BoletoNet
 			set { this._remessa = value; }
 		}
 
-		public IBancoCarteira BancoCarteira { get; set; }
+        private IBancoCarteira _bancoCarteira = null;
+		public IBancoCarteira BancoCarteira {
+            get
+            {
+                if (this._bancoCarteira == null)
+                    _bancoCarteira = BancoCarteiraFactory.Fabrica(this.Carteira, this.Banco.Codigo);
+                
+                return _bancoCarteira;
+            }
+            set
+            {
+                _bancoCarteira = value;
+            }
 
-		#endregion Properties
+        }
+        public OpcoesBoleto Opcoes { get; set; } = new OpcoesBoleto();
 
-		public void Valida()
+        #endregion Properties
+
+        public void Valida()
 		{
 			// Validações básicas, caso ainda tenha implementada na classe do banco.ValidaBoleto()
 			if (this.Cedente == null)
@@ -566,5 +621,68 @@ namespace BoletoNet
 			}
 		}
 
+        /// <summary>
+        /// Monta o boleto em uma representação HTML
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            this.Valida();
+            BoletoBancario b = new BoletoBancario();
+            b.Boleto = this;
+            return b.MontaHtmlEmbedded();
+        }
+
+        /// <summary>
+        /// Monta o boleto em uma string HTML
+        /// </summary>
+        /// <returns></returns>
+        public string Montar()
+        {
+            return this.ToString();
+        }
+
+        /// <summary>
+        /// Salva o Arquivo para um caminho
+        /// </summary>
+        /// <param name="caminhoArquivo"></param>
+        /// <returns></returns>
+        public string Salvar(string caminhoArquivo)
+        {
+            return this.ToString();
+        }
+
+        public byte[] MontarPdf()
+        {
+            this.Valida();
+            BoletoBancario b = new BoletoBancario();
+            b.Boleto = this;
+            return b.MontaBytesPDF();
+        }
+    }
+
+    public class OpcoesBoleto
+    {
+        public bool ExibirDemonstrativo { get; set; }
+        public bool MostrarCodigoCarteira { get; set; }
+        /// <summary> 
+        /// Mostra o termo "Contra Apresentação" na data de vencimento do boleto
+        /// </summary>
+        public bool MostrarContraApresentacaoNaDataVencimento { get; set; }
+        public bool MostrarEnderecoCedente { get; set; }
+
+        public bool MostrarComprovanteEntrega { get; set; }
+        public bool OcultarEnderecoSacado { get; set; }
+        public bool OcultarInstrucoes { get; set; }
+        public bool OcultarReciboSacado { get; set; }
+        public bool GerarArquivoRemessa { get; set; }
+        public bool MostrarComprovanteEntregaLivre { get; internal set; }
+        public FormatoBoleto Formato { get; set; }
+    }
+
+    public enum FormatoBoleto
+    {
+        Bloqueto,
+        Carne
     }
 }

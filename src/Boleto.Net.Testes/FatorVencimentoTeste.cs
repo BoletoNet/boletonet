@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BoletoNet;
 
-namespace Boleto.Net.Testes
+namespace BoletoNet.Testes
 {
     [TestClass]
     public class FatorVencimentoTeste
@@ -10,7 +10,7 @@ namespace Boleto.Net.Testes
         [TestMethod]
         public void FatorVencimento_18_01_2014()
         {
-            var fatorVencimento = AbstractBanco.FatorVencimento(new BoletoNet.Boleto
+            var fatorVencimento = AbstractBanco.FatorVencimento(new Boleto
             {
                 DataVencimento = new DateTime(2014, 1, 18, 0, 0, 0)
             });
@@ -21,7 +21,7 @@ namespace Boleto.Net.Testes
         [TestMethod]
         public void FatorVencimento_12_03_2014()
         {
-            var fatorVencimento = AbstractBanco.FatorVencimento(new BoletoNet.Boleto
+            var fatorVencimento = AbstractBanco.FatorVencimento(new Boleto
             {
                 DataVencimento = new DateTime(2014, 3, 12, 0, 0, 0)
             });
@@ -32,7 +32,7 @@ namespace Boleto.Net.Testes
         [TestMethod]
         public void FatorVencimento_21_02_2025()
         {
-            var fatorVencimento = AbstractBanco.FatorVencimento(new BoletoNet.Boleto
+            var fatorVencimento = AbstractBanco.FatorVencimento(new Boleto
             {
                 DataVencimento = new DateTime(2025, 2, 21, 0, 0, 0)
             });
@@ -43,7 +43,7 @@ namespace Boleto.Net.Testes
         [TestMethod]
         public void FatorVencimento_22_02_2025()
         {
-            var fatorVencimento = AbstractBanco.FatorVencimento(new BoletoNet.Boleto
+            var fatorVencimento = AbstractBanco.FatorVencimento(new Boleto
             {
                 DataVencimento = new DateTime(2025, 2, 22, 0, 0, 0)
             });
@@ -54,7 +54,7 @@ namespace Boleto.Net.Testes
         [TestMethod]
         public void FatorVencimento_23_02_2025()
         {
-            var fatorVencimento = AbstractBanco.FatorVencimento(new BoletoNet.Boleto
+            var fatorVencimento = AbstractBanco.FatorVencimento(new Boleto
             {
                 DataVencimento = new DateTime(2025, 2, 23, 0, 0, 0)
             });

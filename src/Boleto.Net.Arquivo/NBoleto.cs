@@ -52,7 +52,7 @@ namespace BoletoNet.Arquivo
 
             using (FileStream f = new FileStream(_arquivo, FileMode.Create))
             {
-                StreamWriter w = new StreamWriter(f, System.Text.Encoding.Default);
+                StreamWriter w = new StreamWriter(f, System.Text.Encoding.UTF8);
                 w.Write(html.ToString());
                 w.Close();
                 f.Close();
@@ -416,12 +416,12 @@ namespace BoletoNet.Arquivo
                 bb = new BoletoBancario();
                 bb.CodigoBanco = _codigoBanco;
 
-                DateTime vencimento = new DateTime(2007, 9, 10);
+                DateTime vencimento = new DateTime(2017, 9, 10);
                 Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "1234", "5", "12345678", "9");
 
                 c.Codigo = "00000000504";
-                Boleto b = new Boleto(vencimento, 45.50m, "11", "12345678901", c);                
-                
+                Boleto b = new Boleto(vencimento, 45.50m, "11", "12345678901", c);
+
                 b.Sacado = new Sacado("000.000.000-00", "Fulano de Silva");
                 b.Sacado.Endereco.End = "SSS 154 Bloco J Casa 23";
                 b.Sacado.Endereco.Bairro = "Testando";
@@ -467,7 +467,7 @@ namespace BoletoNet.Arquivo
                 bb = new BoletoBancario();
                 bb.CodigoBanco = _codigoBanco;
 
-                DateTime vencimento = new DateTime(2007, 9, 10);
+                DateTime vencimento = new DateTime(2017, 9, 10);
                 Instrucao_Bradesco item = new Instrucao_Bradesco(9, 5);
 
                 Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "1234", "5", "123456", "7");
