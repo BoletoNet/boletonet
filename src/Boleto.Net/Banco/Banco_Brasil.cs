@@ -782,7 +782,7 @@ namespace BoletoNet
                     43 a 44         02      9(2)            Tipo de Carteira/Modalidade de Cobrança
                      */
                     #endregion Especificação Convênio 7 posições
-
+                    
                     boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}{5}{6}",
                         Utils.FormatCode(Codigo.ToString(), 3),
                         boleto.Moeda,
@@ -1065,19 +1065,19 @@ namespace BoletoNet
 
             _dacBoleto = Mod11(boleto.CodigoBarra.Codigo, 9);
 
-            boleto.CodigoBarra.Codigo = Strings.Left(boleto.CodigoBarra.Codigo, 4) + _dacBoleto + Strings.Right(boleto.CodigoBarra.Codigo, 39);
+            boleto.CodigoBarra.Codigo = boleto.CodigoBarra.Codigo.Insert(4, _dacBoleto.ToString());
         }
 
         public override void FormataLinhaDigitavel(Boleto boleto)
         {
-            string cmplivre = string.Empty;
-            string campo1 = string.Empty;
-            string campo2 = string.Empty;
-            string campo3 = string.Empty;
-            string campo4 = string.Empty;
-            string campo5 = string.Empty;
+            var codigoBarras = boleto.CodigoBarra.Codigo;
+            var campo1 = string.Empty;
+            var campo2 = string.Empty;
+            var campo3 = string.Empty;
+            var campo4 = string.Empty;
+            var campo5 = string.Empty;
             long icampo5 = 0;
-            int digitoMod = 0;
+            var digitoMod = 0;
 
             /*
             Campos 1 (AAABC.CCCCX):
@@ -1086,33 +1086,30 @@ namespace BoletoNet
             C = Posição 20 a 24 do código de barras
             X = DV que amarra o campo 1 (Módulo 10, contido no Anexo 7)
              */
-
-            cmplivre = Strings.Mid(boleto.CodigoBarra.Codigo, 20, 25);
-
-            campo1 = Strings.Left(boleto.CodigoBarra.Codigo, 4) + Strings.Mid(cmplivre, 1, 5);
+            campo1 = Strings.Left(codigoBarras, 4) + Strings.Mid(codigoBarras, 20, 5);
             digitoMod = Mod10(campo1);
             campo1 = campo1 + digitoMod.ToString();
-            campo1 = Strings.Mid(campo1, 1, 5) + "." + Strings.Mid(campo1, 6, 5);
+            campo1 = campo1.Insert(5, ".");
+
             /*
             Campo 2 (DDDDD.DDDDDY)
             D = Posição 25 a 34 do código de barras
             Y = DV que amarra o campo 2 (Módulo 10, contido no Anexo 7)
              */
-            campo2 = Strings.Mid(cmplivre, 6, 10);
+            campo2 = Strings.Mid(codigoBarras, 25, 10);
             digitoMod = Mod10(campo2);
             campo2 = campo2 + digitoMod.ToString();
-            campo2 = Strings.Mid(campo2, 1, 5) + "." + Strings.Mid(campo2, 6, 6);
-
+            campo2 = campo2.Insert(5, ".");
 
             /*
             Campo 3 (EEEEE.EEEEEZ)
             E = Posição 35 a 44 do código de barras
             Z = DV que amarra o campo 3 (Módulo 10, contido no Anexo 7)
              */
-            campo3 = Strings.Mid(cmplivre, 16, 10);
+            campo3 = Strings.Mid(codigoBarras, 35, 10);
             digitoMod = Mod10(campo3);
             campo3 = campo3 + digitoMod;
-            campo3 = Strings.Mid(campo3, 1, 5) + "." + Strings.Mid(campo3, 6, 6);
+            campo3 = campo3.Insert(5, ".");
 
             /*
             Campo 4 (K)
