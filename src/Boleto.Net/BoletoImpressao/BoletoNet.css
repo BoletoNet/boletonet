@@ -77,6 +77,7 @@ img {
 
 .ct td, .cp td {
 	padding-left: 6px;
+    padding-top: 2px;
 	border-left: solid 1px #000;
 }
 
@@ -124,6 +125,7 @@ img {
 
 .rBb td {
 	border-bottom: solid 1px #000;
+    padding-bottom: 2px;
 }
 
 .BB {
@@ -151,7 +153,7 @@ img {
 }
 
 .h13 {
-	height: 13px;
+	height: 12px;
 }
 
 .h12 {
@@ -206,6 +208,10 @@ img {
 	width: 88px;
 }
 
+.w103 {
+	width: 103px;
+}
+
 .w104 {
 	width: 104px;
 }
@@ -218,12 +224,24 @@ img {
 	width: 106px;
 }
 
-.w113 {
-	width: 113px;
+.w107 {
+	width: 107px;
+}
+
+.w108 {
+	width: 108px;
+}
+
+.w111 {
+	width: 111px;
 }
 
 .w112 {
 	width: 112px;
+}
+
+.w113 {
+	width: 113px;
 }
 
 .w123 {
@@ -272,6 +290,10 @@ img {
 
 .w192 {
 	width: 192px;
+}
+
+.w222 {
+	width: 222px;
 }
 
 .w250 {
@@ -371,4 +393,18 @@ img {
 }
 .img-segunda-via.recibo-cedente {
     padding-top: 56px;
+}
+.titulo-sacador-avalista {
+    margin-top: 4px;
+}
+.sem-border-left,
+.sem-border-left tr,
+.sem-border-left tr > td {
+    border-left: none;
+}
+
+.font-sem-destaque,
+.font-sem-destaque .cp {
+    font-weight: normal;
+    font-size: 9px;
 }

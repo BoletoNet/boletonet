@@ -125,8 +125,7 @@ namespace BoletoNet {
         ///														&lt;/td&gt;
         ///												&lt;/tr&gt;
         ///												&lt;tr class=&quot;cp h12 At rBb&quot;&gt;
-        ///														&lt;td&gt;
-        /// [rest of string was truncated]&quot;;.
+        ///														&lt;td&gt;        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Carne {
             get {
@@ -530,10 +529,7 @@ namespace BoletoNet {
         ///                &lt;div class=&quot;cpN pL10&quot; &gt;@ADICNSTRUCAO&lt;/div&gt;
         ///						&lt;/td&gt;
         ///						&lt;td class=&quot;w186&quot;&gt;
-        ///								&lt;div class=&quot;t&quot;&gt;(-) Desconto / Abatimentos&lt;/div&gt;
-        ///								&lt;div class=&quot;c BB&quot;&gt;@DESCONTOS&lt;/div&gt;
-        ///								&lt;div class=&quot;t&quot;&gt;(-) Outras deduções&lt; [rest of string was truncated]&quot;;.
-        ///								&lt;div clas [rest of string was truncated]&quot;;.
+        ///								&lt;div class=&quot;t&quot;&gt;(-) Desconto /  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReciboCedenteParte6 {
             get {
@@ -609,13 +605,13 @@ namespace BoletoNet {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
-        ///				&lt;tr&gt;
-        ///						&lt;td class=&quot;ctN cut&quot; /&gt;
-        ///				&lt;/tr&gt;
-        ///				&lt;tr&gt;
-        ///						&lt;td class=&quot;cpN Ar&quot;&gt;Recibo do Pagador&lt;/td&gt;
-        ///				&lt;/tr&gt;
-        ///		&lt;/table&gt;.
+        ///    &lt;tr&gt;
+        ///        &lt;td class=&quot;ctN cut&quot; /&gt;
+        ///    &lt;/tr&gt;
+        ///    &lt;tr&gt;
+        ///        &lt;td class=&quot;cpN Ar&quot;&gt;Recibo do Pagador&lt;/td&gt;
+        ///    &lt;/tr&gt;
+        ///&lt;/table&gt;.
         /// </summary>
         internal static string ReciboSacadoParte1 {
             get {
@@ -625,13 +621,13 @@ namespace BoletoNet {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
-        ///				&lt;tr class=&quot;ct h13&quot;&gt;
-        ///						&lt;td class=&quot;w659&quot;&gt;Beneficiário Endereço / Sacador Avalista&lt;/td&gt;
-        ///				&lt;/tr&gt;
-        ///				&lt;tr class=&quot;cp h12 rBb&quot;&gt;
-        ///						&lt;td class=&quot;At&quot;&gt;@ENDERECOCEDENTE&lt;/td&gt;
-        ///				&lt;/tr&gt;
-        ///		&lt;/table&gt;.
+        ///    &lt;tr class=&quot;ct h13&quot;&gt;
+        ///        &lt;td class=&quot;w659&quot;&gt;Beneficiário Endereço / Sacador Avalista&lt;/td&gt;
+        ///    &lt;/tr&gt;
+        ///    &lt;tr class=&quot;cp h12 rBb&quot;&gt;
+        ///        &lt;td class=&quot;At&quot;&gt;@ENDERECOCEDENTE&lt;/td&gt;
+        ///    &lt;/tr&gt;
+        ///&lt;/table&gt;.
         /// </summary>
         internal static string ReciboSacadoParte10 {
             get {
@@ -641,14 +637,14 @@ namespace BoletoNet {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
-        ///				&lt;tr class=&quot;BHead&quot;&gt;
-        ///						&lt;td class=&quot;imgLogo Al&quot;&gt;&lt;img src=&quot;@URLIMGCEDENTE&quot; /&gt;&lt;/td&gt;
-        ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
-        ///						&lt;td class=&quot;w65 Ab bc Ac&quot;&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
-        ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
-        ///						&lt;td class=&quot;w500 Ar Ab ld&quot;&gt;@LINHADIGITAVEL&lt;/td&gt;
-        ///				&lt;/tr&gt;
-        ///		&lt;/table&gt;.
+        ///    &lt;tr class=&quot;BHead&quot;&gt;
+        ///        &lt;td class=&quot;imgLogo Al&quot;&gt;&lt;img src=&quot;@URLIMGCEDENTE&quot; /&gt;&lt;/td&gt;
+        ///        &lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
+        ///        &lt;td class=&quot;w65 Ab bc Ac&quot;&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
+        ///        &lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
+        ///        &lt;td class=&quot;w500 Ar Ab ld&quot;&gt;@LINHADIGITAVEL&lt;/td&gt;
+        ///    &lt;/tr&gt;
+        ///&lt;/table&gt;.
         /// </summary>
         internal static string ReciboSacadoParte2 {
             get {
@@ -658,21 +654,17 @@ namespace BoletoNet {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
-        ///				&lt;tr class=&quot;ct h13 At&quot;&gt;
-        ///						&lt;td class=&quot;w298&quot;&gt;Beneficiário&lt;/td&gt;
-        ///						&lt;td class=&quot;w126&quot;&gt;Agência / Código do Beneficiário&lt;/td&gt;
-        ///						&lt;td class=&quot;w34&quot;&gt;Espécie&lt;/td&gt;
-        ///						&lt;td class=&quot;w45&quot;&gt;Quantidade&lt;/td&gt;
-        ///						&lt;td class=&quot;w128&quot;&gt;Carteira / Nosso número&lt;/td&gt;
-        ///				&lt;/tr&gt;
-        ///				&lt;tr class=&quot;cp h12 At rBb&quot;&gt;
-        ///						&lt;td&gt;@CEDENTE&lt;/td&gt;
-        ///						&lt;td&gt;@AGENCIACODIGOCEDENTE&lt;/td&gt;
-        ///						&lt;td&gt;@ESPECIE&lt;/td&gt;
-        ///						&lt;td&gt;@QUANTIDADE&lt;/td&gt;
-        ///						&lt;td class=&quot;Ar&quot;&gt;@NOSSONUMERO&lt;/td&gt;
-        ///				&lt;/tr&gt;
-        ///		&lt;/table&gt;.
+        ///    &lt;tr class=&quot;ct h13 At&quot;&gt;
+        ///        &lt;td class=&quot;w128&quot;&gt;Vencimento&lt;/td&gt;
+        ///        &lt;td class=&quot;w128&quot;&gt;Agência / Código do Beneficiário&lt;/td&gt;
+        ///        &lt;td class=&quot;w128&quot;&gt;Carteira / Nosso número&lt;/td&gt;
+        ///    &lt;/tr&gt;
+        ///    &lt;tr class=&quot;cp h12 At rBb&quot;&gt;
+        ///        &lt;td&gt;@DATAVENCIMENTO&lt;/td&gt;
+        ///        &lt;td&gt;@AGENCIACODIGOCEDENTE&lt;/td&gt;
+        ///        &lt;td class=&quot;Ar&quot;&gt;@NOSSONUMERO&lt;/td&gt;
+        ///    &lt;/tr&gt;
+        ///&lt;/table&gt;.
         /// </summary>
         internal static string ReciboSacadoParte3 {
             get {
@@ -682,19 +674,17 @@ namespace BoletoNet {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
-        ///				&lt;tr class=&quot;ct h13&quot;&gt;
-        ///						&lt;td class=&quot;w192&quot;&gt;Número do documento&lt;/td&gt;
-        ///						&lt;td class=&quot;w132&quot;&gt;CPF/CNPJ&lt;/td&gt;
-        ///						&lt;td class=&quot;w134&quot;&gt;Vencimento&lt;/td&gt;
-        ///						&lt;td class=&quot;w180&quot;&gt;Valor documento&lt;/td&gt;
-        ///				&lt;/tr&gt;
-        ///				&lt;tr class=&quot;cp h12 rBb&quot;&gt;
-        ///						&lt;td&gt;@NUMERODOCUMENTO&lt;/td&gt;
-        ///						&lt;td&gt;@CPFCNPJ&lt;/td&gt;
-        ///						&lt;td&gt;@DATAVENCIMENTO&lt;/td&gt;
-        ///						&lt;td class=&quot;Ar&quot;&gt;@=VALORDOCUMENTO&lt;/td&gt;
-        ///				&lt;/tr&gt;
-        ///		&lt;/table&gt;.
+        ///    &lt;tr class=&quot;ct h13&quot;&gt;
+        ///        &lt;td class=&quot;w128&quot;&gt;Número do documento&lt;/td&gt;
+        ///        &lt;td class=&quot;w128&quot;&gt;CPF/CNPJ&lt;/td&gt;
+        ///        &lt;td class=&quot;w128&quot;&gt;Valor documento&lt;/td&gt;
+        ///    &lt;/tr&gt;
+        ///    &lt;tr class=&quot;cp h12 rBb&quot;&gt;
+        ///        &lt;td&gt;@NUMERODOCUMENTO&lt;/td&gt;
+        ///        &lt;td&gt;@CPFCNPJ&lt;/td&gt;
+        ///        &lt;td class=&quot;Ar&quot;&gt;@=VALORDOCUMENTO&lt;/td&gt;
+        ///    &lt;/tr&gt;
+        ///&lt;/table&gt;.
         /// </summary>
         internal static string ReciboSacadoParte4 {
             get {
@@ -704,20 +694,19 @@ namespace BoletoNet {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
-        ///				&lt;tr class=&quot;ct h13&quot;&gt;
-        ///						&lt;td class=&quot;w113&quot;&gt;(-) Desconto / Abatimentos&lt;/td&gt;
-        ///						&lt;td class=&quot;w112&quot;&gt;(-) Outras deduções&lt;/td&gt;
-        ///						&lt;td class=&quot;w113&quot;&gt;(+) Mora / Multa&lt;/td&gt;
-        ///						&lt;td class=&quot;w113&quot;&gt;(+) Outros acréscimos&lt;/td&gt;
-        ///						&lt;td class=&quot;w180&quot;&gt;(=) Valor cobrado&lt;/td&gt;
-        ///				&lt;/tr&gt;
-        ///				&lt;tr class=&quot;cp h12 rBb Ab&quot;&gt;
-        ///						&lt;td&gt;@DESCONTOS&lt;/td&gt;
-        ///						&lt;td&gt;@OUTRASDEDUCOES&lt;/td&gt;
-        ///						&lt;td&gt;@MORAMULTA&lt;/td&gt;
-        ///						&lt;td&gt;@OUTROSACRESCIMOS&lt;/td&gt;
-        ///						&lt;td class=&quot;Ar&quot;&gt;&amp;nbsp;@VALORCOBRADO&lt;/td&gt;
-        ///				&lt;/ [rest of string was truncated]&quot;;.
+        ///    &lt;tr class=&quot;ct h13&quot;&gt;
+        ///        &lt;td class=&quot;w107&quot;&gt;(-) Desconto / Abatimentos&lt;/td&gt;
+        ///        &lt;td class=&quot;w108&quot;&gt;(-) Outras deduções&lt;/td&gt;
+        ///        &lt;td class=&quot;w111&quot;&gt;(+) Mora / Multa&lt;/td&gt;
+        ///        &lt;td class=&quot;w103&quot;&gt;(+) Outros acréscimos&lt;/td&gt;
+        ///        &lt;td class=&quot;w222&quot;&gt;(=) Valor cobrado&lt;/td&gt;
+        ///    &lt;/tr&gt;
+        ///    &lt;tr class=&quot;cp h12 rBb Ab&quot;&gt;
+        ///        &lt;td&gt;@DESCONTOS&lt;/td&gt;
+        ///        &lt;td&gt;@OUTRASDEDUCOES&lt;/td&gt;
+        ///        &lt;td&gt;@MORAMULTA&lt;/td&gt;
+        ///        &lt;td&gt;@OUTROSACRESCIMOS&lt;/td&gt;
+        ///        &lt;td class=&quot;Ar&quot;&gt;&amp;nbsp;@VALOR [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReciboSacadoParte5 {
             get {
@@ -726,17 +715,20 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
-        ///				&lt;tr class=&quot;ct h13&quot;&gt;
-        ///						&lt;td class=&quot;w659&quot;&gt;Pagador&lt;/td&gt;
-        ///				&lt;/tr&gt;
-        ///				&lt;tr class=&quot;cp h12&quot;&gt;
-        ///						&lt;td&gt;@SACADO&lt;/td&gt;
-        ///				&lt;/tr&gt;
-        ///				&lt;tr class=&quot;cp h12 rBb&quot;&gt;
-        ///						&lt;td&gt;@INFOSACADO&lt;/td&gt;
-        ///				&lt;/tr&gt;
-        ///		&lt;/table&gt;.
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666 sem-border-left font-sem-destaque&quot;&gt;
+        ///    &lt;tr class=&quot;ct h13&quot;&gt;
+        ///        &lt;td class=&quot;w659&quot;&gt;Pagador&lt;/td&gt;
+        ///    &lt;/tr&gt;
+        ///    &lt;tr class=&quot;cp h12&quot;&gt;
+        ///        &lt;td&gt;@SACADO&lt;/td&gt;
+        ///    &lt;/tr&gt;
+        ///    &lt;tr class=&quot;cp h12&quot;&gt;
+        ///        &lt;td&gt;@INFOSACADO&lt;/td&gt;
+        ///    &lt;/tr&gt;
+        ///    &lt;tr class=&quot;h12 ctN rBb&quot;&gt;
+        ///        &lt;td class=&quot;pL6  w409&quot;&gt;&lt;div class=&quot;titulo-sacador-avalista&quot;&gt;Sacador / Avalista&lt;/div&gt;&lt;/td&gt;
+        ///    &lt;/tr&gt;
+        ///&lt;/table&gt;.
         /// </summary>
         internal static string ReciboSacadoParte6 {
             get {
@@ -746,16 +738,17 @@ namespace BoletoNet {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;img class=&quot;img-segunda-via&quot; src=&quot;@URLIMAGEMSEGUNDAVIA&quot; onerror=&quot;this.parentNode.removeChild(this);&quot; /&gt;
-        ///&lt;table class=&quot;w666&quot;&gt;
-        ///				&lt;tr class=&quot;ctN h13&quot;&gt;
-        ///						&lt;td class=&quot;pL6&quot;&gt;Instruções&lt;/td&gt;
-        ///						&lt;td class=&quot;w180 Ar&quot;&gt;Autenticação mecânica&lt;/td&gt;
-        ///				&lt;/tr&gt;
-        ///				&lt;tr class=&quot;cpN h12&quot;&gt;
-        ///						&lt;td class=&quot;pL6&quot;&gt;@INSTRUCOES&lt;/td&gt;
-        ///						&lt;td class=&quot;pL6 Ar&quot;&gt;@AUTENTICACAOMECANICA&lt;/td&gt;
-        ///				&lt;/tr&gt;
-        ///		&lt;/table&gt;.
+        ///&lt;table class=&quot;w666 sem-border-left font-sem-destaque&quot;&gt;
+        ///    &lt;tr class=&quot;ct h13&quot;&gt;
+        ///        &lt;td class=&quot;w659&quot;&gt;Beneficiário&lt;/td&gt;
+        ///    &lt;/tr&gt;
+        ///    &lt;tr class=&quot;cp h12&quot;&gt;
+        ///        &lt;td&gt;@CEDENTECPFCNPJ&lt;/td&gt;
+        ///    &lt;/tr&gt;
+        ///    &lt;tr class=&quot;cp h12 rBb&quot;&gt;
+        ///        &lt;td&gt;@INFOCEDENTE&lt;/td&gt;
+        ///    &lt;/tr&gt;
+        ///&lt;/table&gt;.
         /// </summary>
         internal static string ReciboSacadoParte7 {
             get {
@@ -764,14 +757,16 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;ctN w666&quot;&gt;
-        ///				&lt;tr class=&quot;h13&quot;&gt;&lt;td /&gt;&lt;/tr&gt;
-        ///				&lt;tr class=&quot;h13&quot;&gt;&lt;td /&gt;&lt;/tr&gt;
-        ///				&lt;tr&gt;&lt;td class=&quot;Ar&quot;&gt;Corte na linha pontilhada&lt;/td&gt;&lt;/tr&gt;
-        ///				&lt;tr&gt;&lt;td class=&quot;cut&quot; /&gt;&lt;/tr&gt;
-        ///				&lt;tr class=&quot;h13&quot;&gt;&lt;td /&gt;&lt;/tr&gt;
-        ///				&lt;tr class=&quot;h13&quot;&gt;&lt;td /&gt;&lt;/tr&gt;
-        ///		&lt;/table&gt;.
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666 ctN&quot;&gt;
+        ///    &lt;tr&gt;&lt;td class=&quot;w250 Ar&quot;&gt;Autenticação mecânica&lt;/td&gt;&lt;/tr&gt;
+        ///&lt;/table&gt;
+        ///&lt;table class=&quot;ctN w666&quot;&gt;
+        ///    &lt;tr class=&quot;h13&quot;&gt;&lt;td /&gt;&lt;/tr&gt;
+        ///    &lt;tr class=&quot;h13&quot;&gt;&lt;td /&gt;&lt;/tr&gt;
+        ///    &lt;tr&gt;&lt;td class=&quot;Ar&quot;&gt;Corte na linha pontilhada&lt;/td&gt;&lt;/tr&gt;
+        ///    &lt;tr&gt;&lt;td class=&quot;cut&quot; /&gt;&lt;/tr&gt;
+        ///    &lt;tr class=&quot;h13&quot;&gt;&lt;td /&gt;&lt;/tr&gt;
+        ///&lt;/table&gt;.
         /// </summary>
         internal static string ReciboSacadoParte8 {
             get {

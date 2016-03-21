@@ -297,20 +297,10 @@ namespace BoletoNet
 				html.Append(Html.ReciboSacadoParte4);
 				html.Append(Html.ReciboSacadoParte5);
 				html.Append(Html.ReciboSacadoParte6);
-				html.Append(Html.ReciboSacadoParte7);
+                html.Append(Html.ReciboSacadoParte7);
+                html.Append(Html.ReciboSacadoParte8);
 
-				//if (Instrucoes.Count == 0)
-				html.Append(Html.ReciboSacadoParte8);
-
-				//Limpa as intruções para o Sacado
-				_instrucoesHtml = "";
-
-				MontaInstrucoes(Boleto.Instrucoes);
-
-				if (Boleto.Sacado.Instrucoes.Count > 0)
-					MontaInstrucoes(Boleto.Sacado.Instrucoes);
-
-				return html.ToString().Replace("@INSTRUCOES", _instrucoesHtml);
+			    return html.ToString();
 			}
 			catch (Exception ex)
 			{
@@ -520,22 +510,11 @@ namespace BoletoNet
 				}
 			}
 
-			string sacado = "";
-			//Flavio(fhlviana@hotmail.com) - adicionei a possibilidade de o boleto não ter, necessáriamente, que informar o CPF ou CNPJ do sacado.
-			//Formata o CPF/CNPJ(se houver) e o Nome do Sacado para apresentação
-			if (Sacado.CPFCNPJ == string.Empty)
-			{
-				sacado = Sacado.Nome;
-			}
-			else
-			{
-				if (Sacado.CPFCNPJ.Length <= 11)
-					sacado = string.Format("{0}  CPF: {1}", Sacado.Nome, Utils.FormataCPF(Sacado.CPFCNPJ));
-				else
-					sacado = string.Format("{0}  CNPJ: {1}", Sacado.Nome, Utils.FormataCNPJ(Sacado.CPFCNPJ));
-			}
+			var sacado = ObterNomeCpfCnpj(Sacado.Nome, Sacado.CPFCNPJ);
+			var infoSacado = Sacado.InformacoesSacado.GeraHTML(false);
 
-			String infoSacado = Sacado.InformacoesSacado.GeraHTML(false);
+			var cedente = ObterNomeCpfCnpj(Cedente.Nome, Cedente.CPFCNPJ);
+            var infoCedente = ObterInformacoesCedente();
 
 			//Caso não oculte o Endereço do Sacado,
 			if (!OcultarEnderecoSacado)
@@ -616,19 +595,14 @@ namespace BoletoNet
 					agenciaCodigoCedente = agenciaConta;
 			}
 
-			if (!FormatoCarne)
-				html.Append(GeraHtmlReciboCedente());
-			else
-			{
-				html.Append(GeraHtmlCarne("", GeraHtmlReciboCedente()));
-			}
+            html.Append(!FormatoCarne ? GeraHtmlReciboCedente() : GeraHtmlCarne("", GeraHtmlReciboCedente()));
 
-			string dataVencimento = Boleto.DataVencimento.ToString("dd/MM/yyyy");
+            string dataVencimento = Boleto.DataVencimento.ToString("dd/MM/yyyy");
 
 			if (MostrarContraApresentacaoNaDataVencimento)
 				dataVencimento = "Contra Apresentação";
 
-			if (String.IsNullOrEmpty(vLocalLogoCedente))
+			if (string.IsNullOrEmpty(vLocalLogoCedente))
 				vLocalLogoCedente = urlImagemLogo;
 
 
@@ -645,7 +619,9 @@ namespace BoletoNet
 				.Replace("@LOCALPAGAMENTO", Boleto.LocalPagamento)
 				.Replace("@DATAVENCIMENTO", dataVencimento)
                 .Replace("@CEDENTE_BOLETO", !Cedente.MostrarCNPJnoBoleto ? Cedente.Nome : string.Format("{0}&nbsp;&nbsp;&nbsp;CNPJ: {1}", Cedente.Nome, Cedente.CPFCNPJcomMascara))
+				.Replace("@CEDENTECPFCNPJ", cedente)
 				.Replace("@CEDENTE", Cedente.Nome)
+				.Replace("@INFOCEDENTE", infoCedente)
 				.Replace("@DATADOCUMENTO", Boleto.DataDocumento.ToString("dd/MM/yyyy"))
 				.Replace("@NUMERODOCUMENTO", Boleto.NumeroDocumento)
 				.Replace("@ESPECIEDOCUMENTO", EspecieDocumento.ValidaSigla(Boleto.EspecieDocumento))
@@ -727,6 +703,41 @@ namespace BoletoNet
 				return Boleto.Carteira;
 			}
 		}
+
+        private static string ObterNomeCpfCnpj(string nome, string cpfCnpj) {
+            //Flavio(fhlviana@hotmail.com) - adicionei a possibilidade de o boleto não ter, necessáriamente, que informar o CPF ou CNPJ do sacado.
+            //Formata o CPF/CNPJ(se houver) e o Nome do Sacado para apresentação
+
+            string retorno;
+
+            if (string.IsNullOrEmpty(cpfCnpj)) {
+                retorno = nome;
+            } else {
+                retorno = cpfCnpj.Length <= 11 ?
+                    $"{nome} - CPF: {Utils.FormataCPF(cpfCnpj)}" :
+                    $"{nome} - CNPJ: {Utils.FormataCNPJ(cpfCnpj)}";
+            }
+
+            return retorno;
+        }
+
+        private string ObterInformacoesCedente() {
+            string enderecoCedente;
+
+            if (string.IsNullOrEmpty(Cedente.Endereco.CEP))
+                enderecoCedente = $"{Cedente.Endereco.Bairro} - {Cedente.Endereco.Cidade}/{Cedente.Endereco.UF}";
+            else
+                enderecoCedente = 
+                    $"{Cedente.Endereco.Bairro} - {Cedente.Endereco.Cidade}/{Cedente.Endereco.UF} - CEP: {Utils.FormataCEP(Cedente.Endereco.CEP)}";
+
+            if (Cedente.Endereco.End != string.Empty && enderecoCedente != string.Empty) {
+                var numero = !string.IsNullOrEmpty(Cedente.Endereco.Numero) ? ", " + Cedente.Endereco.Numero : "";
+
+                enderecoCedente = InfoSacado.Render(Cedente.Endereco.End + numero, enderecoCedente, false);
+            }
+
+            return enderecoCedente;
+        }
 
 		#endregion Html
 
@@ -1197,7 +1208,7 @@ namespace BoletoNet
                 Convert.ToBase64String(new BinaryReader(streamBarra).ReadBytes((int)streamBarra.Length));
             fnBarra = string.Format("data:image/gif;base64,{0}", base64Barra);
 
-            var cb = new C2of5i(boletoBancario.Boleto.CodigoBarra.Codigo, 1, 50, boletoBancario.Boleto.CodigoBarra.Codigo.Length);
+            var cb = new C2of5i(boletoBancario.Boleto.CodigoBarra.Codigo, 1, 60, boletoBancario.Boleto.CodigoBarra.Codigo.Length);
 			string base64CodigoBarras = Convert.ToBase64String(cb.ToByte());
             fnCodigoBarras = string.Format("data:image/gif;base64,{0}", base64CodigoBarras);
 
@@ -1224,7 +1235,7 @@ namespace BoletoNet
 
 		public System.Drawing.Image GeraImagemCodigoBarras(Boleto boleto)
 		{
-			C2of5i cb = new C2of5i(boleto.CodigoBarra.Codigo, 1, 50, boleto.CodigoBarra.Codigo.Length);
+			C2of5i cb = new C2of5i(boleto.CodigoBarra.Codigo, 1, 60, boleto.CodigoBarra.Codigo.Length);
 			return cb.ToBitmap();
 		}
 
