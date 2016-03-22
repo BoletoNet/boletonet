@@ -50,7 +50,7 @@ namespace BoletoNet
                 throw new NotImplementedException("Carteira não informada. Utilize a carteira 11, 16, 17, 17-019, 17-027, 18, 18-019, 18-027, 18-035, 18-140 ou 31.");
 
             //Verifica as carteiras implementadas
-            if (!boleto.Carteira.Equals("11") &
+            if (!boleto.Carteira.StartsWith("11") &
                 !boleto.Carteira.Equals("16") &
                 !boleto.Carteira.Equals("17") &
                 !boleto.Carteira.Equals("17-019") &
@@ -71,22 +71,28 @@ namespace BoletoNet
 
             #region Carteira 11
             //Carteira 18 com nosso número de 11 posições
-            if (boleto.Carteira.Equals("11"))
+            if (boleto.Carteira.StartsWith("11"))
             {
                 if (!boleto.TipoModalidade.Equals("21"))
                 {
                     if (boleto.NossoNumero.Length > 11)
-                        throw new NotImplementedException(string.Format("Para a carteira {0}, a quantidade máxima são de 11 de posições para o nosso número", boleto.Carteira));
+                        throw new NotImplementedException($"Para a carteira {boleto.Carteira}, a quantidade máxima são de 11 de posições para o nosso número");
 
-                    if (boleto.Cedente.Convenio.ToString().Length == 6)
-                        boleto.NossoNumero = string.Format("{0}{1}", boleto.Cedente.Convenio, Utils.FormatCode(boleto.NossoNumero, 11));
-                    else
+                    if (boleto.Cedente.Convenio.Length == 7) {
+                        if (boleto.NossoNumero.Length > 10)
+                            throw new NotImplementedException($"Para a carteira {boleto.Carteira}, a quantidade máxima são de 10 de posições para o nosso número");
+
+                        boleto.NossoNumero = $"{boleto.Cedente.Convenio}{Utils.FormatCode(boleto.NossoNumero, 10)}";
+                    } else if (boleto.Cedente.Convenio.Length == 6) {
+                        boleto.NossoNumero = $"{boleto.Cedente.Convenio}{Utils.FormatCode(boleto.NossoNumero, 11)}";
+                    } else {
                         boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 11);
+                    }
                 }
                 else
                 {
-                    if (boleto.Cedente.Convenio.ToString().Length != 6)
-                        throw new NotImplementedException(string.Format("Para a carteira {0} e o tipo da modalidade 21, o número do convênio são de 6 posições", boleto.Carteira));
+                    if (boleto.Cedente.Convenio.Length != 6)
+                        throw new NotImplementedException($"Para a carteira {boleto.Carteira} e o tipo da modalidade 21, o número do convênio são de 6 posições");
 
                     boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 17);
                 }
@@ -243,7 +249,7 @@ namespace BoletoNet
                  * Convênio de 7 posições
                  * Nosso Número com 17 posições
                  */
-                if (boleto.Cedente.Convenio.ToString().Length == 7)
+                if (boleto.Cedente.Convenio.Length == 7)
                 {
                     if (boleto.NossoNumero.Length > 10)
                         throw new NotImplementedException(string.Format("Para a carteira {0}, a quantidade máxima são de 10 de posições para o nosso número", boleto.Carteira));
@@ -254,7 +260,7 @@ namespace BoletoNet
                  * Convênio de 6 posições
                  * Nosso Número com 11 posições
                  */
-                else if (boleto.Cedente.Convenio.ToString().Length == 6)
+                else if (boleto.Cedente.Convenio.Length == 6)
                 {
                     //Modalidades de Cobrança Sem Registro – Carteira 16 e 18
                     //Nosso Número com 17 posições
@@ -277,7 +283,7 @@ namespace BoletoNet
                   * Convênio de 4 posições
                   * Nosso Número com 11 posições
                   */
-                else if (boleto.Cedente.Convenio.ToString().Length == 4)
+                else if (boleto.Cedente.Convenio.Length == 4)
                 {
                     if (boleto.NossoNumero.Length > 7)
                         throw new NotImplementedException(string.Format("Para a carteira {0}, a quantidade máxima são de 7 de posições para o nosso número [{1}]", boleto.Carteira, boleto.NossoNumero));
@@ -533,10 +539,18 @@ namespace BoletoNet
 
             //Criada por AFK
             #region Carteira 11
-            if (boleto.Carteira.Equals("11"))
+            if (boleto.Carteira.StartsWith("11"))
             {
-                if (boleto.Cedente.Convenio.ToString().Length == 6)
-                {
+                if (boleto.Cedente.Convenio.Length == 7) {
+                    boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}{5}{6}",
+                        Utils.FormatCode(Codigo.ToString(), 3),
+                        boleto.Moeda,
+                        FatorVencimento(boleto),
+                        valorBoleto,
+                        "000000",
+                        boleto.NossoNumero,
+                        Utils.FormatCode(LimparCarteira(boleto.Carteira), 2));
+                } else if (boleto.Cedente.Convenio.Length == 6) {
                     if (boleto.TipoModalidade.Equals("21"))
                         boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}{5}{6}",
                             Utils.FormatCode(Codigo.ToString(), 3),
@@ -1168,7 +1182,6 @@ namespace BoletoNet
                 boleto.NossoNumero = string.Format("{0}", boleto.NossoNumero);
         }
 
-
         public override void FormataNumeroDocumento(Boleto boleto)
         {
         }
@@ -1356,6 +1369,10 @@ namespace BoletoNet
                         throw new Exception("Posições do nº de convênio deve ser 4, 6 ou 7.");
                 }
 
+                if (boleto.NumeracaoTituloAutomatica) {
+                    _nossoNumero = string.Empty;
+                }
+
                 // Importante: Nosso número, alinhar à esquerda com brancos à direita (conforme manual)
                 _segmentoP += Utils.FitStringLength(_nossoNumero, 20, 20, ' ', 0, true, true, false);
 
@@ -1365,6 +1382,8 @@ namespace BoletoNet
                 // 7 – para carteira 17 modalidade Simples.
                 if (boleto.Carteira.Equals("17-019") || boleto.Carteira.Equals("17-027"))
                     _segmentoP += "7";
+                else if(boleto.Carteira.StartsWith("11"))
+                    _segmentoP += "1";
                 else
                     _segmentoP += "0";
 
@@ -1380,12 +1399,15 @@ namespace BoletoNet
                 // Permite ainda, códigos 4 – Banco reemite e 5 – Banco não reemite, porém o código de Movimento Remessa (posições 16 a 17) deve ser código '31' 
                 // Alteração de outros dados (para títulos que já estão registrados no Banco do Brasil). 
                 // Obs.: Quando utilizar código, informar de acordo com o que foi cadastrado para a carteira junto ao Banco do Brasil, consulte seu gerente de relacionamento.
-                _segmentoP += "2";
+                if (boleto.Carteira.StartsWith("11"))
+                    _segmentoP += "1";
+                else
+                    _segmentoP += "2";
                 // Campo não tratado pelo BB. Informar 'branco' (espaço) OU zero ou de acordo com a carteira e quem fará a distribuição dos bloquetos. 
                 // Para carteira 11/12/31/51 utilizar código 1– Banco distribui. 
                 // Para carteira 17, pode ser utilizado código 1 – Banco distribui, 2 – Cliente distribui ou 3 – Banco envia e-mail (nesse caso complementar com registro S), 
                 // de acordo com o que foi cadastrado para a carteira junto ao Banco do Brasil, consulte seu gerente de relacionamento.
-                _segmentoP += "2";
+                _segmentoP += " ";
                 _segmentoP += Utils.FitStringLength(boleto.NumeroDocumento, 15, 15, ' ', 0, true, true, false);
                 _segmentoP += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
                 _segmentoP += Utils.FitStringLength(boleto.ValorBoleto.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);

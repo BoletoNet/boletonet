@@ -515,6 +515,15 @@ namespace BoletoNet
 			set { this._percentualIOS = value; }
 		}
 
+        /// <summary>
+        /// Representa se a numeração do título do convênio foi contratada para ser feita automaticamente pelo banco.
+        /// </summary>
+        /// <remarks>
+        /// Há convênios em bancos onde a numeração dos títulos são feitas automaticamente pelo banco, e isso geralmente
+        /// tem impacto na geração de arquivo de remessa CNAB 240.
+        /// </remarks>
+        public bool NumeracaoTituloAutomatica { get; set; }
+
 		/// <summary>
 		/// Retorna os Parâmetros utilizados na geração da Remessa para o Boleto
 		/// </summary>

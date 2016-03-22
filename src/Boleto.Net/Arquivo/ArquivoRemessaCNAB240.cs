@@ -199,8 +199,7 @@ namespace BoletoNet
                             numeroRegistroDetalhe++;
                         }
                     }
-
-                    numeroRegistro--;
+                    
                     strline = banco.GerarTrailerLoteRemessa(numeroRegistro);
                     arquivoBuilder.AppendLine(strline);
                     OnLinhaGerada(null, strline, EnumTipodeLinha.TraillerDeLote);
