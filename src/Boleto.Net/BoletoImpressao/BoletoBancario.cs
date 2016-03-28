@@ -578,10 +578,14 @@ namespace BoletoNet
 			}
 			else
 			{
-				//Para banco SANTANDER, a formatação do campo "Agencia/Identif.Cedente" - por jsoda em 07/05/2012
-				if (Boleto.Banco.Codigo == 33)
-				{
-					agenciaCodigoCedente = string.Format("{0}-{1}/{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Utils.FormatCode(Cedente.Codigo.ToString(), 6));
+			    if (Boleto.Banco.Codigo == 1) 
+                {
+					agenciaCodigoCedente = string.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.ContaBancaria.Conta, 6));
+                } 
+                else if (Boleto.Banco.Codigo == 33) 
+                {
+                    //Para banco SANTANDER, a formatação do campo "Agencia/Identif.Cedente" - por jsoda em 07/05/2012
+                    agenciaCodigoCedente = string.Format("{0}-{1}/{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Utils.FormatCode(Cedente.Codigo.ToString(), 6));
 					if (String.IsNullOrEmpty(Cedente.ContaBancaria.DigitoAgencia))
 						agenciaCodigoCedente = String.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo.ToString(), 6));
 				}
