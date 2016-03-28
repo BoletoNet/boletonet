@@ -12,7 +12,7 @@ using System.Net.Mime;
 using System.Reflection;
 using System.Drawing.Imaging;
 using System.Web;
-
+using System.Globalization;
 
 [assembly: WebResource("BoletoNet.BoletoImpressao.BoletoNet.css", "text/css", PerformSubstitution = true)]
 [assembly: WebResource("BoletoNet.Imagens.barra.gif", "image/gif")]
@@ -656,17 +656,17 @@ namespace BoletoNet
 				.Replace("@ESPECIE", Boleto.Especie)
 				.Replace("@QUANTIDADE", (Boleto.QuantidadeMoeda == 0 ? "" : Boleto.QuantidadeMoeda.ToString()))
 				.Replace("@VALORDOCUMENTO", Boleto.ValorMoeda)
-				.Replace("@=VALORDOCUMENTO", (Boleto.ValorBoleto == 0 ? "" : Boleto.ValorBoleto.ToString("R$ ##,##0.00")))
-				.Replace("@VALORCOBRADO", (Boleto.ValorCobrado == 0 ? "" : Boleto.ValorCobrado.ToString("R$ ##,##0.00")))
+				.Replace("@=VALORDOCUMENTO", (Boleto.ValorBoleto == 0 ? "" : Boleto.ValorBoleto.ToString("C", CultureInfo.GetCultureInfo("PT-BR"))))
+				.Replace("@VALORCOBRADO", (Boleto.ValorCobrado == 0 ? "" : Boleto.ValorCobrado.ToString("C", CultureInfo.GetCultureInfo("PT-BR"))))
 				.Replace("@OUTROSACRESCIMOS", "")
 				.Replace("@OUTRASDEDUCOES", "")
-				.Replace("@DESCONTOS", (Boleto.ValorDesconto == 0 ? "" : Boleto.ValorDesconto.ToString("R$ ##,##0.00")))
+				.Replace("@DESCONTOS", (Boleto.ValorDesconto == 0 ? "" : Boleto.ValorDesconto.ToString("C", CultureInfo.GetCultureInfo("PT-BR"))))
 				.Replace("@AGENCIACONTA", agenciaCodigoCedente)
 				.Replace("@SACADO", sacado)
 				.Replace("@INFOSACADO", infoSacado)
 				.Replace("@AGENCIACODIGOCEDENTE", agenciaCodigoCedente)
 				.Replace("@CPFCNPJ", Cedente.CPFCNPJ)
-				.Replace("@MORAMULTA", (Boleto.ValorMulta == 0 ? "" : Boleto.ValorMulta.ToString("R$ ##,##0.00")))
+				.Replace("@MORAMULTA", (Boleto.ValorMulta == 0 ? "" : Boleto.ValorMulta.ToString("C", CultureInfo.GetCultureInfo("PT-BR"))))
 				.Replace("@AUTENTICACAOMECANICA", "")
 				.Replace("@USODOBANCO", Boleto.UsoBanco)
 				.Replace("@IMAGEMCODIGOBARRA", imagemCodigoBarras)
