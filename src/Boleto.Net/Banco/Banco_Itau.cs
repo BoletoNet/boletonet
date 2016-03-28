@@ -216,7 +216,7 @@ namespace BoletoNet
 
                 #endregion UUUUVVVVVVVVVV
 
-                if (boleto.Carteira == "175" || boleto.Carteira == "176" || boleto.Carteira == "178" || boleto.Carteira == "109" || boleto.Carteira == "121" boleto.Carteira == "112")//Flavio(fhlviana@hotmail.com) - adicionado carteira 109
+                if (boleto.Carteira == "175" || boleto.Carteira == "176" || boleto.Carteira == "178" || boleto.Carteira == "109" || boleto.Carteira == "121" || boleto.Carteira == "112")//Flavio(fhlviana@hotmail.com) - adicionado carteira 109
                 {
                     #region Definições
                     /* AAABC.CCDDX.DDDDD.DEFFFY.FGGGG.GGHHHZ.K.UUUUVVVVVVVVVV
