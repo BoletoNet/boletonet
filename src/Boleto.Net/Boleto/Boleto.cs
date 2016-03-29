@@ -452,10 +452,15 @@ namespace BoletoNet
 			set { this._outrosDescontos = value; }
 		}
 
-		/// <summary> 
-		/// Data do Juros de Mora
-		/// </summary>  
-		public DateTime DataJurosMora
+        /// <summary>
+        /// Tipo do juros aplicado no boleto.
+        /// </summary>
+        public TipoJuros TipoJuros { get; set; }
+
+        /// <summary> 
+        /// Data do Juros de Mora
+        /// </summary>  
+        public DateTime DataJurosMora
 		{
 			get { return this._dataJurosMora; }
 			set { this._dataJurosMora = value; }
@@ -505,6 +510,16 @@ namespace BoletoNet
 			get { return this._tipoModalidade; }
 			set { this._tipoModalidade = value; }
 		}
+
+        /// <summary>
+        /// Tipo do protesto contratado pelo convênio.
+        /// </summary>
+	    public TipoProtesto TipoProtesto { get; set; }
+
+        /// <summary>
+        /// Número de dias para protestar.
+        /// </summary>
+	    public byte NumeroDiasParaProtesto { get; set; }
 
 		/// <summary> 
 		/// Retorna o percentual IOS para Seguradoras no caso do Banco Santander

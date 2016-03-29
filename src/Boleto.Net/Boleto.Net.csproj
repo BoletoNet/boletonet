@@ -184,7 +184,9 @@
     <Compile Include="Enums\CategoriaLancamento.cs" />
     <Compile Include="Enums\IsencaoCpmf.cs" />
     <Compile Include="Enums\TipoComplementoLancamento.cs" />
+    <Compile Include="Enums\TipoProtesto.cs" />
     <Compile Include="Enums\TipoLancamento.cs" />
+    <Compile Include="Enums\TipoJuros.cs" />
     <Compile Include="Enums\TipoPessoa.cs" />
     <Compile Include="Util\BarCodeBase.cs" />
     <Compile Include="BoletoImpressao\BoletoBancario.cs" />
