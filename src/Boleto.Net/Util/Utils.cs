@@ -9,7 +9,7 @@ using System.Drawing.Imaging;
 
 namespace BoletoNet
 {
-    sealed class Utils
+    static class Utils
     {
         internal static Image DrawText(string text, Font font, Color textColor, Color backColor)
         {
@@ -97,23 +97,12 @@ namespace BoletoNet
         /// <returns></returns>
         internal static string FormatCode(string text, string with, int length, bool left)
         {
-            //Esse método já existe, é PadLeft e PadRight da string
-            length -= text.Length;
-            if (left)
-            {
-                for (int i = 0; i < length; ++i)
-                {
-                    text = with + text;
-                }
-            }
-            else
-            {
-                for (int i = 0; i < length; ++i)
-                {
-                    text += with;
-                }
-            }
-            return text;
+            var paddingChar = with[0];
+            text = (text.Length > length ? text.Substring(0, length) : text);
+
+            return left ? 
+                text.PadLeft(length, paddingChar) : 
+                text.PadRight(length, paddingChar);
         }
 
         internal static string FormatCode(string text, string with, int length)
@@ -274,6 +263,13 @@ namespace BoletoNet
             }
         }
 
+        internal static string FormatarDinheiro(this decimal valor) {
+            return valor.ToString("F2").Replace(",", string.Empty);
+        }
+
+        internal static string FormatarData(this DateTime data) {
+            return data.ToString("ddMMyyyy");
+        }
 
         /// <summary>
         /// Formata o CPF ou CNPJ do Cedente ou do Sacado no formato: 000.000.000-00, 00.000.000/0001-00 respectivamente.
@@ -549,7 +545,6 @@ namespace BoletoNet
 
             return retorno;
         }
-
 
         public static bool IsNullOrWhiteSpace(String value)
         {
