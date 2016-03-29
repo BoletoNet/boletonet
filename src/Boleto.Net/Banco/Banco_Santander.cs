@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
+using System.Text;
 using System.Web.UI;
 using BoletoNet.Util;
 
@@ -433,7 +435,7 @@ namespace BoletoNet
                 {
 
                     case TipoArquivo.CNAB240:
-                        _header = GerarHeaderRemessaCNAB240(cedente);
+                        _header = GerarHeaderRemessaCNAB240(cedente, numeroArquivoRemessa);
                         break;
                     case TipoArquivo.CNAB400:
                         _header = GerarHeaderRemessaCNAB400(0, cedente);
@@ -472,29 +474,64 @@ namespace BoletoNet
         ///164 - 166	Nº da versão do layout do arquivo	N	003		040	
         ///167 - 240	Reservado (uso Banco)	            A	074		Brancos	
         /// </summary>
-        public string GerarHeaderRemessaCNAB240(Cedente cedente)
+        public string GerarHeaderRemessaCNAB240(Cedente cedente, int numeroArquivoRemessa)
         {
             try
             {
-                string header = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
-                header += "0000";
-                header += "0";
-                header += Utils.FormatCode("", " ", 8);
-                header += (cedente.CPFCNPJ.Length == 11 ? "1" : "2");
-                header += Utils.FormatCode("", "0", 15);
-                header += Utils.FormatCode("", "0", 15);
-                header += Utils.FormatCode("", " ", 25);
-                header += Utils.FormatCode(cedente.Nome, " ", 30);
-                header += Utils.FormatCode("BANCO SANTANDER", " ", 30);
-                header += Utils.FormatCode("", " ", 10);
-                header += "1";
-                header += DateTime.Now.ToString("ddMMyyyy");
-                header += Utils.FormatCode("", " ", 6);
-                header += "0001";
-                header += "040";
-                header += Utils.FormatCode("", " ", 74);
-                return header;
+                var registro = new StringBuilder();
 
+                // 001 - 003 Código do Banco na compensação 
+                registro.Append("033");
+
+                // 004 - 007 Numero do lote remessa 
+                registro.Append("0000");
+
+                // 008 - 008 Tipo de registro
+                registro.Append("0");
+
+                // 009 - 016 Reservado (uso Banco)
+                registro.Append(Utils.FormatCode(string.Empty, " ", 8));
+
+                // 017 - 017 Tipo de inscrição da empresa
+                registro.Append(cedente.CPFCNPJ.Length == 11 ? "1" : "2");
+
+                // 018 – 032 Nº de inscrição da empresa
+                registro.Append(Utils.FormatCode(cedente.CPFCNPJ, "0", 15, true));
+
+                // 033 – 047 Código de Transmissão
+                registro.Append(Utils.FormatCode(string.Empty, "0", 15, true));
+
+                // 048 - 072 Reservado (uso Banco)
+                registro.Append(Utils.FormatCode(string.Empty, " ", 25));
+
+                // 073 - 102 Nome da empresa
+                registro.Append(Utils.FormatCode(cedente.Nome, " ", 30));
+
+                // 103 - 132 Nome do Banco
+                registro.Append(Utils.FormatCode("Banco Santander", " ", 30));
+
+                // 133 - 142 Reservado (uso Banco)
+                registro.Append(Utils.FormatCode(string.Empty, " ", 10));
+
+                // 143 - 143 Código remessa
+                registro.Append("1");
+
+                // 144 - 151 Data de geração do arquivo 
+                registro.Append(Utils.FormatCode(DateTime.Today.FormatarData(), "0", 8, true));
+
+                // 152 - 157 Reservado (uso Banco) 
+                registro.Append(Utils.FormatCode(string.Empty, " ", 6));
+
+                // 158 - 163 Nº seqüencial do arquivo
+                registro.Append(Utils.FormatCode(numeroArquivoRemessa.ToString(), "0", 6, true));
+
+                // 164 - 166 Nº da versão do layout do arquivo 
+                registro.Append("040");
+
+                // 167 - 240 Reservado (uso Banco) 
+                registro.Append(Utils.FormatCode(string.Empty, " ", 74));
+
+                return registro.ToString();
             }
             catch (Exception ex)
             {
@@ -584,26 +621,66 @@ namespace BoletoNet
         {
             try
             {
-                string header = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
-                header += "0000";
-                header += "0";
-                header += "R";
-                header += "  ";
-                header += "030";
-                header += " ";
-                header += "0";
-                header += (cedente.CPFCNPJ.Length == 11 ? "1" : "2");
-                header += Utils.FormatCode("", "0", 15);
-                header += Utils.FormatCode("", " ", 20);
-                header += Utils.FormatCode("", "0", 15);
-                header += Utils.FormatCode("", " ", 5);
-                header += Utils.FormatCode(cedente.Nome, " ", 30);
-                header += Utils.FormatCode("", " ", 40);
-                header += Utils.FormatCode("", " ", 40);
-                header += Utils.FormatCode(numeroArquivoRemessa.ToString(), "0", 8);
-                header += DateTime.Now.ToString("ddMMyyyy");
-                header += Utils.FormatCode("", " ", 41);
-                return header;
+                var registro = new StringBuilder();
+
+                // 001 - 003 Código do Banco na compensação 
+                registro.Append("033");
+
+                // 004 - 007 Numero do lote remessa 
+                registro.Append("0001");
+
+                // 008 - 008 Tipo de registro
+                registro.Append("1");
+
+                // 009 - 009 Tipo de operação 
+                registro.Append("R");
+
+                // 010 - 011 Tipo de serviço
+                registro.Append("01");
+
+                // 012 - 013 Reservado (uso Banco)
+                registro.Append("  ");
+
+                // 014 - 016 Nº da versão do layout do lote
+                registro.Append("030");
+
+                // 017 - 017 Reservado (uso Banco)
+                registro.Append(" ");
+
+                // 018 - 018 Tipo de inscrição da empresa 
+                registro.Append(cedente.CPFCNPJ.Length == 11 ? "1" : "2");
+
+                // 019 - 033 Nº de inscrição da empresa 
+                registro.Append(Utils.FormatCode(cedente.CPFCNPJ, "0", 15, true));
+
+                // 034 – 053 Reservado (uso Banco)
+                registro.Append(Utils.FormatCode(string.Empty, " ", 20));
+
+                // 054 - 068 Código de Transmissão 
+                registro.Append(Utils.FormatCode(string.Empty, "0", 15, true));
+
+                // 069 – 073 Reservado uso Banco
+                registro.Append(Utils.FormatCode(string.Empty, " ", 5));
+
+                // 074 - 103 Nome do Beneficiário
+                registro.Append(Utils.FormatCode(cedente.Nome, " ", 30));
+
+                // 104 - 143 Mensagem 1
+                registro.Append(Utils.FormatCode(string.Empty, " ", 40));
+
+                // 144 - 183 Mensagem 2 
+                registro.Append(Utils.FormatCode(string.Empty, " ", 40));
+
+                // 184 - 191 Número remessa/retorno 
+                registro.Append(Utils.FormatCode(numeroArquivoRemessa.ToString(), "0", 8, true));
+
+                // 192 - 199 Data da gravação remessa/retorno
+                registro.Append(Utils.FormatCode(DateTime.Today.FormatarData(), "0", 8, true));
+
+                // 200 - 240 Reservado (uso Banco)
+                registro.Append(Utils.FormatCode(string.Empty, " ", 41));
+
+                return registro.ToString();
             }
             catch (Exception e)
             {
@@ -877,6 +954,302 @@ namespace BoletoNet
                 throw new Exception("Erro ao gerar DETALHE do arquivo CNAB400.", ex);
             }
         }
+        
+        public override string GerarDetalheSegmentoPRemessa(Boleto boleto, int numeroRegistro, string numeroConvenio) {
+            try {
+                var cedente = boleto.Cedente;
+                var registro = new StringBuilder();
+
+                // 001 - 003 Código do Banco na compensação 
+                registro.Append("033");
+
+                // 004 - 007 Numero do lote remessa 
+                registro.Append("0001");
+
+                // 008 - 008 Tipo de registro 
+                registro.Append("3");
+
+                // 009 - 013 Nº sequencial do registro de lote
+                registro.Append(Utils.FormatCode(numeroRegistro.ToString(), "0", 5, true));
+
+                // 014 - 014 Cód. Segmento do registro detalhe
+                registro.Append("P");
+
+                // 015 - 015 Reservado (uso Banco)
+                registro.Append(" ");
+
+                // 016 - 017 Código de movimento remessa 
+                registro.Append("01");
+
+                // 018 - 021 Agência do Destinatária FIDC
+                registro.Append(Utils.FormatCode(cedente.ContaBancaria.Agencia, "0", 4, true));
+
+                // 022 - 022 Dígito da Ag do Destinatária FIDC 
+                registro.Append(Utils.FormatCode(cedente.ContaBancaria.DigitoAgencia, "0", 1, true));
+
+                // 023 - 031 Número da conta corrente 
+                registro.Append(Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 9, true));
+
+                // 032 - 032 Dígito verificador da conta
+                registro.Append(Utils.FormatCode(cedente.ContaBancaria.DigitoConta, "0", 1, true));
+
+                // 033 - 041 Conta cobrança Destinatária FIDC
+                registro.Append(Utils.FormatCode(string.Empty, "0", 9, true));
+
+                // 042 - 042 Dígito da conta cobrança Destinatária FIDC 
+                registro.Append(Utils.FormatCode(string.Empty, "0", 1, true));
+
+                // 043 - 044 Reservado (uso Banco) 
+                registro.Append("  ");
+
+                // 045 - 057 Identificação do título no Banco
+                registro.Append(Utils.FormatCode(boleto.NossoNumero.Replace("-", string.Empty), "0", 13, true));
+
+                // 058 - 058 Tipo de cobrança
+                registro.Append("1");
+
+                // 059 - 059 Forma de Cadastramento 
+                registro.Append("1");
+
+                // 060 - 060 Tipo de documento
+                registro.Append("1");
+
+                // 061 - 061 Reservado (uso Banco)
+                registro.Append(" ");
+
+                // 062 - 062 Reservado (uso Banco) 
+                registro.Append(" ");
+
+                // 063 - 077 Nº do documento
+                registro.Append(Utils.FormatCode(boleto.NumeroDocumento, " ", 15));
+
+                // 078 - 085 Data de vencimento do título
+                registro.Append(boleto.DataVencimento.FormatarData());
+
+                // 086 - 100 Valor nominal do título
+                registro.Append(Utils.FormatCode(boleto.ValorBoleto.FormatarDinheiro(), "0", 15, true));
+
+                // 101 - 104 Agência encarregada da cobrança
+                registro.Append(Utils.FormatCode(cedente.ContaBancaria.Agencia, "0", 4, true));
+
+                // 105 – 105 Dígito da Agência do Beneficiário
+                registro.Append(Utils.FormatCode(cedente.ContaBancaria.DigitoAgencia, "0", 1, true));
+
+                // 106 - 106 Reservado (uso Banco)
+                registro.Append(" ");
+
+                // 107 – 108 Espécie do título
+                registro.Append(Utils.FormatCode(boleto.EspecieDocumento.Codigo, "0", 2, true));
+
+                // 109 - 109 Identif. de título Aceito/Não Aceito
+                registro.Append("N");
+
+                // 110 - 117 Data da emissão do título
+                registro.Append(boleto.DataProcessamento.FormatarData());
+
+                // 118 - 118 Código do juros de mora
+                var codigoJuros = boleto.TipoJuros == TipoJuros.Diario ?
+                    "1" :
+                    (boleto.TipoJuros == TipoJuros.Mensal ? "2" : "0");
+                registro.Append(codigoJuros);
+
+                // 119 - 126 Data do juros de mora
+                registro.Append(boleto.DataVencimento.ToString("ddMMyyyy"));
+
+                // 127 - 141 Valor da mora/dia ou Taxa mensal 
+                registro.Append(Utils.FormatCode(boleto.ValorMulta.FormatarDinheiro(), "0", 15, true));
+
+                // 142 - 142 Código do desconto 1
+                var temDesconto = boleto.ValorDesconto > 0;
+                registro.Append(temDesconto ? "1" : "0");
+
+                // 143 - 150 Data de desconto 1
+                var dataDesconto = temDesconto ? boleto.DataDesconto.FormatarData() : string.Empty;
+                registro.Append(Utils.FormatCode(dataDesconto, "0", 8, true));
+
+                // 151 - 165 Valor ou Percentual do desconto concedido 
+                registro.Append(Utils.FormatCode(boleto.ValorDesconto.FormatarDinheiro(), "0", 15, true));
+
+                // 166 - 180 Valor do IOF a ser recolhido
+                registro.Append(Utils.FormatCode(boleto.IOF.FormatarDinheiro(), "0", 15, true));
+
+                // 181 - 195 Valor do abatimento
+                registro.Append(Utils.FormatCode(boleto.Abatimento.FormatarDinheiro(), "0", 15, true));
+
+                // 196 - 220 Identificação do título na empresa
+                registro.Append(Utils.FormatCode(string.Empty, " ", 25));
+
+                // 221 - 221 Código para protesto
+                registro.Append(ObterCodigoProtesto(boleto.TipoProtesto));
+
+                // 222 - 223 Número de dias para protesto
+                registro.Append(Utils.FormatCode(boleto.NumeroDiasParaProtesto.ToString(), "0", 2, true));
+
+                // 224 - 224 Código para Baixa/Devolução
+                registro.Append("1");
+
+                // 225 – 225 Reservado (uso Banco)
+                registro.Append("0");
+
+                // 226 - 227 Número de dias para Baixa/Devolução
+                registro.Append("00");
+
+                // 228 - 229 Código da moeda
+                registro.Append("00");
+
+                // 230 - 240 Reservado (uso Banco)
+                registro.Append(Utils.FormatCode(string.Empty, " ", 11));
+
+                return registro.ToString();
+            } catch (Exception ex) {
+                throw new Exception("Erro durante a geração do SEGMENTO P do arquivo de remessa.", ex);
+            }
+        }
+
+        public override string GerarDetalheSegmentoQRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo) {
+            try {
+                var sacado = boleto.Sacado;
+                var registro = new StringBuilder();
+
+                // 001 - 003 Código do Banco na compensação
+                registro.Append("033");
+
+                // 004 - 007 Numero do lote remessa
+                registro.Append("0001");
+
+                // 008 - 008 Tipo de registro
+                registro.Append("3");
+
+                // 009 - 013 Nº seqüencial do registro no lote
+                registro.Append(Utils.FormatCode(numeroRegistro.ToString(), "0", 5, true));
+
+                // 014 - 014 Cód. segmento do registro detalhe 
+                registro.Append("Q");
+
+                // 015 - 015 Reservado (uso Banco)
+                registro.Append(" ");
+
+                // 016 - 017 Código de movimento remessa
+                registro.Append("01");
+
+                // 018 - 018 Tipo de inscrição do Pagador
+                registro.Append(sacado.CPFCNPJ.Length == 11 ? "1" : "2");
+
+                // 019 - 033 Número de inscrição do Pagador
+                registro.Append(Utils.FormatCode(sacado.CPFCNPJ, "0", 15, true));
+
+                // 034 - 073 Nome Pagador
+                registro.Append(Utils.FormatCode(sacado.Nome, " ", 40));
+
+                // 074 - 113 Endereço Pagador
+                registro.Append(Utils.FormatCode(sacado.Endereco.End, " ", 40));
+
+                // 114 - 128 Bairro Pagador
+                registro.Append(Utils.FormatCode(sacado.Endereco.Bairro, " ", 15));
+
+                // 129 - 133 Cep Pagador
+                // 134 - 136 Sufixo do Cep do Pagador
+                registro.Append(Utils.FormatCode(sacado.Endereco.CEP, " ", 8, true));
+
+                // 137 - 151 Cidade do Pagador
+                registro.Append(Utils.FormatCode(sacado.Endereco.Cidade, " ", 15));
+
+                // 152 - 153 Unidade da federação do Pagador
+                registro.Append(Utils.FormatCode(sacado.Endereco.UF, " ", 2));
+
+                // 154 - 154 Tipo de inscrição Sacador/avalista
+                registro.Append("0");
+
+                // 155 - 169 Nº de inscrição Sacador/avalista
+                registro.Append(Utils.FormatCode(string.Empty, "0", 15, true));
+
+                // 170 - 209 Nome do Sacador/avalista
+                registro.Append(Utils.FormatCode(string.Empty, " ", 40));
+
+                // 210 - 212 Identificador de carne
+                registro.Append("000");
+
+                // 213 - 215 Seqüencial da Parcela ou número inicial da parcela
+                registro.Append("000");
+
+                // 216 - 218 Quantidade total de parcelas
+                registro.Append("000");
+
+                // 219 - 221 Número do plano
+                registro.Append("000");
+
+                // 222 - 240 Reservado (uso Banco)
+                registro.Append(Utils.FormatCode(string.Empty, " ", 19));
+
+                return registro.ToString();
+            } catch (Exception ex) {
+                throw new Exception("Erro durante a geração do SEGMENTO Q do arquivo de remessa.", ex);
+            }
+        }
+
+        public override string GerarDetalheSegmentoRRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo) {
+            try {
+                var registro = new StringBuilder();
+
+                // 001 - 003 Código do Banco na compensação
+                registro.Append("033");
+
+                // 004 - 007 Numero do lote remessa
+                registro.Append("0001");
+
+                // 008 - 008 Tipo de registro
+                registro.Append("3");
+
+                // 009 - 013 Nº seqüencial do registro de lote
+                registro.Append(Utils.FormatCode(numeroRegistro.ToString(), "0", 5, true));
+
+                // 014 - 014 Código segmento do registro detalhe 
+                registro.Append("R");
+
+                // 015 - 015 Reservado (uso Banco)
+                registro.Append(" ");
+
+                // 016 - 017 Código de movimento
+                registro.Append("01");
+
+                // 018 - 018 Código do desconto 2
+                registro.Append("0");
+
+                // 019 - 026 Data do desconto 2 
+                registro.Append(Utils.FormatCode(string.Empty, "0", 8, true));
+
+                // 027 - 041 Valor/Percentual a ser concedido
+                registro.Append(Utils.FormatCode(string.Empty, "0", 15, true));
+
+                // 042 – 065 Reservado (uso Banco)
+                registro.Append(Utils.FormatCode(string.Empty, " ", 24));
+
+                // 066 - 066 Código da multa 
+                registro.Append("1");
+
+                // 067 - 074 Data da multa
+                registro.Append(Utils.FormatCode(string.Empty, "0", 8, true));
+
+                // 075 - 089 Valor/Percentual a ser aplicado 
+                registro.Append(Utils.FormatCode(boleto.ValorMulta.FormatarDinheiro(), "0", 15, true));
+
+                // 090 - 099 Reservado (uso Banco)
+                registro.Append(Utils.FormatCode(string.Empty, " ", 10));
+
+                // 100 - 139 Mensagem 3
+                registro.Append(Utils.FormatCode(string.Empty, " ", 40));
+
+                // 140 - 179 Mensagem 4
+                registro.Append(Utils.FormatCode(string.Empty, " ", 40));
+
+                // 180 - 240 Reservado
+                registro.Append(Utils.FormatCode(string.Empty, " ", 61));
+
+                return registro.ToString();
+            } catch (Exception ex) {
+                throw new Exception("Erro durante a geração do SEGMENTO R do arquivo de remessa.", ex);
+            }
+        }
 
         #endregion DETALHE REMESSA
 
@@ -900,18 +1273,27 @@ namespace BoletoNet
         {
             try
             {
-                string trailer = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
-                trailer += Utils.FormatCode("", "0", 4, true);
-                trailer += "5";
-                trailer += Utils.FormatCode("", " ", 9);
-                trailer += Utils.FormatCode("", "0", 6, true);
-                trailer += Utils.FormatCode("", "0", 18, true);
-                trailer += Utils.FormatCode("", "0", 18, true);
-                trailer += Utils.FormatCode("", " ", 171);
-                trailer += Utils.FormatCode("", " ", 10);
-                trailer = Utils.SubstituiCaracteresEspeciais(trailer);
+                var registro = new StringBuilder();
 
-                return trailer;
+                // 001 - 003 Código do Banco na compensação 
+                registro.Append("033");
+
+                // 004 - 007 Numero do lote remessa 
+                registro.Append("0001");
+
+                // 008 - 008 Tipo de registro
+                registro.Append("5");
+
+                // 009 - 017 Reservado (uso Banco)
+                registro.Append(Utils.FormatCode(string.Empty, " ", 9));
+
+                // 018 - 023 Quantidade de registros do lote
+                registro.Append(Utils.FormatCode(numeroRegistro.ToString(), "0", 6, true));
+
+                // 024 - 240 Reservado (uso Banco) 
+                registro.Append(Utils.FormatCode(string.Empty, " ", 217));
+
+                return registro.ToString();
             }
             catch (Exception e)
             {
@@ -935,16 +1317,31 @@ namespace BoletoNet
         {
             try
             {
-                string trailer = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
-                trailer += "9999";
-                trailer += "9";
-                trailer += Utils.FormatCode("", " ", 9);
-                trailer += Utils.FormatCode("", "0", 6, true);
-                trailer += Utils.FormatCode("", "0", 6, true);
-                trailer += Utils.FormatCode("", " ", 211);
-                trailer = Utils.SubstituiCaracteresEspeciais(trailer);
+                var registro = new StringBuilder();
 
-                return trailer;
+                // 001 - 003 Código do Banco na compensação 
+                registro.Append("033");
+
+                // 004 - 007 Numero do lote remessa 
+                registro.Append("9999");
+
+                // 008 - 008 Tipo de registro
+                registro.Append("9");
+
+                // 009 - 017 Reservado (uso Banco)
+                registro.Append(Utils.FormatCode(string.Empty, " ", 9));
+
+                // 018 - 023 Quantidade de lotes do arquivo
+                // Apenas é gerado um lote no arquivo, por isso o valor 1.
+                registro.Append(Utils.FormatCode("1", "0", 6, true));
+
+                // 024 - 029 Quantidade de registros do arquivo 
+                registro.Append(Utils.FormatCode(numeroRegistro.ToString(), "0", 6, true));
+
+                // 030 - 240 Reservado (uso Banco) 
+                registro.Append(Utils.FormatCode(string.Empty, " ", 211));
+
+                return registro.ToString();
             }
             catch (Exception e)
             {
@@ -1151,6 +1548,17 @@ namespace BoletoNet
 
         #endregion
 
+        private string ObterCodigoProtesto(TipoProtesto tipoProtesto) {
+            switch (tipoProtesto) {
+                case TipoProtesto.ProtestarDiasCorridos:
+                    return "1";
+                case TipoProtesto.ProtestarDiasUteis:
+                    return "2";
+                case TipoProtesto.NaoProtestar:
+                default:
+                    return "0";
+            }
+        }
 
         /// <summary>
         /// Efetua as Validações dentro da classe Boleto, para garantir a geração da remessa
