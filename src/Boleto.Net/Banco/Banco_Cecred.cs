@@ -65,7 +65,11 @@ namespace BoletoNet {
             }
 
             int mod = (sum % 11);
-            if (mod == 0 || mod == 1) return 0;
+
+            // Edson Tessaro 04/04/2016
+            // Manual CNAB 400_11-2014.pdf pagina 12 diz para retornar 1, caso 0 ou 1
+            if (mod == 0 || mod == 1) return 1;
+
             return (11 - mod);
         }
 
