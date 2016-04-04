@@ -1,9 +1,8 @@
+using BoletoNet.EDI.Banco;
 using System;
 using System.Globalization;
+using System.Text;
 using System.Web.UI;
-using BoletoNet;
-using BoletoNet.Util;
-using BoletoNet.EDI.Banco;
 
 [assembly: WebResource("BoletoNet.Imagens.104.jpg", "image/jpg")]
 
@@ -793,36 +792,35 @@ namespace BoletoNet
         {
             try
             {
-                string header = Utils.FormatCode(Codigo.ToString(), "0", 3, true);                      // código do banco na compensação
-                header += "0000";                                                                       // Lote de Serviço 
-                header += "0";                                                                          // Tipo de Registro 
-                header += Utils.FormatCode("", " ", 9);                                                 // Uso Exclusivo FEBRABAN/CNAB
-                header += (cedente.CPFCNPJ.Length == 11 ? "1" : "2");                                   // Tipo de Inscrição 
-                header += Utils.FormatCode(cedente.CPFCNPJ, "0", 15);                                   // CPF/CNPJ do cedente 
-                header += Utils.FormatCode(cedente.Codigo.ToString() + cedente.DigitoCedente, "0", 16); // Código do Convênio no Banco 
-                header += Utils.FormatCode("", "0", 4);                                                 // Uso Exclusivo CAIXA
-                header += Utils.FormatCode(cedente.ContaBancaria.Agencia, "0", 5);                      // Agência Mantenedora da Conta 
-                header += Utils.FormatCode(cedente.ContaBancaria.DigitoAgencia, "0", 5);                // Dígito Verificador da Agência 
-                header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 12);                       // Código do Cedente (sem operação)  
-                header += cedente.ContaBancaria.DigitoConta;                                            // Díg. Verif. Cedente (sem operação) 
-                header += Banco.Mod11(cedente.ContaBancaria.Agencia + cedente.ContaBancaria.Conta).ToString();// Dígito Verif. Ag./Ced  (sem operação)
-                header += Utils.FormatCode(cedente.Nome, " ", 30);                                      // Nome do cedente
-                header += Utils.FormatCode("CAIXA ECONOMICA FEDERAL", " ", 30);                         // Nome do Banco
-                header += Utils.FormatCode("", " ", 10);                                                // Uso Exclusivo FEBRABAN/CNAB
-                header += "1";                                                                          // Código 1 - Remessa / 2 - Retorno 
-                header += DateTime.Now.ToString("ddMMyyyy");                                            // Data de Geração do Arquivo
-                header += string.Format("{0:hh:mm:ss}", DateTime.Now).Replace(":", "");                  // Hora de Geração do Arquivo
-                header += "000001";                                                                     // Número Seqüencial do Arquivo 
-                header += "030";                                                                        // Número da Versão do Layout do Arquivo 
-                header += "0";                                                                          // Densidade de Gravação do Arquivo 
-                header += Utils.FormatCode("", " ", 20);                                                // Para Uso Reservado do Banco
-                // Na fase de teste deve conter "remessa-produção", após aprovado deve conter espaços em branco
-                header += Utils.FormatCode("remessa-produção", " ", 20);                                // Para Uso Reservado da Empresa  
-                //header += Utils.FormatCode("", " ", 20);                                              // Para Uso Reservado da Empresa
-                header += Utils.FormatCode("", " ", 29);                                                // Uso Exclusivo FEBRABAN/CNAB
+                var header = new StringBuilder();
 
-                return header;
+                header.Append(Codigo.ToString().PadLeft(3, '0'));                                            // código do banco na compensação
+                header.Append("0000");                                                                       // Lote de Serviço // Lote do serviço
+                header.Append("0");                                                                          // Tipo de Registro // Tipo de Registro
+                header.Append(String.Empty.PadRight(9, ' '));                                                // Uso Exclusivo FEBRABAN/CNAB
+                header.Append(cedente.CPFCNPJ.Length == 11 ? "1" : "2");                                     // Tipo de Inscrição 
+                header.Append(cedente.CPFCNPJ.PadRight(15, '0'));                                            // CPF/CNPJ do cedente 
+                header.Append((cedente.Codigo + cedente.DigitoCedente).PadRight(16, '0'));                   // Código do Convênio no Banco 
+                header.Append(String.Empty.PadRight(4, '0'));                                                // Uso Exclusivo CAIXA
+                header.Append(cedente.ContaBancaria.Agencia.PadRight(5, '0'));                               // Agência Mantenedora da Conta 
+                header.Append(cedente.ContaBancaria.DigitoAgencia.PadRight(5, '0'));                         // Dígito Verificador da Agência 
+                header.Append(cedente.ContaBancaria.Conta.PadRight(12, '0'));                                // Código do Cedente (sem operação)  
+                header.Append(cedente.ContaBancaria.DigitoConta);                                            // Díg. Verif. Cedente (sem operação)
+                header.Append(Banco.Mod11(cedente.ContaBancaria.Agencia + cedente.ContaBancaria.Conta));     // Dígito Verif. Ag./Ced  (sem operação)
+                header.Append(cedente.Nome.PadRight(30, ' '));                                               // Nome do cedente        
+                header.Append("CAIXA ECONOMICA FEDERAL".PadRight(30, ' '));                                  // Nome do Banco
+                header.Append(String.Empty.PadRight(10, ' '));                                               // Uso Exclusivo FEBRABAN/CNAB
+                header.Append("1");                                                                          // Código 1 - Remessa / 2 - Retorno 
+                header.Append(DateTime.Now.ToString("ddMMyyyy"));                                            // Data de Geração do Arquivo
+                header.Append(String.Format("{0:hh:mm:ss}", DateTime.Now).Replace(":", ""));                 // Hora de Geração do Arquivo
+                header.Append("000001");                                                                     // Número Seqüencial do Arquivo 
+                header.Append("030");                                                                        // Número da Versão do Layout do Arquivo
+                header.Append("0");                                                                          // Densidade de Gravação do Arquivo 
+                header.Append(String.Empty.PadRight(20, ' '));                                               // Para Uso Reservado do Banco
+                header.Append("remessa-produção".PadRight(20, ' '));                                         // Para Uso Reservado da Empresa 
+                header.Append(String.Empty.PadRight(29, ' '));                                               // Uso Exclusivo FEBRABAN/CNAB
 
+                return header.ToString();
             }
             catch (Exception ex)
             {
