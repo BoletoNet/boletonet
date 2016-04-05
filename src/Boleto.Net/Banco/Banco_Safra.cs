@@ -128,7 +128,7 @@ namespace BoletoNet
         public override void FormataCodigoBarra(Boleto boleto)
         {
             string valorBoleto = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
-            valorBoleto = Utils.FormatCode(valorBoleto, 14);
+            valorBoleto = valorBoleto.PadLeft(14, '0');
 
             boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}", Codigo, boleto.Moeda,
                     FatorVencimento(boleto), valorBoleto, CampoLivre(boleto));
@@ -167,7 +167,7 @@ namespace BoletoNet
             #region Campo 1
 
             //Campo 1
-            string AAA = Utils.FormatCode(Codigo.ToString(), 3);
+            string AAA = Codigo.ToString().PadLeft(3, '0');
             string B = boleto.Moeda.ToString();
             string CCCCC = CampoLivre(boleto).Substring(0, 4);
             string X = Mod10(AAA + B + CCCCC).ToString();
@@ -210,7 +210,7 @@ namespace BoletoNet
             if (boleto.ValorBoleto != 0)
             {
                 VVVVVVVVVVVVVV = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
-                VVVVVVVVVVVVVV = Utils.FormatCode(VVVVVVVVVVVVVV, 14);
+                VVVVVVVVVVVVVV = VVVVVVVVVVVVVV.PadLeft(14, '0');
             }
             else
                 VVVVVVVVVVVVVV = "000";

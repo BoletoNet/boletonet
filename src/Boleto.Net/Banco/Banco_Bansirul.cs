@@ -37,11 +37,11 @@ namespace BoletoNet
 
             //Formata o tamanho do número da conta corrente
             if (boleto.Cedente.ContaBancaria.Conta.Length < 7)
-                boleto.Cedente.ContaBancaria.Conta = Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 7);
+                boleto.Cedente.ContaBancaria.Conta = boleto.Cedente.ContaBancaria.Conta.PadLeft(7, '0');
 
             //Formata o tamanho do número de nosso número
             if (boleto.NossoNumero.Length < 8)
-                boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 8);
+                boleto.NossoNumero = boleto.NossoNumero.PadLeft(8, '0');
             else if (boleto.NossoNumero.Length > 8)
                 throw new NotSupportedException("Para o banco Banrisul, o nosso número deve ter 08 posições e 02 dígitos verificadores (calculados automaticamente).");
 
@@ -145,7 +145,7 @@ namespace BoletoNet
             //Campo 5
             string fatorVenc = FatorVencimento(boleto).ToString("0000");
             string valor = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
-            valor = Utils.FormatCode(valor, 10);
+            valor = valor.PadLeft(10, '0');
             Campo5 = fatorVenc + valor;
 
             boleto.CodigoBarra.LinhaDigitavel = Campo1 + "  " + Campo2 + "  " + Campo3 + "  " + Campo4 + "  " + Campo5;
@@ -160,7 +160,7 @@ namespace BoletoNet
             int dacCodBarras;
             string fatorVenc = FatorVencimento(boleto).ToString("0000");
             string valor = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
-            valor = Utils.FormatCode(valor, 10);
+            valor = valor.PadLeft(10, '0');
             campo2 = fatorVenc + valor;
 
             string nossoNumero = boleto.NossoNumero.Replace(".", "").Replace("-", "");

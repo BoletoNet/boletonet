@@ -59,7 +59,7 @@ namespace BoletoNet
                     throw new Exception("Registro inválido. O detalhe não possuí as características de Header de Arquivo.");
 
                 _mensagemRemessa = Registro.Substring(171, 20).Trim();
-                _numeroRemessa = Utils.FormatCode(Registro.Substring(157, 6).Trim(), "0", 6);
+                _numeroRemessa = Registro.Substring(157, 6).Trim().PadRight(6, '0');
                 _dataRemessa = Convert.ToDecimal(Registro.Substring(143, 8)).ToString("00/00/0000");
                 _horaRemessa = Convert.ToDecimal(Registro.Substring(151, 6)).ToString("00:00:00");
 

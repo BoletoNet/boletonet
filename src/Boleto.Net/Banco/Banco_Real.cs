@@ -41,11 +41,11 @@ namespace BoletoNet
 
             //Formata o tamanho do número da conta corrente
             if (boleto.Cedente.ContaBancaria.Conta.Length < 7)
-                boleto.Cedente.ContaBancaria.Conta = Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 7);
+                boleto.Cedente.ContaBancaria.Conta = boleto.Cedente.ContaBancaria.Conta.PadLeft(7, '0');
 
             //Formata o tamanho do número de nosso número
             if (boleto.NossoNumero.Length < 13)
-                boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 13);
+                boleto.NossoNumero = boleto.NossoNumero.PadLeft(13, '0');
 
             // Calcula o DAC do Nosso Número
             _dacNossoNumero = CalcularDigitoNossoNumero(boleto);
@@ -139,7 +139,7 @@ namespace BoletoNet
             #region Campo 1
 
             //Campo 1
-            string AAA = Utils.FormatCode(boleto.Banco.Codigo.ToString(), 3);
+            string AAA = boleto.Banco.Codigo.ToString().PadLeft(3, '0');
             string B = boleto.Moeda.ToString();
             string CCCCC = CampoLivre(boleto).Substring(0, 5);
             string X = Mod10(AAA + B + CCCCC).ToString();
@@ -180,7 +180,7 @@ namespace BoletoNet
             if (boleto.ValorBoleto != 0)
             {
                 VVVVVVVVVVVVVV = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
-                VVVVVVVVVVVVVV = FatorVencimento(boleto) + Utils.FormatCode(VVVVVVVVVVVVVV, 10);
+                VVVVVVVVVVVVVV = FatorVencimento(boleto) + VVVVVVVVVVVVVV.PadLeft(10, '0');
             }
             else
                 VVVVVVVVVVVVVV = "000";
@@ -204,7 +204,7 @@ namespace BoletoNet
         public override void FormataCodigoBarra(Boleto boleto)
         {
             string valorBoleto = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
-            valorBoleto = Utils.FormatCode(valorBoleto, 14);
+            valorBoleto = valorBoleto.PadLeft(14, '0');
 
             boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}{5}{6}{7}",
                     Codigo,

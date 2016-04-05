@@ -117,7 +117,7 @@ namespace BoletoNet
             //    FFFF = "0000";
 
             string VVVVVVVVVV = boleto.ValorBoleto.ToString("N2").Replace(",", "").Replace(".", "");
-            VVVVVVVVVV = Utils.FormatCode(VVVVVVVVVV, 10);
+            VVVVVVVVVV = VVVVVVVVVV.PadLeft(10, '0');
 
             //if (Utils.ToInt64(VVVVVVVVVV) == 0)
             //    VVVVVVVVVV = "000";
@@ -149,7 +149,7 @@ namespace BoletoNet
         public override void FormataCodigoBarra(Boleto boleto)
         {
             var valorBoleto = boleto.ValorBoleto.ToString("N2").Replace(",", "").Replace(".", "");
-            valorBoleto = Utils.FormatCode(valorBoleto, 10);
+            valorBoleto = valorBoleto.PadLeft(10, '0');
 
             if (boleto.Carteira == "02" || boleto.Carteira == "03" || boleto.Carteira == "09" || boleto.Carteira == "19" || boleto.Carteira == "26") // Com registro
             {
@@ -242,19 +242,19 @@ namespace BoletoNet
             if (boleto.NossoNumero.Length > 11)
                 throw new NotImplementedException("A quantidade de dígitos do nosso número, são 11 números.");
             else if (boleto.NossoNumero.Length < 11)
-                boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 11);
+                boleto.NossoNumero = boleto.NossoNumero.PadLeft(11, '0');
 
             //Verificar se a Agencia esta correta
             if (boleto.Cedente.ContaBancaria.Agencia.Length > 4)
                 throw new NotImplementedException("A quantidade de dígitos da Agência " + boleto.Cedente.ContaBancaria.Agencia + ", são de 4 números.");
             else if (boleto.Cedente.ContaBancaria.Agencia.Length < 4)
-                boleto.Cedente.ContaBancaria.Agencia = Utils.FormatCode(boleto.Cedente.ContaBancaria.Agencia, 4);
+                boleto.Cedente.ContaBancaria.Agencia = boleto.Cedente.ContaBancaria.Agencia.PadLeft(4, '0');
 
             //Verificar se a Conta esta correta
             if (boleto.Cedente.ContaBancaria.Conta.Length > 7)
                 throw new NotImplementedException("A quantidade de dígitos da Conta " + boleto.Cedente.ContaBancaria.Conta + ", são de 07 números.");
             else if (boleto.Cedente.ContaBancaria.Conta.Length < 7)
-                boleto.Cedente.ContaBancaria.Conta = Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 7);
+                boleto.Cedente.ContaBancaria.Conta = boleto.Cedente.ContaBancaria.Conta.PadLeft(7, '0');
 
             //Verifica se data do processamento é valida
 			//if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")

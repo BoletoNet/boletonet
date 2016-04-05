@@ -94,7 +94,7 @@ namespace BoletoNet
 
                 var FFFF = FatorVencimento(boleto);
 
-                var VVVVVVVVVV = _valorMoeda = Utils.FormatCode(boleto.ValorBoleto.ToString("N").Replace(".", "").Replace(",", ""), 10);
+                var VVVVVVVVVV = _valorMoeda = boleto.ValorBoleto.ToString("N").Replace(".", "").Replace(",", "").PadLeft(10, '0');
 
                 boleto.Banco.ChaveASBACE = GeraChaveASBACE(boleto.Carteira, boleto.Cedente.ContaBancaria.Conta, boleto.NossoNumero, 2);
 
@@ -212,7 +212,7 @@ namespace BoletoNet
                 if (boleto.NossoNumero.Length > 8)
                     throw new Exception("Tamanho máximo para o Nosso Número são de 8 caracteres");
 
-                boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 8);
+                boleto.NossoNumero = boleto.NossoNumero.PadLeft(8, '0');
 
                 int D1 = CalculaDVNossoNumero(boleto.NossoNumero);
 
@@ -394,8 +394,8 @@ namespace BoletoNet
                 if (string.IsNullOrEmpty(carteira))
                     throw new Exception("Carteira não informada");
 
-                string NNNNNNNN = Utils.FormatCode(nossoNumero.Substring(0, 8), 8);
-                string CCCCCCCCCCC = Utils.FormatCode(conta, 11);
+                string NNNNNNNN = nossoNumero.Substring(0, 8).PadLeft(8, '0');
+                string CCCCCCCCCCC = conta.PadLeft(11, '0');
                 string R = tipoCobranca.ToString();
 
                 string NNNNNNNNCCCCCCCCCCCR021 = string.Concat(NNNNNNNN, CCCCCCCCCCC, R, "021");

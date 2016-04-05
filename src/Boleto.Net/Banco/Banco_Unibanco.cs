@@ -102,7 +102,7 @@ namespace BoletoNet
                 long FFFF = FatorVencimento(boleto) ;
 
                 string VVVVVVVVVV = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
-                VVVVVVVVVV = Utils.FormatCode(VVVVVVVVVV, 10);
+                VVVVVVVVVV = VVVVVVVVVV.PadLeft(10, '0');
 
                 if (Utils.ToInt64(VVVVVVVVVV) == 0)
                     VVVVVVVVVV = "000";
@@ -133,7 +133,7 @@ namespace BoletoNet
         public override void FormataCodigoBarra(Boleto boleto)
         {
             string valorBoleto = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
-            valorBoleto = Utils.FormatCode(valorBoleto, 10);
+            valorBoleto = valorBoleto.PadLeft(10, '0');
 
             boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}", Codigo.ToString(), boleto.Moeda,
                     FatorVencimento(boleto), valorBoleto, FormataCampoLivre(boleto));
@@ -157,7 +157,7 @@ namespace BoletoNet
         public string FormataCampoLivre(Boleto boleto)
         {
             string codigoCedente = boleto.Cedente.Codigo.ToString();
-            codigoCedente = Utils.FormatCode(codigoCedente, 6);
+            codigoCedente = codigoCedente.PadLeft(6, '0');
 
             string FormataCampoLivre = string.Format("{0}{1}{2}{3}{4}{5}",
                 "5", codigoCedente, Banco_Unibanco.Mod11(codigoCedente),
@@ -189,19 +189,19 @@ namespace BoletoNet
             else if (Convert.ToInt32(boleto.NossoNumero).ToString().Length > 14)
                 throw new NotImplementedException("A quantidade de dígitos do nosso número são 14 números.");
             else if (Convert.ToInt32(boleto.NossoNumero).ToString().Length < 14)
-                boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 14);
+                boleto.NossoNumero = boleto.NossoNumero.PadLeft(14, '0');
 
             //Verificar se a Agencia esta correta
             if (boleto.Cedente.ContaBancaria.Agencia.Length > 4)
                 throw new NotImplementedException("A quantidade de dígitos da Agência " + boleto.Cedente.ContaBancaria.Agencia + ", são de 4 números.");
             else if (boleto.Cedente.ContaBancaria.Agencia.Length < 4)
-                boleto.Cedente.ContaBancaria.Agencia = Utils.FormatCode(boleto.Cedente.ContaBancaria.Agencia, 4);
+                boleto.Cedente.ContaBancaria.Agencia = boleto.Cedente.ContaBancaria.Agencia.PadLeft(4, '0');
 
            //Verificar se a Conta esta correta
             if (boleto.Cedente.ContaBancaria.Conta.Length > 6)
                 throw new NotImplementedException("A quantidade de dígitos da Conta " + boleto.Cedente.ContaBancaria.Conta + ", são de 6 números.");
             else if (boleto.Cedente.ContaBancaria.Conta.Length < 6)
-                boleto.Cedente.ContaBancaria.Conta = Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 6);
+                boleto.Cedente.ContaBancaria.Conta = boleto.Cedente.ContaBancaria.Conta.PadLeft(6, '0');
 
             //Atribui o nome do banco ao local de pagamento
             boleto.LocalPagamento += Nome;

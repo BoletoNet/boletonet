@@ -33,7 +33,7 @@ namespace BoletoNet
 
             // grupo 1:
 
-            string banco = Utils.FormatCode(Codigo.ToString(), 3);
+            string banco = Codigo.ToString().PadLeft(3, '0');
             string moeda = boleto.Moeda.ToString("0");
             string agencia = Strings.Right(boleto.Cedente.ContaBancaria.Agencia, 3) + boleto.Cedente.ContaBancaria.DigitoAgencia;
             string convenio_parte1 = boleto.Cedente.Codigo.ToString().Substring(0, 1);
@@ -69,7 +69,7 @@ namespace BoletoNet
             // grupo 5:
 
             string fatorvencimento = FatorVencimento(boleto).ToString();
-            string valordocumento = Utils.FormatCode(boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", ""), 10);
+            string valordocumento = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "").PadLeft(10, '0');
 
             string grupo5 = fatorvencimento + valordocumento;
 
@@ -91,11 +91,11 @@ namespace BoletoNet
             // Código de Barras
             //banco & moeda & fator & valor & carteira & nossonumero & dac_nossonumero & agencia & conta & dac_conta & "000"
 
-            string banco = Utils.FormatCode(Codigo.ToString(), 3);
+            string banco = Codigo.ToString().PadLeft(3, '0');
             int moeda = boleto.Moeda;
             //string digito = "";
             string valorBoleto = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
-            valorBoleto = Utils.FormatCode(valorBoleto, 10);
+            valorBoleto = valorBoleto.PadLeft(10, '0');
 
             string fatorvencimento = FatorVencimento(boleto).ToString();
 
@@ -151,7 +151,7 @@ namespace BoletoNet
             if (boleto.NossoNumero.Length > 10)
                 throw new NotImplementedException("A quantidade de dígitos do nosso número para a carteira " + boleto.Carteira + ", são 10 números.");
             else if (boleto.NossoNumero.Length < 10)
-                boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 10);
+                boleto.NossoNumero = boleto.NossoNumero.PadLeft(10, '0');
 
             if (boleto.Carteira != "CNR")
                 throw new NotImplementedException("Carteira não implementada. Utilize a carteira CNR.");

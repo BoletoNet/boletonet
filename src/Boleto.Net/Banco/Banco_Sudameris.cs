@@ -44,7 +44,7 @@ namespace BoletoNet
             //Verifica se o tamanho para o NossoNumero
             // 7 para cobrança registrada
             // 13 para cobrança sem registro
-            boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 13);
+            boleto.NossoNumero = boleto.NossoNumero.PadLeft(13, '0');
 
             // Calcula o digitão de cobrança DAC (Nosso Número/Agência/Conta Corrente)
             _dacDigitaoCobranca = Mod10(boleto.NossoNumero + boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta);
@@ -102,10 +102,10 @@ namespace BoletoNet
               */
             #endregion Definições
 
-            string numeroDocumento = Utils.FormatCode(boleto.NumeroDocumento.ToString(), 7);
-            string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo.ToString(), 5);
+            string numeroDocumento = boleto.NumeroDocumento.PadLeft(7, '0');
+            string codigoCedente = boleto.Cedente.Codigo.PadLeft(5, '0');
 
-            string AAA = Utils.FormatCode(Codigo.ToString(), 3);
+            string AAA = Codigo.ToString().PadLeft(3, '0');
             string B = boleto.Moeda.ToString();
             string CCCC = boleto.Cedente.ContaBancaria.Agencia;
             string D = boleto.Cedente.ContaBancaria.Conta.Substring(0, 1);
@@ -132,7 +132,7 @@ namespace BoletoNet
 
             #region UUUUVVVVVVVVVV
 
-            VVVVVVVVVV = Utils.FormatCode(VVVVVVVVVV, 10);
+            VVVVVVVVVV = VVVVVVVVVV.PadLeft(10, '0');
             C4 = UUUU + VVVVVVVVVV;
 
             #endregion UUUUVVVVVVVVVV
@@ -166,7 +166,7 @@ namespace BoletoNet
 
         public override void FormataNumeroDocumento(Boleto boleto)
         {
-            boleto.NumeroDocumento = Utils.FormatCode(boleto.NossoNumero, 13);
+            boleto.NumeroDocumento = boleto.NossoNumero.PadLeft(13, '0');
         }
 
         public override void FormataCodigoBarra(Boleto boleto)
@@ -175,7 +175,7 @@ namespace BoletoNet
             //Código do Banco/Moeda/ DAC /Fator Vencimento/Valor/Agência/Conta + Digitão/Nosso Número
 
             string valorBoleto = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
-            valorBoleto = Utils.FormatCode(valorBoleto, 10);
+            valorBoleto = valorBoleto.PadLeft(10, '0');
 
             boleto.CodigoBarra.Codigo =
                     string.Format("{0}{1}{2}{3}{4}{5}{6}{7}", Codigo, boleto.Moeda,

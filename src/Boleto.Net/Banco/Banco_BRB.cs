@@ -34,11 +34,11 @@ namespace BoletoNet
             // Código de Barras
             //banco & moeda & fator & valor & carteira & nossonumero & dac_nossonumero & agencia & conta & dac_conta & "000"
 
-            string banco = Utils.FormatCode(Codigo.ToString(), 3);
+            string banco = Codigo.ToString().PadLeft(3, '0');
             int moeda = boleto.Moeda;
             //string digito = "";
             string valorBoleto = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
-            valorBoleto = Utils.FormatCode(valorBoleto, 10);
+            valorBoleto = valorBoleto.PadLeft(10, '0');
 
             string fatorVencimento = FatorVencimento(boleto).ToString();
             string chave = boleto.CodigoBarra.Chave;
@@ -56,7 +56,7 @@ namespace BoletoNet
 
         public override void FormataLinhaDigitavel(Boleto boleto)
         {
-            string BBB = Utils.FormatCode(Codigo.ToString(), 3);
+            string BBB = Codigo.ToString().PadLeft(3, '0');
             int M = boleto.Moeda;
             string CCCCC1 = boleto.CodigoBarra.Chave.Substring(0, 5);
             int D1 = 0;
@@ -76,14 +76,14 @@ namespace BoletoNet
             D3 = Mod10(CCCCCCCCCC3);
             string Grupo3 = string.Format("{0}.{1}{2} ", CCCCCCCCCC3.Substring(0, 5), CCCCCCCCCC3.Substring(5, 5), D3);
 
-            string Grupo4 = string.Format("{0} {1}{2}", _dacBoleto, FatorVencimento(boleto).ToString(), Utils.FormatCode(boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", ""), 10));
+            string Grupo4 = string.Format("{0} {1}{2}", _dacBoleto, FatorVencimento(boleto).ToString(), boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "").PadLeft(10, '0'));
 
             boleto.CodigoBarra.LinhaDigitavel = Grupo1 + Grupo2 + Grupo3 + Grupo4;
         }
 
         public override void FormataNossoNumero(Boleto boleto)
         {
-            boleto.NossoNumero = string.Format("{0}{1}{2}", boleto.Categoria, boleto.NossoNumero, Utils.FormatCode(Codigo.ToString(), 3) + boleto.CodigoBarra.Chave.Substring(23, 2));
+            boleto.NossoNumero = string.Format("{0}{1}{2}", boleto.Categoria, boleto.NossoNumero, Codigo.ToString().PadLeft(3, '0') + boleto.CodigoBarra.Chave.Substring(23, 2));
         }
 
         public override void FormataNumeroDocumento(Boleto boleto)
@@ -101,7 +101,7 @@ namespace BoletoNet
             if (Convert.ToInt32(boleto.NossoNumero).ToString().Length > 6)
                 throw new NotImplementedException("A quantidade de dígitos do nosso número para a carteira " + boleto.Carteira + ", são 6 números.");
             else if (Convert.ToInt32(boleto.NossoNumero).ToString().Length < 6)
-                boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 6);
+                boleto.NossoNumero = boleto.NossoNumero.PadLeft(6, '0');
 
             if (boleto.Carteira != "COB")
                 throw new NotImplementedException("Carteira não implementada. Utilize a carteira COB.");
@@ -140,7 +140,7 @@ namespace BoletoNet
             int categoria = 1;
             boleto.Categoria = categoria;
             string nossonumero = boleto.NossoNumero;
-            string banco = Utils.FormatCode(Codigo.ToString(), 3);
+            string banco = Codigo.ToString().PadLeft(3, '0');
             
             //Mod10 dentro da classe Banco_BRB pelas particularidades que ela tem.
             int d1 = Banco_BRB.Mod10(zeros + agencia + conta + categoria + nossonumero + banco);

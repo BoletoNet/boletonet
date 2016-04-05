@@ -88,45 +88,6 @@ namespace BoletoNet
          */
 
         /// <summary>
-        /// Função para completar um string com zeros ou espacos em branco. Pode servir para criar a remessa.
-        /// </summary>
-        /// <param name="text">O valor recebe os zeros ou espaços em branco</param>
-        /// <param name="with">caractere a ser inserido</param>
-        /// <param name="size">Tamanho do campo</param>
-        /// <param name="left">Indica se caracteres serão inseridos à esquerda ou à direita, o valor default é inicializar pela esquerda (left)</param>
-        /// <returns></returns>
-        internal static string FormatCode(string text, string with, int length, bool left)
-        {
-            //Esse método já existe, é PadLeft e PadRight da string
-            length -= text.Length;
-            if (left)
-            {
-                for (int i = 0; i < length; ++i)
-                {
-                    text = with + text;
-                }
-            }
-            else
-            {
-                for (int i = 0; i < length; ++i)
-                {
-                    text += with;
-                }
-            }
-            return text;
-        }
-
-        internal static string FormatCode(string text, string with, int length)
-        {
-            return FormatCode(text, with, length, false);
-        }
-
-        internal static string FormatCode(string text, int length)
-        {
-            return text.PadLeft(length, '0'); 
-        }
-
-        /// <summary>
         /// Remove todos os acentos das palavras.
         /// </summary>
         /// <param name="value">palavra acentuada</param>

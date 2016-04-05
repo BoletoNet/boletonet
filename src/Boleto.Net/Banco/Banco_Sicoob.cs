@@ -154,7 +154,7 @@ namespace BoletoNet
             int resultado = 0;
             int dv = 0;
             String codigoValidacao = boleto.Banco.Codigo.ToString() + boleto.Moeda.ToString() + FatorVencimento(boleto).ToString() +
-                Utils.FormatCode(boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", ""), 10) + boleto.Carteira +
+                boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "").PadLeft(10, '0') + boleto.Carteira +
                 boleto.Cedente.ContaBancaria.Agencia + boleto.TipoModalidade + boleto.Cedente.Codigo + boleto.Cedente.DigitoCedente +
                 this.FormataNumeroTitulo(boleto) + this.FormataNumeroParcela(boleto);
 
@@ -255,7 +255,7 @@ namespace BoletoNet
             campo4 = boleto.CodigoBarra.Codigo.Substring(4, 1);
             linhaDigitavel.Append(campo4 + " ");
             //Formatando Campo 5
-            campo5 = FatorVencimento(boleto).ToString() + Utils.FormatCode(boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", ""), 10);
+            campo5 = FatorVencimento(boleto).ToString() + boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "").PadLeft(10, '0');
             linhaDigitavel.Append(campo5);
             boleto.CodigoBarra.LinhaDigitavel = linhaDigitavel.ToString();
         }
