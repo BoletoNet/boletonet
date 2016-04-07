@@ -4,25 +4,24 @@ using System.Text;
 
 namespace BoletoNet
 {
+    #region Enumerado
+    public enum EnumEspecieDocumento_Sicredi
+    {
+        DuplicataMercantilIndicacao,
+        DuplicataRural,
+        NotaPromissoria,
+        NotaPromissoriaRural,
+        NotaSeguros,
+        Recibo,
+        LetraCambio,
+        NotaDebito,
+        DuplicataServicoIndicacao,
+        Outros,
+    }
+    #endregion
+ 
     public class EspecieDocumento_Sicredi : AbstractEspecieDocumento, IEspecieDocumento
     {
-        #region Enumerado
-
-        public enum EnumEspecieDocumento_Sicredi
-        {
-            DuplicataMercantilIndicacao,
-            DuplicataRural,
-            NotaPromissoria,
-            NotaPromissoriaRural,
-            NotaSeguros,
-            Recibo,
-            LetraCambio,
-            NotaDebito,
-            DuplicataServicoIndicacao,
-            Outros,
-        }
-
-        #endregion 
 
         #region Construtores
 
@@ -51,7 +50,7 @@ namespace BoletoNet
 
         #endregion
 
-         public static string getCodigoEspecieByEnum(EnumEspecieDocumento_Sicredi especie)
+         public string getCodigoEspecieByEnum(EnumEspecieDocumento_Sicredi especie)
         {
             switch (especie)
             {
@@ -65,12 +64,11 @@ namespace BoletoNet
                 case EnumEspecieDocumento_Sicredi.NotaDebito: return "I";
                 case EnumEspecieDocumento_Sicredi.DuplicataServicoIndicacao: return "J";
                 case EnumEspecieDocumento_Sicredi.Outros: return "K";
-                default: return "K";
-
+                default: return "L";
             }
         }
 
-        public static EnumEspecieDocumento_Sicredi getEnumEspecieByCodigo(string codigo)
+        public EnumEspecieDocumento_Sicredi getEnumEspecieByCodigo(string codigo)
         {
             switch (codigo)
             {
@@ -84,7 +82,7 @@ namespace BoletoNet
                 case "I": return EnumEspecieDocumento_Sicredi.NotaDebito;
                 case "J": return EnumEspecieDocumento_Sicredi.DuplicataServicoIndicacao;
                 case "K": return EnumEspecieDocumento_Sicredi.Outros;
-                default: return EnumEspecieDocumento_Sicredi.Outros;
+                default: return EnumEspecieDocumento_Sicredi.DuplicataMercantilIndicacao;
             }
         }
         
@@ -163,9 +161,10 @@ namespace BoletoNet
         public static EspeciesDocumento CarregaTodas()
         {
             EspeciesDocumento especiesDocumento = new EspeciesDocumento();
+            EspecieDocumento_Sicredi ed = new EspecieDocumento_Sicredi();
 
             foreach (EnumEspecieDocumento_Sicredi item in Enum.GetValues(typeof(EnumEspecieDocumento_Sicredi)))
-                especiesDocumento.Add(new EspecieDocumento_Sicredi(getCodigoEspecieByEnum(item)));
+                especiesDocumento.Add(new EspecieDocumento_Sicredi(ed.getCodigoEspecieByEnum(item)));
 
             return especiesDocumento;
         }
