@@ -1,8 +1,6 @@
 using System;
 using System.Globalization;
 using System.Web.UI;
-using BoletoNet;
-using Microsoft.VisualBasic;
 using BoletoNet.EDI.Banco;
 
 [assembly: WebResource("BoletoNet.Imagens.104.jpg", "image/jpg")]
@@ -20,6 +18,7 @@ namespace BoletoNet
          */
 
         private const int EMISSAO_CEDENTE = 4;
+        private const decimal DECIMAL_100 = 100;
 
         private string _dacBoleto = string.Empty;
 
@@ -1701,23 +1700,23 @@ namespace BoletoNet
                 //reg.Brancos3;
                 int dataVencimento = Utils.ToInt32(reg.DataVencimentoTitulo);
                 detalhe.DataVencimento = Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
-                detalhe.ValorTitulo = (Convert.ToInt64(reg.ValorTitulo) / 100);
+                detalhe.ValorTitulo = (Convert.ToInt64(reg.ValorTitulo) / DECIMAL_100);
                 detalhe.CodigoBanco = Utils.ToInt32(reg.CodigoBancoCobrador);
                 detalhe.AgenciaCobradora = Utils.ToInt32(reg.CodigoAgenciaCobradora);
                 //
                 //reg.EspecieTitulo;
-                detalhe.ValorDespesa = (Convert.ToUInt64(reg.ValorDespesasCobranca) / 100);
+                detalhe.ValorDespesa = (Convert.ToUInt64(reg.ValorDespesasCobranca) / DECIMAL_100);
                 detalhe.OrigemPagamento = reg.TipoLiquidacao;
                 //reg.FormaPagamentoUtilizada;
                 //reg.FloatNegociado;
                 //reg.DataDebitoTarifaLiquidacao;
                 //reg.Brancos4;
-                detalhe.IOF = (Convert.ToUInt64(reg.ValorIOF) / 100);
-                detalhe.ValorAbatimento = (Convert.ToUInt64(reg.ValorAbatimentoConcedido) / 100);
-                detalhe.Descontos = (Convert.ToUInt64(reg.ValorDescontoConcedido) / 100);
-                detalhe.ValorPago = (Convert.ToUInt64(reg.ValorPago) / 100);
-                detalhe.JurosMora = (Convert.ToUInt64(reg.ValorJuros) / 100);
-                detalhe.TarifaCobranca = (Convert.ToUInt64(reg.ValorDespesasCobranca) / 100);
+                detalhe.IOF = (Convert.ToUInt64(reg.ValorIOF) / DECIMAL_100);
+                detalhe.ValorAbatimento = (Convert.ToUInt64(reg.ValorAbatimentoConcedido) / DECIMAL_100);
+                detalhe.Descontos = (Convert.ToUInt64(reg.ValorDescontoConcedido) / DECIMAL_100);
+                detalhe.ValorPago = (Convert.ToUInt64(reg.ValorPago) / DECIMAL_100);
+                detalhe.JurosMora = (Convert.ToUInt64(reg.ValorJuros) / DECIMAL_100);
+                detalhe.TarifaCobranca = (Convert.ToUInt64(reg.ValorDespesasCobranca) / DECIMAL_100);
                 //reg.ValorMulta;
                 //reg.CodigoMoeda;
                 int dataCredito = Utils.ToInt32(reg.DataCreditoConta);
