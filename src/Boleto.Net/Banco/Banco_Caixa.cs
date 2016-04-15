@@ -1,8 +1,6 @@
 using System;
 using System.Globalization;
 using System.Web.UI;
-using BoletoNet;
-using BoletoNet.Util;
 using BoletoNet.EDI.Banco;
 
 [assembly: WebResource("BoletoNet.Imagens.104.jpg", "image/jpg")]
@@ -20,6 +18,7 @@ namespace BoletoNet
          */
 
         private const int EMISSAO_CEDENTE = 4;
+        private const decimal DECIMAL_100 = 100;
 
         private string _dacBoleto = string.Empty;
 
@@ -1059,12 +1058,12 @@ namespace BoletoNet
                 segmentoT.CodigoCarteira = Convert.ToInt32(registro.Substring(57, 1));
                 segmentoT.NumeroDocumento = registro.Substring(58, 11);
                 segmentoT.DataVencimento = registro.Substring(73, 8).ToString() == "00000000" ? DateTime.Now : DateTime.ParseExact(registro.Substring(73, 8), "ddMMyyyy", CultureInfo.InvariantCulture);
-                segmentoT.ValorTitulo = Convert.ToDecimal(registro.Substring(81, 15)) / 100;
+                segmentoT.ValorTitulo = Convert.ToDecimal(registro.Substring(81, 15)) / DECIMAL_100;
                 segmentoT.IdentificacaoTituloEmpresa = registro.Substring(105, 25);
                 segmentoT.TipoInscricao = Convert.ToInt32(registro.Substring(132, 1));
                 segmentoT.NumeroInscricao = registro.Substring(133, 15);
                 segmentoT.NomeSacado = registro.Substring(148, 40);
-                segmentoT.ValorTarifas = Convert.ToDecimal(registro.Substring(198, 15)) / 100;
+                segmentoT.ValorTarifas = Convert.ToDecimal(registro.Substring(198, 15)) / DECIMAL_100;
                 segmentoT.CodigoRejeicao = registro.Substring(213, 10);
 
                 return segmentoT;
@@ -1084,14 +1083,14 @@ namespace BoletoNet
                 }
 
                 DetalheSegmentoURetornoCNAB240 segmentoU = new DetalheSegmentoURetornoCNAB240(registro);
-                segmentoU.JurosMultaEncargos = Convert.ToDecimal(registro.Substring(17, 15)) / 100;
-                segmentoU.ValorDescontoConcedido = Convert.ToDecimal(registro.Substring(32, 15)) / 100;
-                segmentoU.ValorAbatimentoConcedido = Convert.ToDecimal(registro.Substring(47, 15)) / 100;
-                segmentoU.ValorIOFRecolhido = Convert.ToDecimal(registro.Substring(62, 15)) / 100;
-                segmentoU.ValorOcorrenciaSacado = segmentoU.ValorPagoPeloSacado = Convert.ToDecimal(registro.Substring(77, 15)) / 100;
-                segmentoU.ValorLiquidoASerCreditado = Convert.ToDecimal(registro.Substring(92, 15)) / 100;
-                segmentoU.ValorOutrasDespesas = Convert.ToDecimal(registro.Substring(107, 15)) / 100;
-                segmentoU.ValorOutrosCreditos = Convert.ToDecimal(registro.Substring(122, 15)) / 100;
+                segmentoU.JurosMultaEncargos = Convert.ToDecimal(registro.Substring(17, 15)) / DECIMAL_100;
+                segmentoU.ValorDescontoConcedido = Convert.ToDecimal(registro.Substring(32, 15)) / DECIMAL_100;
+                segmentoU.ValorAbatimentoConcedido = Convert.ToDecimal(registro.Substring(47, 15)) / DECIMAL_100;
+                segmentoU.ValorIOFRecolhido = Convert.ToDecimal(registro.Substring(62, 15)) / DECIMAL_100;
+                segmentoU.ValorOcorrenciaSacado = segmentoU.ValorPagoPeloSacado = Convert.ToDecimal(registro.Substring(77, 15)) / DECIMAL_100;
+                segmentoU.ValorLiquidoASerCreditado = Convert.ToDecimal(registro.Substring(92, 15)) / DECIMAL_100;
+                segmentoU.ValorOutrasDespesas = Convert.ToDecimal(registro.Substring(107, 15)) / DECIMAL_100;
+                segmentoU.ValorOutrosCreditos = Convert.ToDecimal(registro.Substring(122, 15)) / DECIMAL_100;
                 segmentoU.DataOcorrencia = segmentoU.DataOcorrencia = DateTime.ParseExact(registro.Substring(137, 8), "ddMMyyyy", CultureInfo.InvariantCulture);
                 segmentoU.DataCredito = registro.Substring(145, 8).Equals("00000000") ? DateTime.Now : DateTime.ParseExact(registro.Substring(145, 8), "ddMMyyyy", CultureInfo.InvariantCulture);
                 segmentoU.CodigoOcorrenciaSacado = registro.Substring(153, 4);
@@ -1653,7 +1652,6 @@ namespace BoletoNet
                         default:
                             break;
                     }
-                    
                 }
                 #region OLD
                 //switch (boleto.Instrucoes.Count)
@@ -1782,23 +1780,23 @@ namespace BoletoNet
                 //reg.Brancos3;
                 int dataVencimento = Utils.ToInt32(reg.DataVencimentoTitulo);
                 detalhe.DataVencimento = Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
-                detalhe.ValorTitulo = (Convert.ToInt64(reg.ValorTitulo) / 100);
+                detalhe.ValorTitulo = (Convert.ToInt64(reg.ValorTitulo) / DECIMAL_100);
                 detalhe.CodigoBanco = Utils.ToInt32(reg.CodigoBancoCobrador);
                 detalhe.AgenciaCobradora = Utils.ToInt32(reg.CodigoAgenciaCobradora);
                 //
                 //reg.EspecieTitulo;
-                detalhe.ValorDespesa = (Convert.ToUInt64(reg.ValorDespesasCobranca) / 100);
+                detalhe.ValorDespesa = (Convert.ToUInt64(reg.ValorDespesasCobranca) / DECIMAL_100);
                 detalhe.OrigemPagamento = reg.TipoLiquidacao;
                 //reg.FormaPagamentoUtilizada;
                 //reg.FloatNegociado;
                 //reg.DataDebitoTarifaLiquidacao;
                 //reg.Brancos4;
-                detalhe.IOF = (Convert.ToUInt64(reg.ValorIOF) / 100);
-                detalhe.ValorAbatimento = (Convert.ToUInt64(reg.ValorAbatimentoConcedido) / 100);
-                detalhe.Descontos = (Convert.ToUInt64(reg.ValorDescontoConcedido) / 100);
-                detalhe.ValorPago = (Convert.ToUInt64(reg.ValorPago) / 100);
-                detalhe.JurosMora = (Convert.ToUInt64(reg.ValorJuros) / 100);
-                detalhe.TarifaCobranca = (Convert.ToUInt64(reg.ValorDespesasCobranca) / 100);
+                detalhe.IOF = (Convert.ToUInt64(reg.ValorIOF) / DECIMAL_100);
+                detalhe.ValorAbatimento = (Convert.ToUInt64(reg.ValorAbatimentoConcedido) / DECIMAL_100);
+                detalhe.Descontos = (Convert.ToUInt64(reg.ValorDescontoConcedido) / DECIMAL_100);
+                detalhe.ValorPago = (Convert.ToUInt64(reg.ValorPago) / DECIMAL_100);
+                detalhe.JurosMora = (Convert.ToUInt64(reg.ValorJuros) / DECIMAL_100);
+                detalhe.TarifaCobranca = (Convert.ToUInt64(reg.ValorDespesasCobranca) / DECIMAL_100);
                 //reg.ValorMulta;
                 //reg.CodigoMoeda;
                 int dataCredito = Utils.ToInt32(reg.DataCreditoConta);
