@@ -73,7 +73,7 @@ namespace BoletoNet.Arquivo
                 bb = new BoletoBancario();
                 bb.CodigoBanco = _codigoBanco;
                 bb.MostrarEnderecoCedente = true;
-                DateTime vencimento = new DateTime(2010, 2, 28);
+                DateTime vencimento = DateTime.Now.AddDays(10);
 
                 Instrucao_Caixa item1 = new Instrucao_Caixa(9, 5);
                 Instrucao_Caixa item2 = new Instrucao_Caixa(81, 10);
@@ -134,7 +134,7 @@ namespace BoletoNet.Arquivo
                 bb = new BoletoBancario();
                 bb.CodigoBanco = _codigoBanco;
 
-                DateTime vencimento = new DateTime(2007, 9, 10);
+                DateTime vencimento = DateTime.Now.AddDays(10);
 
                 Instrucao_Itau item1 = new Instrucao_Itau(9, 5);
                 Instrucao_Itau item2 = new Instrucao_Itau(81, 10);
@@ -190,7 +190,7 @@ namespace BoletoNet.Arquivo
                 bb = new BoletoBancario();
                 bb.CodigoBanco = _codigoBanco;
 
-                DateTime vencimento = new DateTime(2007, 9, 10);
+                DateTime vencimento = DateTime.Now.AddDays(10);
 
                 Instrucao instr = new Instrucao(001);
                 Cedente c = new Cedente("00.000.000/0000-00", "Next Consultoria Ltda.", "0123", "100618", "9");
@@ -237,7 +237,7 @@ namespace BoletoNet.Arquivo
                 bb = new BoletoBancario();
                 bb.CodigoBanco = _codigoBanco;
 
-                DateTime vencimento = new DateTime(2007, 9, 10);
+                DateTime vencimento = DateTime.Now.AddDays(10);
                 Instrucao instr = new Instrucao(001);
 
                 Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "0501", "6703255");
@@ -286,7 +286,7 @@ namespace BoletoNet.Arquivo
                 bb = new BoletoBancario();
                 bb.CodigoBanco = _codigoBanco;
 
-                DateTime vencimento = new DateTime(2007, 9, 10);
+                DateTime vencimento = DateTime.Now.AddDays(10);
                 Instrucao instr = new Instrucao(001);
 
                 Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "0542", "5413000");
@@ -329,7 +329,7 @@ namespace BoletoNet.Arquivo
                 bb = new BoletoBancario();
                 bb.CodigoBanco = _codigoBanco;
 
-                DateTime vencimento = new DateTime(2007, 9, 10);
+                DateTime vencimento = DateTime.Now.AddDays(10);
                 Instrucao instr = new Instrucao(001);
                 Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "0542", "13000");
                 c.Codigo = "13000";
@@ -372,7 +372,7 @@ namespace BoletoNet.Arquivo
                 bb = new BoletoBancario();
                 bb.CodigoBanco = _codigoBanco;
 
-                DateTime vencimento = new DateTime(2007, 9, 10);
+                DateTime vencimento = DateTime.Now.AddDays(10);
                 Instrucao instr = new Instrucao(001);
                 Cedente c = new Cedente("00.000.000/0000-00", "Minha empresa", "0000", "", "00000", "00");
                 // Código fornecido pela agencia, NÃO é o numero da conta
@@ -416,7 +416,7 @@ namespace BoletoNet.Arquivo
                 bb = new BoletoBancario();
                 bb.CodigoBanco = _codigoBanco;
 
-                DateTime vencimento = new DateTime(2007, 9, 10);
+                DateTime vencimento = DateTime.Now.AddDays(10);
                 Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "1234", "5", "12345678", "9");
 
                 c.Codigo = "00000000504";
@@ -467,7 +467,7 @@ namespace BoletoNet.Arquivo
                 bb = new BoletoBancario();
                 bb.CodigoBanco = _codigoBanco;
 
-                DateTime vencimento = new DateTime(2007, 9, 10);
+                DateTime vencimento = DateTime.Now.AddDays(10);
                 Instrucao_Bradesco item = new Instrucao_Bradesco(9, 5);
 
                 Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "1234", "5", "123456", "7");
