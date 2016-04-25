@@ -69,10 +69,10 @@ namespace BoletoNet
                 {
                     case "CSB":
                         if (tamanhoNossoNumero > 10)
-                            boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 13);
+                            boleto.NossoNumero = boleto.NossoNumero.PadLeft(13, '0');
 
                         if (tamanhoNossoNumero < 10)
-                            boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 10);
+                            boleto.NossoNumero = boleto.NossoNumero.PadLeft(10, '0');
                         break;
 
                     case "CNR":
@@ -80,7 +80,7 @@ namespace BoletoNet
                             throw new NotImplementedException("A quantidade de dígitos do nosso número para a carteira " + boleto.Carteira + ", são 13 números.");
 
                         if (tamanhoNossoNumero < 13)
-                            boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 13);
+                            boleto.NossoNumero = boleto.NossoNumero.PadLeft(13, '0');
                         break;
                 }
 
@@ -140,9 +140,9 @@ namespace BoletoNet
 
 
                 string valorBoleto = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
-                valorBoleto = Utils.FormatCode(valorBoleto, 10);
+                valorBoleto = valorBoleto.PadLeft(10, '0');
 
-                string numeroDocumento = Utils.FormatCode(boleto.NumeroDocumento.ToString(), 7);
+                string numeroDocumento = boleto.NumeroDocumento.PadLeft(7, '0');
 
                 switch (boleto.Carteira.ToUpper())
                 {
@@ -151,9 +151,9 @@ namespace BoletoNet
                         //banco & moeda & fator & valor & nossonumero & dac_nossonumero & agencia & conta & digitosconta & "00" & "1"
                         string.Format("{0}{1}{2}{3}{4}{5}{6}{7}001", Codigo, boleto.Moeda,
                                       FatorVencimento(boleto), valorBoleto, boleto.NossoNumero + _dacNossoNumero,
-                                      Utils.FormatCode(boleto.Cedente.ContaBancaria.Agencia, 4),
-                                      Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 5),
-                                      Utils.FormatCode(boleto.Cedente.ContaBancaria.DigitoConta, 2));
+                                      boleto.Cedente.ContaBancaria.Agencia.PadLeft(4, '0'),
+                                      boleto.Cedente.ContaBancaria.Conta.PadLeft(5, '0'),
+                                      boleto.Cedente.ContaBancaria.DigitoConta.PadLeft(2, '0'));
                         break;
                     case "CNR":
                         // Código de Barras
@@ -164,9 +164,9 @@ namespace BoletoNet
                                         boleto.Moeda,
                                         FatorVencimento(boleto),
                                         valorBoleto,
-                                        Utils.FormatCode(boleto.Cedente.Codigo.ToString(), 7),
-                                        Utils.FormatCode(boleto.NossoNumero.ToString(), 13),
-                                        Utils.FormatCode(boleto.DataVencimento.DayOfYear.ToString() + boleto.DataVencimento.ToString("yy").Substring(1, 1), 4));
+                                        boleto.Cedente.Codigo.PadLeft(7, '0'),
+                                        boleto.NossoNumero.PadLeft(13, '0'),
+                                        (boleto.DataVencimento.DayOfYear.ToString() + boleto.DataVencimento.ToString("yy").Substring(1, 1)).PadLeft(4, '0'));
                         break;
                 }
 
@@ -213,17 +213,17 @@ namespace BoletoNet
                 switch (boleto.Carteira.ToUpper())
                 {
                     case "CSB":
-                        nossoNumero = Utils.FormatCode(boleto.NossoNumero.ToString(), 10);
+                        nossoNumero = boleto.NossoNumero.PadLeft(10, '0');
                         break;
 
                     case "CNR":
-                        nossoNumero = Utils.FormatCode(boleto.NossoNumero.ToString(), 13);
+                        nossoNumero = boleto.NossoNumero.PadLeft(13, '0');
                         break;
                     default:
                         throw new NotImplementedException("Carteira não implementada. Use CSB ou CNR.");
                 }
 
-                string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo.ToString(), 7);
+                string codigoCedente = boleto.Cedente.Codigo.PadLeft(7, '0');
 
                 string C1 = string.Empty;
                 string C2 = string.Empty;
@@ -247,7 +247,7 @@ namespace BoletoNet
                     case "CSB":
                         #region AAABC.CCCCX
 
-                        AAA = Utils.FormatCode(Codigo.ToString(), 3);
+                        AAA = Codigo.ToString().PadLeft(3, '0');
                         B = boleto.Moeda.ToString();
                         CCCCC = boleto.NossoNumero.Substring(0, 5);
                         X = Mod10(AAA + B + CCCCC).ToString();
@@ -260,7 +260,7 @@ namespace BoletoNet
                         #region DDDDD.DEEEEY
 
                         DDDDDD = boleto.NossoNumero.Substring(5, 5) + _dacNossoNumero;
-                        EEEE = Utils.FormatCode(boleto.Cedente.ContaBancaria.Agencia, 4);
+                        EEEE = boleto.Cedente.ContaBancaria.Agencia.PadLeft(4, '0');
                         Y = Mod10(DDDDDD + EEEE).ToString();
 
                         C2 = string.Format("{0}.", DDDDDD.Substring(0, 5));
@@ -270,7 +270,7 @@ namespace BoletoNet
 
                         #region FFFFF.FF001Z
 
-                        FFFFFFF = Utils.FormatCode(string.Format("{0}{1}", boleto.Cedente.ContaBancaria.Conta, boleto.Cedente.ContaBancaria.DigitoConta), 7);
+                        FFFFFFF = (string.Format("{0}{1}", boleto.Cedente.ContaBancaria.Conta, boleto.Cedente.ContaBancaria.DigitoConta).PadLeft(7, '0'));
                         Z = Mod10(FFFFFFF + "001").ToString();
 
                         C3 = string.Format("{0}.", FFFFFFF.Substring(0, 5));
@@ -281,7 +281,7 @@ namespace BoletoNet
                     case "CNR":
                         #region AAABC.CCCCX
 
-                        AAA = Utils.FormatCode(Codigo.ToString(), 3);
+                        AAA = Codigo.ToString().PadLeft(3, '0');
                         B = boleto.Moeda.ToString();
                         CCCCC = codigoCedente.Substring(0, 5);
                         X = Mod10(AAA + B + CCCCC).ToString();
@@ -305,7 +305,7 @@ namespace BoletoNet
                         #region FFFFF.GGGGGZ
 
                         FFFFF = nossoNumero.Substring(8, 5);
-                        GGGGG = Utils.FormatCode(boleto.DataVencimento.DayOfYear.ToString() + boleto.DataVencimento.ToString("yy").Substring(1, 1), 4) + "2";
+                        GGGGG = (boleto.DataVencimento.DayOfYear.ToString() + boleto.DataVencimento.ToString("yy").Substring(1, 1).PadLeft(4, '0')) + "2";
 
                         Z = Mod10(FFFFF + GGGGG).ToString();
 
@@ -326,7 +326,7 @@ namespace BoletoNet
                 string HHHH = FatorVencimento(boleto).ToString();
                 string IIIIIIIIII = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
 
-                IIIIIIIIII = Utils.FormatCode(IIIIIIIIII, 10);
+                IIIIIIIIII = IIIIIIIIII.PadLeft(10, '0');
                 C5 = HHHH + IIIIIIIIII;
 
                 #endregion HHHHHHHHHHHHHH

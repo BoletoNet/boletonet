@@ -74,7 +74,7 @@ namespace BoletoNet
 
         public void PreencheValores(int codigoBanco, int moeda, long fatorVencimento, string valorDocumento, string campoLivre)
         {
-            CodigoBanco = Utils.FormatCode(codigoBanco.ToString(), 3);
+            CodigoBanco = codigoBanco.ToString().PadLeft(3, '0');
             Moeda = moeda;
             FatorVencimento = fatorVencimento;
             ValorDocumento = valorDocumento;

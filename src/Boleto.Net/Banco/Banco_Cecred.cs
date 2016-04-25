@@ -38,14 +38,14 @@ namespace BoletoNet {
         /// <param name="boleto"></param>
         void IBanco.FormataCodigoBarra(Boleto boleto) {
 
-            string codigoBanco = Utils.FormatCode(this.Codigo.ToString(), 3);
+            string codigoBanco = this.Codigo.ToString().PadLeft(3, '0');
             string codigoMoeda = "9";
             string fatorVencimento = FatorVencimento(boleto).ToString();
-            string valorNominal = Utils.FormatCode(boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", ""), 10);//10
-            string numeroConvenio = Utils.FormatCode(boleto.Cedente.Codigo, 6);
-            string numeroConta = Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta, 8);
-            string nossoNumero = Utils.FormatCode(boleto.NossoNumero, 9);
-            string codigoCarteira = Utils.FormatCode(boleto.Carteira, 2);
+            string valorNominal = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "").PadLeft(10, '0');
+            string numeroConvenio = boleto.Cedente.Codigo.PadLeft(6, '0');
+            string numeroConta = boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta.PadLeft(8, '0');
+            string nossoNumero = boleto.NossoNumero.PadLeft(9, '0');
+            string codigoCarteira = boleto.Carteira.PadLeft(2, '0');
 
             string parte1 = string.Format("{0}{1}{2}{3}{4}{5}{6}{7}",
                 codigoBanco, codigoMoeda, fatorVencimento.ToString(), valorNominal, numeroConvenio, numeroConta, nossoNumero, codigoCarteira);
@@ -75,14 +75,14 @@ namespace BoletoNet {
 
         void IBanco.FormataLinhaDigitavel(Boleto boleto) {
 
-            string codigoBanco = Utils.FormatCode(this.Codigo.ToString(), 3);
+            string codigoBanco = this.Codigo.ToString().PadLeft(3, '0');
             string codigoMoeda = "9";
             string fatorVencimento = FatorVencimento(boleto).ToString();
-            string valorNominal = Utils.FormatCode(boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", ""), 10);//10
-            string numeroConvenio = Utils.FormatCode(boleto.Cedente.Codigo, 6);
-            string numeroConta = Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta, 8);
-            string nossoNumero = Utils.FormatCode(boleto.NossoNumero, 9);
-            string codigoCarteira = Utils.FormatCode(boleto.Carteira, 2);
+            string valorNominal = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "").PadLeft(10, '0');
+            string numeroConvenio = boleto.Cedente.Codigo.PadLeft(6, '0');
+            string numeroConta = (boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta).PadLeft(8, '0');
+            string nossoNumero = boleto.NossoNumero.PadLeft(9, '0');
+            string codigoCarteira = boleto.Carteira.PadLeft(2, '0');
 
             string parte1 = string.Format("{0}{1}{2}{3}{4}{5}{6}{7}",
                codigoBanco, codigoMoeda, fatorVencimento.ToString(), valorNominal, numeroConvenio, numeroConta, nossoNumero, codigoCarteira);
@@ -111,8 +111,8 @@ namespace BoletoNet {
         }
 
         void IBanco.FormataNossoNumero(Boleto boleto) {
-            string numeroConta = Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta, 8);
-            string nossoNumero = Utils.FormatCode(boleto.NossoNumero, 9);
+            string numeroConta = (boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta).PadLeft(8, '0');
+            string nossoNumero = boleto.NossoNumero.PadLeft(9, '0');
 
             boleto.NossoNumero = string.Format("{0}{1}", numeroConta, nossoNumero);
         }
@@ -265,8 +265,8 @@ namespace BoletoNet {
                     tipoInscricaoSacado = "00"; // ISENTO
 
                 string _nossoNumero = string.Format("{0}{1}",
-                        Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta, 8),
-                        Utils.FormatCode(boleto.NossoNumero, 9));
+                        (boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta).PadLeft(8, '0'),
+                        boleto.NossoNumero.PadLeft(9, '0'));
 
                 TRegistroEDI reg = new TRegistroEDI();
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0001, 001, 0, "7", '0'));                                       //001-001

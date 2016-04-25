@@ -61,13 +61,13 @@ namespace BoletoNet
         /// </summary>
         public override void FormataCodigoBarra(Boleto boleto)
         {
-            string codigoBanco = Utils.FormatCode(this.Codigo.ToString(), 3);//3
+            string codigoBanco = this.Codigo.ToString().PadLeft(3, '0');
             string codigoMoeda = boleto.Moeda.ToString();//1
             string fatorVencimento = FatorVencimento(boleto).ToString(); //4
-            string valorNominal = Utils.FormatCode(boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", ""), 10);//10
+            string valorNominal = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "").PadLeft(10, '0');
             string fixo = "9";//1
-            string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo.ToString(), 7);//7
-            string nossoNumero = Utils.FormatCode(boleto.NossoNumero, 12) + Mod11Santander(Utils.FormatCode(boleto.NossoNumero, 12), 9);//13
+            string codigoCedente = boleto.Cedente.Codigo.PadLeft(7, '0');
+            string nossoNumero = boleto.NossoNumero.PadLeft(12, '0') + Mod11Santander(boleto.NossoNumero.PadLeft(12, '0'), 9);//13
             string IOS = boleto.PercentualIOS.ToString();//1
             string tipoCarteira = boleto.Carteira;//3;
             boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}",
@@ -111,14 +111,14 @@ namespace BoletoNet
         /// </summary>
         public override void FormataLinhaDigitavel(Boleto boleto)
         {
-            string nossoNumero = Utils.FormatCode(boleto.NossoNumero, 12) + Mod11Santander(Utils.FormatCode(boleto.NossoNumero, 12), 9);//13
-            string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo.ToString(), 7);
+            string nossoNumero = boleto.NossoNumero.PadLeft(12, '0') + Mod11Santander(boleto.NossoNumero.PadLeft(12, '0'), 9);//13
+            string codigoCedente = boleto.Cedente.Codigo.PadLeft(7, '0');
             string fatorVencimento = FatorVencimento(boleto).ToString();
             string IOS = boleto.PercentualIOS.ToString();//1
 
             #region Grupo1
 
-            string codigoBanco = Utils.FormatCode(this.Codigo.ToString(), 3);//3
+            string codigoBanco = this.Codigo.ToString().PadLeft(3, '0');
             string codigoModeda = boleto.Moeda.ToString();//1
             string fixo = "9";//1
             string codigoCedente1 = codigoCedente.Substring(0, 4);//4
@@ -149,12 +149,12 @@ namespace BoletoNet
             #endregion
 
             #region Grupo4
-            string DVcodigoBanco = Utils.FormatCode(this.Codigo.ToString(), 3);//3
+            string DVcodigoBanco = this.Codigo.ToString().PadLeft(3, '0');//3
             string DVcodigoMoeda = boleto.Moeda.ToString();//1
-            string DVvalorNominal = Utils.FormatCode(boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", ""), 10);//10
+            string DVvalorNominal = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "").PadLeft(10, '0');//10
             string DVfixo = "9";//1
-            string DVcodigoCedente = Utils.FormatCode(boleto.Cedente.Codigo.ToString(), 7).ToString();//7
-            string DVnossoNumero = Utils.FormatCode(boleto.NossoNumero, 12) + Mod11Santander(Utils.FormatCode(boleto.NossoNumero, 12), 9);
+            string DVcodigoCedente = boleto.Cedente.Codigo.PadLeft(7, '0');//7
+            string DVnossoNumero = boleto.NossoNumero.PadLeft(12, '0') + Mod11Santander(boleto.NossoNumero.PadLeft(12, '0'), 9);
             string DVtipoCarteira = boleto.Carteira;//3;
 
             string calculoDVcodigo = string.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}",
@@ -167,7 +167,7 @@ namespace BoletoNet
             #region Grupo5
 
              //4
-            string valorNominal = Utils.FormatCode(boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", ""), 10);//10
+            string valorNominal = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "").PadLeft(10, '0');//10
 
             string grupo5 = string.Format("{0}{1}", fatorVencimento, valorNominal);
             //grupo5 = grupo5.Substring(0, 4) + " " + grupo5.Substring(4, 1)+" "+grupo5.Substring(5,9);
@@ -220,7 +220,7 @@ namespace BoletoNet
             if (this.Codigo == 33)
             {
                 if (boleto.NossoNumero.Length == 7 && boleto.Carteira.Equals("101"))
-                    boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero,"0", 12, true);
+                    boleto.NossoNumero = boleto.NossoNumero.PadLeft(12, '0');
 
                 if (boleto.NossoNumero.Length != 12)
                     throw new NotSupportedException("Nosso Número deve ter 12 posições para o banco 033.");
@@ -476,23 +476,23 @@ namespace BoletoNet
         {
             try
             {
-                string header = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
+                string header = Codigo.ToString().PadLeft(3, '0');
                 header += "0000";
                 header += "0";
-                header += Utils.FormatCode("", " ", 8);
+                header += String.Empty.PadRight(8, ' ');
                 header += (cedente.CPFCNPJ.Length == 11 ? "1" : "2");
-                header += Utils.FormatCode("", "0", 15);
-                header += Utils.FormatCode("", "0", 15);
-                header += Utils.FormatCode("", " ", 25);
-                header += Utils.FormatCode(cedente.Nome, " ", 30);
-                header += Utils.FormatCode("BANCO SANTANDER", " ", 30);
-                header += Utils.FormatCode("", " ", 10);
+                header += String.Empty.PadRight(15, '0');
+                header += String.Empty.PadRight(15, '0');
+                header += String.Empty.PadRight(25, ' ');
+                header += cedente.Nome.PadRight(30, ' ');
+                header += "BANCO SANTANDER".PadRight(30, ' ');
+                header += String.Empty.PadRight(10, ' ');
                 header += "1";
                 header += DateTime.Now.ToString("ddMMyyyy");
-                header += Utils.FormatCode("", " ", 6);
+                header += String.Empty.PadRight(6, ' ');
                 header += "0001";
                 header += "040";
-                header += Utils.FormatCode("", " ", 74);
+                header += String.Empty.PadRight(74, ' ');
                 return header;
 
             }
@@ -584,7 +584,7 @@ namespace BoletoNet
         {
             try
             {
-                string header = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
+                string header = Codigo.ToString().PadLeft(3, '0');
                 header += "0000";
                 header += "0";
                 header += "R";
@@ -593,16 +593,16 @@ namespace BoletoNet
                 header += " ";
                 header += "0";
                 header += (cedente.CPFCNPJ.Length == 11 ? "1" : "2");
-                header += Utils.FormatCode("", "0", 15);
-                header += Utils.FormatCode("", " ", 20);
-                header += Utils.FormatCode("", "0", 15);
-                header += Utils.FormatCode("", " ", 5);
-                header += Utils.FormatCode(cedente.Nome, " ", 30);
-                header += Utils.FormatCode("", " ", 40);
-                header += Utils.FormatCode("", " ", 40);
-                header += Utils.FormatCode(numeroArquivoRemessa.ToString(), "0", 8);
+                header += String.Empty.PadRight(15, '0');
+                header += String.Empty.PadRight(20, ' ');
+                header += String.Empty.PadRight(15, '0');
+                header += String.Empty.PadRight(5, ' ');
+                header += cedente.Nome.PadRight(30, ' ');
+                header += String.Empty.PadRight(40, ' ');
+                header += String.Empty.PadRight(40, ' ');
+                header += numeroArquivoRemessa.ToString().PadRight(8, '0');
                 header += DateTime.Now.ToString("ddMMyyyy");
-                header += Utils.FormatCode("", " ", 41);
+                header += String.Empty.PadRight(41, ' ');
                 return header;
             }
             catch (Exception e)
@@ -690,7 +690,7 @@ namespace BoletoNet
                 //Número de controle do participante, controle do cedente X(25)
                 _detalhe += controle_partic;
                 //NossoNumero com DV, pegar os 8 primeiros dígitos, da direita para esquerda
-                string nossoNumero = Utils.FormatCode(boleto.NossoNumero, 12) + Mod11Santander(Utils.FormatCode(boleto.NossoNumero, 12), 9);//13
+                string nossoNumero = boleto.NossoNumero.PadLeft(12, '0') + Mod11Santander(boleto.NossoNumero.PadLeft(12, '0'), 9);//13
                 _detalhe += Utils.Right(nossoNumero, 8, '0', true);
                 _detalhe += "000000"; //Data do segundo desconto 9(06)
                 _detalhe += " "; //brancos X(01)
@@ -900,15 +900,15 @@ namespace BoletoNet
         {
             try
             {
-                string trailer = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
-                trailer += Utils.FormatCode("", "0", 4, true);
+                string trailer = Codigo.ToString().PadLeft(3, '0');
+                trailer += String.Empty.PadLeft(4, '0');
                 trailer += "5";
-                trailer += Utils.FormatCode("", " ", 9);
-                trailer += Utils.FormatCode("", "0", 6, true);
-                trailer += Utils.FormatCode("", "0", 18, true);
-                trailer += Utils.FormatCode("", "0", 18, true);
-                trailer += Utils.FormatCode("", " ", 171);
-                trailer += Utils.FormatCode("", " ", 10);
+                trailer += String.Empty.PadRight(9, ' ');
+                trailer += String.Empty.PadLeft(6, '0');
+                trailer += String.Empty.PadLeft(18, '0');
+                trailer += String.Empty.PadLeft(18, '0');
+                trailer += String.Empty.PadRight(171, ' ');
+                trailer += String.Empty.PadRight(10, ' ');
                 trailer = Utils.SubstituiCaracteresEspeciais(trailer);
 
                 return trailer;
@@ -935,13 +935,13 @@ namespace BoletoNet
         {
             try
             {
-                string trailer = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
+                string trailer = Codigo.ToString().PadLeft(3, '0');
                 trailer += "9999";
                 trailer += "9";
-                trailer += Utils.FormatCode("", " ", 9);
-                trailer += Utils.FormatCode("", "0", 6, true);
-                trailer += Utils.FormatCode("", "0", 6, true);
-                trailer += Utils.FormatCode("", " ", 211);
+                trailer += String.Empty.PadRight(9, ' ');
+                trailer += String.Empty.PadLeft(6, '0');
+                trailer += String.Empty.PadLeft(6, '0');
+                trailer += String.Empty.PadRight(211, ' ');
                 trailer = Utils.SubstituiCaracteresEspeciais(trailer);
 
                 return trailer;

@@ -202,7 +202,7 @@ namespace BoletoNet
 		public static string UrlLogo(int banco)
 		{
 			var page = System.Web.HttpContext.Current.CurrentHandler as Page;
-			return page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens." + Utils.FormatCode(banco.ToString(), 3) + ".jpg");
+			return page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens." + banco.ToString().PadLeft(3, '0') + ".jpg");
 		}
 
 		#region Override
@@ -230,7 +230,7 @@ namespace BoletoNet
 				output.Write("<b>Erro gerando o boleto bancário: faltou definir o banco.</b>");
 				return;
 			}
-			string urlImagemLogo = Page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens." + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg");
+			string urlImagemLogo = Page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens." + _ibanco.Codigo.ToString().PadLeft(3, '0') + ".jpg");
 			string urlImagemBarra = Page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens.barra.gif");
 			//string urlImagemBarraInterna = Page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens.barrainterna.gif");
 			//string urlImagemCorte = Page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens.corte.gif");
@@ -572,7 +572,7 @@ namespace BoletoNet
 			if (!Cedente.DigitoCedente.Equals(-1))
 			{
 				if (!String.IsNullOrEmpty(Cedente.ContaBancaria.OperacaConta))
-					agenciaCodigoCedente = string.Format("{0}/{1}.{2}-{3}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.OperacaConta, Utils.FormatCode(Cedente.Codigo.ToString(), 6), Cedente.DigitoCedente.ToString());
+					agenciaCodigoCedente = string.Format("{0}/{1}.{2}-{3}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.OperacaConta, Cedente.Codigo.PadLeft(6, '0'), Cedente.DigitoCedente.ToString());
 
 				switch (Boleto.Banco.Codigo)
 				{
@@ -583,10 +583,10 @@ namespace BoletoNet
 						agenciaCodigoCedente = string.Format("{0}.{1}/{2}.{3}.{4}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Cedente.Codigo.Substring(4, 6), Cedente.Codigo.Substring(10, 1), Cedente.DigitoCedente);
 						break;
 					case 1:
-						agenciaCodigoCedente = string.Format("{0}-{1}/{2}-{3}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Utils.FormatCode(Cedente.ContaBancaria.Conta, 6), Cedente.ContaBancaria.DigitoConta);
+						agenciaCodigoCedente = string.Format("{0}-{1}/{2}-{3}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Cedente.ContaBancaria.Conta.PadLeft(6, '0'), Cedente.ContaBancaria.DigitoConta);
 						break;
 					default:
-						agenciaCodigoCedente = string.Format("{0}/{1}-{2}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo.ToString(), 6), Cedente.DigitoCedente.ToString());
+						agenciaCodigoCedente = string.Format("{0}/{1}-{2}", Cedente.ContaBancaria.Agencia, Cedente.Codigo.PadLeft(6, '0'), Cedente.DigitoCedente.ToString());
 						break;
 				}
 			}
@@ -595,9 +595,9 @@ namespace BoletoNet
 				//Para banco SANTANDER, a formatação do campo "Agencia/Identif.Cedente" - por jsoda em 07/05/2012
 				if (Boleto.Banco.Codigo == 33)
 				{
-					agenciaCodigoCedente = string.Format("{0}-{1}/{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Utils.FormatCode(Cedente.Codigo.ToString(), 6));
+					agenciaCodigoCedente = string.Format("{0}-{1}/{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Cedente.Codigo.PadLeft(6, '0'));
 					if (String.IsNullOrEmpty(Cedente.ContaBancaria.DigitoAgencia))
-						agenciaCodigoCedente = String.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo.ToString(), 6));
+						agenciaCodigoCedente = String.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Cedente.Codigo.PadLeft(6, '0'));
 				}
 				else if (Boleto.Banco.Codigo == 399)
 					//agenciaCodigoCedente = Utils.FormatCode(Cedente.Codigo.ToString(), 7); -> para Banco HSBC mostra apenas código Cedente - por Ponce em 08/06/2012
@@ -626,7 +626,7 @@ namespace BoletoNet
 
 
 			return html
-				.Replace("@CODIGOBANCO", Utils.FormatCode(_ibanco.Codigo.ToString(), 3))
+				.Replace("@CODIGOBANCO", _ibanco.Codigo.ToString().PadLeft(3, '0'))
 				.Replace("@DIGITOBANCO", _ibanco.Digito.ToString())
 				//.Replace("@URLIMAGEMBARRAINTERNA", urlImagemBarraInterna)
 				//.Replace("@URLIMAGEMCORTE", urlImagemCorte)
@@ -900,7 +900,7 @@ namespace BoletoNet
 
 			var randomSufix = new Random().Next().ToString(); // para podermos colocar no mesmo email varios boletos diferentes
 
-			Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BoletoNet.Imagens." + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg");
+			Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BoletoNet.Imagens." + _ibanco.Codigo.ToString().PadLeft(3, '0') + ".jpg");
 			lrImagemLogo = new LinkedResource(stream, MediaTypeNames.Image.Jpeg);
 			lrImagemLogo.ContentId = "logo" + randomSufix;
 
@@ -959,11 +959,11 @@ namespace BoletoNet
 
 			this.OnLoad(EventArgs.Empty);
 
-			string fnLogo = fileName + @"BoletoNet" + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg";
+			string fnLogo = fileName + @"BoletoNet" + _ibanco.Codigo.ToString().PadLeft(3, '0') + ".jpg";
 
 			if (!System.IO.File.Exists(fnLogo))
 			{
-				Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BoletoNet.Imagens." + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg");
+				Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BoletoNet.Imagens." + _ibanco.Codigo.ToString().PadLeft(3, '0') + ".jpg");
 				using (Stream file = File.Create(fnLogo))
 				{
 					CopiarStream(stream, file);
@@ -1056,14 +1056,14 @@ namespace BoletoNet
 			this.OnLoad(EventArgs.Empty);
 
 			//Prepara o arquivo da logo para ser salvo
-			string fnLogo = pathServer + @"BoletoNet" + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg";
+			string fnLogo = pathServer + @"BoletoNet" + _ibanco.Codigo.ToString().PadLeft(3, '0') + ".jpg";
 			//Prepara o arquivo da logo para ser usado no html
-			string fnLogoUrl = url + @"BoletoNet" + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg";
+			string fnLogoUrl = url + @"BoletoNet" + _ibanco.Codigo.ToString().PadLeft(3, '0') + ".jpg";
 
 			//Salvo a imagem apenas 1 vez com o código do banco
 			if (!System.IO.File.Exists(fnLogo))
 			{
-				Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BoletoNet.Imagens." + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg");
+				Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BoletoNet.Imagens." + _ibanco.Codigo.ToString().PadLeft(3, '0') + ".jpg");
 				using (Stream file = File.Create(fnLogo))
 				{
 					CopiarStream(stream, file);

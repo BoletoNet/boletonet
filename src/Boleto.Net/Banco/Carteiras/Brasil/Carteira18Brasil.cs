@@ -12,7 +12,7 @@ namespace BoletoNet
                 boleto.Moeda,
                 AbstractBanco.FatorVencimento(boleto),
                 Regex.Replace(boleto.ValorBoleto.ToString("f"), @"[,.]", "").PadLeft(10, '0'),
-                "000000" + boleto.Cedente.Codigo + boleto.NossoNumero + Utils.FormatCode(LimparCarteira(boleto.Carteira), 2));
+                "000000" + boleto.Cedente.Codigo + boleto.NossoNumero + LimparCarteira(boleto.Carteira).PadLeft(2, '0'));
         }
 
 
@@ -23,7 +23,7 @@ namespace BoletoNet
 
         public override void FormataNossoNumero(Boleto boleto)
         {
-            boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 10);
+            boleto.NossoNumero = boleto.NossoNumero.PadLeft(10, '0');
         }
 
         public override void ValidaBoleto(Boleto boleto)

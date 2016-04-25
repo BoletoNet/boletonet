@@ -22,17 +22,17 @@ namespace BoletoNet
             this.Digito = "X";
             this.Nome = "Banco Sicredi";
         }
-        
+
         public override void ValidaBoleto(Boleto boleto)
         {
             //Formata o tamanho do número da agência
             if (boleto.Cedente.ContaBancaria.Agencia.Length < 4)
-                boleto.Cedente.ContaBancaria.Agencia = Utils.FormatCode(boleto.Cedente.ContaBancaria.Agencia, 4);
-            
+                boleto.Cedente.ContaBancaria.Agencia = boleto.Cedente.ContaBancaria.Agencia.PadLeft(4, '0');
+
 
             //Formata o tamanho do número da conta corrente
             if (boleto.Cedente.ContaBancaria.Conta.Length < 5)
-                boleto.Cedente.ContaBancaria.Conta = Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 5);
+                boleto.Cedente.ContaBancaria.Conta = boleto.Cedente.ContaBancaria.Conta.PadLeft(5, '0');
 
             //Atribui o nome do banco ao local de pagamento
             if (boleto.LocalPagamento == "Até o vencimento, preferencialmente no ")
@@ -57,11 +57,11 @@ namespace BoletoNet
 
 
             //Verifica se data do processamento é valida
-			if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
+            if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 boleto.DataProcessamento = DateTime.Now;
 
             //Verifica se data do documento é valida
-			if (boleto.DataDocumento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
+            if (boleto.DataDocumento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 boleto.DataDocumento = DateTime.Now;
 
             /* Comentado por sidneiklein pois a Carteira terá que vir preenchida pela classe, e não ser manipulada dentro da Boleto.DLL; 04/11/2013
@@ -77,7 +77,7 @@ namespace BoletoNet
 
         public override void FormataNossoNumero(Boleto boleto)
         {
-            string nossoNumero = boleto.NossoNumero;            
+            string nossoNumero = boleto.NossoNumero;
             boleto.NossoNumero = string.Format("{0}/{1}-{2}", nossoNumero.Substring(0, 2), nossoNumero.Substring(2, 6), nossoNumero.Substring(8));
         }
 
@@ -89,17 +89,17 @@ namespace BoletoNet
         {
             //041M2.1AAAd1  CCCCC.CCNNNd2  NNNNN.041XXd3  V FFFF9999999999
 
-            string campo1 = "7489" + boleto.CodigoBarra.Codigo.Substring(19,5);
+            string campo1 = "7489" + boleto.CodigoBarra.Codigo.Substring(19, 5);
             int d1 = Mod10Sicredi(campo1);
-            campo1 = FormataCampoLD(campo1)+d1.ToString();
+            campo1 = FormataCampoLD(campo1) + d1.ToString();
 
             string campo2 = boleto.CodigoBarra.Codigo.Substring(24, 10);
             int d2 = Mod10Sicredi(campo2);
-            campo2 = FormataCampoLD(campo2)+d2.ToString();
+            campo2 = FormataCampoLD(campo2) + d2.ToString();
 
             string campo3 = boleto.CodigoBarra.Codigo.Substring(34, 10);
             int d3 = Mod10Sicredi(campo3);
-            campo3 = FormataCampoLD(campo3)+d3.ToString();
+            campo3 = FormataCampoLD(campo3) + d3.ToString();
 
             string campo4 = boleto.CodigoBarra.Codigo.Substring(4, 1);
 
@@ -109,18 +109,18 @@ namespace BoletoNet
         }
         private string FormataCampoLD(string campo)
         {
-            return string.Format("{0}.{1}",campo.Substring(0, 5), campo.Substring(5));
+            return string.Format("{0}.{1}", campo.Substring(0, 5), campo.Substring(5));
         }
 
         public override void FormataCodigoBarra(Boleto boleto)
         {
             string valorBoleto = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
-            valorBoleto = Utils.FormatCode(valorBoleto, 10);
+            valorBoleto = valorBoleto.PadLeft(10, '0');
 
-            string cmp_livre =  boleto.Carteira + "1" + boleto.NossoNumero + boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.OperacaConta + boleto.Cedente.Codigo + "10";
+            string cmp_livre = boleto.Carteira + "1" + boleto.NossoNumero + boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.OperacaConta + boleto.Cedente.Codigo + "10";
             string dv_cmpLivre = digSicredi(cmp_livre).ToString();
 
-            boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}{5}", Utils.FormatCode(Codigo.ToString(), 3), boleto.Moeda, FatorVencimento(boleto), valorBoleto, cmp_livre, digSicredi(cmp_livre).ToString());
+            boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}{5}", Codigo.ToString().PadLeft(3, '0'), boleto.Moeda, FatorVencimento(boleto), valorBoleto, cmp_livre, digSicredi(cmp_livre).ToString());
 
             int _dacBoleto = digSicredi(boleto.CodigoBarra.Codigo);
 
@@ -184,38 +184,38 @@ namespace BoletoNet
         {
             try
             {
-                string detalhe = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
-                detalhe += Utils.FormatCode("", "0", 4, true);
+                string detalhe = Codigo.ToString().PadLeft(3, '0');
+                detalhe += String.Empty.PadLeft(4, '0');
                 detalhe += "3";
-                detalhe += Utils.FormatCode(numeroRegistro.ToString(), 5);
+                detalhe += numeroRegistro.ToString().PadLeft(5, '0');
                 detalhe += "P 01";
-                detalhe += Utils.FormatCode(boleto.Cedente.ContaBancaria.Agencia, 5);
+                detalhe += boleto.Cedente.ContaBancaria.Agencia.PadLeft(5, '0');
                 detalhe += "0";
-                detalhe += Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 12);
+                detalhe += boleto.Cedente.ContaBancaria.Conta.PadLeft(12, '0');
                 detalhe += boleto.Cedente.ContaBancaria.DigitoConta;
                 detalhe += " ";
-                detalhe += Utils.FormatCode(boleto.NossoNumero.Replace("/", "").Replace("-", ""),20);
+                detalhe += boleto.NossoNumero.Replace("/", "").Replace("-", "").PadLeft(20, '0');
                 detalhe += "1";
                 detalhe += (Convert.ToInt16(boleto.Carteira) == 1 ? "1" : "2");
                 detalhe += "122";
-                detalhe += Utils.FormatCode(boleto.NumeroDocumento, 15);
+                detalhe += boleto.NumeroDocumento.PadLeft(15, '0');
                 detalhe += boleto.DataVencimento.ToString("ddMMyyyy");
                 string valorBoleto = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
-                valorBoleto = Utils.FormatCode(valorBoleto, 13);
+                valorBoleto = valorBoleto.PadLeft(13, '0');
                 detalhe += valorBoleto;
                 detalhe += "00000 99A";
                 detalhe += boleto.DataDocumento.ToString("ddMMyyyy");
                 detalhe += "200000000";
                 valorBoleto = boleto.JurosMora.ToString("f").Replace(",", "").Replace(".", "");
-                valorBoleto = Utils.FormatCode(valorBoleto, 13);
+                valorBoleto = valorBoleto.PadLeft(13, '0');
                 detalhe += valorBoleto;
                 detalhe += "1";
                 detalhe += boleto.DataDesconto.ToString("ddMMyyyy");
                 valorBoleto = boleto.ValorDesconto.ToString("f").Replace(",", "").Replace(".", "");
-                valorBoleto = Utils.FormatCode(valorBoleto, 13);
+                valorBoleto = valorBoleto.PadLeft(13, '0');
                 detalhe += valorBoleto;
-                detalhe += Utils.FormatCode("", 26);
-                detalhe += Utils.FormatCode("", " ", 25);
+                detalhe += String.Empty.PadLeft(26, '0');
+                detalhe += String.Empty.PadRight(25, ' ');
                 detalhe += "0001060090000000000 ";
 
                 detalhe = Utils.SubstituiCaracteresEspeciais(detalhe);
@@ -309,25 +309,25 @@ namespace BoletoNet
                 string header = "748";
                 header += "0000";
                 header += "0";
-                header += Utils.FormatCode("", " ", 9);
+                header += String.Empty.PadRight(9, ' ');
                 header += (cedente.CPFCNPJ.Length == 11 ? "1" : "2");
-                header += Utils.FormatCode(cedente.CPFCNPJ, "0", 14, true);
-                header += Utils.FormatCode(cedente.Convenio.ToString(), " ", 20);
-                header += Utils.FormatCode(cedente.ContaBancaria.Agencia, "0", 5, true);
+                header += cedente.CPFCNPJ.PadLeft(14, '0');
+                header += cedente.Convenio.ToString().PadRight(20, ' ');
+                header += cedente.ContaBancaria.Agencia.PadLeft(5, '0');
                 header += " ";
-                header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 12, true);
+                header += cedente.ContaBancaria.Conta.PadLeft(12, '0');
                 header += cedente.ContaBancaria.DigitoConta;
                 header += " ";
-                header += Utils.FormatCode(cedente.Nome, " ", 30);
-                header += Utils.FormatCode("SICREDI", " ", 30);
-                header += Utils.FormatCode("", " ", 10);
-                header += Utils.FormatCode(cedente.Nome, " ", 30);
+                header += cedente.Nome.PadRight(30, ' ');
+                header += "SICREDI".PadRight(30, ' ');
+                header += String.Empty.PadRight(10, ' ');
+                header += cedente.Nome.PadRight(30, ' ');
                 header += "1";
                 header += DateTime.Now.ToString("ddMMyyyyHHmmss");
-                header += Utils.FormatCode("", "0", 6);
+                header += String.Empty.PadRight(6, '0');
                 header += "081";
                 header += "01600";
-                header += Utils.FormatCode("", " ", 69);
+                header += String.Empty.PadRight(69, ' ');
                 header = Utils.SubstituiCaracteresEspeciais(header);
                 return header;
 
@@ -371,12 +371,12 @@ namespace BoletoNet
             {
                 string complemento = new string(' ', 205);
                 string _trailer;
-                
+
                 _trailer = "74899999";
-                _trailer += Utils.FormatCode("", " ", 9);
-                _trailer += Utils.FormatCode("", 6);
-                _trailer += Utils.FormatCode(numeroRegistro.ToString(), 6);
-                _trailer += Utils.FormatCode("", 6);
+                _trailer += String.Empty.PadRight(9, ' ');
+                _trailer += String.Empty.PadLeft(6, '0');
+                _trailer += numeroRegistro.ToString().PadLeft(6, '0');
+                _trailer += String.Empty.PadLeft(6, '0');
                 _trailer += complemento;
 
                 _trailer = Utils.SubstituiCaracteresEspeciais(_trailer);
@@ -473,7 +473,7 @@ namespace BoletoNet
             {
 
                 r = (Convert.ToInt32(seq.Substring(i, 1)) * p);
-                if(r > 9)
+                if (r > 9)
                     r = SomaDezena(r);
                 s = s + r;
                 if (p < b)
@@ -655,7 +655,7 @@ namespace BoletoNet
                              !boleto.EspecieDocumento.Codigo.Equals("D") && //D - Nota Promissória Rural;
                              !boleto.EspecieDocumento.Codigo.Equals("E") && //E - Nota de Seguros;
                              !boleto.EspecieDocumento.Codigo.Equals("F") && //G – Recibo;
-                             
+
                              !boleto.EspecieDocumento.Codigo.Equals("H") && //H - Letra de Câmbio;
                              !boleto.EspecieDocumento.Codigo.Equals("I") && //I - Nota de Débito;
                              !boleto.EspecieDocumento.Codigo.Equals("J") && //J - Duplicata de Serviço por Indicação;
@@ -676,7 +676,7 @@ namespace BoletoNet
                         //sidnei.klein: Segundo definição recebida pelo Sicredi-RS, o Nosso Número sempre terá somente 8 caracteres sem o DV que está no boleto.DigitoNossoNumero
                         vMsg += String.Concat("Boleto: ", boleto.NumeroDocumento, "; Remessa: O Nosso Número diferente de 8 caracteres!", Environment.NewLine);
                         vRetorno = false;
-                    }            
+                    }
                     #endregion
                 }
                 #endregion
@@ -854,7 +854,7 @@ namespace BoletoNet
             //
             return _detalhe;
         }
-        public string GerarTrailerRemessa400(int numeroRegistro,  Cedente cedente)
+        public string GerarTrailerRemessa400(int numeroRegistro, Cedente cedente)
         {
             try
             {
@@ -904,7 +904,7 @@ namespace BoletoNet
                 detalhe.DACNossoNumero = reg.NossoNumeroSicredi.Substring(reg.NossoNumeroSicredi.Length - 1); //DV do Nosso Numero
                 #endregion
                 //Filler3
-                detalhe.CodigoOcorrencia = Utils.ToInt32(reg.Ocorrencia);                
+                detalhe.CodigoOcorrencia = Utils.ToInt32(reg.Ocorrencia);
                 int dataOcorrencia = Utils.ToInt32(reg.DataOcorrencia);
                 detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
                 detalhe.NumeroDocumento = reg.SeuNumero;
@@ -941,7 +941,7 @@ namespace BoletoNet
                 detalhe.ValorPago = valorPago / 100;
                 //Juros Mora
                 decimal jurosMora = Convert.ToUInt64(reg.JurosMora);
-                detalhe.JurosMora = jurosMora / 100;                
+                detalhe.JurosMora = jurosMora / 100;
                 //Filler7
                 //SomenteOcorrencia19
                 //Filler8
