@@ -52,7 +52,7 @@ namespace BoletoNet.Arquivo
 
             using (FileStream f = new FileStream(_arquivo, FileMode.Create))
             {
-                StreamWriter w = new StreamWriter(f, System.Text.Encoding.Default);
+                StreamWriter w = new StreamWriter(f, System.Text.Encoding.UTF8);
                 w.Write(html.ToString());
                 w.Close();
                 f.Close();
@@ -63,7 +63,7 @@ namespace BoletoNet.Arquivo
         #region BOLETO Caixa
         private void GeraBoletoCaixa(int qtde)
         {
-            // Cria o boleto, e passa os par‚metros usuais
+            // Cria o boleto, e passa os par√¢metros usuais
             BoletoBancario bb;
 
             List<BoletoBancario> boletos = new List<BoletoBancario>();
@@ -94,7 +94,7 @@ namespace BoletoNet.Arquivo
                 b.Sacado = new Sacado("000.000.000-00", "Fulano de Silva");
                 b.Sacado.Endereco.End = "SSS 154 Bloco J Casa 23ddddddddddddddddddddddddddd";
                 b.Sacado.Endereco.Bairro = "Testando";
-                b.Sacado.Endereco.Cidade = "Testel‚ndia";
+                b.Sacado.Endereco.Cidade = "Testel√¢ndia";
                 b.Sacado.Endereco.CEP = "70000000";
                 b.Sacado.Endereco.UF = "DF";
 
@@ -107,7 +107,7 @@ namespace BoletoNet.Arquivo
                 if (b.ValorDesconto == 0)
                 {
                     Instrucao_Caixa item3 = new Instrucao_Caixa(999, 1);
-                    item3.Descricao += ("1,00 por dia de antecipaÁ„o.");
+                    item3.Descricao += ("1,00 por dia de antecipa√ß√£o.");
                     b.Instrucoes.Add(item3);
                 }
 
@@ -121,10 +121,10 @@ namespace BoletoNet.Arquivo
         }
         #endregion
 
-        #region BOLETO ITA⁄
+        #region BOLETO ITA√ö
         private void GeraBoletoItau(int qtde)
         {
-            // Cria o boleto, e passa os par‚metros usuais
+            // Cria o boleto, e passa os par√¢metros usuais
             BoletoBancario bb;
 
             List<BoletoBancario> boletos = new List<BoletoBancario>();
@@ -139,7 +139,7 @@ namespace BoletoNet.Arquivo
                 Instrucao_Itau item1 = new Instrucao_Itau(9, 5);
                 Instrucao_Itau item2 = new Instrucao_Itau(81, 10);
                 Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "0542", "13000");
-                //Na carteira 198 o cÛdigo do Cedente È a conta banc·ria
+                //Na carteira 198 o c√≥digo do Cedente √© a conta banc√°ria
                 c.Codigo = "13000";
 
                 Boleto b = new Boleto(vencimento, 1642, "198", "92082835", c, new EspecieDocumento(341, "1"));
@@ -148,7 +148,7 @@ namespace BoletoNet.Arquivo
                 b.Sacado = new Sacado("000.000.000-00", "Fulano de Silva");
                 b.Sacado.Endereco.End = "SSS 154 Bloco J Casa 23";
                 b.Sacado.Endereco.Bairro = "Testando";
-                b.Sacado.Endereco.Cidade = "Testel‚ndia";
+                b.Sacado.Endereco.Cidade = "Testel√¢ndia";
                 b.Sacado.Endereco.CEP = "70000000";
                 b.Sacado.Endereco.UF = "DF";
 
@@ -161,7 +161,7 @@ namespace BoletoNet.Arquivo
                 if (b.ValorDesconto == 0)
                 {
                     Instrucao_Itau item3 = new Instrucao_Itau(999, 1);
-                    item3.Descricao += ("1,00 por dia de antecipaÁ„o.");
+                    item3.Descricao += ("1,00 por dia de antecipa√ß√£o.");
                     b.Instrucoes.Add(item3);
                 }
 
@@ -180,7 +180,7 @@ namespace BoletoNet.Arquivo
         public void GeraBoletoUnibanco(int qtde)
         {
 
-            // Cria o boleto, e passa os par‚metros usuais
+            // Cria o boleto, e passa os par√¢metros usuais
             BoletoBancario bb;
 
             List<BoletoBancario> boletos = new List<BoletoBancario>();
@@ -201,15 +201,15 @@ namespace BoletoNet.Arquivo
 
                 b.Sacado = new Sacado("000.000.000-00", "Marlon Oliveira");
                 b.Sacado.Endereco.End = "Rua Dr. Henrique Portugal, XX";
-                b.Sacado.Endereco.Bairro = "S„o Francisco";
-                b.Sacado.Endereco.Cidade = "NiterÛi";
+                b.Sacado.Endereco.Bairro = "S√£o Francisco";
+                b.Sacado.Endereco.Cidade = "Niter√≥i";
                 b.Sacado.Endereco.CEP = "24360080";
                 b.Sacado.Endereco.UF = "RJ";
                 b.Sacado.Endereco.Logradouro = "Rua Dr. Henrique Portugal";
                 b.Sacado.Endereco.Numero = "XX";
                 b.Sacado.Endereco.Complemento = "Casa";
 
-                instr.Descricao = "N„o Receber apÛs o vencimento";
+                instr.Descricao = "N√£o Receber ap√≥s o vencimento";
                 b.Instrucoes.Add(instr);
 
                 bb.Boleto = b;
@@ -227,7 +227,7 @@ namespace BoletoNet.Arquivo
         public void GeraBoletoSudameris(int qtde)
         {
 
-            // Cria o boleto, e passa os par‚metros usuais
+            // Cria o boleto, e passa os par√¢metros usuais
             BoletoBancario bb;
 
             List<BoletoBancario> boletos = new List<BoletoBancario>();
@@ -243,9 +243,9 @@ namespace BoletoNet.Arquivo
                 Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "0501", "6703255");
                 c.Codigo = "13000";
 
-                //Nosso n˙mero com 7 dÌgitos
+                //Nosso n√∫mero com 7 d√≠gitos
                 string nn = "0003020";
-                //Nosso n˙mero com 13 dÌgitos
+                //Nosso n√∫mero com 13 d√≠gitos
                 //nn = "0000000003025";
 
                 Boleto b = new Boleto(vencimento, 1642, "198", nn, c);// EnumEspecieDocumento_Sudameris.DuplicataMercantil);
@@ -254,11 +254,11 @@ namespace BoletoNet.Arquivo
                 b.Sacado = new Sacado("000.000.000-00", "Fulano de Silva");
                 b.Sacado.Endereco.End = "SSS 154 Bloco J Casa 23";
                 b.Sacado.Endereco.Bairro = "Testando";
-                b.Sacado.Endereco.Cidade = "Testel‚ndia";
+                b.Sacado.Endereco.Cidade = "Testel√¢ndia";
                 b.Sacado.Endereco.CEP = "70000000";
                 b.Sacado.Endereco.UF = "DF";
 
-                instr.Descricao = "N„o Receber apÛs o vencimento";
+                instr.Descricao = "N√£o Receber ap√≥s o vencimento";
                 b.Instrucoes.Add(instr);
 
                 bb.Boleto = b;
@@ -276,7 +276,7 @@ namespace BoletoNet.Arquivo
         public void GeraBoletoSafra(int qtde)
         {
 
-            // Cria o boleto, e passa os par‚metros usuais
+            // Cria o boleto, e passa os par√¢metros usuais
             BoletoBancario bb;
 
             List<BoletoBancario> boletos = new List<BoletoBancario>();
@@ -298,11 +298,11 @@ namespace BoletoNet.Arquivo
                 b.Sacado = new Sacado("000.000.000-00", "Eduardo Frare");
                 b.Sacado.Endereco.End = "SSS 154 Bloco J Casa 23";
                 b.Sacado.Endereco.Bairro = "Testando";
-                b.Sacado.Endereco.Cidade = "Testel‚ndia";
+                b.Sacado.Endereco.Cidade = "Testel√¢ndia";
                 b.Sacado.Endereco.CEP = "70000000";
                 b.Sacado.Endereco.UF = "DF";
 
-                instr.Descricao = "N„o Receber apÛs o vencimento";
+                instr.Descricao = "N√£o Receber ap√≥s o vencimento";
                 b.Instrucoes.Add(instr);
 
                 bb.Boleto = b;
@@ -319,7 +319,7 @@ namespace BoletoNet.Arquivo
         public void GeraBoletoReal(int qtde)
         {
 
-            // Cria o boleto, e passa os par‚metros usuais
+            // Cria o boleto, e passa os par√¢metros usuais
             BoletoBancario bb;
 
             List<BoletoBancario> boletos = new List<BoletoBancario>();
@@ -340,11 +340,11 @@ namespace BoletoNet.Arquivo
                 b.Sacado = new Sacado("000.000.000-00", "Fulano de Silva");
                 b.Sacado.Endereco.End = "SSS 154 Bloco J Casa 23";
                 b.Sacado.Endereco.Bairro = "Testando";
-                b.Sacado.Endereco.Cidade = "Testel‚ndia";
+                b.Sacado.Endereco.Cidade = "Testel√¢ndia";
                 b.Sacado.Endereco.CEP = "70000000";
                 b.Sacado.Endereco.UF = "DF";
 
-                instr.Descricao = "N„o Receber apÛs o vencimento";
+                instr.Descricao = "N√£o Receber ap√≥s o vencimento";
                 b.Instrucoes.Add(instr);
 
                 bb.Boleto = b;
@@ -362,7 +362,7 @@ namespace BoletoNet.Arquivo
         public void GeraBoletoHsbc(int qtde)
         {
 
-            // Cria o boleto, e passa os par‚metros usuais
+            // Cria o boleto, e passa os par√¢metros usuais
             BoletoBancario bb;
 
             List<BoletoBancario> boletos = new List<BoletoBancario>();
@@ -375,7 +375,7 @@ namespace BoletoNet.Arquivo
                 DateTime vencimento = new DateTime(2007, 9, 10);
                 Instrucao instr = new Instrucao(001);
                 Cedente c = new Cedente("00.000.000/0000-00", "Minha empresa", "0000", "", "00000", "00");
-                // CÛdigo fornecido pela agencia, N√O È o numero da conta
+                // C√≥digo fornecido pela agencia, N√ÉO √© o numero da conta
                 c.Codigo = "0000000"; // 7 posicoes
 
                 Boleto b = new Boleto(vencimento, 2, "CNR", "888888888", c); //cod documento
@@ -388,7 +388,7 @@ namespace BoletoNet.Arquivo
                 b.Sacado.Endereco.CEP = "82000000";
                 b.Sacado.Endereco.UF = "PR";
 
-                instr.Descricao = "N„o Receber apÛs o vencimento";
+                instr.Descricao = "N√£o Receber ap√≥s o vencimento";
                 b.Instrucoes.Add(instr);
 
                 bb.Boleto = b;
@@ -406,7 +406,7 @@ namespace BoletoNet.Arquivo
         public void GeraBoletoBB(int qtde)
         {
 
-            // Cria o boleto, e passa os par‚metros usuais
+            // Cria o boleto, e passa os par√¢metros usuais
             BoletoBancario bb;
 
             List<BoletoBancario> boletos = new List<BoletoBancario>();
@@ -425,11 +425,11 @@ namespace BoletoNet.Arquivo
                 b.Sacado = new Sacado("000.000.000-00", "Fulano de Silva");
                 b.Sacado.Endereco.End = "SSS 154 Bloco J Casa 23";
                 b.Sacado.Endereco.Bairro = "Testando";
-                b.Sacado.Endereco.Cidade = "Testel‚ndia";
+                b.Sacado.Endereco.Cidade = "Testel√¢ndia";
                 b.Sacado.Endereco.CEP = "70000000";
                 b.Sacado.Endereco.UF = "DF";
 
-                //Adiciona as instruÁıes ao boleto
+                //Adiciona as instru√ß√µes ao boleto
                 //Protestar
                 Instrucao_BancoBrasil item = new Instrucao_BancoBrasil(9, 5);
                 b.Instrucoes.Add(item);
@@ -457,7 +457,7 @@ namespace BoletoNet.Arquivo
         public void GeraBoletoBradesco(int qtde)
         {
 
-            // Cria o boleto, e passa os par‚metros usuais
+            // Cria o boleto, e passa os par√¢metros usuais
             BoletoBancario bb;
 
             List<BoletoBancario> boletos = new List<BoletoBancario>();
@@ -476,7 +476,7 @@ namespace BoletoNet.Arquivo
                 Endereco end = new Endereco();
                 end.Bairro = "Lago Sul";
                 end.CEP = "71666660";
-                end.Cidade = "BrasÌlia- DF";
+                end.Cidade = "Bras√≠lia- DF";
                 end.Complemento = "Quadra XX Conjunto XX Casa XX";
                 end.End = "Condominio de Brasilia - Quadra XX Conjunto XX Casa XX";
                 end.Logradouro = "Cond. Brasilia";
@@ -489,8 +489,8 @@ namespace BoletoNet.Arquivo
                 b.Sacado = new Sacado("000.000.000-00", "Eduardo Frare");
                 b.Sacado.Endereco = end;
 
-                item.Descricao += " apÛs " + item.QuantidadeDias.ToString() + " dias corridos do vencimento.";
-                b.Instrucoes.Add(item); //"N„o Receber apÛs o vencimento");
+                item.Descricao += " ap√≥s " + item.QuantidadeDias.ToString() + " dias corridos do vencimento.";
+                b.Instrucoes.Add(item); //"N√£o Receber ap√≥s o vencimento");
 
                 bb.Boleto = b;
                 bb.Boleto.Valida();
@@ -551,7 +551,7 @@ namespace BoletoNet.Arquivo
         {
             _progresso.Close();
 
-            // Cria um formul·rio com um componente WebBrowser dentro
+            // Cria um formul√°rio com um componente WebBrowser dentro
             _impressaoBoleto.webBrowser.Navigate(_arquivo);
             _impressaoBoleto.ShowDialog();
 
@@ -567,7 +567,7 @@ namespace BoletoNet.Arquivo
         private void button1_Click(object sender, EventArgs e)
         {
             if ((int)numericUpDown.Value > 1)
-                MessageBox.Show("O exemplo de envio do boleto banc·rio como imagem sÛ est· implementado para somente um boleto por vez.", "InformaÁ„o", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("O exemplo de envio do boleto banc√°rio como imagem s√≥ est√° implementado para somente um boleto por vez.", "Informa√ß√£o", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             BackgroundWorker backgroundWorker = new BackgroundWorker();
             backgroundWorker.DoWork += new DoWorkEventHandler(backgroundWorker_DoWork);
