@@ -68,5 +68,12 @@ namespace BoletoNet.Util
             return str.Substring(str.Length - length);
         }
 
+        public static string Truncate(this string value, int length) {
+            if (value != null && value.Length > length) {
+                return value.Substring(0, length);
+            }
+
+            return value;
+        }
     }
 }

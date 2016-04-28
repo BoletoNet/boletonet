@@ -1525,9 +1525,12 @@ namespace BoletoNet
                 else
                     _segmentoQ += "2";
 
+
+                var endereco = FormatarEnderecoComNumero(boleto.Sacado.Endereco.End, boleto.Sacado.Endereco.Numero, 40);
+
                 _segmentoQ += Utils.FitStringLength(boleto.Sacado.CPFCNPJ, 15, 15, '0', 0, true, true, true);
                 _segmentoQ += Utils.FitStringLength(boleto.Sacado.Nome.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
-                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.End.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
+                _segmentoQ += Utils.FitStringLength(endereco, 40, 40, ' ', 0, true, true, false).ToUpper();
                 _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.Bairro.TrimStart(' '), 15, 15, ' ', 0, true, true, false).ToUpper();
                 _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.CEP, 8, 8, ' ', 0, true, true, false).ToUpper(); ;
                 _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.Cidade.TrimStart(' '), 15, 15, ' ', 0, true, true, false).ToUpper();
@@ -1547,6 +1550,7 @@ namespace BoletoNet
                 throw new Exception("Erro durante a geração do SEGMENTO Q DO DETALHE do arquivo de REMESSA.", ex);
             }
         }
+
         public override string GerarDetalheSegmentoRRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
         {
             try
@@ -2024,6 +2028,34 @@ namespace BoletoNet
             } else {
                 return Tuple.Create(carteira, boleto.VariacaoCarteira);
             }
+        }
+
+        /// <summary>
+        /// Formata o endereço com o número do endereço.
+        /// </summary>
+        /// <param name="endereco">Endereço.</param>
+        /// <param name="numero">Número do endereço.</param>
+        /// <param name="length">Tamanho máximo da string de retorno da concatenação do endereço e número.</param>
+        /// <remarks>
+        /// A concatenação é necessária pois o banco exije o número no endereço, e caso o tamanho do endereço
+        /// ultrapasse o <see cref="length"/>, então faz o truncate e concatena com o número.
+        /// </remarks>
+        private static string FormatarEnderecoComNumero(string endereco, string numero, int length) {
+            endereco = endereco?.Trim();
+
+            if (string.IsNullOrEmpty(numero)) {
+                return endereco;
+            }
+
+            numero = numero.Trim();
+
+            const string separador = ", ";
+
+            return string.Concat(
+                endereco.Truncate(length - numero.Length - separador.Length),
+                separador,
+                numero
+            );
         }
 
         #region Métodos de processamento do arquivo retorno CNAB400
