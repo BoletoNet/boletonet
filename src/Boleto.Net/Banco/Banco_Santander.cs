@@ -531,7 +531,7 @@ namespace BoletoNet
                 // 167 - 240 Reservado (uso Banco) 
                 registro.Append(Utils.FormatCode(string.Empty, " ", 74));
 
-                return registro.ToString();
+                return Utils.SubstituiCaracteresEspeciais(registro.ToString());
             }
             catch (Exception ex)
             {
@@ -680,9 +680,8 @@ namespace BoletoNet
                 // 200 - 240 Reservado (uso Banco)
                 registro.Append(Utils.FormatCode(string.Empty, " ", 41));
 
-                return registro.ToString();
-            }
-            catch (Exception e)
+                return Utils.SubstituiCaracteresEspeciais(registro.ToString());
+            } catch (Exception e)
             {
                 throw new Exception("Erro ao gerar HEADER DO LOTE do arquivo de remessa.", e);
             }
@@ -1100,7 +1099,7 @@ namespace BoletoNet
                 // 230 - 240 Reservado (uso Banco)
                 registro.Append(Utils.FormatCode(string.Empty, " ", 11));
 
-                return registro.ToString();
+                return Utils.SubstituiCaracteresEspeciais(registro.ToString());
             } catch (Exception ex) {
                 throw new Exception("Erro durante a geração do SEGMENTO P do arquivo de remessa.", ex);
             }
@@ -1181,7 +1180,7 @@ namespace BoletoNet
                 // 222 - 240 Reservado (uso Banco)
                 registro.Append(Utils.FormatCode(string.Empty, " ", 19));
 
-                return registro.ToString();
+                return Utils.SubstituiCaracteresEspeciais(registro.ToString());
             } catch (Exception ex) {
                 throw new Exception("Erro durante a geração do SEGMENTO Q do arquivo de remessa.", ex);
             }
@@ -1245,7 +1244,7 @@ namespace BoletoNet
                 // 180 - 240 Reservado
                 registro.Append(Utils.FormatCode(string.Empty, " ", 61));
 
-                return registro.ToString();
+                return Utils.SubstituiCaracteresEspeciais(registro.ToString());
             } catch (Exception ex) {
                 throw new Exception("Erro durante a geração do SEGMENTO R do arquivo de remessa.", ex);
             }
@@ -1293,7 +1292,7 @@ namespace BoletoNet
                 // 024 - 240 Reservado (uso Banco) 
                 registro.Append(Utils.FormatCode(string.Empty, " ", 217));
 
-                return registro.ToString();
+                return Utils.SubstituiCaracteresEspeciais(registro.ToString());
             }
             catch (Exception e)
             {
@@ -1341,7 +1340,7 @@ namespace BoletoNet
                 // 030 - 240 Reservado (uso Banco) 
                 registro.Append(Utils.FormatCode(string.Empty, " ", 211));
 
-                return registro.ToString();
+                return Utils.SubstituiCaracteresEspeciais(registro.ToString());
             }
             catch (Exception e)
             {
