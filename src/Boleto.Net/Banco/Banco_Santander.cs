@@ -407,7 +407,6 @@ namespace BoletoNet
             }
         }
 
-
         #region Métodos de geração do arquivo remessa
 
         #region HEADER REMESSA
@@ -499,7 +498,7 @@ namespace BoletoNet
                 registro.Append(Utils.FormatCode(cedente.CPFCNPJ, "0", 15, true));
 
                 // 033 – 047 Código de Transmissão
-                registro.Append(Utils.FormatCode(string.Empty, "0", 15, true));
+                registro.Append(Utils.FormatCode(ObterCodigoTransmissao(TipoArquivo.CNAB240, cedente), "0", 15, true));
 
                 // 048 - 072 Reservado (uso Banco)
                 registro.Append(Utils.FormatCode(string.Empty, " ", 25));
@@ -657,7 +656,7 @@ namespace BoletoNet
                 registro.Append(Utils.FormatCode(string.Empty, " ", 20));
 
                 // 054 - 068 Código de Transmissão 
-                registro.Append(Utils.FormatCode(string.Empty, "0", 15, true));
+                registro.Append(Utils.FormatCode(ObterCodigoTransmissao(TipoArquivo.CNAB240, cedente), "0", 15, true));
 
                 // 069 – 073 Reservado uso Banco
                 registro.Append(Utils.FormatCode(string.Empty, " ", 5));
@@ -913,9 +912,11 @@ namespace BoletoNet
                 else
                     _detalhe += "02"; // CNPJ
 
+                var endereco = Utils.FormatarEnderecoComNumero(boleto.Sacado.Endereco.End, boleto.Sacado.Endereco.Numero, 40);
+
                 _detalhe += Utils.FitStringLength(boleto.Sacado.CPFCNPJ, 14, 14, '0', 0, true, true, true).ToUpper();
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Nome.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
-                _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.End.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
+                _detalhe += Utils.FitStringLength(endereco, 40, 40, ' ', 0, true, true, false).ToUpper();
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.Bairro.TrimStart(' '), 12, 12, ' ', 0, true, true, false).ToUpper();
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.CEP, 8, 8, ' ', 0, true, true, true);
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.Cidade.TrimStart(' '), 15, 15, ' ', 0, true, true, false).ToUpper();
@@ -1109,6 +1110,7 @@ namespace BoletoNet
             try {
                 var sacado = boleto.Sacado;
                 var registro = new StringBuilder();
+                var endereco = Utils.FormatarEnderecoComNumero(sacado.Endereco.End, sacado.Endereco.Numero, 40);
 
                 // 001 - 003 Código do Banco na compensação
                 registro.Append("033");
@@ -1141,7 +1143,7 @@ namespace BoletoNet
                 registro.Append(Utils.FormatCode(sacado.Nome, " ", 40));
 
                 // 074 - 113 Endereço Pagador
-                registro.Append(Utils.FormatCode(sacado.Endereco.End, " ", 40));
+                registro.Append(Utils.FormatCode(endereco, " ", 40));
 
                 // 114 - 128 Bairro Pagador
                 registro.Append(Utils.FormatCode(sacado.Endereco.Bairro, " ", 15));
@@ -1547,7 +1549,7 @@ namespace BoletoNet
 
         #endregion
 
-        private string ObterCodigoProtesto(TipoProtesto tipoProtesto) {
+        private static string ObterCodigoProtesto(TipoProtesto tipoProtesto) {
             switch (tipoProtesto) {
                 case TipoProtesto.ProtestarDiasCorridos:
                     return "1";
@@ -1557,6 +1559,22 @@ namespace BoletoNet
                 default:
                     return "0";
             }
+        }
+
+        private string ObterCodigoTransmissao(TipoArquivo tipo, Cedente cedente) {
+            var codigo = new StringBuilder();
+
+            if (tipo == TipoArquivo.CNAB240) {
+                codigo.Append(cedente.ContaBancaria.Agencia.Truncate(4));
+                codigo.Append("000");
+                codigo.Append(cedente.Convenio.PadLeft(8, '0'));
+            } else if (tipo == TipoArquivo.CNAB400) {
+                codigo.Append(cedente.ContaBancaria.Agencia.Truncate(4));
+                codigo.Append(cedente.Convenio.PadLeft(8, '0'));
+                codigo.Append(cedente.ContaBancaria.Conta.PadLeft(8, '0'));
+            }
+
+            return codigo.ToString();
         }
 
         /// <summary>

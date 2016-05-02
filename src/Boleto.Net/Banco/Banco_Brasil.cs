@@ -1525,7 +1525,7 @@ namespace BoletoNet
                     _segmentoQ += "2";
 
 
-                var endereco = FormatarEnderecoComNumero(boleto.Sacado.Endereco.End, boleto.Sacado.Endereco.Numero, 40);
+                var endereco = Utils.FormatarEnderecoComNumero(boleto.Sacado.Endereco.End, boleto.Sacado.Endereco.Numero, 40);
 
                 _segmentoQ += Utils.FitStringLength(boleto.Sacado.CPFCNPJ, 15, 15, '0', 0, true, true, true);
                 _segmentoQ += Utils.FitStringLength(boleto.Sacado.Nome.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
@@ -2030,34 +2030,6 @@ namespace BoletoNet
         }
 
         /// <summary>
-        /// Formata o endereço com o número do endereço.
-        /// </summary>
-        /// <param name="endereco">Endereço.</param>
-        /// <param name="numero">Número do endereço.</param>
-        /// <param name="length">Tamanho máximo da string de retorno da concatenação do endereço e número.</param>
-        /// <remarks>
-        /// A concatenação é necessária pois o banco exije o número no endereço, e caso o tamanho do endereço
-        /// ultrapasse o <see cref="length"/>, então faz o truncate e concatena com o número.
-        /// </remarks>
-        private static string FormatarEnderecoComNumero(string endereco, string numero, int length) {
-            endereco = endereco?.Trim();
-
-            if (string.IsNullOrEmpty(numero)) {
-                return endereco;
-            }
-
-            numero = numero.Trim();
-
-            const string separador = ", ";
-
-            return string.Concat(
-                endereco.Truncate(length - numero.Length - separador.Length),
-                separador,
-                numero
-            );
-        }
-
-        /// <summary>
         /// Formata o nosso número para ser utilizado no arquivo de remessa.
         /// </summary>
         /// <param name="nossoNumero">Nosso número que será formatado.</param>
@@ -2185,6 +2157,7 @@ namespace BoletoNet
                 var carteira = carteiraSeparada.Item1;
                 var variacaoCarteira = carteiraSeparada.Item2;
                 var nossoNumero = FormatarNossoNumero(boleto.NossoNumero);
+                var endereco = Utils.FormatarEnderecoComNumero(boleto.Sacado.Endereco.End, boleto.Sacado.Endereco.Numero, 40);
 
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0001, 001, 0, "7", '0'));                                       //001-001
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0002, 002, 0, vCpfCnpjEmi, '0'));                               //002-003
@@ -2298,7 +2271,7 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0221, 014, 0, boleto.Sacado.CPFCNPJ, '0'));                     //221-234
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0235, 037, 0, boleto.Sacado.Nome.ToUpper(), ' '));              //235-271
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0272, 003, 0, string.Empty, ' '));                              //272-274
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0275, 040, 0, boleto.Sacado.Endereco.End.ToUpper(), ' '));      //275-314
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0275, 040, 0, endereco.ToUpper(), ' '));                        //275-314
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0315, 012, 0, boleto.Sacado.Endereco.Bairro.ToUpper(), ' '));   //315-326
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0327, 008, 0, boleto.Sacado.Endereco.CEP, '0'));                //327-334
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0335, 015, 0, boleto.Sacado.Endereco.Cidade.ToUpper(), ' '));   //335-349

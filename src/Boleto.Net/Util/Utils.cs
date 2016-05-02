@@ -272,6 +272,34 @@ namespace BoletoNet
         }
 
         /// <summary>
+        /// Formata o endereço com o número do endereço.
+        /// </summary>
+        /// <param name="endereco">Endereço.</param>
+        /// <param name="numero">Número do endereço.</param>
+        /// <param name="length">Tamanho máximo da string de retorno da concatenação do endereço e número.</param>
+        /// <remarks>
+        /// A concatenação é necessária pois o banco exije o número no endereço, e caso o tamanho do endereço
+        /// ultrapasse o <see cref="length"/>, então faz o truncate e concatena com o número.
+        /// </remarks>
+        internal static string FormatarEnderecoComNumero(string endereco, string numero, int length) {
+            endereco = endereco?.Trim();
+
+            if (string.IsNullOrEmpty(numero)) {
+                return endereco;
+            }
+
+            numero = numero.Trim();
+
+            const string separador = ", ";
+
+            return string.Concat(
+                endereco.Truncate(length - numero.Length - separador.Length),
+                separador,
+                numero
+            );
+        }
+
+        /// <summary>
         /// Formata o CPF ou CNPJ do Cedente ou do Sacado no formato: 000.000.000-00, 00.000.000/0001-00 respectivamente.
         /// </summary>
         /// <param name="value"></param>
