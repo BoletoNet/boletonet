@@ -1,7 +1,6 @@
-
 using System;
-using System.Data;
 using System.Globalization;
+using System.Linq;
 using System.Web.UI;
 using BoletoNet.Util;
 using BoletoNet.EDI.Banco;
@@ -2058,6 +2057,22 @@ namespace BoletoNet
             );
         }
 
+        /// <summary>
+        /// Formata o nosso número para ser utilizado no arquivo de remessa.
+        /// </summary>
+        /// <param name="nossoNumero">Nosso número que será formatado.</param>
+        /// <remarks>
+        /// Há bancos que adicionam a carteira no nosso número do boleto sem registro, e
+        /// no boleto registrado somente deve conter o código do nosso número.
+        /// </remarks>
+        private static string FormatarNossoNumero(string nossoNumero) {
+            const char separador = '/';
+
+            return nossoNumero.IndexOf(separador) <= 0 ?
+                nossoNumero :
+                nossoNumero.Split(separador).Last();
+        }
+
         #region Métodos de processamento do arquivo retorno CNAB400
 
 
@@ -2169,6 +2184,7 @@ namespace BoletoNet
                 var carteiraSeparada = ObterCarteiraEVariacao(boleto);
                 var carteira = carteiraSeparada.Item1;
                 var variacaoCarteira = carteiraSeparada.Item2;
+                var nossoNumero = FormatarNossoNumero(boleto.NossoNumero);
 
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0001, 001, 0, "7", '0'));                                       //001-001
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0002, 002, 0, vCpfCnpjEmi, '0'));                               //002-003
@@ -2179,7 +2195,7 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0031, 001, 0, boleto.Cedente.ContaBancaria.DigitoConta, ' '));  //031-031
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0032, 007, 0, boleto.Cedente.Convenio, ' '));                   //032-038
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0039, 025, 0, boleto.NumeroDocumento, ' '));                    //039-063
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0064, 017, 0, boleto.NossoNumero, '0'));                        //064-080
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0064, 017, 0, nossoNumero, '0'));                               //064-080
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0081, 002, 0, "00", '0'));                                      //081-082
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0083, 002, 0, "00", '0'));                                      //083-084
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0085, 003, 0, string.Empty, ' '));                              //085-087
