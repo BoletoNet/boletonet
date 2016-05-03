@@ -521,6 +521,11 @@ namespace BoletoNet
         /// </summary>
 	    public byte NumeroDiasParaProtesto { get; set; }
 
+        /// <summary>
+        /// Número de dias para Baixa/Devolução.
+        /// </summary>
+	    public byte NumeroDiasBaixaDevolucao { get; set; }
+
 		/// <summary> 
 		/// Retorna o percentual IOS para Seguradoras no caso do Banco Santander
 		/// </summary>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Linq;
 using System.Text;
 using System.Web.UI;
 using BoletoNet.Util;
@@ -179,11 +178,6 @@ namespace BoletoNet
             #endregion
 
             boleto.CodigoBarra.LinhaDigitavel = string.Format("{0}{1}{2}{3}{4}", grupo1, grupo2, grupo3, grupo4, grupo5);
-
-
-            //Usado somente no Santander
-            boleto.Cedente.ContaBancaria.Conta = boleto.Cedente.Codigo.ToString();
-
         }
 
         public override void FormataNossoNumero(Boleto boleto)
@@ -994,10 +988,10 @@ namespace BoletoNet
                 registro.Append(Utils.FormatCode(cedente.ContaBancaria.DigitoConta, "0", 1, true));
 
                 // 033 - 041 Conta cobrança Destinatária FIDC
-                registro.Append(Utils.FormatCode(string.Empty, "0", 9, true));
+                registro.Append(Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 9, true));
 
                 // 042 - 042 Dígito da conta cobrança Destinatária FIDC 
-                registro.Append(Utils.FormatCode(string.Empty, "0", 1, true));
+                registro.Append(Utils.FormatCode(cedente.ContaBancaria.DigitoConta, "0", 1, true));
 
                 // 043 - 044 Reservado (uso Banco) 
                 registro.Append("  ");
@@ -1006,7 +1000,7 @@ namespace BoletoNet
                 registro.Append(Utils.FormatCode(boleto.NossoNumero.Replace("-", string.Empty), "0", 13, true));
 
                 // 058 - 058 Tipo de cobrança
-                registro.Append("1");
+                registro.Append("5");
 
                 // 059 - 059 Forma de Cadastramento 
                 registro.Append("1");
@@ -1057,7 +1051,15 @@ namespace BoletoNet
                 registro.Append(boleto.DataVencimento.ToString("ddMMyyyy"));
 
                 // 127 - 141 Valor da mora/dia ou Taxa mensal 
-                registro.Append(Utils.FormatCode(boleto.ValorMulta.FormatarDinheiro(), "0", 15, true));
+                var juros = string.Empty;
+
+                if (boleto.JurosMora > 0) {
+                    juros = boleto.JurosMora.FormatarDinheiro();
+                } else if (boleto.PercJurosMora > 0) {
+                    juros = boleto.PercJurosMora.FormatarPorcentagem();
+                }
+
+                registro.Append(Utils.FormatCode(juros, "0", 15, true));
 
                 // 142 - 142 Código do desconto 1
                 var temDesconto = boleto.ValorDesconto > 0;
@@ -1086,13 +1088,13 @@ namespace BoletoNet
                 registro.Append(Utils.FormatCode(boleto.NumeroDiasParaProtesto.ToString(), "0", 2, true));
 
                 // 224 - 224 Código para Baixa/Devolução
-                registro.Append("1");
+                registro.Append(boleto.NumeroDiasBaixaDevolucao > 0 ? "1" : "2");
 
                 // 225 – 225 Reservado (uso Banco)
                 registro.Append("0");
 
                 // 226 - 227 Número de dias para Baixa/Devolução
-                registro.Append("00");
+                registro.Append(Utils.FormatCode(boleto.NumeroDiasBaixaDevolucao.ToString(), "0", 2, true));
 
                 // 228 - 229 Código da moeda
                 registro.Append("00");

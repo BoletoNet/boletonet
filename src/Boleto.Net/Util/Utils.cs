@@ -267,6 +267,10 @@ namespace BoletoNet
             return valor.ToString("F2").Replace(",", string.Empty);
         }
 
+        internal static string FormatarPorcentagem(this decimal valor) {
+            return valor.ToString("F5").Replace(",", string.Empty);
+        }
+
         internal static string FormatarData(this DateTime data) {
             return data.ToString("ddMMyyyy");
         }
