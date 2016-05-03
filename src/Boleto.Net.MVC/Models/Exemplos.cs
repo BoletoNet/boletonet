@@ -176,6 +176,9 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
+            boletoBancario.AjustaTamanhoFonte(12, tamanhoFonteInstrucaoImpressao: 14);
+            boletoBancario.AjustaSeparacaoSimboloMoeda();
+
             return boletoBancario.MontaHtmlEmbedded();
         }
 

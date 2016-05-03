@@ -44,7 +44,9 @@ namespace BoletoNet
         private bool _mostrarCodigoCarteira = false;
         private bool _formatoCarne = false;
         private bool _ajustaTamanhoFonte = false;
+        private bool _ajustaSeparacaoSimboloMoeda = false;
         private string _ajustaTamanhoFonteHtml;
+        private string _ajustaSeparacaoSimboloMoedaHtml;
         #endregion Variaveis
 
         #region Propriedades
@@ -270,6 +272,20 @@ namespace BoletoNet
             _ajustaTamanhoFonteHtml = html.ToString().Replace("$1", "{").Replace("$2", "}");
         }
 
+        public void AjustaSeparacaoSimboloMoeda()
+        {
+            _ajustaSeparacaoSimboloMoeda = true;
+
+            var html = new StringBuilder();
+
+            html.AppendLine("<style>");
+            html.Append(".s-l {position: absolute; left: 485px; display: block; }");
+            html.Append(".s-r { display: block; }");
+            html.AppendLine("</style>");
+
+            _ajustaSeparacaoSimboloMoedaHtml = html.ToString();
+        }
+
         #region Html
         public string GeraHtmlInstrucoes()
         {
@@ -460,6 +476,11 @@ namespace BoletoNet
             if (_ajustaTamanhoFonte)
             {
                 html.Append(_ajustaTamanhoFonteHtml);
+            }
+
+            if (_ajustaSeparacaoSimboloMoeda)
+            {
+                html.Append(_ajustaSeparacaoSimboloMoedaHtml);
             }
 
             //Oculta o cabeçalho das instruções do boleto
@@ -660,6 +681,12 @@ namespace BoletoNet
             if (String.IsNullOrEmpty(vLocalLogoCedente))
                 vLocalLogoCedente = urlImagemLogo;
 
+            var valorBoleto = (Boleto.ValorBoleto == 0 ? "" : Boleto.ValorBoleto.ToString("C", CultureInfo.GetCultureInfo("PT-BR")));
+
+            //Variáveis usadas para ajustar a formatar o símbolo da moeda
+            var replaceValorBolet_Ar = string.Format("Ar\">{0}", valorBoleto);
+            var replaceValorBolet_vdc = string.Format("vdc\">{0}", valorBoleto);
+
 
             return html
                 .Replace("@CODIGOBANCO", Utils.FormatCode(_ibanco.Codigo.ToString(), 3))
@@ -687,12 +714,12 @@ namespace BoletoNet
                     .Replace("@NOSSONUMEROBB", Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("17-027") | Boleto.Carteira.Equals("18-019")) ? Boleto.NossoNumero.Substring(3) : string.Empty)
             #endregion Implementação para o Banco do Brasil
 
-.Replace("@NOSSONUMERO", Boleto.NossoNumero)
+                .Replace("@NOSSONUMERO", Boleto.NossoNumero)
                 .Replace("@CARTEIRA", FormataDescricaoCarteira())
                 .Replace("@ESPECIE", Boleto.Especie)
                 .Replace("@QUANTIDADE", (Boleto.QuantidadeMoeda == 0 ? "" : Boleto.QuantidadeMoeda.ToString()))
                 .Replace("@VALORDOCUMENTO", Boleto.ValorMoeda)
-                .Replace("@=VALORDOCUMENTO", (Boleto.ValorBoleto == 0 ? "" : Boleto.ValorBoleto.ToString("C", CultureInfo.GetCultureInfo("PT-BR"))))
+                .Replace("@=VALORDOCUMENTO", valorBoleto)
                 .Replace("@VALORCOBRADO", (Boleto.ValorCobrado == 0 ? "" : Boleto.ValorCobrado.ToString("C", CultureInfo.GetCultureInfo("PT-BR"))))
                 .Replace("@OUTROSACRESCIMOS", "")
                 .Replace("@OUTRASDEDUCOES", "")
@@ -707,7 +734,9 @@ namespace BoletoNet
                 .Replace("@USODOBANCO", Boleto.UsoBanco)
                 .Replace("@IMAGEMCODIGOBARRA", imagemCodigoBarras)
                 .Replace("@ACEITE", Boleto.Aceite).ToString()
-                .Replace("@ENDERECOCEDENTE", MostrarEnderecoCedente ? enderecoCedente : "");
+                .Replace("@ENDERECOCEDENTE", MostrarEnderecoCedente ? enderecoCedente : "")
+                .Replace(replaceValorBolet_Ar, _ajustaSeparacaoSimboloMoeda ? string.Format("Ar\"><span class=\"s-l\">R$</span><span class\"s-r\">{0}</span>", valorBoleto.Replace("R$", "")): replaceValorBolet_Ar)
+                .Replace(replaceValorBolet_vdc, _ajustaSeparacaoSimboloMoeda ? string.Format("vdc\">{0}", valorBoleto.Replace("R$", "")) : replaceValorBolet_vdc);
 
         }
 
