@@ -44,12 +44,18 @@ namespace BoletoNet
         private bool _mostrarCodigoCarteira = false;
         private bool _formatoCarne = false;
         private bool _ajustaTamanhoFonte = false;
-        private bool _ajustaSeparacaoSimboloMoeda = false;
+        private bool _removeSimboloMoedaValorDocumento = false;
         private string _ajustaTamanhoFonteHtml;
-        private string _ajustaSeparacaoSimboloMoedaHtml;
         #endregion Variaveis
 
         #region Propriedades
+
+        [Browsable(true), Description("Remove o símbolo R$ do Valor do Documento")]
+        public bool RemoveSimboloMoedaValorDocumento
+        {
+            get { return _removeSimboloMoedaValorDocumento; }
+            set { _removeSimboloMoedaValorDocumento = value; }
+        }
 
         [Browsable(true), Description("Código do banco em que será gerado o boleto. Ex. 341-Itaú, 237-Bradesco")]
         public short CodigoBanco
@@ -272,19 +278,6 @@ namespace BoletoNet
             _ajustaTamanhoFonteHtml = html.ToString().Replace("$1", "{").Replace("$2", "}");
         }
 
-        public void AjustaSeparacaoSimboloMoeda()
-        {
-            _ajustaSeparacaoSimboloMoeda = true;
-
-            var html = new StringBuilder();
-
-            html.AppendLine("<style>");
-            html.Append(".s-l {position: absolute; left: 485px; display: block; }");
-            html.Append(".s-r { display: block; }");
-            html.AppendLine("</style>");
-
-            _ajustaSeparacaoSimboloMoedaHtml = html.ToString();
-        }
 
         #region Html
         public string GeraHtmlInstrucoes()
@@ -476,11 +469,6 @@ namespace BoletoNet
             if (_ajustaTamanhoFonte)
             {
                 html.Append(_ajustaTamanhoFonteHtml);
-            }
-
-            if (_ajustaSeparacaoSimboloMoeda)
-            {
-                html.Append(_ajustaSeparacaoSimboloMoedaHtml);
             }
 
             //Oculta o cabeçalho das instruções do boleto
@@ -683,14 +671,9 @@ namespace BoletoNet
 
             var valorBoleto = (Boleto.ValorBoleto == 0 ? "" : Boleto.ValorBoleto.ToString("C", CultureInfo.GetCultureInfo("PT-BR")));
 
-            //Variáveis usadas para ajustar a formatar o símbolo da moeda
-            var replaceValorBolet_Ar = string.Format("Ar\">{0}", valorBoleto);
-            var replaceValorBolet_vdc = string.Format("vdc\">{0}", valorBoleto);
-
-
             return html
                 .Replace("@CODIGOBANCO", Utils.FormatCode(_ibanco.Codigo.ToString(), 3))
-                .Replace("@DIGITOBANCO", _ibanco.Digito.ToString())
+                .Replace("@DIGITOBANCO", _ibanco.Digito)
                 //.Replace("@URLIMAGEMBARRAINTERNA", urlImagemBarraInterna)
                 //.Replace("@URLIMAGEMCORTE", urlImagemCorte)
                 //.Replace("@URLIMAGEMPONTO", urlImagemPonto)
@@ -735,8 +718,7 @@ namespace BoletoNet
                 .Replace("@IMAGEMCODIGOBARRA", imagemCodigoBarras)
                 .Replace("@ACEITE", Boleto.Aceite).ToString()
                 .Replace("@ENDERECOCEDENTE", MostrarEnderecoCedente ? enderecoCedente : "")
-                .Replace(replaceValorBolet_Ar, _ajustaSeparacaoSimboloMoeda ? string.Format("Ar\"><span class=\"s-l\">R$</span><span class\"s-r\">{0}</span>", valorBoleto.Replace("R$", "")): replaceValorBolet_Ar)
-                .Replace(replaceValorBolet_vdc, _ajustaSeparacaoSimboloMoeda ? string.Format("vdc\">{0}", valorBoleto.Replace("R$", "")) : replaceValorBolet_vdc);
+                .Replace("Ar\">R$", RemoveSimboloMoedaValorDocumento ? "Ar\">": "Ar\">R$");
 
         }
 

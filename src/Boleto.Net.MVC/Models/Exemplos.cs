@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using BoletoNet;
 using System.Web.Mvc;
+using Boleto = BoletoNet.Boleto;
 
 namespace Boleto.Net.MVC.Models
 {
@@ -117,6 +118,8 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
+            boletoBancario.RemoveSimboloMoedaValorDocumento = true;
+
             return boletoBancario.MontaHtmlEmbedded();
         }
 
@@ -176,8 +179,20 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            boletoBancario.AjustaTamanhoFonte(12, tamanhoFonteInstrucaoImpressao: 14);
-            boletoBancario.AjustaSeparacaoSimboloMoeda();
+            boletoBancario.Cedente.Endereco = new Endereco()
+            {
+                End = "Endereço do Cedente",
+                Bairro = "Bairro",
+                Cidade = "Cidade",
+                CEP = "70000000",
+                UF= "DF"
+
+            };
+
+            //boletoBancario.MostrarEnderecoCedente = true;
+
+            //boletoBancario.AjustaTamanhoFonte(12, tamanhoFonteInstrucaoImpressao: 14);
+            boletoBancario.RemoveSimboloMoedaValorDocumento = false;
 
             return boletoBancario.MontaHtmlEmbedded();
         }

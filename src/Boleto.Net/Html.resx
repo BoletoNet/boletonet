@@ -435,7 +435,7 @@
 						&lt;td class="Al"&gt;@ESPECIE&lt;/td&gt;
 						&lt;td&gt;@QUANTIDADE&lt;/td&gt;
 						&lt;td&gt;@VALORDOCUMENTO&lt;/td&gt;
-						&lt;td class="Ar vdc"&gt;@=VALORDOCUMENTO&lt;/td&gt;
+						&lt;td class="Ar"&gt;@=VALORDOCUMENTO&lt;/td&gt;
 				&lt;/tr&gt;
 		&lt;/table&gt;</value>
   </data>
@@ -748,5 +748,8 @@
 						&lt;td class="At"&gt;@ENDERECOCEDENTE&lt;/td&gt;
 				&lt;/tr&gt;
 		&lt;/table&gt;</value>
+  </data>
+  <data name="Rodape" xml:space="preserve">
+    <value />
   </data>
 </root>
