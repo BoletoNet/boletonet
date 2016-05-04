@@ -1161,13 +1161,13 @@ namespace BoletoNet
                 registro.Append(Utils.FormatCode(sacado.Endereco.UF, " ", 2));
 
                 // 154 - 154 Tipo de inscrição Sacador/avalista
-                registro.Append("0");
+                registro.Append(sacado.CPFCNPJ.Length == 11 ? "1" : "2");
 
                 // 155 - 169 Nº de inscrição Sacador/avalista
-                registro.Append(Utils.FormatCode(string.Empty, "0", 15, true));
+                registro.Append(Utils.FormatCode(sacado.CPFCNPJ, "0", 15, true));
 
                 // 170 - 209 Nome do Sacador/avalista
-                registro.Append(Utils.FormatCode(string.Empty, " ", 40));
+                registro.Append(Utils.FormatCode(sacado.Nome, " ", 40));
 
                 // 210 - 212 Identificador de carne
                 registro.Append("000");
