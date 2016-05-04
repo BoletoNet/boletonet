@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using BoletoNet;
 using System.Web.Mvc;
+using Boleto = BoletoNet.Boleto;
 
 namespace Boleto.Net.MVC.Models
 {
@@ -116,6 +117,8 @@ namespace Boleto.Net.MVC.Models
 
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
+
+            boletoBancario.RemoveSimboloMoedaValorDocumento = true;
 
             return boletoBancario.MontaHtmlEmbedded();
         }

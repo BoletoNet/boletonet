@@ -777,6 +777,15 @@ namespace BoletoNet {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Rodape {
+            get {
+                return ResourceManager.GetString("Rodape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 
         ///				&lt;tr class=&quot;cp h13 rBb&quot;&gt;
         ///					&lt;td&gt;Total&lt;/td&gt;

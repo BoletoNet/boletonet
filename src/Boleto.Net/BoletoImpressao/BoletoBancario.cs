@@ -50,7 +50,7 @@ namespace BoletoNet
 
         #region Propriedades
 
-        [Browsable(true), Description("Remove do símbolo R$ do Valor do Documento")]
+        [Browsable(true), Description("Remove o símbolo R$ do Valor do Documento")]
         public bool RemoveSimboloMoedaValorDocumento
         {
             get { return _removeSimboloMoedaValorDocumento; }
