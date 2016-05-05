@@ -585,7 +585,7 @@ namespace BoletoNet
             try
             {
                 string header = "341";
-                header += "0000";
+                header += "0001";
                 header += "0";
                 header += Utils.FormatCode("", " ", 9);
                 header += (cedente.CPFCNPJ.Length == 11 ? "1" : "2");
@@ -720,7 +720,7 @@ namespace BoletoNet
             try
             {
                 string header = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
-                header += Utils.FormatCode("", "0", 4, true);
+                header += "0001";
                 header += "1";
                 header += "R";
                 header += "01";
@@ -756,6 +756,177 @@ namespace BoletoNet
         {
             throw new Exception("Função não implementada.");
         }
+
+
+        public override string GerarDetalheSegmentoPRemessa(Boleto boleto, int numeroRegistro, string numeroConvenio)
+        {
+            try
+            {
+                string _segmentoP;
+                _segmentoP = "341";
+                _segmentoP += "0001";
+                _segmentoP += "3";
+                _segmentoP += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);
+                _segmentoP += "P";
+                _segmentoP += " ";
+                _segmentoP += "01";
+                _segmentoP += "0";
+                _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true);
+                _segmentoP += " ";
+                _segmentoP += "0000000";
+                _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 5, 5, '0', 0, true, true, true);
+                _segmentoP += " ";
+                _segmentoP += " ";
+                _segmentoP += Utils.FitStringLength(boleto.Carteira, 3, 3, '0', 0, true, true, true);
+                _segmentoP += Utils.FitStringLength(boleto.NossoNumero, 8, 8, '0', 0, true, true, true);
+                _segmentoP += " ";
+                _segmentoP += "        ";
+                _segmentoP += "00000";
+                _segmentoP += Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, ' ', 0, true, true, false);
+                _segmentoP += "     ";
+                _segmentoP += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
+                _segmentoP += Utils.FitStringLength(boleto.ValorBoleto.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
+                _segmentoP += "00000";
+                _segmentoP += " ";
+                _segmentoP += "01";
+                _segmentoP += "A";
+                _segmentoP += Utils.FitStringLength(boleto.DataDocumento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
+                _segmentoP += "0";
+                _segmentoP += Utils.FitStringLength(boleto.DataJurosMora.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
+                _segmentoP += Utils.FitStringLength(boleto.JurosMora.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
+                _segmentoP += "0";
+                _segmentoP += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
+                _segmentoP += Utils.FitStringLength("0", 15, 15, '0', 0, true, true, true);
+                _segmentoP += Utils.FitStringLength("0", 15, 15, '0', 0, true, true, true);
+                _segmentoP += Utils.FitStringLength("0", 15, 15, '0', 0, true, true, true);
+                _segmentoP += Utils.FitStringLength(boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, false);
+                _segmentoP += "0";
+                _segmentoP += "00";
+                _segmentoP += "0";
+                _segmentoP += "00";
+                _segmentoP += "0000000000000";
+                _segmentoP += " ";
+
+                _segmentoP = Utils.SubstituiCaracteresEspeciais(_segmentoP);
+
+                return _segmentoP;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do SEGMENTO P DO DETALHE do arquivo de REMESSA.", ex);
+            }
+        }
+        public override string GerarDetalheSegmentoQRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+        {
+            try
+            {
+                string _zeros16 = new string('0', 16);
+                string _brancos10 = new string(' ', 10);
+                string _brancos28 = new string(' ', 28);
+                string _brancos40 = new string(' ', 40);
+
+                string _segmentoQ;
+
+                _segmentoQ = "341";
+                _segmentoQ += "0001";
+                _segmentoQ += "3";
+                _segmentoQ += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);
+                _segmentoQ += "Q";
+                _segmentoQ += " ";
+
+                _segmentoQ += "01";
+                if (boleto.Sacado.CPFCNPJ.Length <= 11)
+                    _segmentoQ += "1";
+                else
+                    _segmentoQ += "2";
+
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.CPFCNPJ, 15, 15, '0', 0, true, true, true);
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Nome.TrimStart(' '), 30, 30, ' ', 0, true, true, false).ToUpper();
+                _segmentoQ += "          ";
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.End.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.Bairro.TrimStart(' '), 15, 15, ' ', 0, true, true, false).ToUpper();
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.CEP, 8, 8, ' ', 0, true, true, false).ToUpper(); ;
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.Cidade.TrimStart(' '), 15, 15, ' ', 0, true, true, false).ToUpper();
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.UF, 2, 2, ' ', 0, true, true, false).ToUpper();
+                if (boleto.Sacado.CPFCNPJ.Length <= 11)
+                    _segmentoQ += "1";
+                else
+                    _segmentoQ += "2";
+
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.CPFCNPJ, 15, 15, '0', 0, true, true, true);
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Nome.TrimStart(' '), 30, 30, ' ', 0, true, true, false).ToUpper();
+                _segmentoQ += _brancos10;
+                _segmentoQ += "000";
+                _segmentoQ += _brancos28;
+
+                _segmentoQ = Utils.SubstituiCaracteresEspeciais(_segmentoQ);
+
+                return _segmentoQ;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do SEGMENTO Q DO DETALHE do arquivo de REMESSA.", ex);
+            }
+        }
+        public override string GerarDetalheSegmentoRRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+        {
+            try
+            {
+                string _brancos110 = new string(' ', 110);
+                string _brancos9 = new string(' ', 9);
+
+                string _segmentoR;
+
+                _segmentoR = "341";
+                _segmentoR += "0001";
+                _segmentoR += "3";
+                _segmentoR += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);
+                _segmentoR += "R 01";
+                // Desconto 2
+                _segmentoR += "000000000000000000000000"; //24 zeros
+                // Desconto 3
+                _segmentoR += "000000000000000000000000"; //24 zeros
+
+                if (boleto.PercMulta > 0)
+                {
+                    // Código da multa 2 - percentual
+                    _segmentoR += "2";
+                }
+                else if (boleto.ValorMulta > 0)
+                {
+                    // Código da multa 1 - valor fixo
+                    _segmentoR += "1";
+                }
+                else
+                {
+                    // Código da multa 0 - sem multa
+                    _segmentoR += "0";
+                }
+
+                _segmentoR += Utils.FitStringLength(boleto.DataMulta.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
+                _segmentoR += Utils.FitStringLength(boleto.ValorMulta.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
+                _segmentoR += _brancos110;
+                _segmentoR += "0000000000000000"; //16 zeros
+                _segmentoR += " "; //1 branco
+                _segmentoR += "000000000000"; //12 zeros
+                _segmentoR += "  "; //2 brancos
+                _segmentoR += "0"; //1 zero
+                _segmentoR += _brancos9;
+
+                _segmentoR = Utils.SubstituiCaracteresEspeciais(_segmentoR);
+
+                return _segmentoR;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do SEGMENTO R DO DETALHE do arquivo de REMESSA.", ex);
+            }
+        }
+
+
+
 
         #endregion
 
