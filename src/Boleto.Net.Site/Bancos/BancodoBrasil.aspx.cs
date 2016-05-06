@@ -90,6 +90,8 @@ public partial class Bancos_BancodoBrasil : System.Web.UI.Page
         boletoBancario.Boleto = b;
         boletoBancario.Boleto.Valida();
 
+        boletoBancario.AjustaTamanhoFonte(12, tamanhoFonteInstrucaoImpressao:14);
+
         boletoBancario.MostrarComprovanteEntrega = (Request.Url.Query == "?show");
     }
 }
