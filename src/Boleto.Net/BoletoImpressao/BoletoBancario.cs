@@ -260,7 +260,8 @@ namespace BoletoNet
         /// <param name="tamanhoFonteTextos">Padrão 10px</param>
         /// <param name="tamanhoFonteRotulos">Padrão 9.8px. É o maior tamanho sem que o exista uma quebra de linha no rótulo "Data processamento"</param>
         /// <param name="tamanhoFonteInstrucaoImpressao">Padrão 10px</param>
-        public void AjustaTamanhoFonte(double tamanhoFonteTextos = 10, double tamanhoFonteRotulos = 9.8, double tamanhoFonteInstrucaoImpressao = 9)
+        /// <param name="tamanhoFonteInstrucoes">Padrão 10px</param>
+        public void AjustaTamanhoFonte(double tamanhoFonteTextos = 10, double tamanhoFonteRotulos = 9.8, double tamanhoFonteInstrucaoImpressao = 9, double tamanhoFonteInstrucoes = 10)
         {
             _ajustaTamanhoFonte = true;
 
@@ -273,6 +274,7 @@ namespace BoletoNet
             html.AppendFormat(".ti$1 font-size: {0}px !important; $2", tamanhoFonteInstrucaoImpressao);
             html.AppendFormat(".ct$1 font-size: {0}px !important; $2", tamanhoFonteRotulos);
             html.AppendFormat(".t$1 font-size: {0}px !important; $2", tamanhoFonteRotulos);
+            html.AppendFormat(".it$1 font-size: {0}px !important; $2", tamanhoFonteInstrucoes);
             html.AppendLine("</style>");
 
             _ajustaTamanhoFonteHtml = html.ToString().Replace("$1", "{").Replace("$2", "}");

@@ -119,6 +119,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto.Valida();
 
             boletoBancario.RemoveSimboloMoedaValorDocumento = true;
+            boletoBancario.AjustaTamanhoFonte(12, 10, 14, 14);
 
             return boletoBancario.MontaHtmlEmbedded();
         }
