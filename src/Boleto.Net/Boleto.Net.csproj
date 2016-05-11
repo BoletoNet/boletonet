@@ -128,6 +128,7 @@
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento.cs" />
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_BancoBrasil.cs" />
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Caixa.cs" />
+	<Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Cecred.cs" />
     <Compile Include="Boleto\CodigoMovimento\ICodigoMovimento.cs" />
     <Compile Include="Boleto\CodigoRejeicao\AbstractCodigoRejeicao.cs" />
     <Compile Include="Boleto\CodigoRejeicao\CodigoRejeicao.cs" />
