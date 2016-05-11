@@ -166,7 +166,7 @@ namespace BoletoNet
             string nossoNumero = boleto.NossoNumero.Replace(".", "").Replace("-", "");
             nossoNumero = nossoNumero.Substring(0, 8);
             //campoLivre = "21" + boleto.Cedente.ContaBancaria.Agencia.Substring(1, 3) + boleto.Cedente.ContaBancaria.Conta + nossoNumero + "041";
-            string codCedente = boleto.Cedente.Codigo.Substring(4);// Os quatro primeiros digitos do código do cedente é sempre a agência
+            string codCedente = boleto.Cedente.Codigo.Substring(4, 7);// Os quatro primeiros digitos do código do cedente é sempre a agência
             campoLivre = "21" + boleto.Cedente.ContaBancaria.Agencia.Substring(1, 3) + codCedente + nossoNumero + "041";
             string ncCodBarra = CalcularNCCodBarras(campoLivre);
             Int32.TryParse(ncCodBarra.Substring(0, 1), out _primDigito);

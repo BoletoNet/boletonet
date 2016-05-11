@@ -260,7 +260,8 @@ namespace BoletoNet
         /// <param name="tamanhoFonteTextos">Padrão 10px</param>
         /// <param name="tamanhoFonteRotulos">Padrão 9.8px. É o maior tamanho sem que o exista uma quebra de linha no rótulo "Data processamento"</param>
         /// <param name="tamanhoFonteInstrucaoImpressao">Padrão 10px</param>
-        public void AjustaTamanhoFonte(double tamanhoFonteTextos = 10, double tamanhoFonteRotulos = 9.8, double tamanhoFonteInstrucaoImpressao = 9)
+        /// <param name="tamanhoFonteInstrucoes">Padrão 10px</param>
+        public void AjustaTamanhoFonte(double tamanhoFonteTextos = 10, double tamanhoFonteRotulos = 9.8, double tamanhoFonteInstrucaoImpressao = 9, double tamanhoFonteInstrucoes = 10)
         {
             _ajustaTamanhoFonte = true;
 
@@ -273,6 +274,7 @@ namespace BoletoNet
             html.AppendFormat(".ti$1 font-size: {0}px !important; $2", tamanhoFonteInstrucaoImpressao);
             html.AppendFormat(".ct$1 font-size: {0}px !important; $2", tamanhoFonteRotulos);
             html.AppendFormat(".t$1 font-size: {0}px !important; $2", tamanhoFonteRotulos);
+            html.AppendFormat(".it$1 font-size: {0}px !important; $2", tamanhoFonteInstrucoes);
             html.AppendLine("</style>");
 
             _ajustaTamanhoFonteHtml = html.ToString().Replace("$1", "{").Replace("$2", "}");
@@ -1204,9 +1206,44 @@ namespace BoletoNet
 
         public byte[] MontaBytesPDF(bool convertLinhaDigitavelToImage = false)
         {
-
             return (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(this.MontaHtmlEmbedded(convertLinhaDigitavelToImage, true));
         }
+        
+        /// <summary>
+        /// Lista de Boletos, objetos do tipo
+        /// BoletoBancario
+        /// </summary>
+        /// <param name="boletos">Lista de Boletos, objetos do tipo BoletoBancario</param>
+        /// <param name="tituloNaView">Título Que aparecerá na Aba do Navegador</param>
+        /// <param name="CustomSwitches">Custom WkHtmlToPdf global options</param>
+        /// <param name="tituloPDF">Título No Início do PDF</param>
+        /// <param name="PretoBranco">Preto e Branco = true</param>
+        /// <param name="convertLinhaDigitavelToImage">bool Converter a Linha Digitavel Em Imagem</param>
+        /// <returns>byte[], Vetor de bytes do PDF</returns>
+        public byte[] MontaBytesListaBoletosPDF(List<BoletoBancario> boletos, string tituloNaView = "", string CustomSwitches = "", string tituloPDF = "", bool PretoBranco = false, bool convertLinhaDigitavelToImage = false)
+        {
+            StringBuilder htmlBoletos = new StringBuilder();
+            htmlBoletos.Append("<html><head><title>");
+            htmlBoletos.Append(tituloNaView);
+            htmlBoletos.Append("</title><style type='text/css' media='screen,print'>");
+            htmlBoletos.Append(".break{ display: block; clear: both; page-break-after: always;}");
+            htmlBoletos.Append("</style></head><body>");
+            if (!string.IsNullOrEmpty(tituloPDF))
+            {
+                htmlBoletos.Append("<br/><center><h1>");
+                htmlBoletos.Append(tituloPDF);
+                htmlBoletos.Append("</h1></center><br/>");
+            }
+            foreach (BoletoBancario boleto in boletos)
+            {
+                htmlBoletos.Append("<div class='break'>");
+                htmlBoletos.Append(boleto.MontaHtmlEmbedded(convertLinhaDigitavelToImage, true));
+                htmlBoletos.Append("</div>");
+            }
+            htmlBoletos.Append("</body></html>");
+            return (new NReco.PdfGenerator.HtmlToPdfConverter() { CustomWkHtmlArgs = CustomSwitches, Grayscale = PretoBranco }).GeneratePdf(htmlBoletos.ToString());
+        }
+        
         #endregion Geração do Html OffLine
 
         public System.Drawing.Image GeraImagemCodigoBarras(Boleto boleto)
