@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Web.UI;
-using BoletoNet;
 using System.Globalization;
+using System.Web.UI;
 
 [assembly: WebResource("BoletoNet.Imagens.033.jpg", "image/jpg")]
-
 namespace BoletoNet
 {
     /// <author>  
@@ -141,7 +139,7 @@ namespace BoletoNet
             #region Grupo3
 
             string nossoNumero2 = nossoNumero.Substring(7, 6); //6
-            
+
             string tipoCarteira = boleto.Carteira;//3
             string calculoDV3 = Mod10(string.Format("{0}{1}{2}", nossoNumero2, IOS, tipoCarteira)).ToString();//1
             string grupo3 = string.Format("{0}{1}{2}{3}", nossoNumero2, IOS, tipoCarteira, calculoDV3);
@@ -167,7 +165,7 @@ namespace BoletoNet
 
             #region Grupo5
 
-             //4
+            //4
             string valorNominal = Utils.FormatCode(boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", ""), 10);//10
 
             string grupo5 = string.Format("{0}{1}", fatorVencimento, valorNominal);
@@ -199,7 +197,10 @@ namespace BoletoNet
         {
             //throw new NotImplementedException("Função não implementada.");
             if (!((boleto.Carteira == "102") || (boleto.Carteira == "101") || (boleto.Carteira == "201")))
-                throw new NotImplementedException("Carteira não implementada.");
+            {
+                string exceptionMessage = String.Format("A carteira '{0}' não foi implementada. Carteiras válidas: 101, 102 e 201.", boleto.Carteira);
+                throw new NotImplementedException(exceptionMessage);
+            }
 
             //Banco 353  - Utilizar somente 08 posições do Nosso Numero (07 posições + DV), zerando os 05 primeiros dígitos
             if (this.Codigo == 353)
@@ -218,7 +219,7 @@ namespace BoletoNet
             if (this.Codigo == 33)
             {
                 if (boleto.NossoNumero.Length == 7 && boleto.Carteira.Equals("101"))
-                    boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero,"0", 12, true);
+                    boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, "0", 12, true);
 
                 if (boleto.NossoNumero.Length != 12)
                     throw new NotSupportedException("Nosso Número deve ter 12 posições para o banco 033.");
@@ -226,10 +227,12 @@ namespace BoletoNet
             if (boleto.Cedente.Codigo.ToString().Length > 7)
                 throw new NotImplementedException("Código cedente deve ter 7 posições.");
 
-            boleto.LocalPagamento += "Grupo Santander - GC";
+            // Atribui o nome do banco ao local de pagamento
+            if (string.IsNullOrEmpty(boleto.LocalPagamento))
+                boleto.LocalPagamento = "Grupo Santander - GC";
 
             if (EspecieDocumento.ValidaSigla(boleto.EspecieDocumento) == "")
-               boleto.EspecieDocumento = new EspecieDocumento_Santander("2");
+                boleto.EspecieDocumento = new EspecieDocumento_Santander("2");
 
             if (boleto.PercentualIOS > 10 & (this.Codigo == 8 || this.Codigo == 33 || this.Codigo == 353))
                 throw new Exception("O percentual do IOS é limitado a 9% para o Banco Santander");
@@ -322,7 +325,7 @@ namespace BoletoNet
 
             while (pos <= seq.Length)
             {
-                num = Microsoft.VisualBasic.Strings.Mid(seq, pos, 1);
+                num = seq.Mid(pos, 1);
                 total += Convert.ToInt32(num) * mult;
 
                 mult -= 1;
@@ -514,7 +517,7 @@ namespace BoletoNet
                 _header += Utils.FitStringLength(cedente.Codigo.ToString(), 8, 8, '0', 0, true, true, true);
                 if (cedente.ContaBancaria.Conta.Length == 9 || (!String.IsNullOrEmpty(cedente.ContaBancaria.DigitoConta) && cedente.ContaBancaria.Conta.Length == 8))
                 {
-                    _header += Utils.FitStringLength(cedente.ContaBancaria.Conta.Substring(0, 7), 8, 8, '0', 0, true, true, true);
+                    _header += Utils.FitStringLength(cedente.ContaBancaria.Conta.Substring(0, 8), 8, 8, '0', 0, true, true, true);
                 }
                 else
                 {
@@ -678,10 +681,10 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true);
                 _detalhe += Utils.FitStringLength(boleto.Cedente.Codigo.ToString(), 8, 8, '0', 0, true, true, true);
                 if (boleto.Cedente.ContaBancaria.Conta.Length == 9 || (!String.IsNullOrEmpty(boleto.Cedente.ContaBancaria.DigitoConta) && boleto.Cedente.ContaBancaria.Conta.Length == 8))
-                    _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta.Substring(0, 7), 8, 8, '0', 0, true, true, true);
+                    _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta.Substring(0, 8), 8, 8, '0', 0, true, true, true);
                 else
                     _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 8, 8, '0', 0, true, true, true);
-                 //Bloco if-else adicionado por Jéferson (jefhtavares). Segundo o Banco o código de transmissão muda de acordo com o tamanho (length) da conta corrente
+                //Bloco if-else adicionado por Jéferson (jefhtavares). Segundo o Banco o código de transmissão muda de acordo com o tamanho (length) da conta corrente
 
                 //Número de controle do participante, controle do cedente X(25)
                 _detalhe += controle_partic;
@@ -755,7 +758,7 @@ namespace BoletoNet
                 {
                     _detalhe += Utils.FitStringLength("0" + boleto.Cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true);
                 }
-                
+
 
                 //Espécie de documento
                 //01 - Duplicata
