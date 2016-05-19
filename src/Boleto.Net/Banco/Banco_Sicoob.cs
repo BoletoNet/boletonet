@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Web.UI;
 
@@ -39,47 +40,24 @@ namespace BoletoNet
         public override void FormataNossoNumero(Boleto boleto)
         {
             //Variaveis
-            int resultado = 0;
-            int dv = 0;
-            int resto = 0;
-            String constante = "319731973197319731973";
-            String cooperativa = boleto.Cedente.ContaBancaria.Agencia;
-            String codigo = boleto.Cedente.Codigo + boleto.Cedente.DigitoCedente.ToString();
-            String nossoNumero = boleto.NossoNumero;
-            StringBuilder seqValidacao = new StringBuilder();
+            var resultado = 0;
+            int dv;
+            const string constante = "319731973197319731973";
+            var cooperativa = boleto.Cedente.ContaBancaria.Agencia.PadLeft(4, '0');
+            var codigo = (boleto.Cedente.Codigo + boleto.Cedente.DigitoCedente).PadLeft(10, '0');
+            var nossoNumero = boleto.NossoNumero.PadLeft(7, '0');
+            var sequencia = string.Concat(cooperativa, codigo, nossoNumero);
+            
+            // Multiplicando cada posição por sua respectiva posição na constante.
+            for (var i = 0; i < 21; i++)
+            {
+                resultado = resultado + Convert.ToInt16(sequencia[i].ToString()) * Convert.ToInt16(constante[i].ToString());
+            }
 
-            /*
-             * Preenchendo com zero a esquerda
-             */
-            //Tratando cooperativa
-            for (int i = 0; i < 4 - cooperativa.Length; i++)
-            {
-                seqValidacao.Append("0");
-            }
-            seqValidacao.Append(cooperativa);
-            //Tratando cliente
-            for (int i = 0; i < 10 - codigo.Length; i++)
-            {
-                seqValidacao.Append("0");
-            }
-            seqValidacao.Append(codigo);
-            //Tratando nosso número
-            for (int i = 0; i < 7 - nossoNumero.Length; i++)
-            {
-                seqValidacao.Append("0");
-            }
-            seqValidacao.Append(nossoNumero);
+            // Calculando mod 11
+            var resto = resultado % 11;
 
-            /*
-             * Multiplicando cada posição por sua respectiva posição na constante.
-             */
-            for (int i = 0; i < 21; i++)
-            {
-                resultado = resultado + (Convert.ToInt16(seqValidacao.ToString().Substring(i, 1)) * Convert.ToInt16(constante.Substring(i, 1)));
-            }
-            //Calculando mod 11
-            resto = resultado % 11;
-            //Verifica resto
+            // Verifica resto
             if (resto == 1 || resto == 0)
             {
                 dv = 0;
@@ -88,9 +66,10 @@ namespace BoletoNet
             {
                 dv = 11 - resto;
             }
-            //Montando nosso número
-            boleto.NossoNumero = boleto.NossoNumero + "-" + dv.ToString();
+
+            // Montando nosso número
             boleto.DigitoNossoNumero = dv.ToString();
+            boleto.NossoNumero = string.Concat(boleto.NossoNumero, "-", boleto.DigitoNossoNumero);
         }
 
         /**
@@ -108,83 +87,106 @@ namespace BoletoNet
 
         public void FormataCodigoCliente(Boleto boleto)
         {
-            if (boleto.Cedente.Codigo.Length == 7)
+            if (boleto.Cedente.Codigo.Length == 7) {
                 boleto.Cedente.DigitoCedente = Convert.ToInt32(boleto.Cedente.Codigo.Substring(6));
+                boleto.Cedente.Codigo = boleto.Cedente.Codigo.Substring(0, 6);
+            }
 
-            boleto.Cedente.Codigo = boleto.Cedente.Codigo.Substring(0, 6).PadLeft(6, '0');
+            if (boleto.Cedente.DigitoCedente.Equals(-1)) {
+                boleto.Cedente.DigitoCedente = int.Parse(boleto.Cedente.Codigo.Substring(boleto.Cedente.Codigo.Length - 1));
+                boleto.Cedente.Codigo = boleto.Cedente.Codigo.Substring(0, boleto.Cedente.Codigo.Length - 1);
+            }
+
+            if (boleto.Cedente.Codigo.Length < 6) {
+                boleto.Cedente.Codigo = boleto.Cedente.Codigo.PadLeft(6, '0');
+            }
+        }
+
+        private static void FormatarModalidade(Boleto boleto) 
+        {
+            if (!string.IsNullOrEmpty(boleto.TipoModalidade)) {
+                return;
+            }
+
+            if (boleto.Carteira == "1") {
+                boleto.TipoModalidade = "01";
+            } else if (boleto.Carteira == "3") {
+                boleto.TipoModalidade = "03";
+            }
         }
 
         /**
          * FormataNumeroTitulo
          * Inclui 0 a esquerda para preencher o tamanho do campo
          */
-        public String FormataNumeroTitulo(Boleto boleto)
+        public string FormataNumeroTitulo(Boleto boleto) 
         {
-            var novoTitulo = new StringBuilder();
-            novoTitulo.Append(boleto.NossoNumero.Replace("-", "").PadLeft(8, '0'));
-            return novoTitulo.ToString();
+            return boleto.NossoNumero.Replace("-", "").PadLeft(8, '0');
         }
 
         /**
          * FormataNumeroParcela
          * Inclui 0 a esquerda para preencher o tamanho do campo
          */
-        public String FormataNumeroParcela(Boleto boleto)
+        public string FormataNumeroParcela(Boleto boleto)
         {
             if (boleto.NumeroParcela <= 0)
                 boleto.NumeroParcela = 1;
-
-            //Variaveis
-            StringBuilder novoNumero = new StringBuilder();
- 
-            //Formatando
-            for (int i = 0; i < (3 - boleto.NumeroParcela.ToString().Length); i++)
-            {
-                novoNumero.Append("0");
-            }
-            novoNumero.Append(boleto.NumeroParcela.ToString());
-            return novoNumero.ToString();
+            
+            return boleto.NumeroParcela.ToString().PadLeft(3, '0');
         }
 
         public override void FormataCodigoBarra(Boleto boleto)
         {
-            //Variaveis
-            int peso = 2;
-            int soma = 0;
-            int resultado = 0;
-            int dv = 0;
-            String codigoValidacao = boleto.Banco.Codigo.ToString() + boleto.Moeda.ToString() + FatorVencimento(boleto).ToString() +
-                Utils.FormatCode(boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", ""), 10) + boleto.Carteira +
-                boleto.Cedente.ContaBancaria.Agencia + boleto.TipoModalidade + boleto.Cedente.Codigo + boleto.Cedente.DigitoCedente +
-                this.FormataNumeroTitulo(boleto) + this.FormataNumeroParcela(boleto);
+            // Variáveis
+            var peso = 2;
+            var soma = 0;
+            var codigoBuilder = new StringBuilder();
 
-            //Calculando
-            for (int i = (codigoValidacao.Length - 1); i >= 0; i--)
+            codigoBuilder.Append(boleto.Banco.Codigo);
+            codigoBuilder.Append(boleto.Moeda);
+            codigoBuilder.Append(FatorVencimento(boleto));
+            codigoBuilder.Append(boleto.ValorBoleto.FormatarDinheiro().PadLeft(10, '0'));
+            codigoBuilder.Append(boleto.Carteira);
+            codigoBuilder.Append(boleto.Cedente.ContaBancaria.Agencia);
+            codigoBuilder.Append(boleto.TipoModalidade);
+            codigoBuilder.Append(boleto.Cedente.Codigo);
+            codigoBuilder.Append(boleto.Cedente.DigitoCedente);
+            codigoBuilder.Append(FormataNumeroTitulo(boleto));
+            codigoBuilder.Append(FormataNumeroParcela(boleto));
+
+            var codigoValidacao = codigoBuilder.ToString();
+
+            // Calculando
+            for (var i = (codigoValidacao.Length - 1); i >= 0; i--)
             {
-                soma = soma + (Convert.ToInt16(codigoValidacao.Substring(i, 1)) * peso);
+                soma = soma + Convert.ToInt16(codigoValidacao[i].ToString()) * peso;
                 peso++;
-                //Verifica peso
+
+                // Verifica peso
                 if (peso > 9)
                 {
                     peso = 2;
                 }
             }
-            resultado = soma % 11;
-            dv = 11 - resultado;
-            //Verificando resultado
+
+            var resultado = soma % 11;
+            var dv = 11 - resultado;
+
+            // Verificando resultado
             if (dv == 0 || dv == 1 || dv > 9)
             {
                 dv = 1;
             }
-            //Formatando
-            boleto.CodigoBarra.Codigo = codigoValidacao.Substring(0, 4) + dv + codigoValidacao.Substring(4);
+
+            // Formatando
+            boleto.CodigoBarra.Codigo = codigoValidacao.Insert(4, dv.ToString());
         }
 
         public override void FormataNumeroDocumento(Boleto boleto)
         {
             throw new NotImplementedException("Função ainda não implementada.");
-        }
-
+        }
         public override void FormataLinhaDigitavel(Boleto boleto)
         {
             //Variaveis
@@ -287,10 +289,11 @@ namespace BoletoNet
             boleto.LocalPagamento = "PAGÁVEL EM QUALQUER CORRESPONDENTE BANCÁRIO PERTO DE VOCÊ!";
 
             //Aplicando formatações
-            this.FormataCodigoCliente(boleto);
-            this.FormataNossoNumero(boleto);
-            this.FormataCodigoBarra(boleto);
-            this.FormataLinhaDigitavel(boleto);
+            FormataCodigoCliente(boleto);
+            FormatarModalidade(boleto);
+            FormataNossoNumero(boleto);
+            FormataCodigoBarra(boleto);
+            FormataLinhaDigitavel(boleto);
         }
 
         #endregion VALIDAÇÕES
