@@ -4,7 +4,7 @@ using BoletoNet;
 using System.Text;
 using BoletoNet.EDI.Banco;
 
-[assembly: WebResource("BoletoNet.Images.085.jpg", "image/jpg")]
+[assembly: WebResource("BoletoNet.Imagens.085.jpg", "image/jpg")]
 
 namespace BoletoNet {
 
