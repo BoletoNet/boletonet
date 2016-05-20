@@ -654,6 +654,87 @@ namespace BoletoNet
         }
 
         #endregion
+        
+        #region LEITURA DE RETORNO CNAB240
+        //Método Criado por Ivan Teles (ivan@idevweb.com.br)
+        public override DetalheSegmentoTRetornoCNAB240 LerDetalheSegmentoTRetornoCNAB240(string registro)
+        {
+
+            try
+            {
+                if (!registro.Substring(13, 1).Equals(@"T"))
+                {
+                    throw new Exception("Registro inválida. O detalhe não possuí as características do segmento T.");
+                }
+                DetalheSegmentoTRetornoCNAB240 segmentoT = new DetalheSegmentoTRetornoCNAB240(registro)
+                {
+                    CodigoBanco = Convert.ToInt32(registro.Substring(0, 3)),
+                    idCodigoMovimento = Convert.ToInt32(registro.Substring(15, 2)),
+                    Agencia = Convert.ToInt32(registro.Substring(17, 5)),
+                    DigitoAgencia = registro.Substring(22, 1),
+                    Conta = Convert.ToInt64(registro.Substring(23, 12)),
+                    DigitoConta = registro.Substring(35, 1),
+                    DACAgenciaConta = string.IsNullOrEmpty(registro.Substring(36, 1).Trim()) ? 0 : Convert.ToInt32(registro.Substring(36, 1)),
+                    NossoNumero = registro.Substring(37, 20),
+                    CodigoCarteira = Convert.ToInt32(registro.Substring(57, 1)),
+                    NumeroDocumento = registro.Substring(58, 15),
+                    DataVencimento = registro.Substring(73, 8) == "00000000" ? DateTime.Now : DateTime.ParseExact(registro.Substring(73, 8), "ddMMyyyy", CultureInfo.InvariantCulture),
+                    ValorTitulo = Convert.ToDecimal(registro.Substring(81, 13)),
+                    IdentificacaoTituloEmpresa = registro.Substring(105, 25),
+                    TipoInscricao = Convert.ToInt32(registro.Substring(132, 1)),
+                    NumeroInscricao = registro.Substring(133, 15),
+                    NomeSacado = registro.Substring(148, 40),
+                    ValorTarifas = Convert.ToDecimal(registro.Substring(198, 13)),
+                    CodigoRejeicao = registro.Substring(213, 10),
+                    UsoFebraban = registro.Substring(223, 17)
+                };
+
+                return segmentoT;
+            }
+            catch (Exception ex)
+            {
+                //TrataErros.Tratar(ex);
+                throw new Exception("Erro ao processar arquivo de RETORNO - SEGMENTO T.", ex);
+            }
+        }
+
+        //Método Criado por Ivan Teles (ivan@idevweb.com.br)
+        public override DetalheSegmentoURetornoCNAB240 LerDetalheSegmentoURetornoCNAB240(string registro)
+        {
+            try
+            {
+
+                if (!registro.Substring(13, 1).Equals(@"U"))
+                {
+                    throw new Exception("Registro inválida. O detalhe não possuí as características do segmento U.");
+                }
+
+                var segmentoU = new DetalheSegmentoURetornoCNAB240(registro)
+                {
+                    Servico_Codigo_Movimento_Retorno = Convert.ToDecimal(registro.Substring(15, 2)),
+                    JurosMultaEncargos = Convert.ToDecimal(registro.Substring(17, 13)),
+                    ValorDescontoConcedido = Convert.ToDecimal(registro.Substring(32, 13)),
+                    ValorAbatimentoConcedido = Convert.ToDecimal(registro.Substring(47, 13)),
+                    ValorIOFRecolhido = Convert.ToDecimal(registro.Substring(62, 13)),
+                    ValorPagoPeloSacado = Convert.ToDecimal(registro.Substring(77, 13)),
+                    ValorLiquidoASerCreditado = Convert.ToDecimal(registro.Substring(92, 13)),
+                    ValorOutrasDespesas = Convert.ToDecimal(registro.Substring(107, 13)),
+                    ValorOutrosCreditos = Convert.ToDecimal(registro.Substring(122, 13)),
+                    DataOcorrencia = DateTime.ParseExact(registro.Substring(137, 8), "ddMMyyyy", CultureInfo.InvariantCulture),
+                    CodigoOcorrenciaSacado = registro.Substring(153, 4)
+                };
+                segmentoU.DataCredito = registro.Substring(145, 8) == "00000000" ? segmentoU.DataOcorrencia : DateTime.ParseExact(registro.Substring(145, 8), "ddMMyyyy", CultureInfo.InvariantCulture);
+                
+
+                return segmentoU;
+            }
+            catch (Exception ex)
+            {
+                //TrataErros.Tratar(ex);
+                throw new Exception("Erro ao processar arquivo de RETORNO - SEGMENTO U.", ex);
+            }
+        }
+        #endregion
 
         /// <summary>
         /// Efetua as Validações dentro da classe Boleto, para garantir a geração da remessa
