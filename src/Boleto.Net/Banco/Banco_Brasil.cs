@@ -1468,13 +1468,6 @@ namespace BoletoNet
                             codigo_protesto = "3";
                             dias_protesto = "00";
                             break;
-                        default:
-                            /*codigo_protesto = "3"; 
-                            dias_protesto = "00";*/
-                            break;
-                        /*
-                         * Bloco do "default" comentado por Jéferson, jefhtavares em 26/11 se fossem adicionadas mais de duas instruções e a instrução de protesto fosse a última a mesma não iria aparecer no arquivo
-                         */
                     }
                 }
 
@@ -2029,6 +2022,45 @@ namespace BoletoNet
             }
         }
 
+        private static System.Tuple<string, string> ExtrairInstrucoes(Boleto boleto) {
+            var vInstrucao1 = "0";
+            var vInstrucao2 = "0";
+
+            var instrucaoProtestarDiasCorridos = boleto.Instrucoes
+                .FirstOrDefault(i => i.Codigo == (int)EnumInstrucoes_BancoBrasil.ProtestarAposNDiasCorridos);
+
+            if (instrucaoProtestarDiasCorridos != null) {
+                if (instrucaoProtestarDiasCorridos.QuantidadeDias >= 45) {
+                    vInstrucao1 = "45";
+                } else if (instrucaoProtestarDiasCorridos.QuantidadeDias >= 30) {
+                    vInstrucao1 = "30";
+                } else if (instrucaoProtestarDiasCorridos.QuantidadeDias >= 25) {
+                    vInstrucao1 = "25";
+                } else if (instrucaoProtestarDiasCorridos.QuantidadeDias >= 20) {
+                    vInstrucao1 = "20";
+                } else if (instrucaoProtestarDiasCorridos.QuantidadeDias >= 15) {
+                    vInstrucao1 = "15";
+                } else if (instrucaoProtestarDiasCorridos.QuantidadeDias <= 14) {
+                    vInstrucao1 = "10";
+                }
+            }
+
+            var instrucaoProtestarDiasUteis = boleto.Instrucoes
+                .FirstOrDefault(i => i.Codigo == (int)EnumInstrucoes_BancoBrasil.ProtestarAposNDiasUteis);
+
+            if (instrucaoProtestarDiasUteis != null) {
+                if (instrucaoProtestarDiasUteis.QuantidadeDias == 3) {
+                    vInstrucao2 = "3";
+                } else if (instrucaoProtestarDiasUteis.QuantidadeDias == 4) {
+                    vInstrucao2 = "4";
+                } else if (instrucaoProtestarDiasUteis.QuantidadeDias >= 5) {
+                    vInstrucao2 = "5";
+                }
+            }
+
+            return Tuple.Create(vInstrucao1, vInstrucao2);
+        }
+
         /// <summary>
         /// Formata o nosso número para ser utilizado no arquivo de remessa.
         /// </summary>
@@ -2190,32 +2222,10 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0150, 001, 0, boleto.Aceite, ' '));                             //150-150
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAA___________, 0151, 006, 0, boleto.DataProcessamento, ' '));                  //151-156
                 //
-                #region Instruções
-                string vInstrucao1 = "0";
-                string vInstrucao2 = "0";
-                //string vInstrucao3 = "0";
-                switch (boleto.Instrucoes.Count)
-                {
-                    case 1:
-                        vInstrucao1 = boleto.Instrucoes[0].Codigo.ToString();
-                        vInstrucao2 = "0";
-                        //vInstrucao3 = "0";
-                        break;
-                    case 2:
-                        vInstrucao1 = boleto.Instrucoes[0].Codigo.ToString();
-                        vInstrucao2 = boleto.Instrucoes[1].Codigo.ToString();
-                        //vInstrucao3 = "0";
-                        break;
-                    case 3:
-                        vInstrucao1 = boleto.Instrucoes[0].Codigo.ToString();
-                        vInstrucao2 = boleto.Instrucoes[1].Codigo.ToString();
-                        //vInstrucao3 = boleto.Instrucoes[2].Codigo.ToString();
-                        break;
-                }
-                #endregion
-                //
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0157, 002, 0, vInstrucao1, '0'));                               //157-158
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0159, 002, 0, vInstrucao2, '0'));                               //159-160
+                var instrucoes = ExtrairInstrucoes(boleto);
+
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0157, 002, 0, instrucoes.Item1, '0'));                          //157-158
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0159, 002, 0, instrucoes.Item2, '0'));                          //159-160
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0161, 013, 2, boleto.JurosMora, '0'));                          //161-173
 
                 #region Instruções Conforme Código de Ocorrência...

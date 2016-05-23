@@ -114,34 +114,12 @@ namespace BoletoNet
                         this.Descricao = "Protesto para fins falimentares";
                         break;
                     case EnumInstrucoes_BancoBrasil.ProtestarAposNDiasCorridos:
-                        if (nrDias >= 45) {
-                            Codigo = 45;
-                        } else if (nrDias >= 30) {
-                            Codigo = 30;
-                        } else if (nrDias >= 25) {
-                            Codigo = 25;
-                        } else if (nrDias >= 20) {
-                            Codigo = 20;
-                        } else if (nrDias >= 15) {
-                            Codigo = 15;
-                        } else if (nrDias <= 14) {
-                            Codigo = 10;
-                        }
-
+                        Codigo = (int)EnumInstrucoes_BancoBrasil.ProtestarAposNDiasCorridos;
                         Descricao = "Protestar no " + nrDias + "º dia corrido após vencimento";
-
                         break;
                     case EnumInstrucoes_BancoBrasil.ProtestarAposNDiasUteis:
-                        if(nrDias == 3) {
-                            Codigo = 3;
-                        } else if(nrDias == 4) {
-                            Codigo = 4;
-                        } else if(nrDias >= 5) {
-                            Codigo = 5;
-                        }
-
+                        Codigo = (int) EnumInstrucoes_BancoBrasil.ProtestarAposNDiasUteis;
                         Descricao = "Protestar no " + nrDias + "º dia útil após vencimento";
-
                         break;
                     case EnumInstrucoes_BancoBrasil.NaoReceberAposNDias:
                         this.Codigo = (int)EnumInstrucoes_BancoBrasil.NaoReceberAposNDias;
