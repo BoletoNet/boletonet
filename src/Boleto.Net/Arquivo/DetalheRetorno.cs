@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BoletoNet
 {
@@ -73,6 +71,8 @@ namespace BoletoNet
         private DateTime _dataLiquidacao = new DateTime(1, 1, 1);
         private int _sequencial = 0;
         private string _NossoNumeroComDV;
+        private decimal _valorMulta;
+
         #endregion
 
         #endregion
@@ -453,6 +453,18 @@ namespace BoletoNet
         {
             get { return _sequencial; }
             set { _sequencial = value; }
+        }
+
+        public decimal ValorMulta
+        {
+            get
+            {
+                return _valorMulta;
+            }
+            set
+            {
+                _valorMulta = value;
+            }
         }
 
         #endregion
