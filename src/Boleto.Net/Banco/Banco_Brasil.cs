@@ -1411,7 +1411,7 @@ namespace BoletoNet
                 _segmentoP += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
                 _segmentoP += Utils.FitStringLength(boleto.ValorBoleto.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
                 _segmentoP += "00000 ";
-                _segmentoP += Utils.FitStringLength(boleto.EspecieDocumento.Codigo.ToString(), 2, 2, '0', 0, true, true, true);
+                _segmentoP += Utils.FitStringLength(boleto.EspecieDocumento.ObterCodigo(boleto, TipoArquivo.CNAB240), 2, 2, '0', 0, true, true, true);
                 _segmentoP += "N";
                 _segmentoP += Utils.FitStringLength(boleto.DataDocumento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
 

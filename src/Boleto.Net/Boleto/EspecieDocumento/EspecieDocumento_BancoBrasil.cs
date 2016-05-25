@@ -27,6 +27,8 @@ namespace BoletoNet
 
     public class EspecieDocumento_BancoBrasil : AbstractEspecieDocumento, IEspecieDocumento
     {
+        public EnumEspecieDocumento_BancoBrasil EspecieDocumento { get; set; }
+
         #region Construtores
 
         public EspecieDocumento_BancoBrasil()
@@ -80,7 +82,9 @@ namespace BoletoNet
             {
                 this.Banco = new Banco_Brasil();
 
-                switch (getEnumEspecieByCodigo(idCodigo))
+                EspecieDocumento = getEnumEspecieByCodigo(idCodigo);
+
+                switch (EspecieDocumento)
                 {
                     case EnumEspecieDocumento_BancoBrasil.Cheque:
                         this.Codigo = getCodigoEspecieByEnum(EnumEspecieDocumento_BancoBrasil.Cheque);
@@ -174,5 +178,42 @@ namespace BoletoNet
         }
 
         #endregion
+
+        public override string ObterCodigo(Boleto boleto, TipoArquivo tipoArquivo) {
+            if (tipoArquivo == TipoArquivo.CNAB240) {
+                switch (EspecieDocumento) {
+                    case EnumEspecieDocumento_BancoBrasil.DuplicataMercantil:
+                        return "02";
+                    case EnumEspecieDocumento_BancoBrasil.NotaPromissoria:
+                        return "12";
+                    case EnumEspecieDocumento_BancoBrasil.Recibo:
+                        return "17";
+                    case EnumEspecieDocumento_BancoBrasil.LetraCambio:
+                        return "07";
+                    case EnumEspecieDocumento_BancoBrasil.Warrant:
+                        return "26";
+                    case EnumEspecieDocumento_BancoBrasil.Cheque:
+                        return "01";
+                    case EnumEspecieDocumento_BancoBrasil.DuplicataServico:
+                        return "04";
+                    case EnumEspecieDocumento_BancoBrasil.NotaDebito:
+                        return "19";
+                    case EnumEspecieDocumento_BancoBrasil.DividaAtivaUniao:
+                        return "29";
+                    case EnumEspecieDocumento_BancoBrasil.DividaAtivaEstado:
+                        return "27";
+                    case EnumEspecieDocumento_BancoBrasil.DividaAtivaMunicipio:
+                        return "28";
+                    case EnumEspecieDocumento_BancoBrasil.NotaSeguro:
+                        return "16";
+                    case EnumEspecieDocumento_BancoBrasil.ApoliceSeguro:
+                        return "20";
+                    default:
+                        throw new ApplicationException($"Espécie '{Codigo}' inválida para a carteira '{boleto.Carteira}'.");
+                }
+            }
+
+            return Codigo;
+        }
     }
 }

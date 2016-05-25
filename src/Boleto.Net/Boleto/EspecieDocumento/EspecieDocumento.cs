@@ -186,6 +186,10 @@ namespace BoletoNet
 
         # endregion
 
+        public override string ObterCodigo(Boleto boleto, TipoArquivo tipoArquivo) {
+            return _IEspecieDocumento.ObterCodigo(boleto, tipoArquivo);
+        }
+
         public static string ValidaSigla(IEspecieDocumento especie)
         {
             try
