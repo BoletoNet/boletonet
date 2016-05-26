@@ -1,6 +1,6 @@
 using System;
 using System.Web.UI;
-using Microsoft.VisualBasic;
+using BoletoNet.Util;
 
 [assembly: WebResource("BoletoNet.Imagens.399.jpg", "image/jpg")]
 namespace BoletoNet
@@ -63,12 +63,26 @@ namespace BoletoNet
                 if (nossoNumero == 0)
                     throw new NotImplementedException("Nosso número inválido");
                 // Correção: O campo “Código do Documento” deve ser composto somente de código numérico 
-                // com até 13 posições e 3 posições para os dígitos verificadores, utilizando 16 posições no máximo. 
-                if (tamanhoNossoNumero > 13)
-                    throw new NotImplementedException("A quantidade de dígitos do nosso número para a carteira " + boleto.Carteira + ", são 13 números.");
+                // com até 10 posições e 1 posições para os dígitos verificadores, utilizando 11 posições no máximo (CSB). 
+                // com até 13 posições e 3 posições para os dígitos verificadores, utilizando 16 posições no máximo (CNR). 
+                switch (boleto.Carteira.ToUpper())
+                {
+                    case "CSB":
+                        if (tamanhoNossoNumero > 10)
+                            boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 13);
 
-                if (tamanhoNossoNumero < 13)
-                    boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 13);
+                        if (tamanhoNossoNumero < 10)
+                            boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 10);
+                        break;
+
+                    case "CNR":
+                        if (tamanhoNossoNumero > 13)
+                            throw new NotImplementedException("A quantidade de dígitos do nosso número para a carteira " + boleto.Carteira + ", são 13 números.");
+
+                        if (tamanhoNossoNumero < 13)
+                            boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 13);
+                        break;
+                }
 
                 // Calcula o DAC do Nosso Número
                 // Nosso Número = Range(5) + Numero Sequencial(8)
@@ -97,6 +111,7 @@ namespace BoletoNet
                 throw new Exception("Erro ao validar boletos.", e);
             }
         }
+
 
         # endregion
 
@@ -132,12 +147,12 @@ namespace BoletoNet
                 switch (boleto.Carteira.ToUpper())
                 {
                     case "CSB": boleto.CodigoBarra.Codigo =
-                            // Código de Barras
-                            //banco & moeda & fator & valor & nossonumero & dac_nossonumero & agencia & conta & "00" & "1"
-                        string.Format("{0}{1}{2}{3}{4}{5}{6}001", Codigo, boleto.Moeda,
+                        // Código de Barras
+                        //banco & moeda & fator & valor & nossonumero & dac_nossonumero & agencia & conta & digitosconta & "00" & "1"
+                         string.Format("{0}{1}{2}{3}{4}{5}{6}001", Codigo, boleto.Moeda,
                                       FatorVencimento(boleto), valorBoleto, boleto.NossoNumero + _dacNossoNumero,
                                       Utils.FormatCode(boleto.Cedente.ContaBancaria.Agencia, 4),
-                                      Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 7));
+                                      Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta, 7));                        
                         break;
                     case "CNR":
                         // Código de Barras
@@ -193,7 +208,20 @@ namespace BoletoNet
             try
             {
                 //string numeroDocumento = Utils.FormatCode(boleto.NumeroDocumento.ToString(), 13);
-                string nossoNumero = Utils.FormatCode(boleto.NossoNumero.ToString(), 13);
+                string nossoNumero = boleto.NossoNumero.ToString();
+                switch (boleto.Carteira.ToUpper())
+                {
+                    case "CSB":
+                        nossoNumero = Utils.FormatCode(boleto.NossoNumero.ToString(), 10);
+                        break;
+
+                    case "CNR":
+                        nossoNumero = Utils.FormatCode(boleto.NossoNumero.ToString(), 13);
+                        break;
+                    default:
+                        throw new NotImplementedException("Carteira não implementada. Use CSB ou CNR.");
+                }
+
                 string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo.ToString(), 7);
 
                 string C1 = string.Empty;
@@ -241,7 +269,7 @@ namespace BoletoNet
 
                         #region FFFFF.FF001Z
 
-                        FFFFFFF = Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 7);
+                        FFFFFFF = Utils.FormatCode(string.Format("{0}{1}", boleto.Cedente.ContaBancaria.Conta, boleto.Cedente.ContaBancaria.DigitoConta), 7);
                         Z = Mod10(FFFFFFF + "001").ToString();
 
                         C3 = string.Format("{0}.", FFFFFFF.Substring(0, 5));
@@ -348,7 +376,7 @@ namespace BoletoNet
 
             for (int i = seq.Length; i > 0; i--)
             {
-                s = s + (Convert.ToInt32(Microsoft.VisualBasic.Strings.Mid(seq, i, 1)) * p);
+                s = s + (Convert.ToInt32(seq.Mid( i, 1)) * p);
                 if (p == b)
                     p = 2;
                 else
@@ -377,7 +405,28 @@ namespace BoletoNet
         /// </summary>
         public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
         {
-            throw new NotImplementedException("Função não implementada.");
+            try
+            {
+                string _header = " ";
+
+                base.GerarHeaderRemessa(numeroConvenio, cedente, tipoArquivo, numeroArquivoRemessa);
+
+                switch (tipoArquivo)
+                {
+                    case TipoArquivo.CNAB400:
+                        _header = GerarHeaderRemessaCNAB400(cedente, numeroArquivoRemessa);
+                        break;
+                    case TipoArquivo.Outro:
+                        throw new Exception("Tipo de arquivo inexistente.");
+                }
+
+                return _header;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do HEADER do arquivo de REMESSA.", ex);
+            }
         }
 
         public string GerarHeaderRemessaCNAB240()
@@ -385,9 +434,40 @@ namespace BoletoNet
             throw new NotImplementedException("Função não implementada.");
         }
 
-        public string GerarHeaderRemessaCNAB400(int numeroConvenio, Cedente cedente, int numeroArquivoRemessa)
+        public string GerarHeaderRemessaCNAB400(Cedente cedente, int numeroArquivoRemessa)
         {
-            throw new NotImplementedException("Função não implementada.");
+            try
+            {
+                string _header = "";
+                _header += "0";
+                _header += "1";
+                _header += "REMESSA";
+                _header += "01";
+                _header += Utils.FitStringLength("COBRANCA", 15, 15, ' ', 0, true, true, false);
+                _header += "0";
+                _header += Utils.FitStringLength(cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true);
+                _header += "55";
+                _header += Utils.FitStringLength(cedente.ContaBancaria.Conta, 11, 11, '0', 0, true, true, true);
+                _header += "  ";
+                _header += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false);
+                _header += "399";
+                _header += Utils.FitStringLength("HSBC", 15, 15, ' ', 0, true, true, false);
+                _header += DateTime.Now.ToString("ddMMyy");
+                _header += "01600";
+                _header += "BPI";
+                _header += "  ";
+                _header += "LANCV08";
+                _header += Utils.FitStringLength(string.Empty, 277, 277, ' ', 0, true, true, false);
+                _header += "000001";
+
+                _header = Utils.SubstituiCaracteresEspeciais(_header);
+
+                return _header;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao gerar HEADER do arquivo de remessa do CNAB400.", ex);
+            }
         }
         public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos)
         {
@@ -403,7 +483,28 @@ namespace BoletoNet
         /// </summary>
         public override string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
         {
-            throw new NotImplementedException("Função não implementada.");
+            try
+            {
+                string _detalhe = " ";
+
+                base.GerarDetalheRemessa(boleto, numeroRegistro, tipoArquivo);
+
+                switch (tipoArquivo)
+                {
+                    case TipoArquivo.CNAB400:
+                        _detalhe = GerarDetalheRemessaCNAB400(boleto, numeroRegistro, tipoArquivo);
+                        break;
+                    case TipoArquivo.Outro:
+                        throw new Exception("Tipo de arquivo inexistente.");
+                }
+
+                return _detalhe;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do DETALHE arquivo de REMESSA.", ex);
+            }
         }
 
         public string GerarDetalheRemessaCNAB240()
@@ -413,7 +514,104 @@ namespace BoletoNet
 
         public string GerarDetalheRemessaCNAB400(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
         {
-            throw new NotImplementedException("Função não implementada.");
+            try
+            {
+                string vCpfCnpjEmi = "00";
+                if (boleto.Cedente.CPFCNPJ.Length.Equals(11))
+                    vCpfCnpjEmi = "01"; //Cpf é sempre 11;
+                else if (boleto.Cedente.CPFCNPJ.Length.Equals(14))
+                    vCpfCnpjEmi = "02"; //Cnpj é sempre 14;
+                else
+                    vCpfCnpjEmi = "99";
+                
+                 string vCpfCnpjSac = "00";
+                if (boleto.Sacado.CPFCNPJ.Length.Equals(11)) 
+                    vCpfCnpjSac = "01"; //Cpf é sempre 11;
+                else if (boleto.Sacado.CPFCNPJ.Length.Equals(14))
+                    vCpfCnpjSac = "02"; //Cnpj é sempre 14;
+                else 
+                    vCpfCnpjSac = "99"; //outros;
+
+
+
+
+                string _detalhe = "";
+                _detalhe += "1";
+                _detalhe += vCpfCnpjEmi;
+                _detalhe += Utils.FitStringLength(boleto.Cedente.CPFCNPJ, 14, 14, '0', 0, true, true, true);
+                _detalhe += "0";
+                _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true);
+                _detalhe += "55";
+                _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 11, 11, '0', 0, true, true, true);
+                _detalhe += "  ";
+                _detalhe += Utils.FitStringLength(boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, false);
+                _detalhe += Utils.FitStringLength(boleto.NossoNumero, 11, 11, ' ', 0, true, true, false);
+                _detalhe += boleto.DataVencimento.ToString("ddMMyy");                
+                _detalhe += Utils.FitStringLength(boleto.ValorDesconto.ToString("0.00").Replace(",", ""), 11, 11, '0', 0, true, true, true);
+                _detalhe += boleto.DataVencimento.ToString("ddMMyy");
+                _detalhe += Utils.FitStringLength(boleto.ValorDesconto.ToString("0.00").Replace(",", ""), 11, 11, '0', 0, true, true, true);
+                _detalhe += "1";
+                _detalhe += "01";
+                _detalhe += Utils.FitStringLength(string.Empty, 10, 10, ' ', 0, true, true, false);
+                _detalhe += boleto.DataVencimento.ToString("ddMMyy");
+                _detalhe += Utils.FitStringLength(boleto.ValorBoleto.ToString("0.00").Replace(",", ""), 13, 13, '0', 0, true, true, true);
+                _detalhe += "399";
+                _detalhe += "00000";
+                if (boleto.EspecieDocumento.Sigla == "PD")
+                    _detalhe += "98"; //98-PD - Cobrança com emissão total do bloqueto pelo cliente.
+                else
+                    _detalhe += "01"; //01-DP – Duplicata Mercantil 
+                _detalhe += "A";
+                _detalhe += DateTime.Today.ToString("ddMMyy");
+
+                //
+                string vInstrucao1 = "";
+                string vInstrucao2 = "";
+                //string vInstrucao3 = "0";
+                switch (boleto.Instrucoes.Count)
+                {
+                    case 1:
+                        vInstrucao1 = boleto.Instrucoes[0].Codigo.ToString();
+                        break;
+                    case 2:
+                        vInstrucao1 = boleto.Instrucoes[0].Codigo.ToString();
+                        vInstrucao2 = boleto.Instrucoes[1].Codigo.ToString();
+                        break;
+                }
+                _detalhe += Utils.FitStringLength(vInstrucao1, 2, 2, ' ', 0, true, true, false);
+                _detalhe += Utils.FitStringLength(vInstrucao2, 2, 2, ' ', 0, true, true, false);
+
+                _detalhe += Utils.FitStringLength(boleto.JurosMora.ToString("0.00").Replace(",", ""), 13, 13, '0', 0, true, true, true);
+                _detalhe += boleto.DataVencimento.ToString("ddMMyy");
+                _detalhe += Utils.FitStringLength(boleto.ValorDesconto.ToString("0.00").Replace(",", ""), 13, 13, '0', 0, true, true, true);
+                _detalhe += Utils.FitStringLength(boleto.IOF.ToString("0.00").Replace(",", ""), 13, 13, '0', 0, true, true, true);
+                _detalhe += Utils.FitStringLength("0", 13, 13, '0', 0, true, true, true);
+                _detalhe += vCpfCnpjSac;
+
+                _detalhe += Utils.FitStringLength(boleto.Sacado.CPFCNPJ, 14, 14, ' ', 0, true, true, false);
+                _detalhe += Utils.FitStringLength(boleto.Sacado.Nome, 40, 40, ' ', 0, true, true, false);
+                _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.End, 38, 38, ' ', 0, true, true, false);
+                _detalhe += "  ";
+
+                _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.Bairro, 12, 12, ' ', 0, true, true, false);
+                _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.CEP, 8, 8, ' ', 0, true, true, false);
+                _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.Cidade, 15, 15, ' ', 0, true, true, false);
+                _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.UF, 2, 2, ' ', 0, true, true, false);
+                _detalhe += Utils.FitStringLength(string.Empty, 39, 39, ' ', 0, true, true, false);
+                _detalhe += " ";
+                _detalhe += "  ";
+                _detalhe += boleto.Moeda;
+                _detalhe += Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true);
+
+
+                _detalhe = Utils.SubstituiCaracteresEspeciais(_detalhe);
+
+                return _detalhe;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao gerar DETALHE do arquivo CNAB400.", ex);
+            }
         }
 
         # endregion DETALHE
@@ -426,7 +624,28 @@ namespace BoletoNet
         /// </summary>
         public override string GerarTrailerRemessa(int numeroRegistro, TipoArquivo tipoArquivo, Cedente cedente, decimal vltitulostotal)
         {
-            throw new NotImplementedException("Função não implementada.");
+            try
+            {
+                string _trailer = " ";
+
+                base.GerarTrailerRemessa(numeroRegistro, tipoArquivo, cedente, vltitulostotal);
+
+                switch (tipoArquivo)
+                {
+                    case TipoArquivo.CNAB400:
+                        _trailer = GerarTrailerRemessa400(numeroRegistro);
+                        break;
+                    case TipoArquivo.Outro:
+                        throw new Exception("Tipo de arquivo inexistente.");
+                }
+
+                return _trailer;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do TRAILER do arquivo de REMESSA.", ex);
+            }
         }
 
         public string GerarTrailerRemessa240()
@@ -436,7 +655,24 @@ namespace BoletoNet
 
         public string GerarTrailerRemessa400(int numeroRegistro)
         {
-            throw new NotImplementedException("Função não implementada.");
+            try
+            {
+                TRegistroEDI reg = new TRegistroEDI();
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0001, 001, 0, "9", ' '));            //001-001
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0002, 393, 0, string.Empty, ' '));   //002-393
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0395, 006, 0, numeroRegistro, '0')); //395-400
+                //
+                reg.CodificarLinha();
+                //
+                string vLinha = reg.LinhaRegistro;
+                string _trailer = Utils.SubstituiCaracteresEspeciais(vLinha);
+                //
+                return _trailer;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do registro TRAILER do arquivo de REMESSA.", ex);
+            }
         }
 
         # endregion
@@ -462,3 +698,4 @@ namespace BoletoNet
 
     }
 }
+

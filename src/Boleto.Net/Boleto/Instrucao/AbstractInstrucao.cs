@@ -7,6 +7,16 @@ namespace BoletoNet
     public abstract class AbstractInstrucao : IInstrucao
     {
 
+        #region Enum
+
+        public enum EnumTipoValor
+        {
+            Percentual = 1,
+            Reais = 2
+        }
+
+        #endregion
+
         #region Variaveis
 
         private IBanco _banco;

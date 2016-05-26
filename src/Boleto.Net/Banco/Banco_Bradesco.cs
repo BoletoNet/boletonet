@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using BoletoNet;
-using Microsoft.VisualBasic;
+using BoletoNet.Util;
 
 [assembly: WebResource("BoletoNet.Imagens.237.jpg", "image/jpg")]
 
@@ -151,12 +151,12 @@ namespace BoletoNet
             var valorBoleto = boleto.ValorBoleto.ToString("N2").Replace(",", "").Replace(".", "");
             valorBoleto = Utils.FormatCode(valorBoleto, 10);
 
-            if (boleto.Carteira == "02" || boleto.Carteira == "03" || boleto.Carteira == "09" || boleto.Carteira == "19")
+            if (boleto.Carteira == "02" || boleto.Carteira == "03" || boleto.Carteira == "09" || boleto.Carteira == "19" || boleto.Carteira == "26") // Com registro
             {
                 boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}", Codigo.ToString(), boleto.Moeda,
                 FatorVencimento(boleto), valorBoleto, FormataCampoLivre(boleto));
             }
-            else if (boleto.Carteira == "06" || boleto.Carteira == "16")
+            else if (boleto.Carteira == "06" || boleto.Carteira == "16" || boleto.Carteira == "25") // Sem Registro
             {
                 if (boleto.ValorBoleto == 0)
                 {
@@ -217,8 +217,8 @@ namespace BoletoNet
 
         public override void ValidaBoleto(Boleto boleto)
         {
-            if (boleto.Carteira != "02" && boleto.Carteira != "03" && boleto.Carteira != "06" && boleto.Carteira != "09" && boleto.Carteira != "16" && boleto.Carteira != "19")
-                throw new NotImplementedException("Carteira não implementada. Carteiras implementadas 02, 03, 06, 09, 16, 19.");
+            if (boleto.Carteira != "02" && boleto.Carteira != "03" && boleto.Carteira != "06" && boleto.Carteira != "09" && boleto.Carteira != "16" && boleto.Carteira != "19" && boleto.Carteira != "25" && boleto.Carteira != "26")
+                throw new NotImplementedException("Carteira não implementada. Carteiras implementadas 02, 03, 06, 09, 16, 19, 25, 26.");
 
             //O valor é obrigatório para a carteira 03
             if (boleto.Carteira == "03")
@@ -256,11 +256,6 @@ namespace BoletoNet
             else if (boleto.Cedente.ContaBancaria.Conta.Length < 7)
                 boleto.Cedente.ContaBancaria.Conta = Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 7);
 
-
-            //Atribui o nome do banco ao local de pagamento
-            boleto.LocalPagamento += Nome + "";
-
-
             //Verifica se data do processamento é valida
 			//if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
 			if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
@@ -274,8 +269,10 @@ namespace BoletoNet
 
             boleto.QuantidadeMoeda = 0;
 
-            //Atribui o nome do banco ao local de pagamento
-            boleto.LocalPagamento = "PAGÁVEL PREFERENCIALMENTE NAS AGÊNCIAS DO BRADESCO";
+            // Atribui o nome do banco ao local de pagamento
+            if (string.IsNullOrEmpty(boleto.LocalPagamento))
+                boleto.LocalPagamento = "PAGÁVEL PREFERENCIALMENTE NAS AGÊNCIAS DO BRADESCO";
+
 
             // Calcula o DAC do Nosso Número
             _dacNossoNumero = CalcularDigitoNossoNumero(boleto);
@@ -453,7 +450,7 @@ namespace BoletoNet
 
             for (int i = seq.Length; i > 0; i--)
             {
-                s = s + (Convert.ToInt32(Microsoft.VisualBasic.Strings.Mid(seq, i, 1)) * p);
+                s = s + (Convert.ToInt32(seq.Mid( i, 1)) * p);
                 if (p == b)
                     p = 2;
                 else
@@ -692,6 +689,8 @@ namespace BoletoNet
                 // USO DO BANCO - Identificação da operação no Banco (posição 87 a 107)
                 string identificaOperacaoBanco = new string(' ', 10);
                 string nrDeControle = new string(' ', 25);
+                //string nrDeControle = boleto.NumeroDocumento // new string(' ', 25);
+
                 string mensagem = new string(' ', 12);
                 string mensagem2 = new string(' ', 60);
 
@@ -776,7 +775,12 @@ namespace BoletoNet
                 68..Acerto nos dados do rateio de Crédito
                 69..Cancelamento do rateio de crédito.
                 */
-                _detalhe += "01";
+                if (string.IsNullOrEmpty(boleto.Remessa.CodigoOcorrencia.Trim())) {
+                    _detalhe += "01";
+                } else {
+                    _detalhe += boleto.Remessa.CodigoOcorrencia.PadLeft(2, '0') ;
+                }
+                
 
                 _detalhe += Utils.Right(boleto.NumeroDocumento, 10, '0', true); //Nº do Documento (10, A)
                 _detalhe += boleto.DataVencimento.ToString("ddMMyy"); //Data do Vencimento do Título (10, N) DDMMAA
@@ -808,7 +812,7 @@ namespace BoletoNet
                 string vInstrucao1 = "00"; //1ª instrução (2, N) Caso Queira colocar um cod de uma instrução. ver no Manual caso nao coloca 00
                 string vInstrucao2 = "00"; //2ª instrução (2, N) Caso Queira colocar um cod de uma instrução. ver no Manual caso nao coloca 00
                 
-                foreach (Instrucao_Bradesco instrucao in boleto.Instrucoes)
+                foreach (IInstrucao instrucao in boleto.Instrucoes)
                 {
                     switch ((EnumInstrucoes_Bradesco)instrucao.Codigo)
                     {

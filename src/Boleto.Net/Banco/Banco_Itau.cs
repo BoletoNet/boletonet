@@ -1,6 +1,6 @@
 using System;
 using System.Web.UI;
-using Microsoft.VisualBasic;
+using BoletoNet.Util;
 using System.Text;
 
 [assembly: WebResource("BoletoNet.Imagens.341.jpg", "image/jpg")]
@@ -47,7 +47,7 @@ namespace BoletoNet
             try
             {
                 //Carteiras válidas
-                int[] cv = new int[] { 175, 176, 178, 109, 198, 107, 122, 142, 143, 196, 126, 131, 146, 150, 169, 121 };//Flavio(fhlviana@hotmail.com) - adicionado a carteira 109
+                int[] cv = new int[] { 175, 176, 178, 109, 198, 107, 122, 142, 143, 196, 126, 131, 146, 150, 169, 121, 112 };//MarcielTorres - adicionado a carteira 112
                 bool valida = false;
 
                 foreach (int c in cv)
@@ -103,8 +103,10 @@ namespace BoletoNet
 
                 // Calcula o DAC da Conta Corrente
                 boleto.Cedente.ContaBancaria.DigitoConta = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta).ToString();
+
                 //Atribui o nome do banco ao local de pagamento
-                boleto.LocalPagamento += Nome + ". Após o vencimento, somente no ITAÚ";
+                if (string.IsNullOrEmpty(boleto.LocalPagamento))
+                    boleto.LocalPagamento = "Até o vencimento no ITAÚ. Após o vencimento, somente no ITAÚ";
 
                 //Verifica se o nosso número é válido
                 if (Utils.ToInt64(boleto.NossoNumero) == 0)
@@ -145,7 +147,7 @@ namespace BoletoNet
                 string numeroDocumento = Utils.FormatCode(boleto.NumeroDocumento.ToString(), 7);
                 string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo.ToString(), 5);
 
-                if (boleto.Carteira == "175" || boleto.Carteira == "176" || boleto.Carteira == "178" || boleto.Carteira == "109" || boleto.Carteira == "121")//Flavio(fhlviana@hotmail.com) - Adicionado carteira 109
+                if (boleto.Carteira == "175" || boleto.Carteira == "176" || boleto.Carteira == "178" || boleto.Carteira == "109" || boleto.Carteira == "121" || boleto.Carteira == "112")//MarcielTorres - adicionado a carteira 112
                 {
                     boleto.CodigoBarra.Codigo =
                         string.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}000", Codigo, boleto.Moeda,
@@ -214,7 +216,7 @@ namespace BoletoNet
 
                 #endregion UUUUVVVVVVVVVV
 
-                if (boleto.Carteira == "175" || boleto.Carteira == "176" || boleto.Carteira == "178" || boleto.Carteira == "109" || boleto.Carteira == "121")//Flavio(fhlviana@hotmail.com) - adicionado carteira 109
+                if (boleto.Carteira == "175" || boleto.Carteira == "176" || boleto.Carteira == "178" || boleto.Carteira == "109" || boleto.Carteira == "121" || boleto.Carteira == "112")//MarcielTorres - adicionado a carteira 112
                 {
                     #region Definições
                     /* AAABC.CCDDX.DDDDD.DEFFFY.FGGGG.GGHHHZ.K.UUUUVVVVVVVVVV
@@ -583,29 +585,30 @@ namespace BoletoNet
             try
             {
                 string header = "341";
-                header += "0000";
+                header += "0001";
                 header += "0";
                 header += Utils.FormatCode("", " ", 9);
                 header += (cedente.CPFCNPJ.Length == 11 ? "1" : "2");
                 header += Utils.FormatCode(cedente.CPFCNPJ, "0", 14, true);
-                header += Utils.FormatCode(cedente.Convenio.ToString(), " ", 13);
-                header += Utils.FormatCode("", " ", 7);
+                header += Utils.FormatCode("", " ", 20);
                 header += "0";
                 header += Utils.FormatCode(cedente.ContaBancaria.Agencia, " ", 4, true);
                 header += " ";
-                header += Utils.FormatCode("", "0", 7);
+                header += "0000000";
                 header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 5, true);
-                header += Utils.FormatCode("", " ", 1);
-                header += Utils.FormatCode("", "0", 1);
-                header += Utils.FormatCode(cedente.Nome, " ", 30);
-                header += Utils.FormatCode("BANCO ITAU", " ", 30);
+                header += " ";
+                header += " ";
+                header += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false);                
+                header += Utils.FormatCode("BANCO ITAU SA", " ", 30);
                 header += Utils.FormatCode("", " ", 10);
                 header += "1";
                 header += DateTime.Now.ToString("ddMMyyyyHHmmss");
                 header += Utils.FormatCode("", "0", 6, true);
                 header += "040";
                 header += "00000";
-                header += Utils.FormatCode("", " ", 69);
+                header += Utils.FormatCode("", " ", 54);
+                header += "000";
+                header += Utils.FormatCode("", " ", 12);
                 header = Utils.SubstituiCaracteresEspeciais(header);
                 return header;
 
@@ -717,34 +720,29 @@ namespace BoletoNet
             try
             {
                 string header = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
-                header += Utils.FormatCode("", "0", 4, true);
+                header += "0001";
                 header += "1";
-                header += "D";
-                header += "05";
-                header += "50";
+                header += "R";
+                header += "01";
+                header += "00";
                 header += "030";
                 header += " ";
                 header += (cedente.CPFCNPJ.Length == 11 ? "1" : "2");
-                header += Utils.FormatCode(cedente.CPFCNPJ, "0", 14, true);
-                header += Utils.FormatCode("", " ", 13);
-                header += Utils.FormatCode("", " ", 7);
+                header += Utils.FormatCode(cedente.CPFCNPJ, "0", 15, true);
+                header += Utils.FormatCode("", " ", 20);
                 header += "0";
-                header += Utils.FormatCode("", "0", 4, true);
+                header += Utils.FormatCode(cedente.ContaBancaria.Agencia, "0", 4, true);
                 header += " ";
                 header += Utils.FormatCode("", "0", 7);
-                header += Utils.FormatCode("", "0", 5, true);
+                header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 5, true);
                 header += " ";
-                header += "0";
-                header += Utils.FormatCode(cedente.Nome, " ", 30);
-                header += Utils.FormatCode("", " ", 40);
-                header += Utils.FormatCode("RUA DE TESTE", " ", 30);
-                header += Utils.FormatCode("999", "0", 5, true);
-                header += Utils.FormatCode("15o. ANDAR", " ", 15);
-                header += Utils.FormatCode("SAO PAULO", " ", 20);
-                header += Utils.FormatCode("00000000", "0", 8, true);
-                header += "SP";
-                header += Utils.FormatCode("", " ", 8);
-                header += Utils.FormatCode("", " ", 10);
+                header += " ";
+                header += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false);
+                header += Utils.FormatCode("", " ", 80);
+                header += Utils.FormatCode("", "0", 8, true);
+                header += DateTime.Now.ToString("ddMMyyyy");
+                header += DateTime.Now.ToString("ddMMyyyy");
+                header += Utils.FormatCode("", " ", 33);
                 header = Utils.SubstituiCaracteresEspeciais(header);
                 return header;
             }
@@ -758,6 +756,177 @@ namespace BoletoNet
         {
             throw new Exception("Função não implementada.");
         }
+
+
+        public override string GerarDetalheSegmentoPRemessa(Boleto boleto, int numeroRegistro, string numeroConvenio)
+        {
+            try
+            {
+                string _segmentoP;
+                _segmentoP = "341";
+                _segmentoP += "0001";
+                _segmentoP += "3";
+                _segmentoP += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);
+                _segmentoP += "P";
+                _segmentoP += " ";
+                _segmentoP += "01";
+                _segmentoP += "0";
+                _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true);
+                _segmentoP += " ";
+                _segmentoP += "0000000";
+                _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 5, 5, '0', 0, true, true, true);
+                _segmentoP += " ";
+                _segmentoP += " ";
+                _segmentoP += Utils.FitStringLength(boleto.Carteira, 3, 3, '0', 0, true, true, true);
+                _segmentoP += Utils.FitStringLength(boleto.NossoNumero, 8, 8, '0', 0, true, true, true);
+                _segmentoP += " ";
+                _segmentoP += "        ";
+                _segmentoP += "00000";
+                _segmentoP += Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, ' ', 0, true, true, false);
+                _segmentoP += "     ";
+                _segmentoP += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
+                _segmentoP += Utils.FitStringLength(boleto.ValorBoleto.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
+                _segmentoP += "00000";
+                _segmentoP += " ";
+                _segmentoP += "01";
+                _segmentoP += "A";
+                _segmentoP += Utils.FitStringLength(boleto.DataDocumento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
+                _segmentoP += "0";
+                _segmentoP += Utils.FitStringLength(boleto.DataJurosMora.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
+                _segmentoP += Utils.FitStringLength(boleto.JurosMora.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
+                _segmentoP += "0";
+                _segmentoP += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
+                _segmentoP += Utils.FitStringLength("0", 15, 15, '0', 0, true, true, true);
+                _segmentoP += Utils.FitStringLength("0", 15, 15, '0', 0, true, true, true);
+                _segmentoP += Utils.FitStringLength("0", 15, 15, '0', 0, true, true, true);
+                _segmentoP += Utils.FitStringLength(boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, false);
+                _segmentoP += "0";
+                _segmentoP += "00";
+                _segmentoP += "0";
+                _segmentoP += "00";
+                _segmentoP += "0000000000000";
+                _segmentoP += " ";
+
+                _segmentoP = Utils.SubstituiCaracteresEspeciais(_segmentoP);
+
+                return _segmentoP;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do SEGMENTO P DO DETALHE do arquivo de REMESSA.", ex);
+            }
+        }
+        public override string GerarDetalheSegmentoQRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+        {
+            try
+            {
+                string _zeros16 = new string('0', 16);
+                string _brancos10 = new string(' ', 10);
+                string _brancos28 = new string(' ', 28);
+                string _brancos40 = new string(' ', 40);
+
+                string _segmentoQ;
+
+                _segmentoQ = "341";
+                _segmentoQ += "0001";
+                _segmentoQ += "3";
+                _segmentoQ += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);
+                _segmentoQ += "Q";
+                _segmentoQ += " ";
+
+                _segmentoQ += "01";
+                if (boleto.Sacado.CPFCNPJ.Length <= 11)
+                    _segmentoQ += "1";
+                else
+                    _segmentoQ += "2";
+
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.CPFCNPJ, 15, 15, '0', 0, true, true, true);
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Nome.TrimStart(' '), 30, 30, ' ', 0, true, true, false).ToUpper();
+                _segmentoQ += "          ";
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.End.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.Bairro.TrimStart(' '), 15, 15, ' ', 0, true, true, false).ToUpper();
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.CEP, 8, 8, ' ', 0, true, true, false).ToUpper(); ;
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.Cidade.TrimStart(' '), 15, 15, ' ', 0, true, true, false).ToUpper();
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.UF, 2, 2, ' ', 0, true, true, false).ToUpper();
+                if (boleto.Sacado.CPFCNPJ.Length <= 11)
+                    _segmentoQ += "1";
+                else
+                    _segmentoQ += "2";
+
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.CPFCNPJ, 15, 15, '0', 0, true, true, true);
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Nome.TrimStart(' '), 30, 30, ' ', 0, true, true, false).ToUpper();
+                _segmentoQ += _brancos10;
+                _segmentoQ += "000";
+                _segmentoQ += _brancos28;
+
+                _segmentoQ = Utils.SubstituiCaracteresEspeciais(_segmentoQ);
+
+                return _segmentoQ;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do SEGMENTO Q DO DETALHE do arquivo de REMESSA.", ex);
+            }
+        }
+        public override string GerarDetalheSegmentoRRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+        {
+            try
+            {
+                string _brancos110 = new string(' ', 110);
+                string _brancos9 = new string(' ', 9);
+
+                string _segmentoR;
+
+                _segmentoR = "341";
+                _segmentoR += "0001";
+                _segmentoR += "3";
+                _segmentoR += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);
+                _segmentoR += "R 01";
+                // Desconto 2
+                _segmentoR += "000000000000000000000000"; //24 zeros
+                // Desconto 3
+                _segmentoR += "000000000000000000000000"; //24 zeros
+
+                if (boleto.PercMulta > 0)
+                {
+                    // Código da multa 2 - percentual
+                    _segmentoR += "2";
+                }
+                else if (boleto.ValorMulta > 0)
+                {
+                    // Código da multa 1 - valor fixo
+                    _segmentoR += "1";
+                }
+                else
+                {
+                    // Código da multa 0 - sem multa
+                    _segmentoR += "0";
+                }
+
+                _segmentoR += Utils.FitStringLength(boleto.DataMulta.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
+                _segmentoR += Utils.FitStringLength(boleto.ValorMulta.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
+                _segmentoR += _brancos110;
+                _segmentoR += "0000000000000000"; //16 zeros
+                _segmentoR += " "; //1 branco
+                _segmentoR += "000000000000"; //12 zeros
+                _segmentoR += "  "; //2 brancos
+                _segmentoR += "0"; //1 zero
+                _segmentoR += _brancos9;
+
+                _segmentoR = Utils.SubstituiCaracteresEspeciais(_segmentoR);
+
+                return _segmentoR;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do SEGMENTO R DO DETALHE do arquivo de REMESSA.", ex);
+            }
+        }
+
+
+
 
         #endregion
 
@@ -850,7 +1019,7 @@ namespace BoletoNet
                 detalhe += Utils.FormatCode("", "4", 5, true);
                 detalhe += " ";
                 detalhe += Utils.FormatCode("", "0", 1);
-                detalhe += Utils.FormatCode(boleto.Sacado.Nome, " ", 30);
+                detalhe += Utils.FitStringLength(boleto.Sacado.Nome, 30, 30, ' ', 0, true, true, false);
                 detalhe += Utils.FormatCode(boleto.NossoNumero, " ", 15);
                 detalhe += Utils.FormatCode("", " ", 5);
                 detalhe += DateTime.Now.ToString("ddMMyyyy");

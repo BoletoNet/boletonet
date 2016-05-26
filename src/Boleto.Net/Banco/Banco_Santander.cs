@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Web.UI;
+using BoletoNet.Util;
 
 [assembly: WebResource("BoletoNet.Imagens.033.jpg", "image/jpg")]
 namespace BoletoNet
@@ -228,8 +229,8 @@ namespace BoletoNet
                 throw new NotImplementedException("Código cedente deve ter 7 posições.");
 
             // Atribui o nome do banco ao local de pagamento
-            if (string.IsNullOrEmpty(boleto.LocalPagamento))
-                boleto.LocalPagamento = "Grupo Santander - GC";
+			if (string.IsNullOrEmpty(boleto.LocalPagamento))
+				boleto.LocalPagamento = "Grupo Santander - GC";
 
             if (EspecieDocumento.ValidaSigla(boleto.EspecieDocumento) == "")
                 boleto.EspecieDocumento = new EspecieDocumento_Santander("2");
@@ -325,7 +326,7 @@ namespace BoletoNet
 
             while (pos <= seq.Length)
             {
-                num = seq.Mid(pos, 1);
+                num = seq.Mid( pos, 1);
                 total += Convert.ToInt32(num) * mult;
 
                 mult -= 1;

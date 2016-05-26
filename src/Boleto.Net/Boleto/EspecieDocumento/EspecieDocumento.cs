@@ -85,7 +85,7 @@ namespace BoletoNet
                     case 341:
                         _IEspecieDocumento = new EspecieDocumento_Itau(codigoEspecie);
                         break;
-                    //356 - BankBoston
+                    //479 - BankBoston
                     case 479:
                         _IEspecieDocumento = new EspecieDocumento_BankBoston(codigoEspecie);
                         break;
@@ -123,6 +123,14 @@ namespace BoletoNet
                     case 41:
                         _IEspecieDocumento = new EspecieDocumento_Banrisul(codigoEspecie);
                         break;
+                    //085 - Cecred
+                    case 85:
+                        _IEspecieDocumento = new EspecieDocumento_Cecred(codigoEspecie);
+                        break;
+                    //756 - Sicoob
+                    case 756:
+                        _IEspecieDocumento = new EspecieDocumento_Sicoob(codigoEspecie);
+                        break;
                     default:
                         throw new Exception("Código do banco não implementando: " + codigoBanco);
                 }
@@ -142,20 +150,30 @@ namespace BoletoNet
                 {
                     case 1:
                         return EspecieDocumento_BancoBrasil.CarregaTodas();
+                    case 33:
+                        return EspecieDocumento_Santander.CarregaTodas();
+                    case 41:
+                        return EspecieDocumento_Banrisul.CarregaTodas();
+                    case 104:
+                        return EspecieDocumento_Caixa.CarregaTodas();
                     case 237:
                         return EspecieDocumento_Bradesco.CarregaTodas();
                     case 341:
                         return EspecieDocumento_Itau.CarregaTodas();
+                    case 347:
+                        return EspecieDocumento_Sudameris.CarregaTodas();
                     case 356:
-                        return EspecieDocumento_Itau.CarregaTodas();
-                    case 104:
-                        return EspecieDocumento_Caixa.CarregaTodas();
+                        return EspecieDocumento_Real.CarregaTodas();
                     case 399:
                         return EspecieDocumento_HSBC.CarregaTodas();
+                    case 479:
+                        return EspecieDocumento_BankBoston.CarregaTodas();
                     case 748:
                         return EspecieDocumento_Sicredi.CarregaTodas();
                     case 756:
                         return EspecieDocumento_Sicoob.CarregaTodas();
+                    case 85:
+                        return EspecieDocumento_Cecred.CarregaTodas();
                     default:
                         throw new Exception("Espécies do Documento não implementado para o banco : " + codigoBanco);
                 }

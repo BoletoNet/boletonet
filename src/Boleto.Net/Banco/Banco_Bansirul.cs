@@ -1,6 +1,6 @@
 using System;
 using System.Web.UI;
-using Microsoft.VisualBasic;
+using BoletoNet.Util;
 using System.Text;
 using System.Collections.Generic;
 using BoletoNet.EDI.Banco;
@@ -166,7 +166,7 @@ namespace BoletoNet
             string nossoNumero = boleto.NossoNumero.Replace(".", "").Replace("-", "");
             nossoNumero = nossoNumero.Substring(0, 8);
             //campoLivre = "21" + boleto.Cedente.ContaBancaria.Agencia.Substring(1, 3) + boleto.Cedente.ContaBancaria.Conta + nossoNumero + "041";
-            string codCedente = boleto.Cedente.Codigo.Substring(4);// Os quatro primeiros digitos do código do cedente é sempre a agência
+            string codCedente = boleto.Cedente.Codigo.Substring(4, 7);// Os quatro primeiros digitos do código do cedente é sempre a agência
             campoLivre = "21" + boleto.Cedente.ContaBancaria.Agencia.Substring(1, 3) + codCedente + nossoNumero + "041";
             string ncCodBarra = CalcularNCCodBarras(campoLivre);
             Int32.TryParse(ncCodBarra.Substring(0, 1), out _primDigito);
@@ -273,7 +273,7 @@ namespace BoletoNet
 
             for (int i = seq.Length; i > 0; i--)
             {
-                s = s + (Convert.ToInt32(Microsoft.VisualBasic.Strings.Mid(seq, i, 1)) * p);
+                s = s + (Convert.ToInt32(seq.Mid( i, 1)) * p);
                 if (p == b)
                     p = 2;
                 else
@@ -335,9 +335,9 @@ namespace BoletoNet
             int soma;
             soma = 0;
             mult = 2;
-            int I = Strings.Len(Numero);
+            int I = Numero.Length;
             //para começar o cálculo pelo nº final (sempre começa multiplicando por 2)
-            for (x = 1; x <= Strings.Len(Numero); x++)
+            for (x = 1; x <= Numero.Length; x++)
             {
                 if (Codigo == 41)
                 {

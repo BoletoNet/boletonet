@@ -19,7 +19,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -44,9 +44,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="NReco.PdfGenerator">
-      <HintPath>..\packages\NReco.PdfGenerator.1.1.7.0\lib\net20\NReco.PdfGenerator.dll</HintPath>
+    <Reference Include="NReco.PdfGenerator, Version=1.1.12.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
+      <HintPath>..\packages\NReco.PdfGenerator.1.1.12.0\lib\net20\NReco.PdfGenerator.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -54,6 +54,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arquivo\AbstractArquivoRemessa.cs" />
@@ -84,11 +85,14 @@
     <Compile Include="Arquivo\Reader\TextPosAttribute.cs" />
     <Compile Include="Arquivo\Reader\TextPosReader.cs" />
     <Compile Include="Banco\AbstractBanco.cs" />
+    <Compile Include="Banco\Banco_Nordeste.cs" />
+    <Compile Include="Banco\Banco_Cecred.cs" />
     <Compile Include="Banco\Carteiras\BancoCarteiraFactory.cs" />
     <Compile Include="Banco\Carteiras\Brasil\Carteira18Brasil.cs" />
     <Compile Include="Banco\Carteiras\Brasil\CarteiraBrasil.cs" />
     <Compile Include="Banco\Carteiras\IBancoCarteira.cs" />
     <Compile Include="Banco\Carteiras\TipoCarteiraAttribute.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Cecred.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Sicoob.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Banestes.cs" />
     <Compile Include="Banco\Banco_Bansirul.cs" />
@@ -124,6 +128,7 @@
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento.cs" />
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_BancoBrasil.cs" />
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Caixa.cs" />
+	<Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Cecred.cs" />
     <Compile Include="Boleto\CodigoMovimento\ICodigoMovimento.cs" />
     <Compile Include="Boleto\CodigoRejeicao\AbstractCodigoRejeicao.cs" />
     <Compile Include="Boleto\CodigoRejeicao\CodigoRejeicao.cs" />
@@ -153,6 +158,7 @@
     <Compile Include="Boleto\Instrucao\Instrucao_Banrisul.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_BRB.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Caixa.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_Cecred.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_HSBC.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Itau.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_BankBoston.cs" />
@@ -167,6 +173,7 @@
     <Compile Include="Boleto\DemonstrativoValoresBoleto\ItemDemonstrativo.cs" />
     <Compile Include="Boleto\Sacado\InformacoesSacado.cs" />
     <Compile Include="Boleto\Sacado\InfoSacado.cs" />
+    <Compile Include="EDI\Banco\TRegistroEDI_Cecred_Retorno.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_Sicredi_Retorno.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_BancoBrasil_Retorno.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_Caixa_Retorno.cs" />
@@ -294,10 +301,13 @@
     <EmbeddedResource Include="Imagens\003.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="BoletoImpressao\BoletoNetPDF.css" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="BoletoImpressao\BoletoNetPDF.css" />
+    <Content Include="Imagens\085.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

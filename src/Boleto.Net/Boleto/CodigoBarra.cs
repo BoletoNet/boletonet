@@ -2,7 +2,7 @@ using System;
 using System.Drawing;
 using System.Globalization;
 using BoletoNet.Util;
-using Microsoft.VisualBasic;
+using BoletoNet.Util;
 
 namespace BoletoNet
 {
