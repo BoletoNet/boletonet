@@ -140,7 +140,7 @@ namespace BoletoNet
             #region Grupo3
 
             string nossoNumero2 = nossoNumero.Substring(7, 6); //6
-            
+
             string tipoCarteira = boleto.Carteira;//3
             string calculoDV3 = Mod10(string.Format("{0}{1}{2}", nossoNumero2, IOS, tipoCarteira)).ToString();//1
             string grupo3 = string.Format("{0}{1}{2}{3}", nossoNumero2, IOS, tipoCarteira, calculoDV3);
@@ -166,7 +166,7 @@ namespace BoletoNet
 
             #region Grupo5
 
-             //4
+            //4
             string valorNominal = Utils.FormatCode(boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", ""), 10);//10
 
             string grupo5 = string.Format("{0}{1}", fatorVencimento, valorNominal);
@@ -220,7 +220,7 @@ namespace BoletoNet
             if (this.Codigo == 33)
             {
                 if (boleto.NossoNumero.Length == 7 && boleto.Carteira.Equals("101"))
-                    boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero,"0", 12, true);
+                    boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, "0", 12, true);
 
                 if (boleto.NossoNumero.Length != 12)
                     throw new NotSupportedException("Nosso Número deve ter 12 posições para o banco 033.");
@@ -233,7 +233,7 @@ namespace BoletoNet
 				boleto.LocalPagamento = "Grupo Santander - GC";
 
             if (EspecieDocumento.ValidaSigla(boleto.EspecieDocumento) == "")
-               boleto.EspecieDocumento = new EspecieDocumento_Santander("2");
+                boleto.EspecieDocumento = new EspecieDocumento_Santander("2");
 
             if (boleto.PercentualIOS > 10 & (this.Codigo == 8 || this.Codigo == 33 || this.Codigo == 353))
                 throw new Exception("O percentual do IOS é limitado a 9% para o Banco Santander");
@@ -518,7 +518,7 @@ namespace BoletoNet
                 _header += Utils.FitStringLength(cedente.Codigo.ToString(), 8, 8, '0', 0, true, true, true);
                 if (cedente.ContaBancaria.Conta.Length == 9 || (!String.IsNullOrEmpty(cedente.ContaBancaria.DigitoConta) && cedente.ContaBancaria.Conta.Length == 8))
                 {
-                    _header += Utils.FitStringLength(cedente.ContaBancaria.Conta.Substring(0, 7), 8, 8, '0', 0, true, true, true);
+                    _header += Utils.FitStringLength(cedente.ContaBancaria.Conta.Substring(0, 8), 8, 8, '0', 0, true, true, true);
                 }
                 else
                 {
@@ -682,10 +682,10 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true);
                 _detalhe += Utils.FitStringLength(boleto.Cedente.Codigo.ToString(), 8, 8, '0', 0, true, true, true);
                 if (boleto.Cedente.ContaBancaria.Conta.Length == 9 || (!String.IsNullOrEmpty(boleto.Cedente.ContaBancaria.DigitoConta) && boleto.Cedente.ContaBancaria.Conta.Length == 8))
-                    _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta.Substring(0, 7), 8, 8, '0', 0, true, true, true);
+                    _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta.Substring(0, 8), 8, 8, '0', 0, true, true, true);
                 else
                     _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 8, 8, '0', 0, true, true, true);
-                 //Bloco if-else adicionado por Jéferson (jefhtavares). Segundo o Banco o código de transmissão muda de acordo com o tamanho (length) da conta corrente
+                //Bloco if-else adicionado por Jéferson (jefhtavares). Segundo o Banco o código de transmissão muda de acordo com o tamanho (length) da conta corrente
 
                 //Número de controle do participante, controle do cedente X(25)
                 _detalhe += controle_partic;
@@ -759,7 +759,7 @@ namespace BoletoNet
                 {
                     _detalhe += Utils.FitStringLength("0" + boleto.Cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true);
                 }
-                
+
 
                 //Espécie de documento
                 //01 - Duplicata
