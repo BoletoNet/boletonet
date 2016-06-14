@@ -688,7 +688,7 @@ namespace BoletoNet
 
                 // USO DO BANCO - Identificação da operação no Banco (posição 87 a 107)
                 string identificaOperacaoBanco = new string(' ', 10);
-                string nrDeControle = new string(' ', 25);
+                string nrDeControle = Utils.FitStringLength(boleto.NumeroDocumento.TrimStart(' '), 25, 25, ' ', 0, true, true, false);
                 //string nrDeControle = boleto.NumeroDocumento // new string(' ', 25);
 
                 string mensagem = new string(' ', 12);
