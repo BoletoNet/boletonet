@@ -1375,11 +1375,12 @@ namespace BoletoNet
                 detalhe.DACConta = Utils.ToInt32(registro.Substring(28, 1));
                 detalhe.UsoEmpresa = registro.Substring(37, 25);
                 //
+                detalhe.Carteira = registro.Substring(82, 1); // adicionado por Heric Souza em 20/06/16
                 detalhe.NossoNumeroComDV = registro.Substring(85, 9);
                 detalhe.NossoNumero = registro.Substring(85, 8); //Sem o DV
                 detalhe.DACNossoNumero = registro.Substring(93, 1); //DV
                 //
-                detalhe.Carteira = registro.Substring(107, 1);
+                //detalhe.Carteira = registro.Substring(107, 1); // comentado por Heric Souza em 20 / 06 / 16
                 detalhe.CodigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2));
 
                 //Descrição da ocorrência
