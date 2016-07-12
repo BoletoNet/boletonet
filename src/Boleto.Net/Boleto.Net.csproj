@@ -93,7 +93,9 @@
     <Compile Include="Banco\Carteiras\IBancoCarteira.cs" />
     <Compile Include="Banco\Carteiras\TipoCarteiraAttribute.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Cecred.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Nordeste.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Sicoob.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_BancoNordeste.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Banestes.cs" />
     <Compile Include="Banco\Banco_Bansirul.cs" />
     <Compile Include="Banco\Banco_Basa.cs" />
@@ -128,7 +130,7 @@
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento.cs" />
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_BancoBrasil.cs" />
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Caixa.cs" />
-	<Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Cecred.cs" />
+    <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Cecred.cs" />
     <Compile Include="Boleto\CodigoMovimento\ICodigoMovimento.cs" />
     <Compile Include="Boleto\CodigoRejeicao\AbstractCodigoRejeicao.cs" />
     <Compile Include="Boleto\CodigoRejeicao\CodigoRejeicao.cs" />
