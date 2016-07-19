@@ -566,17 +566,17 @@ namespace BoletoNet
             #region Carteira 16
             if (boleto.Carteira.Equals("16"))
             {
-                if (boleto.Cedente.Convenio.ToString().Length == 6)
+                if (boleto.Cedente.Convenio.ToString().Length == 6 && boleto.TipoModalidade.Equals("21"))
                 {
-                    if (boleto.TipoModalidade.Equals("21"))
-                        boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}{5}{6}",
-                            Utils.FormatCode(Codigo.ToString(), 3),
-                            boleto.Moeda,
-                            FatorVencimento(boleto),
-                            valorBoleto,
-                            boleto.Cedente.Convenio,
-                            boleto.NossoNumero,
-                            "21");
+
+                    boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}{5}{6}",
+                        Utils.FormatCode(Codigo.ToString(), 3),
+                        boleto.Moeda,
+                        FatorVencimento(boleto),
+                        valorBoleto,
+                        boleto.Cedente.Convenio,
+                        boleto.NossoNumero,
+                        "21");
                 }
                 else
                 {
@@ -1456,9 +1456,9 @@ namespace BoletoNet
                             /*codigo_protesto = "3"; 
                             dias_protesto = "00";*/
                             break;
-                        /*
-                         * Bloco do "default" comentado por Jéferson, jefhtavares em 26/11 se fossem adicionadas mais de duas instruções e a instrução de protesto fosse a última a mesma não iria aparecer no arquivo
-                         */
+                            /*
+                             * Bloco do "default" comentado por Jéferson, jefhtavares em 26/11 se fossem adicionadas mais de duas instruções e a instrução de protesto fosse a última a mesma não iria aparecer no arquivo
+                             */
                     }
                 }
 
@@ -1756,7 +1756,7 @@ namespace BoletoNet
                     _convenio += cedente.Carteira.ToString() + "000  ";
                 else
                     _convenio += cedente.Carteira.Replace("-", "") + "  ";
-                    
+
                 _header = "00100000         ";
                 if (cedente.CPFCNPJ.Length <= 11)
                     _header += "1";
