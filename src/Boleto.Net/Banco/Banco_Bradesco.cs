@@ -699,12 +699,33 @@ namespace BoletoNet
                 //detalhe                           (tamanho,tipo) A= Alfanumerico, N= Numerico
                 _detalhe = "1"; //Identificação do Registro         (1, N)
 
-                //Parte Não Necessaria - Parte de dados do Sacado
-                _detalhe += "00000"; //Agencia de Debito            (5, N) Não Usado
-                _detalhe += " "; //Dig da Agencia                   (1, A) Não Usado
-                _detalhe += "00000"; //Razao da Conta Corrente      (5, N) Não Usado
-                _detalhe += "0000000"; //Conta Corrente             (7, N) Não Usado
-                _detalhe += " "; //Dig da Conta Corrente            (1, A) Não Usado
+		if (boleto.DebitoAutomatico != null)
+                {
+                    /*
+                     * 002 a 020 - Identificações do Débito Automático em C/C
+                        Somente deverão ser preenchidos, caso o cliente Beneficiário esteja previamente cadastrado para
+                        operar com a modalidade de cobrança com débito automático, cujos campos correspondentes a
+                        essas posições são:
+                        - posição 002 a 006 = nº da Agência do pagador a ser debitada
+                        - posição 007 a 007 = dígito da Agência
+                        - posição 008 a 012 = razão da Conta - Ex. 07050
+                        - posição 013 a 019 = nº da Conta Corrente do Pagador
+                        - posição 020 a 020 = dígito da Conta Corrente */
+                    _detalhe += Utils.FitStringLength(boleto.DebitoAutomatico.Agencia, 5, 5, '0', 0, true, true, true);
+                    _detalhe += Utils.FitStringLength(boleto.DebitoAutomatico.DigitoAgencia, 1, 1, ' ', 0, true, true, true); 
+                    _detalhe += Utils.FitStringLength(boleto.DebitoAutomatico.RazaoConta, 5, 5, '0', 0, true, true, true); 
+                    _detalhe += Utils.FitStringLength(boleto.DebitoAutomatico.Conta, 7, 7, '0', 0, true, true, true); 
+                    _detalhe += Utils.FitStringLength(boleto.DebitoAutomatico.DigitoConta, 1, 1, '0', 0, true, true, true);
+                }
+                else
+                {
+                    //Parte Não Necessaria - Parte de dados do Sacado
+                    _detalhe += "00000"; //Agencia de Debito            (5, N) Não Usado
+                    _detalhe += " "; //Dig da Agencia                   (1, A) Não Usado
+                    _detalhe += "00000"; //Razao da Conta Corrente      (5, N) Não Usado
+                    _detalhe += "0000000"; //Conta Corrente             (7, N) Não Usado
+                    _detalhe += " "; //Dig da Conta Corrente            (1, A) Não Usado
+                }
 
                 //Identificação da Empresa Cedente no Banco (17, A)
                 _detalhe += "0";
@@ -714,8 +735,24 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoConta, 1, 1, '0', 0, true, true, true);//D da conta(1)
                 //Nº de Controle do Participante - uso livre da empresa (25, A)  //  brancos
                 _detalhe += nrDeControle;
+                
                 //Código do Banco, só deve ser preenchido quando cliente cedente optar por "Débito Automático".
-                _detalhe += "000";
+                if (boleto.DebitoAutomatico != null)
+                {
+                    /*  
+                     * 063 a 065 - Códigos do Banco para Débito - “237”
+                        Deverão ser informados 237, caso o cliente Beneficiário tenha optado pelo débito automático em
+                        Conta do Pagador.
+                        Para Títulos em que não deve ser aplicado o débito automático, este campo deverá ser preenchido
+                        com Zeros
+                     */
+                    _detalhe += Utils.FitStringLength(this.Codigo.ToString(), 3, 3, '0', 0, true, true, true); 
+                }
+                else
+                {
+                    _detalhe += "000";
+                }
+                
                 //0=sem multa, 2=com multa (1, N)
                 if (boleto.PercMulta > 0)
                 {
