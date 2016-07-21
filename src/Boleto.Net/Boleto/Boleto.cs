@@ -25,7 +25,7 @@ namespace BoletoNet
 		private int _numeroParcela;
 		private decimal _valorBoleto;
 		private decimal _valorCobrado;
-		private string _localPagamento = "AtÈ o vencimento, preferencialmente no ";
+		private string _localPagamento = "At√© o vencimento, preferencialmente no ";
 		private int _quantidadeMoeda = 1;
 		private string _valorMoeda = string.Empty;
 		private IList<IInstrucao> _instrucoes = new List<IInstrucao>();
@@ -160,7 +160,7 @@ namespace BoletoNet
 		}
 
 		/// <summary> 
-		/// Retorna a VariaÁ„o da carteira.
+		/// Retorna a Varia√ß√£o da carteira.
 		/// </summary>
 		public string VariacaoCarteira
 		{
@@ -286,7 +286,7 @@ namespace BoletoNet
 		}
 
 		/// <summary> 
-		/// Recupara o n˙mero do documento
+		/// Recupara o n√∫mero do documento
 		/// </summary>        
 		public string NumeroDocumento
 		{
@@ -295,7 +295,7 @@ namespace BoletoNet
 		}
 
 		/// <summary> 
-		/// Recupara o digito nosso n˙mero 
+		/// Recupara o digito nosso n√∫mero 
 		/// </summary>        
 		public string DigitoNossoNumero
 		{
@@ -304,7 +304,7 @@ namespace BoletoNet
 		}
 
 		/// <summary> 
-		/// Recupara o nosso n˙mero 
+		/// Recupara o nosso n√∫mero 
 		/// </summary>        
 		public string NossoNumero
 		{
@@ -390,7 +390,7 @@ namespace BoletoNet
 		}
 
 		/// <summary>
-		/// Caso a empresa tenha no convÍnio Juros permanentes cadastrados
+		/// Caso a empresa tenha no conv√™nio Juros permanentes cadastrados
 		/// </summary>
 		public bool JurosPermanente
 		{
@@ -435,7 +435,7 @@ namespace BoletoNet
 		}
 
 		/// <summary> 
-		/// Outros AcrÈscimos
+		/// Outros Acr√©scimos
 		/// </summary>  
 		public decimal OutrosAcrescimos
 		{
@@ -480,7 +480,7 @@ namespace BoletoNet
 		}
 
 		/// <summary> 
-		/// Data de Outros AcrÈscimos
+		/// Data de Outros Acr√©scimos
 		/// </summary>  
 		public DateTime DataOutrosAcrescimos
 		{
@@ -516,7 +516,7 @@ namespace BoletoNet
 		}
 
 		/// <summary>
-		/// Retorna os Par‚metros utilizados na geraÁ„o da Remessa para o Boleto
+		/// Retorna os Par√¢metros utilizados na gera√ß√£o da Remessa para o Boleto
 		/// </summary>
 		public Remessa Remessa
 		{
@@ -524,26 +524,32 @@ namespace BoletoNet
 			set { this._remessa = value; }
 		}
 
+	        /// <summary>
+	        /// Faz com que o boleto seja registrado como d√©bito autom√°tico em alguns bancos.
+	        /// Para funcionar, √© necess√°rio que avisar o banco da utiliza√ß√£o 
+	        /// </summary>
+	        public ContaBancaria DebitoAutomatico { get; set; }
+        
 		public IBancoCarteira BancoCarteira { get; set; }
 
 		#endregion Properties
 
 		public void Valida()
 		{
-			// ValidaÁıes b·sicas, caso ainda tenha implementada na classe do banco.ValidaBoleto()
+			// Valida√ß√µes b√°sicas, caso ainda tenha implementada na classe do banco.ValidaBoleto()
 			if (this.Cedente == null)
-				throw new Exception("Cedente n„o cadastrado.");
+				throw new Exception("Cedente n√£o cadastrado.");
 
 			// Atribui o nome do banco ao local de pagamento
 			// Comentada por duplicidade no nome do banco
 			////this.LocalPagamento += this.Banco.Nome + string.Empty;
 
-			// Verifica se data do processamento È valida
+			// Verifica se data do processamento √© valida
 			// if (this.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
 			if (this.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
 				this.DataProcessamento = DateTime.Now;
 
-			// Verifica se data do documento È valida
+			// Verifica se data do documento √© valida
 			////if (this.DataDocumento.ToString("dd/MM/yyyy") == "01/01/0001")
 			if (this.DataDocumento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
 				this.DataDocumento = DateTime.Now;
@@ -562,7 +568,7 @@ namespace BoletoNet
 			}
 			catch (Exception ex)
 			{
-				throw new Exception("Erro durante a formataÁ„o dos campos.", ex);
+				throw new Exception("Erro durante a formata√ß√£o dos campos.", ex);
 			}
 		}
 	}
