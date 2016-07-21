@@ -1,23 +1,23 @@
 namespace BoletoNet
 {
     /// <summary>
-    /// Classe para representação de Conta Bancária
+    /// Classe para representaÃ§Ã£o de Conta BancÃ¡ria
     /// </summary>
     public class ContaBancaria
     {
         #region Constructors
         /// <summary>
-        /// Cria uma nova instância de conta bancária
+        /// Cria uma nova instÃ¢ncia de conta bancÃ¡ria
         /// </summary>
         public ContaBancaria()
         {
         }
 
         /// <summary>
-        /// Cria uma nova instância de conta bancária
+        /// Cria uma nova instÃ¢ncia de conta bancÃ¡ria
         /// </summary>
-        /// <param name="agencia">Número da Agência</param>
-        /// <param name="conta">Número da Conta</param>
+        /// <param name="agencia">NÃºmero da AgÃªncia</param>
+        /// <param name="conta">NÃºmero da Conta</param>
         public ContaBancaria(string agencia, string conta)
         {
             this.Agencia = agencia;
@@ -25,12 +25,12 @@ namespace BoletoNet
         }
 
         /// <summary>
-        /// Cria uma nova instância de conta bancária
+        /// Cria uma nova instÃ¢ncia de conta bancÃ¡ria
         /// </summary>
-        /// <param name="agencia">Número da Agência</param>
-        /// <param name="digitoAgencia">Dígito da Agência</param>
-        /// <param name="conta">Número da Conta</param>
-        /// <param name="digitoConta">Dígito da Conta</param>
+        /// <param name="agencia">NÃºmero da AgÃªncia</param>
+        /// <param name="digitoAgencia">DÃ­gito da AgÃªncia</param>
+        /// <param name="conta">NÃºmero da Conta</param>
+        /// <param name="digitoConta">DÃ­gito da Conta</param>
         public ContaBancaria(string agencia, string digitoAgencia, string conta, string digitoConta)
         {
             this.Agencia = agencia;
@@ -40,13 +40,13 @@ namespace BoletoNet
         }
 
         /// <summary>
-        /// Cria uma nova instância de conta bancária
+        /// Cria uma nova instÃ¢ncia de conta bancÃ¡ria
         /// </summary>
-        /// <param name="agencia">Número da Agência</param>
-        /// <param name="digitoAgencia">Dígito da Agência</param>
-        /// <param name="conta">Número da Conta</param>
-        /// <param name="digitoConta">Dígito da Conta</param>
-        /// <param name="operacaoConta">Operação da Conta</param>
+        /// <param name="agencia">NÃºmero da AgÃªncia</param>
+        /// <param name="digitoAgencia">DÃ­gito da AgÃªncia</param>
+        /// <param name="conta">NÃºmero da Conta</param>
+        /// <param name="digitoConta">DÃ­gito da Conta</param>
+        /// <param name="operacaoConta">OperaÃ§Ã£o da Conta</param>
         public ContaBancaria(string agencia, string digitoAgencia, string conta, string digitoConta, string operacaoConta)
         {
             this.Agencia = agencia;
@@ -59,7 +59,7 @@ namespace BoletoNet
 
         #region Properties
         /// <summary>
-        /// Retorna o numero da agência.
+        /// Retorna o numero da agÃªncia.
         /// <remarks>
         /// Completar com zeros a esquerda quando necessario
         /// </remarks>
@@ -67,12 +67,12 @@ namespace BoletoNet
         public string Agencia {get; set;}
 
         /// <summary>
-        /// Digito da Agência
+        /// Digito da AgÃªncia
         /// </summary>
         public string DigitoAgencia { get; set;}
 
         /// <summary>
-        /// Número da Conta Corrente
+        /// NÃºmero da Conta Corrente
         /// </summary>
         public string Conta {get; set;}
 
@@ -82,9 +82,15 @@ namespace BoletoNet
         public string DigitoConta { get; set; }
         
         /// <summary>
-        /// Opreração da Conta Corrente
+        /// OpreraÃ§Ã£o da Conta Corrente
         /// </summary>
         public string OperacaConta { get; set; }
+        
+        /// <summary>
+        /// RazÃ£o da Conta
+        /// </summary>
+        public string RazaoConta { get; set; }
+        
         #endregion Properties
     }
 }
