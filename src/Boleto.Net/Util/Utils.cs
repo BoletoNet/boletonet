@@ -355,11 +355,11 @@ namespace BoletoNet
             try
             {
                 agenciaConta = agencia;
-                if (digitoAgencia != string.Empty)
+                if (!string.IsNullOrEmpty(digitoAgencia))
                     agenciaConta += "-" + digitoAgencia;
 
                 agenciaConta += "/" + conta;
-                if (digitoConta != string.Empty)
+                if (!string.IsNullOrEmpty(digitoConta))
                     agenciaConta += "-" + digitoConta;
 
                 return agenciaConta;
