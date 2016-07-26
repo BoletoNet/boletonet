@@ -1,5 +1,7 @@
-﻿using System;
+using System;
+using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.IO;
 
 namespace BoletoNet.Testes
 {
@@ -116,7 +118,7 @@ namespace BoletoNet.Testes
 
             Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.Codigo, codigoBarraValida, "Código de Barra inválido");
         }
-        
+
         [TestMethod]
         public void Bradesco_Carteira_09_ArquivoRemessa()
         {
@@ -133,10 +135,12 @@ namespace BoletoNet.Testes
             //Inst�ncia de Boleto
             Boleto objBOLETO = new Boleto();
             //O nosso-numero deve ser de 11 posi��es
+
             objBOLETO.EspecieDocumento = new EspecieDocumento(237, "12");
             objBOLETO.DataVencimento = DateTime.Now.AddDays(10);
             objBOLETO.ValorBoleto = 90;
             objBOLETO.Carteira = "09";
+
             objBOLETO.NossoNumero = ("00000012345");
             objBOLETO.Cedente = objCEDENTE;
             //O n� do documento deve ser de 10 posi��es
@@ -223,7 +227,7 @@ namespace BoletoNet.Testes
             MemoryStream stream = new MemoryStream();
             var objREMESSA = new ArquivoRemessa(TipoArquivo.CNAB400);
             objREMESSA.GerarArquivoRemessa("09", new Banco(237), objCEDENTE, objBOLETOS, stream, 1000);
-
+        
         }
         #endregion
 
@@ -231,11 +235,11 @@ namespace BoletoNet.Testes
 
         private BoletoBancario GerarBoletoCarteira25()
         {
-            DateTime vencimento = new DateTime( 2015, 10, 21 );
+            DateTime vencimento = new DateTime(2015, 10, 21);
 
-            var cedente = new Cedente( "00.000.000/0000-00", "Empresa Teste", "054", "0", "148870", "8" );
+            var cedente = new Cedente("00.000.000/0000-00", "Empresa Teste", "054", "0", "148870", "8");
 
-            Boleto boleto = new Boleto( vencimento,(decimal)469.4, "25", "97000005287", cedente );
+            Boleto boleto = new Boleto(vencimento, (decimal)469.4, "25", "97000005287", cedente);
 
             boleto.NumeroDocumento = "5..287";
 
@@ -257,7 +261,7 @@ namespace BoletoNet.Testes
 
             string nossoNumeroValido = "25/97000005287-P";
 
-            Assert.AreEqual( boletoBancario.Boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido" );
+            Assert.AreEqual(boletoBancario.Boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido");
         }
 
         [TestMethod]
@@ -269,7 +273,7 @@ namespace BoletoNet.Testes
 
             string linhaDigitavelValida = "23790.05420 59700.000520 87014.887001 1 65880000046940";
 
-            Assert.AreEqual( boletoBancario.Boleto.CodigoBarra.LinhaDigitavel, linhaDigitavelValida, "Linha digitável inválida" );
+            Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.LinhaDigitavel, linhaDigitavelValida, "Linha digitável inválida");
         }
 
         [TestMethod]
@@ -281,7 +285,7 @@ namespace BoletoNet.Testes
 
             string codigoBarraValida = "23791658800000469400054259700000528701488700";
 
-            Assert.AreEqual( boletoBancario.Boleto.CodigoBarra.Codigo, codigoBarraValida, "Código de Barra inválido" );
+            Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.Codigo, codigoBarraValida, "Código de Barra inválido");
         }
         #endregion
 
