@@ -1166,12 +1166,8 @@ namespace BoletoNet
 
             switch (boleto.Carteira)
             {
-                case "17-019":
-                case "17-027":
-                    boleto.NossoNumero = string.Format("{0}/{1}", LimparCarteira(boleto.Carteira), boleto.NossoNumero);
-                    return;
                 case "31":
-                    boleto.NossoNumero = string.Format("{0}{1}", Utils.FormatCode(boleto.Cedente.Convenio.ToString(), 7), boleto.NossoNumero);
+                    boleto.NossoNumero = string.Format("{0}{1}", Utils.FormatCode(boleto.Cedente.Convenio, 7), boleto.NossoNumero);
                     return;
             }
 
@@ -1368,7 +1364,7 @@ namespace BoletoNet
                         throw new Exception("Posições do nº de convênio deve ser 4, 6 ou 7.");
                 }
 
-                if (boleto.NumeracaoTituloAutomatica) {
+                if (boleto.NumeracaoTituloAutomatica && boleto.Carteira != "17-019") {
                     _nossoNumero = string.Empty;
                 }
 
