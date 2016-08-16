@@ -1,119 +1,90 @@
 namespace BoletoNet
 {
+    /// <summary>
+    /// Classe para representação de Conta Bancária
+    /// </summary>
     public class ContaBancaria
     {
-        #region Variables
-        private string _agencia = string.Empty;
-        private string _digitoAgencia = string.Empty;
-        private string _conta = string.Empty;
-        private string _digitoConta = string.Empty;
-        private string _operacaoConta = string.Empty;
-        #endregion Variables
-
+        #region Constructors
+        /// <summary>
+        /// Cria uma nova instância de conta bancária
+        /// </summary>
         public ContaBancaria()
         {
         }
 
+        /// <summary>
+        /// Cria uma nova instância de conta bancária
+        /// </summary>
+        /// <param name="agencia">Número da Agência</param>
+        /// <param name="conta">Número da Conta</param>
         public ContaBancaria(string agencia, string conta)
         {
-            _agencia = agencia;
-            _conta = conta;
+            this.Agencia = agencia;
+            this.Conta = conta;
         }
 
+        /// <summary>
+        /// Cria uma nova instância de conta bancária
+        /// </summary>
+        /// <param name="agencia">Número da Agência</param>
+        /// <param name="digitoAgencia">Dígito da Agência</param>
+        /// <param name="conta">Número da Conta</param>
+        /// <param name="digitoConta">Dígito da Conta</param>
         public ContaBancaria(string agencia, string digitoAgencia, string conta, string digitoConta)
         {
-            _agencia = agencia;
-            _digitoAgencia = digitoAgencia;
-            _conta = conta;
-            _digitoConta = digitoConta;
+            this.Agencia = agencia;
+            this.DigitoAgencia = digitoAgencia;
+            this.Conta = conta;
+            this.DigitoConta = digitoConta;
         }
 
+        /// <summary>
+        /// Cria uma nova instância de conta bancária
+        /// </summary>
+        /// <param name="agencia">Número da Agência</param>
+        /// <param name="digitoAgencia">Dígito da Agência</param>
+        /// <param name="conta">Número da Conta</param>
+        /// <param name="digitoConta">Dígito da Conta</param>
+        /// <param name="operacaoConta">Operação da Conta</param>
         public ContaBancaria(string agencia, string digitoAgencia, string conta, string digitoConta, string operacaoConta)
         {
-            _agencia = agencia;
-            _digitoAgencia = digitoAgencia;
-            _conta = conta;
-            _digitoConta = digitoConta;
-            _operacaoConta = operacaoConta;
+            this.Agencia = agencia;
+            this.DigitoAgencia = digitoAgencia;
+            this.Conta = conta;
+            this.DigitoConta = digitoConta;
+            this.OperacaConta = operacaoConta;
         }
+        #endregion Constructors
 
         #region Properties
         /// <summary>
         /// Retorna o numero da agência.
+        /// <remarks>
         /// Completar com zeros a esquerda quando necessario
+        /// </remarks>
         /// </summary>
-        public string Agencia
-        {
-            get
-            {
-                return _agencia;
-            }
-
-            set
-            {
-                _agencia = value;
-            }
-        }
+        public string Agencia {get; set;}
 
         /// <summary>
         /// Digito da Agência
         /// </summary>
-        public string DigitoAgencia
-        {
-            get
-            {
-                return _digitoAgencia;
-            }
-            set
-            {
-                _digitoAgencia = value;
-            }
-        }
+        public string DigitoAgencia { get; set;}
 
         /// <summary>
         /// Número da Conta Corrente
         /// </summary>
-        public string Conta
-        {
-            get
-            {
-                return _conta;
-            }
-            set
-            {
-                _conta = value;
-            }
-        }
+        public string Conta {get; set;}
 
         /// <summary>
         /// Digito da Conta Corrente
         /// </summary>
-        public string DigitoConta
-        {
-            get
-            {
-                return _digitoConta;
-            }
-            set
-            {
-                _digitoConta = value;
-            }
-        }
-
+        public string DigitoConta { get; set; }
+        
         /// <summary>
-        /// get/set Opreração da Conta Corrente
+        /// Opreração da Conta Corrente
         /// </summary>
-        public string OperacaConta
-        {
-            get
-            {
-                return _operacaoConta;
-            }
-            set
-            {
-                _operacaoConta = value;
-            }
-        }
+        public string OperacaConta { get; set; }
         #endregion Properties
     }
 }

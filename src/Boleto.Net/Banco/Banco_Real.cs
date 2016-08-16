@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Threading;
 using System.Web.UI;
 using BoletoNet;
-using Microsoft.VisualBasic;
+using BoletoNet.Util;
 using System.Text;
 
 [assembly: WebResource("BoletoNet.Imagens.356.jpg", "image/jpg")]

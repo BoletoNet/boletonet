@@ -1,6 +1,6 @@
 using System;
 using System.Web.UI;
-using Microsoft.VisualBasic;
+using BoletoNet.Util;
 
 [assembly: WebResource("BoletoNet.Imagens.399.jpg", "image/jpg")]
 namespace BoletoNet
@@ -149,11 +149,10 @@ namespace BoletoNet
                     case "CSB": boleto.CodigoBarra.Codigo =
                         // Código de Barras
                         //banco & moeda & fator & valor & nossonumero & dac_nossonumero & agencia & conta & digitosconta & "00" & "1"
-                        string.Format("{0}{1}{2}{3}{4}{5}{6}{7}001", Codigo, boleto.Moeda,
+                         string.Format("{0}{1}{2}{3}{4}{5}{6}001", Codigo, boleto.Moeda,
                                       FatorVencimento(boleto), valorBoleto, boleto.NossoNumero + _dacNossoNumero,
                                       Utils.FormatCode(boleto.Cedente.ContaBancaria.Agencia, 4),
-                                      Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 5),
-                                      Utils.FormatCode(boleto.Cedente.ContaBancaria.DigitoConta, 2));
+                                      Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta, 7));                        
                         break;
                     case "CNR":
                         // Código de Barras
@@ -377,7 +376,7 @@ namespace BoletoNet
 
             for (int i = seq.Length; i > 0; i--)
             {
-                s = s + (Convert.ToInt32(Microsoft.VisualBasic.Strings.Mid(seq, i, 1)) * p);
+                s = s + (Convert.ToInt32(seq.Mid( i, 1)) * p);
                 if (p == b)
                     p = 2;
                 else
