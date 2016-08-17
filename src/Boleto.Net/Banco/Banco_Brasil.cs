@@ -1472,10 +1472,14 @@ namespace BoletoNet
                 // 2 ou 3 – para carteira 11/17 modalidade Vinculada/Caucionada e carteira 31; 
                 // 4 – para carteira 11/17 modalidade Descontada e carteira 51; 
                 // 7 – para carteira 17 modalidade Simples.
-                if (boleto.Carteira.Equals("17-019") || boleto.Carteira.Equals("17-027") || boleto.Carteira.Equals("17-035"))
-                    _segmentoP += "7";
-                else
-                    _segmentoP += "0";
+                if (boleto.ModalidadeCobranca == 0) {
+                    if (boleto.Carteira.Equals("17-019") || boleto.Carteira.Equals("17-027") || boleto.Carteira.Equals("17-035"))
+                        _segmentoP += "7";
+                    else
+                        _segmentoP += "0";
+                } else {
+                    _segmentoP += boleto.ModalidadeCobranca.ToString();
+                }
 
                 // Campo não tratado pelo BB. Forma de cadastramento do título no banco. Pode ser branco/espaço, 0, 1=cobrança registrada, 2=sem registro.
                 _segmentoP += "1";
