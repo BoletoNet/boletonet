@@ -7,9 +7,7 @@ namespace BoletoNet
 {
     public class ArquivoRetornoCNAB400 : AbstractArquivoRetorno, IArquivoRetorno
     {
-
         private List<DetalheRetorno> _listaDetalhe = new List<DetalheRetorno>();
-
         public List<DetalheRetorno> ListaDetalhe
         {
             get { return _listaDetalhe; }
@@ -17,22 +15,20 @@ namespace BoletoNet
         }
 
         #region Construtores
-
         public ArquivoRetornoCNAB400()
-		{
-            this.TipoArquivo = TipoArquivo.CNAB400;
+        {
+            TipoArquivo = TipoArquivo.CNAB400;
         }
-
         #endregion
 
         #region Métodos de instância
-
         public override void LerArquivoRetorno(IBanco banco, Stream arquivo)
         {
             try
             {
-                StreamReader stream = new StreamReader(arquivo, System.Text.Encoding.UTF8);
+                StreamReader stream = new StreamReader(arquivo, Encoding.UTF8);
                 string linha = "";
+
                 // Identificação do registro detalhe
                 string IdRegistroDetalhe = string.Empty;
 
@@ -43,9 +39,12 @@ namespace BoletoNet
                 linha = stream.ReadLine();
 
                 // 85 - CECRED - Código de registro detalhe 7 para CECRED
-                if (banco.Codigo == 85) {
+                if (banco.Codigo == 85)
+                {
                     IdRegistroDetalhe = "7";
-                } else {
+                }
+                else
+                {
                     IdRegistroDetalhe = "1";
                 }
 
@@ -64,7 +63,6 @@ namespace BoletoNet
                 throw new Exception("Erro ao ler arquivo.", ex);
             }
         }
-
         #endregion
     }
 }

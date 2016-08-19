@@ -19,6 +19,7 @@ namespace BoletoNet
                 .ToList();
 
         }
+
         public static IBancoCarteira Fabrica(string carteira, int codBanco)
         {
             var tuple = carteiras.FirstOrDefault(t => t.Item1.Carteira == carteira && t.Item1.CodigoBanco == codBanco);
@@ -30,6 +31,7 @@ namespace BoletoNet
     {
         public T1 Item1 { get; private set; }
         public T2 Item2 { get; private set; }
+
         internal Tuple(T1 item1, T2 item2)
         {
             Item1 = item1;

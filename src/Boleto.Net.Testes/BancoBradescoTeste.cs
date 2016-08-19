@@ -9,15 +9,17 @@ namespace BoletoNet.Testes
     public class BancoBradescoTeste
     {
         #region Carteira 16
-
         private BoletoBancario GerarBoletoCarteira16()
         {
+
             var vencimento = new DateTime(2015, 7, 20);
             var cedente = new Cedente("00.000.000/0000-00", "Empresa Teste", "0413", "8", "0002916", "5");
             var boleto = new Boleto(vencimento, 123, "16", "00970171092", cedente);
+
             boleto.NumeroDocumento = "970171092";
 
             var boletoBancario = new BoletoBancario();
+
             boletoBancario.CodigoBanco = 237;
             boletoBancario.Boleto = boleto;
 
@@ -63,7 +65,6 @@ namespace BoletoNet.Testes
         #endregion
 
         #region Carteira 09
-
         private BoletoBancario GerarBoletoCarteira09()
         {
             DateTime vencimento = new DateTime(2012, 6, 8);
@@ -122,23 +123,35 @@ namespace BoletoNet.Testes
         [TestMethod]
         public void Bradesco_Carteira_09_ArquivoRemessa()
         {
+
+            var r = new Banco(237);
+
+            using (var sr = new FileStream(@"C:\Users\Prog03\Desktop\CB170800.RET", FileMode.Open))
+            {
+                ArquivoRetornoCNAB400 retorno = new ArquivoRetornoCNAB400();
+                retorno.LerArquivoRetorno(r, sr);
+                // Read the stream to a string, and write the string to the console.                               
+
+            }
+
+
+
             Cedente objCEDENTE = new Cedente(
                "12345678000155",
                "TESTE",
                "1111",
                "11234",
-               "1"
-               );
+               "1");
             objCEDENTE.Codigo = "123456";
             objCEDENTE.Convenio = 9;
 
             //Inst�ncia de Boleto
             Boleto objBOLETO = new Boleto();
             //O nosso-numero deve ser de 11 posi��es
-            objBOLETO.EspecieDocumento = new EspecieDocumento(237,"12");
+            objBOLETO.EspecieDocumento = new EspecieDocumento(237, "12");
             objBOLETO.DataVencimento = DateTime.Now.AddDays(10);
             objBOLETO.ValorBoleto = 90;
-            objBOLETO.Carteira ="09";
+            objBOLETO.Carteira = "09";
             objBOLETO.NossoNumero = ("00000012345");
             objBOLETO.Cedente = objCEDENTE;
             //O n� do documento deve ser de 10 posi��es
@@ -165,25 +178,29 @@ namespace BoletoNet.Testes
             };*/
 
             Boletos objBOLETOS = new Boletos();
+
             objBOLETOS.Add(objBOLETO);
 
             var mem = new MemoryStream();
+
+            Stream fd = File.OpenWrite(@"D:\text.rem");
+
             var objREMESSA = new ArquivoRemessa(TipoArquivo.CNAB400);
-            objREMESSA.GerarArquivoRemessa("09", new Banco(237), objCEDENTE, objBOLETOS, mem, 1000);
+
+            objREMESSA.GerarArquivoRemessa("09", new Banco(237), objCEDENTE, objBOLETOS, fd, 1000);
 
 
         }
         #endregion
 
         #region Carteira 25
-
         private BoletoBancario GerarBoletoCarteira25()
         {
-            DateTime vencimento = new DateTime( 2015, 10, 21 );
+            DateTime vencimento = new DateTime(2015, 10, 21);
 
-            var cedente = new Cedente( "00.000.000/0000-00", "Empresa Teste", "054", "0", "148870", "8" );
+            var cedente = new Cedente("00.000.000/0000-00", "Empresa Teste", "054", "0", "148870", "8");
 
-            Boleto boleto = new Boleto( vencimento,(decimal)469.4, "25", "97000005287", cedente );
+            Boleto boleto = new Boleto(vencimento, (decimal)469.4, "25", "97000005287", cedente);
 
             boleto.NumeroDocumento = "5..287";
 
@@ -205,7 +222,7 @@ namespace BoletoNet.Testes
 
             string nossoNumeroValido = "25/97000005287-P";
 
-            Assert.AreEqual( boletoBancario.Boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido" );
+            Assert.AreEqual(boletoBancario.Boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido");
         }
 
         [TestMethod]
@@ -217,7 +234,7 @@ namespace BoletoNet.Testes
 
             string linhaDigitavelValida = "23790.05420 59700.000520 87014.887001 1 65880000046940";
 
-            Assert.AreEqual( boletoBancario.Boleto.CodigoBarra.LinhaDigitavel, linhaDigitavelValida, "Linha digitável inválida" );
+            Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.LinhaDigitavel, linhaDigitavelValida, "Linha digitável inválida");
         }
 
         [TestMethod]
@@ -229,12 +246,11 @@ namespace BoletoNet.Testes
 
             string codigoBarraValida = "23791658800000469400054259700000528701488700";
 
-            Assert.AreEqual( boletoBancario.Boleto.CodigoBarra.Codigo, codigoBarraValida, "Código de Barra inválido" );
+            Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.Codigo, codigoBarraValida, "Código de Barra inválido");
         }
         #endregion
 
         #region Carteira 26
-
         private BoletoBancario GerarBoletoCarteira26()
         {
             DateTime vencimento = new DateTime(2015, 10, 21);

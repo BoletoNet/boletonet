@@ -74,7 +74,6 @@ namespace BoletoNet
         #endregion
 
         # region Métodos Privados
-
         private void InstanciaEspecieDocumento(int codigoBanco, string codigoEspecie)
         {
             try

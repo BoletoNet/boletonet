@@ -60,7 +60,6 @@ namespace BoletoNet
 		private DateTime _dataOutrosAcrescimos;
 		private DateTime _dataOutrosDescontos;
 		private short _percentualIOS;
-        private short _modalidadeCobranca = 0;
 
 		private string _tipoModalidade = string.Empty;
 		private Remessa _remessa;
@@ -108,7 +107,18 @@ namespace BoletoNet
 			this._cedente = cedente;
 		}
 
-		public Boleto(DateTime dataVencimento, decimal valorBoleto, string carteira, string nossoNumero, string digitoNossoNumero, Cedente cedente)
+        public Boleto(DateTime dataVencimento, DateTime dataProcessamento, decimal valorBoleto, string carteira, string nossoNumero, Cedente cedente)
+        {
+            this._carteira = carteira;
+            this._nossoNumero = nossoNumero;
+            this._dataVencimento = dataVencimento;
+            this._valorBoleto = valorBoleto;
+            this._valorBoleto = valorBoleto;
+            this._valorCobrado = this.ValorCobrado;
+            this._cedente = cedente;
+        }
+
+        public Boleto(DateTime dataVencimento, decimal valorBoleto, string carteira, string nossoNumero, string digitoNossoNumero, Cedente cedente)
 		{
 			this._carteira = carteira;
 			this._nossoNumero = nossoNumero;
@@ -516,19 +526,10 @@ namespace BoletoNet
 			set { this._percentualIOS = value; }
 		}
 
-        /// <summary> 
-        /// C006 - Retorna a modalidade de cobrança/código carteira 1-Cobrança Simples 2-Cobrança Vinculada 3-Cobrança Caucionada 4-Cobrança Descontada 5-Cobrança Vendor 
-        /// </summary>
-        public short ModalidadeCobranca
-        {
-            get { return this._modalidadeCobranca; }
-            set { this._modalidadeCobranca = value; }
-        }
-
-        /// <summary>
-        /// Retorna os Parâmetros utilizados na geração da Remessa para o Boleto
-        /// </summary>
-        public Remessa Remessa
+		/// <summary>
+		/// Retorna os Parâmetros utilizados na geração da Remessa para o Boleto
+		/// </summary>
+		public Remessa Remessa
 		{
 			get { return this._remessa; }
 			set { this._remessa = value; }

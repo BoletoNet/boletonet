@@ -566,17 +566,17 @@ namespace BoletoNet
             #region Carteira 16
             if (boleto.Carteira.Equals("16"))
             {
-                if (boleto.Cedente.Convenio.ToString().Length == 6 && boleto.TipoModalidade.Equals("21"))
+                if (boleto.Cedente.Convenio.ToString().Length == 6)
                 {
-
-                    boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}{5}{6}",
-                        Utils.FormatCode(Codigo.ToString(), 3),
-                        boleto.Moeda,
-                        FatorVencimento(boleto),
-                        valorBoleto,
-                        boleto.Cedente.Convenio,
-                        boleto.NossoNumero,
-                        "21");
+                    if (boleto.TipoModalidade.Equals("21"))
+                        boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}{5}{6}",
+                            Utils.FormatCode(Codigo.ToString(), 3),
+                            boleto.Moeda,
+                            FatorVencimento(boleto),
+                            valorBoleto,
+                            boleto.Cedente.Convenio,
+                            boleto.NossoNumero,
+                            "21");
                 }
                 else
                 {
@@ -1368,14 +1368,10 @@ namespace BoletoNet
                 // 2 ou 3 – para carteira 11/17 modalidade Vinculada/Caucionada e carteira 31; 
                 // 4 – para carteira 11/17 modalidade Descontada e carteira 51; 
                 // 7 – para carteira 17 modalidade Simples.
-                if (boleto.ModalidadeCobranca == 0) {
-                    if (boleto.Carteira.Equals("17-019") || boleto.Carteira.Equals("17-027"))
-                        _segmentoP += "7";
-                    else
-                        _segmentoP += "0";
-                } else {
-                    _segmentoP += boleto.ModalidadeCobranca.ToString();
-                }
+                if (boleto.Carteira.Equals("17-019") || boleto.Carteira.Equals("17-027"))
+                    _segmentoP += "7";
+                else
+                    _segmentoP += "0";
 
                 // Campo não tratado pelo BB. Forma de cadastramento do título no banco. Pode ser branco/espaço, 0, 1=cobrança registrada, 2=sem registro.
                 _segmentoP += "1";
@@ -1460,9 +1456,9 @@ namespace BoletoNet
                             /*codigo_protesto = "3"; 
                             dias_protesto = "00";*/
                             break;
-                            /*
-                             * Bloco do "default" comentado por Jéferson, jefhtavares em 26/11 se fossem adicionadas mais de duas instruções e a instrução de protesto fosse a última a mesma não iria aparecer no arquivo
-                             */
+                        /*
+                         * Bloco do "default" comentado por Jéferson, jefhtavares em 26/11 se fossem adicionadas mais de duas instruções e a instrução de protesto fosse a última a mesma não iria aparecer no arquivo
+                         */
                     }
                 }
 
@@ -1760,7 +1756,7 @@ namespace BoletoNet
                     _convenio += cedente.Carteira.ToString() + "000  ";
                 else
                     _convenio += cedente.Carteira.Replace("-", "") + "  ";
-
+                    
                 _header = "00100000         ";
                 if (cedente.CPFCNPJ.Length <= 11)
                     _header += "1";

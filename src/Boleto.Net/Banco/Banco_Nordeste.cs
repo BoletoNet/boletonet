@@ -49,9 +49,7 @@ namespace BoletoNet
         {
 
             if (string.IsNullOrEmpty(boleto.Carteira))
-                throw new NotImplementedException("Carteira não informada. Utilize a carteira 4, 5, 6, I ou Tipo de Operação 21, 41, 31, 51");
-
-            boleto.Carteira = FormataCarteira(boleto.Carteira);//Transforma de Carteira para Tipo de Operacao. Ex.: de '4' para '21'
+                throw new NotImplementedException("Carteira não informada. Utilize a carteira 4, 5, 6, I.");
 
             boleto.QuantidadeMoeda = 0;
 
@@ -361,15 +359,6 @@ namespace BoletoNet
                 case "I"://Cobranca Simplificada(Sem Registro)
                     return "51";
                     break;
-
-                //Caso esteja usando o tipo de operacao
-                case "21":
-                case "41":
-                case "31":
-                case "51":
-                    return carteira;
-                    break;
-
                 default:
                     throw new Exception("Carteira nao implementada");
                     break;

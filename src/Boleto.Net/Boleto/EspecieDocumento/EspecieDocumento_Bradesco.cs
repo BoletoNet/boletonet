@@ -51,7 +51,6 @@ namespace BoletoNet
         #endregion
 
         #region Metodos Privados
-
         public string getCodigoEspecieByEnum(EnumEspecieDocumento_Bradesco especie)
         {
             switch (especie)
