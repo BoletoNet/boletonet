@@ -6,7 +6,6 @@ namespace BoletoNet
 {
     public abstract class AbstractBanco
     {
-
         #region Variaveis
 
         private int _codigo = 0;
@@ -62,7 +61,6 @@ namespace BoletoNet
         #endregion Propriedades
 
         # region Métodos
-
         /// <summary>
         /// Retorna o campo que compos o código de barras que para todos os bancos são iguais foramado por:
         /// </summary>
@@ -115,8 +113,6 @@ namespace BoletoNet
             string _trailer = "";
             return _trailer;
         }
-
-
 
         /// <summary>
         /// Gera os registros de header de aquivo do arquivo de remessa
@@ -221,6 +217,7 @@ namespace BoletoNet
             string _segmentoR = "";
             return _segmentoR;
         }
+
         /// <summary>
         /// Gera os registros de Trailer de arquivo do arquivo de remessa
         /// </summary>
@@ -229,11 +226,13 @@ namespace BoletoNet
             string _trailerArquivo = "";
             return _trailerArquivo;
         }
+
         public virtual string GerarTrailerArquivoRemessa(int numeroRegistro, Boleto boletos)
         {
             string _trailerArquivo = "";
             return _trailerArquivo;
         }
+
         /// <summary>
         /// Gera os registros de Trailer de lote do arquivo de remessa
         /// </summary>
@@ -242,6 +241,7 @@ namespace BoletoNet
             string _trailerLote = "";
             return _trailerLote;
         }
+
         /// <summary>
         /// Gera os registros de Trailer de lote do arquivo de remessa
         /// </summary>
@@ -250,6 +250,7 @@ namespace BoletoNet
             string _trailerLote = "";
             return _trailerLote;
         }
+
         /// <summary>
         /// Formata código de barras
         /// </summary>      
@@ -257,6 +258,7 @@ namespace BoletoNet
         {
             throw new NotImplementedException("Função não implementada na classe filha. Implemente na classe que está sendo criada.");
         }
+
         /// <summary>
         /// Formata linha digitável
         /// </summary>
@@ -264,6 +266,7 @@ namespace BoletoNet
         {
             throw new NotImplementedException("Função não implementada na classe filha. Implemente na classe que está sendo criada.");
         }
+
         /// <summary>
         /// Formata nosso número
         /// </summary>
@@ -271,6 +274,7 @@ namespace BoletoNet
         {
             throw new NotImplementedException("Função não implementada na classe filha. Implemente na classe que está sendo criada.");
         }
+
         /// <summary>
         /// Formata número do documento
         /// </summary>
@@ -278,6 +282,7 @@ namespace BoletoNet
         {
             throw new NotImplementedException("Função não implementada na classe filha. Implemente na classe que está sendo criada.");
         }
+
         /// <summary>
         /// Valida o boleto
         /// </summary>

@@ -49,7 +49,7 @@ namespace BoletoNet
                 throw new Exception("Boleto não possui cedente.");
 
             item.Valida();
-            this.Add(item);
+            Add(item);
         }
 
         # endregion

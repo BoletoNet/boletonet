@@ -203,6 +203,7 @@ namespace BoletoNet
             }
         }
         #endregion
+
         protected virtual byte[] toByte(Bitmap bitmap)
         {
             MemoryStream mstream = new MemoryStream();

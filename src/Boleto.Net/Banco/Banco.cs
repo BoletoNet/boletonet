@@ -71,6 +71,7 @@ namespace BoletoNet
                         break;
                     //356 - Real
                     case 275:
+
                     case 356:
                         _IBanco = new Banco_Real();
                         break;
@@ -491,12 +492,10 @@ namespace BoletoNet
             return _IBanco.LerDetalheSegmentoWRetornoCNAB240(registro);
         }
 
-
         public override DetalheRetorno LerDetalheRetornoCNAB400(string registro)
         {
             return _IBanco.LerDetalheRetornoCNAB400(registro);
         }
-
         #endregion Métodos de Leitura do arquivo de Retorno
     }
 }

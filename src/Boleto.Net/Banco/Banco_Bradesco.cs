@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Web.UI;
 using BoletoNet;
 using BoletoNet.Util;
+using System.Text.RegularExpressions;
+using BoletoNet.Enums;
 
 [assembly: WebResource("BoletoNet.Imagens.237.jpg", "image/jpg")]
 
@@ -134,7 +136,7 @@ namespace BoletoNet
         /// 
         ///   *******
         /// 
-        ///	O código de barra para cobrança contém 44 posições dispostas da seguinte forma:
+        ///	   O código de barra para cobrança contém 44 posições dispostas da seguinte forma:
         ///    01 a 03 - 3 - Identificação  do  Banco
         ///    04 a 04 - 1 - Código da Moeda
         ///    05 a 05 – 1 - Dígito verificador do Código de Barras
@@ -205,11 +207,11 @@ namespace BoletoNet
             throw new NotImplementedException("Função ainda não implementada.");
         }
 
-
         public override void FormataNossoNumero(Boleto boleto)
         {
             boleto.NossoNumero = string.Format("{0}/{1}-{2}", boleto.Carteira, boleto.NossoNumero, boleto.DigitoNossoNumero);
         }
+
         public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos)
         {
             throw new NotImplementedException("Função não implementada.");
@@ -257,14 +259,14 @@ namespace BoletoNet
                 boleto.Cedente.ContaBancaria.Conta = Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 7);
 
             //Verifica se data do processamento é valida
-			//if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
-			if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
+            //if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
+            if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 boleto.DataProcessamento = DateTime.Now;
 
 
             //Verifica se data do documento é valida
-			//if (boleto.DataDocumento.ToString("dd/MM/yyyy") == "01/01/0001")
-			if (boleto.DataDocumento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
+            //if (boleto.DataDocumento.ToString("dd/MM/yyyy") == "01/01/0001")
+            if (boleto.DataDocumento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 boleto.DataDocumento = DateTime.Now;
 
             boleto.QuantidadeMoeda = 0;
@@ -277,76 +279,14 @@ namespace BoletoNet
             // Calcula o DAC do Nosso Número
             _dacNossoNumero = CalcularDigitoNossoNumero(boleto);
             boleto.DigitoNossoNumero = _dacNossoNumero;
-            
+
             FormataCodigoBarra(boleto);
             FormataLinhaDigitavel(boleto);
             FormataNossoNumero(boleto);
         }
         #endregion IBanco Members
 
-        /// <summary>
-        /// Verifica o tipo de ocorrência para o arquivo remessa
-        /// </summary>
-        public string Ocorrencia(string codigo)
-        {
-            switch (codigo)
-            {
-                case "02":
-                    return "02-Entrada Confirmada";
-                case "03":
-                    return "03-Entrada Rejeitada";
-                case "06":
-                    return "06-Liquidação normal";
-                case "09":
-                    return "09-Baixado Automaticamente via Arquivo";
-                case "10":
-                    return "10-Baixado conforme instruções da Agência";
-                case "11":
-                    return "11-Em Ser - Arquivo de Títulos pendentes";
-                case "12":
-                    return "12-Abatimento Concedido";
-                case "13":
-                    return "13-Abatimento Cancelado";
-                case "14":
-                    return "14-Vencimento Alterado";
-                case "15":
-                    return "15-Liquidação em Cartório";
-                case "17":
-                    return "17-Liquidação após baixa ou Título não registrado";
-                case "18":
-                    return "18-Acerto de Depositária";
-                case "19":
-                    return "19-Confirmação Recebimento Instrução de Protesto";
-                case "20":
-                    return "20-Confirmação Recebimento Instrução Sustação de Protesto";
-                case "21":
-                    return "21-Acerto do Controle do Participante";
-                case "23":
-                    return "23-Entrada do Título em Cartório";
-                case "24":
-                    return "24-Entrada rejeitada por CEP Irregular";
-                case "27":
-                    return "27-Baixa Rejeitada";
-                case "28":
-                    return "28-Débito de tarifas/custas";
-                case "30":
-                    return "30-Alteração de Outros Dados Rejeitados";
-                case "32":
-                    return "32-Instrução Rejeitada";
-                case "33":
-                    return "33-Confirmação Pedido Alteração Outros Dados";
-                case "34":
-                    return "34-Retirado de Cartório e Manutenção Carteira";
-                case "35":
-                    return "35-Desagendamento ) débito automático";
-                case "68":
-                    return "68-Acerto dos dados ) rateio de Crédito";
-                case "69":
-                    return "69-Cancelamento dos dados ) rateio";
-                default:
-                    return "";
-            }
-        }
+        
 
         /// <summary>
         /// Verifica o código do motivo da rejeição informada pelo banco
@@ -450,7 +390,7 @@ namespace BoletoNet
 
             for (int i = seq.Length; i > 0; i--)
             {
-                s = s + (Convert.ToInt32(seq.Mid( i, 1)) * p);
+                s = s + (Convert.ToInt32(seq.Mid(i, 1)) * p);
                 if (p == b)
                     p = 2;
                 else
@@ -475,6 +415,7 @@ namespace BoletoNet
 
                 //Tipo de Inscrição Empresa
                 detalhe.CodigoInscricao = Utils.ToInt32(registro.Substring(1, 2));
+                
                 //Nº Inscrição da Empresa
                 detalhe.NumeroInscricao = registro.Substring(3, 14);
 
@@ -485,65 +426,83 @@ namespace BoletoNet
 
                 //Nº Controle do Participante
                 detalhe.NumeroControle = registro.Substring(37, 25);
+                
                 //Identificação do Título no Banco
                 detalhe.NossoNumeroComDV = registro.Substring(70, 12);
                 detalhe.NossoNumero = registro.Substring(70, 11);//Sem o DV
                 detalhe.DACNossoNumero = registro.Substring(81, 1); //DV
+                
                 //Carteira
                 detalhe.Carteira = registro.Substring(107, 1);
+
                 //Identificação de Ocorrência
                 detalhe.CodigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2));
 
                 //Descrição da ocorrência
-                detalhe.DescricaoOcorrencia = this.Ocorrencia(registro.Substring(108, 2));
+                detalhe.DescricaoOcorrencia = ((TipoOcorrenciaBradesco)detalhe.CodigoOcorrencia).GetDescriptionFromEnum();
 
                 //Número do Documento
                 detalhe.NumeroDocumento = registro.Substring(116, 10);
+                
                 //Identificação do Título no Banco
                 detalhe.IdentificacaoTitulo = registro.Substring(126, 20);
 
                 //Valor do Título
                 decimal valorTitulo = Convert.ToInt64(registro.Substring(152, 13));
                 detalhe.ValorTitulo = valorTitulo / 100;
+                
                 //Banco Cobrador
                 detalhe.CodigoBanco = Utils.ToInt32(registro.Substring(165, 3));
+                
                 //Agência Cobradora
                 detalhe.AgenciaCobradora = Utils.ToInt32(registro.Substring(168, 5));
+                
                 //Espécie do Título
                 detalhe.Especie = Utils.ToInt32(registro.Substring(173, 2));
+                
                 //Despesas de cobrança para os Códigos de Ocorrência (Valor Despesa)
                 decimal valorDespesa = Convert.ToUInt64(registro.Substring(175, 13));
                 detalhe.ValorDespesa = valorDespesa / 100;
+                
                 //Outras despesas Custas de Protesto (Valor Outras Despesas)
                 decimal valorOutrasDespesas = Convert.ToUInt64(registro.Substring(188, 13));
                 detalhe.ValorOutrasDespesas = valorOutrasDespesas / 100;
+                
                 // IOF
                 decimal iof = Convert.ToUInt64(registro.Substring(214, 13));
                 detalhe.IOF = iof / 100;
+                
                 //Abatimento Concedido sobre o Título (Valor Abatimento Concedido)
                 decimal valorAbatimento = Convert.ToUInt64(registro.Substring(227, 13));
                 detalhe.ValorAbatimento = valorAbatimento / 100;
+                
                 //Desconto Concedido (Valor Desconto Concedido)
                 decimal valorDesconto = Convert.ToUInt64(registro.Substring(240, 13));
                 detalhe.Descontos = valorDesconto / 100;
+                
                 //Valor Pago
                 decimal valorPago = Convert.ToUInt64(registro.Substring(253, 13));
                 detalhe.ValorPago = valorPago / 100;
+                
                 //Juros Mora
                 decimal jurosMora = Convert.ToUInt64(registro.Substring(266, 13));
                 detalhe.JurosMora = jurosMora / 100;
+                
                 //Outros Créditos
                 decimal outrosCreditos = Convert.ToUInt64(registro.Substring(279, 13));
                 detalhe.OutrosCreditos = outrosCreditos / 100;
+                
                 //Motivo do Código de Ocorrência 19 (Confirmação de Instrução de Protesto)
                 detalhe.MotivoCodigoOcorrencia = registro.Substring(294, 1);
 
                 //Data Ocorrência no Banco
                 int dataOcorrencia = Utils.ToInt32(registro.Substring(110, 6));
                 detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
+                
                 //Data Vencimento do Título
                 int dataVencimento = Utils.ToInt32(registro.Substring(146, 6));
                 detalhe.DataVencimento = Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
+                
                 // Data do Crédito
                 int dataCredito = Utils.ToInt32(registro.Substring(295, 6));
                 detalhe.DataCredito = Utils.ToDateTime(dataCredito.ToString("##-##-##"));
@@ -553,10 +512,13 @@ namespace BoletoNet
 
                 //Motivos das Rejeições para os Códigos de Ocorrência
                 detalhe.MotivosRejeicao = registro.Substring(318, 10);
+                
                 //Número do Cartório
                 detalhe.NumeroCartorio = Utils.ToInt32(registro.Substring(365, 2));
+                
                 //Número do Protocolo
                 detalhe.NumeroProtocolo = registro.Substring(365, 2);
+                
                 //Nome do Sacado
                 detalhe.NomeSacado = "";
 
@@ -585,7 +547,6 @@ namespace BoletoNet
 
                 switch (tipoArquivo)
                 {
-
                     case TipoArquivo.CNAB240:
                         _header = GerarHeaderRemessaCNAB240();
                         break;
@@ -728,11 +689,31 @@ namespace BoletoNet
                     _detalhe += "0000";
                 }
 
-                //Identificação do Título no Banco (12, A)
-                _detalhe += Utils.FitStringLength(boleto.NossoNumero, 11, 11, '0', 0, true, true, true); //Nosso Numero (11)
+                /*
+                 * Quando o nosso npumero vinher no formato 00/00000000000-0
+                 * ele vai separar as informações e pegar o valor correto do nosso numero e do dígito que está entre o / e -
+                 * Adicionado por Roque
+                 */
+                Regex regex = new Regex(@"^[0-9]{2}\/[0-9]{11}-[0-9]{1}$");
 
-                // Força o NossoNumero a ter 11 dígitos. Alterado por Luiz Ponce 07/07/2012
-                _detalhe += Mod11Bradesco(boleto.Carteira + Utils.FitStringLength(boleto.NossoNumero, 11, 11, '0', 0, true, true, true), 7); // Digito de Auto Conferencia do Nosso Número (01)
+                if (regex.IsMatch(boleto.NossoNumero))
+                {
+                    regex = new Regex("/[0-9]{11}-");
+
+                    Match resultadosMatch = regex.Match(boleto.NossoNumero);
+                    string _nossoNumero = resultadosMatch.Value.Replace("/", "").Replace("-", "");
+
+                    _detalhe += _nossoNumero;
+                    _detalhe += boleto.NossoNumero[boleto.NossoNumero.Length - 1];
+                }
+                else
+                {
+                    //Identificação do Título no Banco (12, A)
+                    _detalhe += Utils.FitStringLength(boleto.NossoNumero, 11, 11, '0', 0, true, true, true); //Nosso Numero (11)
+                    // Força o NossoNumero a ter 11 dígitos. Alterado por Luiz Ponce 07/07/2012
+                    _detalhe += Mod11Bradesco(boleto.Carteira + Utils.FitStringLength(boleto.NossoNumero, 11, 11, '0', 0, true, true, true), 7); // Digito de Auto Conferencia do Nosso Número (01)
+                }
+
                 //Desconto Bonificação por dia (10, N)
                 _detalhe += "0000000000";
 
@@ -760,29 +741,30 @@ namespace BoletoNet
 
                 //Identificação ocorrência(2, N)
                 /*
-                01..Remessa
-                02..Pedido de baixa
-                04..Concessão de abatimento
-                05..Cancelamento de abatimento concedido
-                06..Alteração de vencimento
-                07..Alteração do controle do participante
-                08..Alteração de seu número
-                09..Pedido de protesto
-                18..Sustar protesto e baixar Título
-                19..Sustar protesto e manter em carteira
-                31..Alteração de outros dados
-                35..Desagendamento do débito automático
-                68..Acerto nos dados do rateio de Crédito
-                69..Cancelamento do rateio de crédito.
+                    01..Remessa
+                    02..Pedido de baixa
+                    04..Concessão de abatimento
+                    05..Cancelamento de abatimento concedido
+                    06..Alteração de vencimento
+                    07..Alteração do controle do participante
+                    08..Alteração de seu número
+                    09..Pedido de protesto
+                    18..Sustar protesto e baixar Título
+                    19..Sustar protesto e manter em carteira
+                    31..Alteração de outros dados
+                    35..Desagendamento do débito automático
+                    68..Acerto nos dados do rateio de Crédito
+                    69..Cancelamento do rateio de crédito.
                 */
                 if (boleto.Remessa == null || string.IsNullOrEmpty(boleto.Remessa.CodigoOcorrencia.Trim()))
                 {
                     _detalhe += "01";
-                } 
-                else {
-                    _detalhe += boleto.Remessa.CodigoOcorrencia.PadLeft(2, '0') ;
                 }
-                
+                else
+                {
+                    _detalhe += boleto.Remessa.CodigoOcorrencia.PadLeft(2, '0');
+                }
+
 
                 _detalhe += Utils.Right(boleto.NumeroDocumento, 10, '0', true); //Nº do Documento (10, A)
                 _detalhe += boleto.DataVencimento.ToString("ddMMyy"); //Data do Vencimento do Título (10, N) DDMMAA
@@ -794,26 +776,26 @@ namespace BoletoNet
                 _detalhe += "00000"; //Agência Depositária (5, N)
 
                 /*Espécie de Título (2,N)
-                * 01-Duplicata
-                02-Nota Promissória
-                03-Nota de Seguro
-                04-Cobrança Seriada
-                05-Recibo
-                10-Letras de Câmbio
-                11-Nota de Débito
-                12-Duplicata de Serv.
-                99-Outros
+                    01-Duplicata
+                    02-Nota Promissória
+                    03-Nota de Seguro
+                    04-Cobrança Seriada
+                    05-Recibo
+                    10-Letras de Câmbio
+                    11-Nota de Débito
+                    12-Duplicata de Serv.
+                    99-Outros
                 */
                 //_detalhe += "99";
                 _detalhe += Utils.FitStringLength(boleto.EspecieDocumento.Codigo.ToString(), 2, 2, '0', 0, true, true, true);
 
                 _detalhe += "N"; //Identificação (1, A) A – aceito; N - não aceito
                 _detalhe += boleto.DataProcessamento.ToString("ddMMyy"); //Data da emissão do Título (6, N) DDMMAA
-                
+
                 //Valida se tem instrução no list de instruções, repassa ao arquivo de remessa
                 string vInstrucao1 = "00"; //1ª instrução (2, N) Caso Queira colocar um cod de uma instrução. ver no Manual caso nao coloca 00
                 string vInstrucao2 = "00"; //2ª instrução (2, N) Caso Queira colocar um cod de uma instrução. ver no Manual caso nao coloca 00
-                
+
                 foreach (IInstrucao instrucao in boleto.Instrucoes)
                 {
                     switch ((EnumInstrucoes_Bradesco)instrucao.Codigo)
@@ -848,16 +830,17 @@ namespace BoletoNet
                             break;
                     }
                 }
+
                 _detalhe += vInstrucao1; //posições: 157 a 158 do leiaute
                 _detalhe += vInstrucao2; //posições: 159 a 160 do leiaute
-                //
+
 
                 // Valor a ser cobrado por Dia de Atraso (13, N)
                 _detalhe += Utils.FitStringLength(boleto.JurosMora.ToString("0.00").Replace(",", ""), 13, 13, '0', 0, true, true, true);
 
                 //Data Limite P/Concessão de Desconto (06, N)
-				//if (boleto.DataDesconto.ToString("dd/MM/yyyy") == "01/01/0001")
-				if (boleto.DataDesconto == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
+                //if (boleto.DataDesconto.ToString("dd/MM/yyyy") == "01/01/0001")
+                if (boleto.DataDesconto == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 {
                     _detalhe += "000000"; //Caso nao tenha data de vencimento
                 }
@@ -876,13 +859,14 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.Abatimento.ToString("0.00").Replace(",", ""), 13, 13, '0', 0, true, true, true);
 
                 /*Identificação do Tipo de Inscrição do Sacado (02, N)
-                *01-CPF
-                02-CNPJ
-                03-PIS/PASEP
-                98-Não tem
-                99-Outros 
-                00-Outros 
+                    01-CPF
+                    02-CNPJ
+                    03-PIS/PASEP
+                    98-Não tem
+                    99-Outros 
+                    00-Outros 
                 */
+
                 if (boleto.Sacado.CPFCNPJ.Length <= 11)
                     _detalhe += "01";  // CPF
                 else
@@ -899,8 +883,9 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.End.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
 
                 //1ª Mensagem (12, A)
-                /*Campo livre para uso da Empresa. A mensagem enviada nesse campo será impressa
-                somente no boleto e não será confirmada no Arquivo Retorno.
+                /*  
+                    Campo livre para uso da Empresa. A mensagem enviada nesse campo será impressa
+                    somente no boleto e não será confirmada no Arquivo Retorno.
                 */
                 _detalhe += Utils.FitStringLength(mensagem, 12, 12, ' ', 0, true, true, false);
 
@@ -922,11 +907,9 @@ namespace BoletoNet
                 throw new Exception("Erro ao gerar DETALHE do arquivo CNAB400.", ex);
             }
         }
+        #endregion DETALHE
 
-        # endregion DETALHE
-
-        # region TRAILER
-
+        #region TRAILER
         /// <summary>
         /// TRAILER do arquivo CNAB
         /// Gera o TRAILER do arquivo remessa de acordo com o lay-out informado
@@ -986,10 +969,9 @@ namespace BoletoNet
             }
         }
 
-        # endregion
+        #endregion
+
         #endregion Seygi Gerando Remessa
-
-
         /// <summary>
         /// Efetua as Validações dentro da classe Boleto, para garantir a geração da remessa
         /// </summary>
@@ -1001,6 +983,5 @@ namespace BoletoNet
             mensagem = vMsg;
             return vRetorno;
         }
-
     }
 }

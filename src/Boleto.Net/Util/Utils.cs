@@ -123,7 +123,7 @@ namespace BoletoNet
 
         internal static string FormatCode(string text, int length)
         {
-            return text.PadLeft(length, '0'); 
+            return text.PadLeft(length, '0');
         }
 
         /// <summary>
@@ -529,17 +529,20 @@ namespace BoletoNet
             string final;
             final = Strings.Right(seq, qtde);
             return FitStringLength(final, qtde, qtde, ch, 0, true, true, completaPelaEsquerda);
-            ;
         }
 
-        public static string Transform(string text, string mask, char charMask = 'X') {
+        public static string Transform(string text, string mask, char charMask = 'X')
+        {
             string retorno = text;
 
-            if (!string.IsNullOrEmpty(mask)) {
+            if (!string.IsNullOrEmpty(mask))
+            {
 
                 int idx = 0;
-                foreach (var m in mask) {
-                    if (m != charMask) {
+                foreach (var m in mask)
+                {
+                    if (m != charMask)
+                    {
                         retorno = retorno.Insert(idx, m.ToString());
                     }
                     idx++;
@@ -557,7 +560,8 @@ namespace BoletoNet
 
             for (int i = 0; i < value.Length; i++)
             {
-                if (!Char.IsWhiteSpace(value[i])) return false;
+                if (!Char.IsWhiteSpace(value[i]))
+                    return false;
             }
 
             return true;

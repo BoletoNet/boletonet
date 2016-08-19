@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Collections;
 using System.Threading;
+using System.ComponentModel;
 
 namespace BoletoNet.Util
 {
@@ -25,7 +26,6 @@ namespace BoletoNet.Util
             return (T)memberInfo.GetCustomAttributes(typeof(T), false).FirstOrDefault();
         }
 
-
         public static IEnumerable<TResult> Zip<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
         {
             if (first == null) throw new ArgumentNullException("first");
@@ -42,8 +42,28 @@ namespace BoletoNet.Util
                     yield return resultSelector(e1.Current, e2.Current);
         }
 
-        
+        public static string GetDescriptionFromEnum(this Enum value)
+        {
+            if (value != null)
+            {
+                FieldInfo fi = value.GetType().GetField(value.ToString());
+
+                if (fi != null)
+                {
+                    DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+                    if (attributes != null && attributes.Length > 0)
+                        return attributes[0].Description;
+                    else
+                        return value.ToString();
+                }
+            }
+
+            return "";
+        }
     }
+
+   
 
     /// <summary>
     /// Classe com Métodos de Extensão para strings atendendo o padrão do Visual Basic (Substituindo a necessidade de importar a biblioteca Microsoft.VisualBasic)
@@ -55,7 +75,7 @@ namespace BoletoNet.Util
             if (!length.HasValue)
                 return str.Substring(start - 1);
             else
-                return str.Substring(start -1, length.Value);
+                return str.Substring(start - 1, length.Value);
         }
 
         public static string Left(this string s, int length)
@@ -65,6 +85,9 @@ namespace BoletoNet.Util
 
         public static string Right(this string str, int length)
         {
+            if (str.Length <= length)
+                return str;
+
             return str.Substring(str.Length - length);
         }
 

@@ -145,6 +145,7 @@ namespace BoletoNet
             get { return _dacNossoNumero; }
             set { _dacNossoNumero = value; }
         }
+
         /// <summary>
         /// Nosso Numero Completo Com o Dígito Verificador
         /// </summary>
