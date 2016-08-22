@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Collections;
 using System.Threading;
+using System.ComponentModel;
 
 namespace BoletoNet.Util
 {
@@ -20,11 +21,11 @@ namespace BoletoNet.Util
         {
             return (T)type.GetCustomAttributes(typeof(T), false).FirstOrDefault();
         }
+
         public static T GetFirstAttribute<T>(this MemberInfo memberInfo)
         {
             return (T)memberInfo.GetCustomAttributes(typeof(T), false).FirstOrDefault();
         }
-
 
         public static IEnumerable<TResult> Zip<TFirst, TSecond, TResult>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
         {
@@ -42,7 +43,25 @@ namespace BoletoNet.Util
                     yield return resultSelector(e1.Current, e2.Current);
         }
 
-        
+        public static string GetDescriptionFromEnum(this Enum value)
+        {
+            if (value != null)
+            {
+                FieldInfo fi = value.GetType().GetField(value.ToString());
+
+                if (fi != null)
+                {
+                    DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+                    if (attributes != null && attributes.Length > 0)
+                        return attributes[0].Description;
+                    else
+                        return value.ToString();
+                }
+            }
+
+            return "";
+        }
     }
 
     /// <summary>
@@ -65,8 +84,10 @@ namespace BoletoNet.Util
 
         public static string Right(this string str, int length)
         {
+            if (str.Length <= length)
+                return str;
+
             return str.Substring(str.Length - length);
         }
-
     }
 }
