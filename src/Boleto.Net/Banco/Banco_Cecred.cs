@@ -1056,23 +1056,23 @@ namespace BoletoNet {
                     throw new Exception("Registro inválido. O detalhe não possuí as características do segmento T.");
                 }
                 DetalheSegmentoTRetornoCNAB240 segmentoT = new DetalheSegmentoTRetornoCNAB240(registro);
-                segmentoT.CodigoBanco = Convert.ToInt32(_Controle_numBanco); //01
-                segmentoT.idCodigoMovimento = Convert.ToInt32(_Servico_codMov); //07
-                segmentoT.Agencia = Convert.ToInt32(_ccAgenciaCodigo); //08
+                segmentoT.CodigoBanco = Utils.ToInt32(_Controle_numBanco); //01
+                segmentoT.idCodigoMovimento = Utils.ToInt32(_Servico_codMov); //07
+                segmentoT.Agencia = Utils.ToInt32(_ccAgenciaCodigo); //08
                 segmentoT.DigitoAgencia = _ccAgenciaDv; //09
-                segmentoT.Conta = Convert.ToInt64(_ccContaNumero); //10
+                segmentoT.Conta = Utils.ToInt64(_ccContaNumero); //10
                 segmentoT.DigitoConta = _ccContaDv; //11
-                segmentoT.DACAgenciaConta = (String.IsNullOrEmpty(_ccDv.Trim())) ? 0 : Convert.ToInt32(_ccDv); //12
+                segmentoT.DACAgenciaConta = (String.IsNullOrEmpty(_ccDv.Trim())) ? 0 : Utils.ToInt32(_ccDv); //12
                 segmentoT.NossoNumero = _outNossoNumero; //13
-                segmentoT.CodigoCarteira = Convert.ToInt32(_outCarteira); //14
+                segmentoT.CodigoCarteira = Utils.ToInt32(_outCarteira); //14
                 segmentoT.NumeroDocumento = _outNumeroDocumento; //15
                 segmentoT.DataVencimento = _outVencimento.ToString() == "00000000" ? DateTime.Now : DateTime.ParseExact(_outVencimento, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture); //16
-                segmentoT.ValorTitulo = Convert.ToDecimal(_outValor) / 100; //17
+                segmentoT.ValorTitulo = Utils.ToDecimal(_outValor) / 100; //17
                 segmentoT.IdentificacaoTituloEmpresa = _outNomeCedente; //21
-                segmentoT.TipoInscricao = Convert.ToInt32(_sacadoInscricaoTipo); //25
+                segmentoT.TipoInscricao = Utils.ToInt32(_sacadoInscricaoTipo); //25
                 segmentoT.NumeroInscricao = _sacadoInscricaoNumero; //24
                 segmentoT.NomeSacado = _sacadoNome; //25
-                segmentoT.ValorTarifas = Convert.ToDecimal(_valorTarifasCustas) / 100; //27
+                segmentoT.ValorTarifas = Utils.ToDecimal(_valorTarifasCustas) / 100; //27
                 // C047
                 segmentoT.CodigoRejeicao = registro.Substring(213, 1) == "A" ? registro.Substring(214, 9) : registro.Substring(213, 10); //30
                 segmentoT.UsoFebraban = _cnab31;
@@ -1115,15 +1115,15 @@ namespace BoletoNet {
                 }
 
                 var segmentoU = new DetalheSegmentoURetornoCNAB240(registro);
-                segmentoU.Servico_Codigo_Movimento_Retorno = Convert.ToDecimal(_Servico_codMov); //07.3U|Serviço|Cód. Mov.|Código de Movimento Retorno
-                segmentoU.JurosMultaEncargos = Convert.ToDecimal(_dadosTituloAcrescimo) / 100;
-                segmentoU.ValorDescontoConcedido = Convert.ToDecimal(_dadosTituloValorDesconto) / 100;
-                segmentoU.ValorAbatimentoConcedido = Convert.ToDecimal(_dadosTituloValorAbatimento) / 100;
-                segmentoU.ValorIOFRecolhido = Convert.ToDecimal(_dadosTituloValorIof) / 100;
-                segmentoU.ValorOcorrenciaSacado = segmentoU.ValorPagoPeloSacado = Convert.ToDecimal(_dadosTituloValorPago) / 100;
-                segmentoU.ValorLiquidoASerCreditado = Convert.ToDecimal(_dadosTituloValorLiquido) / 100;
-                segmentoU.ValorOutrasDespesas = Convert.ToDecimal(_outDespesas) / 100;
-                segmentoU.ValorOutrosCreditos = Convert.ToDecimal(_outCreditos) / 100;
+                segmentoU.Servico_Codigo_Movimento_Retorno = Utils.ToDecimal(_Servico_codMov); //07.3U|Serviço|Cód. Mov.|Código de Movimento Retorno
+                segmentoU.JurosMultaEncargos = Utils.ToDecimal(_dadosTituloAcrescimo) / 100;
+                segmentoU.ValorDescontoConcedido = Utils.ToDecimal(_dadosTituloValorDesconto) / 100;
+                segmentoU.ValorAbatimentoConcedido = Utils.ToDecimal(_dadosTituloValorAbatimento) / 100;
+                segmentoU.ValorIOFRecolhido = Utils.ToDecimal(_dadosTituloValorIof) / 100;
+                segmentoU.ValorOcorrenciaSacado = segmentoU.ValorPagoPeloSacado = Utils.ToDecimal(_dadosTituloValorPago) / 100;
+                segmentoU.ValorLiquidoASerCreditado = Utils.ToDecimal(_dadosTituloValorLiquido) / 100;
+                segmentoU.ValorOutrasDespesas = Utils.ToDecimal(_outDespesas) / 100;
+                segmentoU.ValorOutrosCreditos = Utils.ToDecimal(_outCreditos) / 100;
                 segmentoU.DataOcorrencia = DateTime.ParseExact(_outDataOcorrencia, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
                 segmentoU.DataCredito = _outDataCredito.ToString() == "00000000" ? segmentoU.DataOcorrencia : DateTime.ParseExact(_outDataCredito, "ddMMyyyy", System.Globalization.CultureInfo.InvariantCulture);
                 // Código de movimento C044
@@ -1254,7 +1254,8 @@ namespace BoletoNet {
                 int dataVencimento = Utils.ToInt32(reg.DataVencimento);
                 detalhe.DataVencimento = Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
                 //
-                detalhe.ValorTitulo = (Convert.ToInt64(reg.ValorTitulo) / 100);
+
+                detalhe.ValorTitulo = Utils.ToDecimal(reg.ValorTitulo) / 100;
                 detalhe.CodigoBanco = Utils.ToInt32(reg.CodigoBancoRecebedor);
                 detalhe.AgenciaCobradora = Utils.ToInt32(reg.PrefixoAgenciaRecebedora);
                 //detalhe. = reg.DVPrefixoRecebedora;
@@ -1263,17 +1264,17 @@ namespace BoletoNet {
                 int dataCredito = Utils.ToInt32(reg.DataCredito);
                 detalhe.DataOcorrencia = Utils.ToDateTime(dataCredito.ToString("##-##-##"));
                 //
-                detalhe.TarifaCobranca = (Convert.ToInt64(reg.ValorTarifa) / 100);
-                detalhe.OutrasDespesas = (Convert.ToInt64(reg.OutrasDespesas) / 100);
-                detalhe.ValorOutrasDespesas = (Convert.ToInt64(reg.JurosDesconto) / 100);
-                detalhe.IOF = (Convert.ToInt64(reg.IOFDesconto) / 100);
-                detalhe.Abatimentos = (Convert.ToInt64(reg.ValorAbatimento) / 100);
-                detalhe.Descontos = (Convert.ToInt64(reg.DescontoConcedido) / 100);
-                detalhe.ValorPrincipal = (Convert.ToInt64(reg.ValorRecebido) / 100);
-                detalhe.JurosMora = (Convert.ToInt64(reg.JurosMora) / 100);
-                detalhe.OutrosCreditos = (Convert.ToInt64(reg.OutrosRecebimentos) / 100);
+                detalhe.TarifaCobranca = Utils.ToDecimal(reg.ValorTarifa) / 100;
+                detalhe.OutrasDespesas = Utils.ToDecimal(reg.OutrasDespesas) / 100;
+                detalhe.ValorOutrasDespesas = Utils.ToDecimal(reg.JurosDesconto) / 100;
+                detalhe.IOF = Utils.ToDecimal(reg.IOFDesconto) / 100;
+                detalhe.Abatimentos = Utils.ToDecimal(reg.ValorAbatimento) / 100;
+                detalhe.Descontos = Utils.ToDecimal(reg.DescontoConcedido) / 100;
+                detalhe.ValorPrincipal = Utils.ToDecimal(reg.ValorRecebido) / 100;
+                detalhe.JurosMora = Utils.ToDecimal(reg.JurosMora) / 100;
+                detalhe.OutrosCreditos = Utils.ToDecimal(reg.OutrosRecebimentos) / 100;
                 //detalhe. = reg.AbatimentoNaoAproveitado;
-                detalhe.ValorPago = (Convert.ToInt64(reg.ValorLancamento) / 100);
+                detalhe.ValorPago = Utils.ToDecimal(reg.ValorLancamento) / 100;
                 //detalhe. = reg.IndicativoDebitoCredito;
                 //detalhe. = reg.IndicadorValor;
                 //detalhe. = reg.ValorAjuste;

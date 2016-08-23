@@ -250,6 +250,14 @@ namespace BoletoNet
             }
         }
 
+        internal static decimal ToDecimal(string value) {
+            try {
+                return Convert.ToDecimal(value);
+            } catch {
+                return 0;
+            }
+        }
+
         internal static string ToString(object value)
         {
             try
