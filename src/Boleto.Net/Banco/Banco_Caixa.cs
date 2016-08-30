@@ -1797,6 +1797,7 @@ namespace BoletoNet
                 detalhe.ValorPago = (Convert.ToUInt64(reg.ValorPago) / DECIMAL_100);
                 detalhe.JurosMora = (Convert.ToUInt64(reg.ValorJuros) / DECIMAL_100);
                 detalhe.TarifaCobranca = (Convert.ToUInt64(reg.ValorDespesasCobranca) / DECIMAL_100);
+                detalhe.ValorMulta = (Convert.ToUInt64(reg.ValorMulta) / DECIMAL_100);
                 //reg.ValorMulta;
                 //reg.CodigoMoeda;
                 int dataCredito = Utils.ToInt32(reg.DataCreditoConta);

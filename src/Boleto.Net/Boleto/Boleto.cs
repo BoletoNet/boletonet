@@ -60,6 +60,7 @@ namespace BoletoNet
 		private DateTime _dataOutrosAcrescimos;
 		private DateTime _dataOutrosDescontos;
 		private short _percentualIOS;
+        private short _modalidadeCobranca = 0;
 
 		private string _tipoModalidade = string.Empty;
 		private Remessa _remessa;
@@ -515,10 +516,19 @@ namespace BoletoNet
 			set { this._percentualIOS = value; }
 		}
 
-		/// <summary>
-		/// Retorna os Parâmetros utilizados na geração da Remessa para o Boleto
-		/// </summary>
-		public Remessa Remessa
+        /// <summary> 
+        /// C006 - Retorna a modalidade de cobrança/código carteira 1-Cobrança Simples 2-Cobrança Vinculada 3-Cobrança Caucionada 4-Cobrança Descontada 5-Cobrança Vendor 
+        /// </summary>
+        public short ModalidadeCobranca
+        {
+            get { return this._modalidadeCobranca; }
+            set { this._modalidadeCobranca = value; }
+        }
+
+        /// <summary>
+        /// Retorna os Parâmetros utilizados na geração da Remessa para o Boleto
+        /// </summary>
+        public Remessa Remessa
 		{
 			get { return this._remessa; }
 			set { this._remessa = value; }

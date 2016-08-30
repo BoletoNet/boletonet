@@ -90,9 +90,15 @@ namespace BoletoNet
                 if (Utils.ToInt32(boleto.NumeroDocumento) > 0)
                     boleto.NumeroDocumento = Utils.FormatCode(boleto.NumeroDocumento, 7);
 
+
+                // Calcula o DAC da Conta Corrente
+                boleto.Cedente.ContaBancaria.DigitoConta = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta).ToString();
+
                 // Calcula o DAC do Nosso Número a maioria das carteiras
                 // agencia/conta/carteira/nosso numero
-                if (boleto.Carteira != "126" && boleto.Carteira != "131"
+                if (boleto.Carteira == "112")
+                    _dacNossoNumero = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta + boleto.Carteira + boleto.NossoNumero);
+                else if (boleto.Carteira != "126" && boleto.Carteira != "131"
                     && boleto.Carteira != "146" && boleto.Carteira != "150"
                     && boleto.Carteira != "168")
                     _dacNossoNumero = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta + boleto.Carteira + boleto.NossoNumero);
@@ -101,8 +107,6 @@ namespace BoletoNet
                     // carteira/nosso numero
                     _dacNossoNumero = Mod10(boleto.Carteira + boleto.NossoNumero);
 
-                // Calcula o DAC da Conta Corrente
-                boleto.Cedente.ContaBancaria.DigitoConta = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta).ToString();
 
                 //Atribui o nome do banco ao local de pagamento
                 if (string.IsNullOrEmpty(boleto.LocalPagamento))
@@ -1375,11 +1379,12 @@ namespace BoletoNet
                 detalhe.DACConta = Utils.ToInt32(registro.Substring(28, 1));
                 detalhe.UsoEmpresa = registro.Substring(37, 25);
                 //
+                detalhe.Carteira = registro.Substring(82, 1); // adicionado por Heric Souza em 20/06/16
                 detalhe.NossoNumeroComDV = registro.Substring(85, 9);
                 detalhe.NossoNumero = registro.Substring(85, 8); //Sem o DV
                 detalhe.DACNossoNumero = registro.Substring(93, 1); //DV
                 //
-                detalhe.Carteira = registro.Substring(107, 1);
+                //detalhe.Carteira = registro.Substring(107, 1); // comentado por Heric Souza em 20 / 06 / 16
                 detalhe.CodigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2));
 
                 //Descrição da ocorrência
