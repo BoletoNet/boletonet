@@ -1514,7 +1514,7 @@ namespace BoletoNet
                     throw new Exception("Registro inválido. O detalhe não possuí as características do segmento T.");
 
                 detalhe.CodigoBanco = Convert.ToInt32(registro.Substring(0, 3));
-                detalhe.idCodigoMovimento = Convert.ToInt32(registro.Substring(15, 2));
+                detalhe.IdCodigoMovimento = Convert.ToInt32(registro.Substring(15, 2));
                 detalhe.Agencia = Convert.ToInt32(registro.Substring(17, 4));
                 detalhe.DigitoAgencia = registro.Substring(21, 1);
                 detalhe.Conta = Convert.ToInt32(registro.Substring(22, 9));

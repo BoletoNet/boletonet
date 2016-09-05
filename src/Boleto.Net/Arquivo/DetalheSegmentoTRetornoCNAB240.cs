@@ -50,7 +50,7 @@ namespace BoletoNet
 
         #region Propriedades
 
-        public int idCodigoMovimento
+        public int IdCodigoMovimento
         {
             get { return _idCodigoMovimento; }
             set { _idCodigoMovimento = value; }
@@ -203,7 +203,7 @@ namespace BoletoNet
                     throw new Exception("Registro inválido. O detalhe não possuí as características do segmento T.");
 
                 CodigoBanco = Convert.ToInt32(registro.Substring(0, 3));
-                idCodigoMovimento = Convert.ToInt32(registro.Substring(15, 2));
+                IdCodigoMovimento = Convert.ToInt32(registro.Substring(15, 2));
                 Agencia = Convert.ToInt32(registro.Substring(17, 5));
                 DigitoAgencia = registro.Substring(22, 1);
                 Conta = Convert.ToInt32(registro.Substring(23, 12));

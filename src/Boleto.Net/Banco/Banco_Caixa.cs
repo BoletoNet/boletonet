@@ -1087,8 +1087,8 @@ namespace BoletoNet
                 }
                 DetalheSegmentoTRetornoCNAB240 segmentoT = new DetalheSegmentoTRetornoCNAB240(registro);
                 segmentoT.CodigoBanco = Convert.ToInt32(registro.Substring(0, 3));
-                segmentoT.idCodigoMovimento = Convert.ToInt32(registro.Substring(15, 2));
-                segmentoT.CodigoMovimento = new CodigoMovimento(001, segmentoT.idCodigoMovimento);
+                segmentoT.IdCodigoMovimento = Convert.ToInt32(registro.Substring(15, 2));
+                segmentoT.CodigoMovimento = new CodigoMovimento(001, segmentoT.IdCodigoMovimento);
                 segmentoT.NossoNumero = registro.Substring(39, 17);
                 segmentoT.CodigoCarteira = Convert.ToInt32(registro.Substring(57, 1));
                 segmentoT.NumeroDocumento = registro.Substring(58, 11);

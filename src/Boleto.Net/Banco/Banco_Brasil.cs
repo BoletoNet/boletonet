@@ -1861,7 +1861,7 @@ namespace BoletoNet
                 }
                 DetalheSegmentoTRetornoCNAB240 segmentoT = new DetalheSegmentoTRetornoCNAB240(registro);
                 segmentoT.CodigoBanco = Convert.ToInt32(registro.Substring(0, 3)); //01
-                segmentoT.idCodigoMovimento = Convert.ToInt32(registro.Substring(15, 2)); //07
+                segmentoT.IdCodigoMovimento = Convert.ToInt32(registro.Substring(15, 2)); //07
                 segmentoT.Agencia = Convert.ToInt32(registro.Substring(17, 5)); //08
                 segmentoT.DigitoAgencia = registro.Substring(22, 1); //09
                 segmentoT.Conta = Convert.ToInt64(registro.Substring(23, 12)); //10
@@ -1871,12 +1871,12 @@ namespace BoletoNet
                 segmentoT.CodigoCarteira = Convert.ToInt32(registro.Substring(57, 1)); //15
                 segmentoT.NumeroDocumento = registro.Substring(58, 15); //16
                 segmentoT.DataVencimento = registro.Substring(73, 8).ToString() == "00000000" ? DateTime.Now : DateTime.ParseExact(registro.Substring(73, 8), "ddMMyyyy", CultureInfo.InvariantCulture); //17
-                segmentoT.ValorTitulo = Convert.ToDecimal(registro.Substring(81, 15)) / 100; //18
+                segmentoT.ValorTitulo = Convert.ToDecimal(registro.Substring(81, 15)); //18
                 segmentoT.IdentificacaoTituloEmpresa = registro.Substring(105, 25); //23
                 segmentoT.TipoInscricao = Convert.ToInt32(registro.Substring(132, 1)); //25
                 segmentoT.NumeroInscricao = registro.Substring(133, 15); //26
                 segmentoT.NomeSacado = registro.Substring(148, 40); //27
-                segmentoT.ValorTarifas = Convert.ToDecimal(registro.Substring(198, 15)) / 100; //29
+                segmentoT.ValorTarifas = Convert.ToDecimal(registro.Substring(198, 15)); //29
                 //Jéferson (jefhtavares) em 12/12/2013 - O campo Valor Tarifas é composto de 15 posições (199-213) e não de 13
                 segmentoT.CodigoRejeicao = registro.Substring(213, 1) == "A" ? registro.Substring(214, 9) : registro.Substring(213, 10); //30
                 segmentoT.UsoFebraban = _cnab31;
@@ -1891,48 +1891,29 @@ namespace BoletoNet
         }
         public override DetalheSegmentoURetornoCNAB240 LerDetalheSegmentoURetornoCNAB240(string registro)
         {
-            string _Controle_numBanco = registro.Substring(0, 3); //01
-            string _Controle_lote = registro.Substring(3, 7); //02
-            string _Controle_regis = registro.Substring(7, 1); //03
-            string _Servico_numRegis = registro.Substring(8, 5); //04
-            string _Servico_segmento = registro.Substring(13, 1); //05
-            string _cnab06 = registro.Substring(14, 1); //06
-            string _Servico_codMov = registro.Substring(15, 2); //07
-            string _dadosTituloAcrescimo = registro.Substring(17, 15); //08
-            string _dadosTituloValorDesconto = registro.Substring(32, 15); //09
-            string _dadosTituloValorAbatimento = registro.Substring(47, 15); //10
-            string _dadosTituloValorIof = registro.Substring(62, 15); //11
-            string _dadosTituloValorPago = registro.Substring(76, 15); //12
-            string _dadosTituloValorCreditoBruto = registro.Substring(92, 15); //13
-            string _outDespesas = registro.Substring(107, 15); //14
-            string _outPerCredEntRecb = registro.Substring(122, 5); //15
-            string _outBanco = registro.Substring(127, 10); //16
-            string _outDataOcorrencia = registro.Substring(137, 8); //17
-            string _outDataCredito = registro.Substring(145, 8); //18
-            string _cnab19 = registro.Substring(153, 87); //19
-
-
             try
             {
 
-                if (!registro.Substring(13, 1).Equals(@"U"))
-                {
+                if (!registro.Substring(13, 1).Equals(@"U")) {
                     throw new Exception("Registro inválida. O detalhe não possuí as características do segmento U.");
                 }
 
                 var segmentoU = new DetalheSegmentoURetornoCNAB240(registro);
+                
                 segmentoU.Servico_Codigo_Movimento_Retorno = Convert.ToDecimal(registro.Substring(15, 2)); //07.3U|Serviço|Cód. Mov.|Código de Movimento Retorno
-                segmentoU.JurosMultaEncargos = Convert.ToDecimal(registro.Substring(17, 15)) / 100;
-                segmentoU.ValorDescontoConcedido = Convert.ToDecimal(registro.Substring(32, 15)) / 100;
-                segmentoU.ValorAbatimentoConcedido = Convert.ToDecimal(registro.Substring(47, 15)) / 100;
-                segmentoU.ValorIOFRecolhido = Convert.ToDecimal(registro.Substring(62, 15)) / 100;
-                segmentoU.ValorOcorrenciaSacado = segmentoU.ValorPagoPeloSacado = Convert.ToDecimal(registro.Substring(77, 15)) / 100;
-                segmentoU.ValorLiquidoASerCreditado = Convert.ToDecimal(registro.Substring(92, 15)) / 100;
-                segmentoU.ValorOutrasDespesas = Convert.ToDecimal(registro.Substring(107, 15)) / 100;
-                segmentoU.ValorOutrosCreditos = Convert.ToDecimal(registro.Substring(122, 15)) / 100;
-                segmentoU.DataOcorrencia = segmentoU.DataOcorrencia = DateTime.ParseExact(registro.Substring(137, 8), "ddMMyyyy", CultureInfo.InvariantCulture);
-                segmentoU.DataCredito = registro.Substring(145, 8).ToString() == "00000000" ? segmentoU.DataOcorrencia : DateTime.ParseExact(registro.Substring(145, 8), "ddMMyyyy", CultureInfo.InvariantCulture);
+                segmentoU.JurosMultaEncargos = Convert.ToDecimal(registro.Substring(17, 15));
+                segmentoU.ValorDescontoConcedido = Convert.ToDecimal(registro.Substring(32, 15));
+                segmentoU.ValorAbatimentoConcedido = Convert.ToDecimal(registro.Substring(47, 15));
+                segmentoU.ValorIOFRecolhido = Convert.ToDecimal(registro.Substring(62, 15));
+                segmentoU.ValorOcorrenciaSacado = segmentoU.ValorPagoPeloSacado = Convert.ToDecimal(registro.Substring(77, 15));
+                segmentoU.ValorLiquidoASerCreditado = Convert.ToDecimal(registro.Substring(92, 15));
+                segmentoU.ValorOutrasDespesas = Convert.ToDecimal(registro.Substring(107, 15));
+                segmentoU.ValorOutrosCreditos = Convert.ToDecimal(registro.Substring(122, 15));
                 segmentoU.CodigoOcorrenciaSacado = registro.Substring(153, 4);
+                segmentoU.DataOcorrencia = segmentoU.DataOcorrencia = DateTime.ParseExact(registro.Substring(137, 8), "ddMMyyyy", CultureInfo.InvariantCulture);
+                segmentoU.DataCredito = registro.Substring(145, 8) == "00000000" ? 
+                    segmentoU.DataOcorrencia : 
+                    DateTime.ParseExact(registro.Substring(145, 8), "ddMMyyyy", CultureInfo.InvariantCulture);
 
                 return segmentoU;
             }
