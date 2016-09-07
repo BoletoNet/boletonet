@@ -136,6 +136,14 @@ namespace BoletoNet
             }
         }
 
+        /// <summary>
+        /// Caminho onde se encontra a ferramenta WkHtmlToPdf.
+        /// Se os arquivos do WkHtmlToPdf não estiverem presentes no caminho,
+        /// eles serão criados automaticamente pelo NReco PdfGenerator.
+        /// </summary>
+        [Browsable(true), Description("Caminho onde se encontra a ferramenta WkHtmlToPdf.")]
+        public string PdfToolPath { get; set; }
+
         #region Propriedades
         [Browsable(true), Description("Mostra o comprovante de entrega sem dados para marcar")]
         public bool MostrarComprovanteEntregaLivre
@@ -1206,7 +1214,11 @@ namespace BoletoNet
 
         public byte[] MontaBytesPDF(bool convertLinhaDigitavelToImage = false)
         {
-            return (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(this.MontaHtmlEmbedded(convertLinhaDigitavelToImage, true));
+            var converter = new NReco.PdfGenerator.HtmlToPdfConverter();
+            if (!string.IsNullOrEmpty(this.PdfToolPath)) {
+                converter.PdfToolPath = this.PdfToolPath;
+            }
+            return converter.GeneratePdf(this.MontaHtmlEmbedded(convertLinhaDigitavelToImage, true));
         }
         
         /// <summary>
@@ -1241,7 +1253,15 @@ namespace BoletoNet
                 htmlBoletos.Append("</div>");
             }
             htmlBoletos.Append("</body></html>");
-            return (new NReco.PdfGenerator.HtmlToPdfConverter() { CustomWkHtmlArgs = CustomSwitches, Grayscale = PretoBranco }).GeneratePdf(htmlBoletos.ToString());
+            var converter = new NReco.PdfGenerator.HtmlToPdfConverter()
+            {
+              CustomWkHtmlArgs = CustomSwitches,
+              Grayscale = PretoBranco
+            };
+            if (!string.IsNullOrEmpty(this.PdfToolPath)) {
+                converter.PdfToolPath = this.PdfToolPath;
+            }
+            return converter.GeneratePdf(htmlBoletos.ToString());
         }
         
         #endregion Geração do Html OffLine
