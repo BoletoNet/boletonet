@@ -394,11 +394,6 @@ namespace BoletoNet
                     {
                         html.Replace("Carteira /", "");
                     }
-                    // 85 - CECRED
-                    if (Boleto.Banco.Codigo == 85)
-                    {
-                        html.Replace("@ADICNSTRUCAO", "Após o vencimento acesso o site www.credifoz.coop.br para atualizar seu boleto.");
-                    }
                     else
                     {
                         html.Replace("@ADICNSTRUCAO", string.Empty);
