@@ -47,6 +47,10 @@ namespace BoletoNet
         /// </summary>
         string GerarTrailerRemessa(int numeroRegistro, TipoArquivo tipoArquivo, Cedente cedente, decimal vltitulostotal);
         /// <summary>
+        /// Gera o Trailer do arquivo de remessa, com total de registros detalhes
+        /// </summary>
+        string GerarTrailerRemessaComDetalhes(int numeroRegistro, int numeroRegistroDetalhe, TipoArquivo tipoArquivo, Cedente cedente, decimal vltitulostotal);
+        /// <summary>
         /// Gera o header de lote do arquivo de remessa
         /// </summary>
         string GerarHeaderLoteRemessa(string numeroConvenio, Cedente cendente, int numeroArquivoRemessa);
@@ -62,6 +66,10 @@ namespace BoletoNet
         /// Gera os registros de detalhe do arquivo de remessa - SEGMENTO P
         /// </summary>
         string GerarDetalheSegmentoPRemessa(Boleto boleto, int numeroRegistro, string numeroConvenio);
+
+        string GerarDetalheSegmentoARemessa(Boleto boleto, int numeroRegistro);
+        string GerarDetalheSegmentoBRemessa(Boleto boleto, int numeroRegistro);
+
         /// <summary>
         /// Gera os registros de detalhe do arquivo de remessa - SEGMENTO P
         /// </summary>

@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using BoletoNet.Util;
 
 namespace BoletoNet
 {
@@ -105,6 +106,18 @@ namespace BoletoNet
             string _trailer = "";
             return _trailer;
         }
+
+        /// <summary>
+        /// Gera os registros de Trailer do arquivo de remessa com total de registros detalhe
+        /// </summary>
+        public virtual string GerarTrailerRemessaComDetalhes(int numeroRegistro, int numeroRegistroDetalhes, TipoArquivo tipoArquivo, Cedente cedente, decimal vltitulostotal)
+        {
+            string _trailer = "";
+            return _trailer;
+        }
+
+
+
         /// <summary>
         /// Gera os registros de header de aquivo do arquivo de remessa
         /// </summary>
@@ -137,6 +150,24 @@ namespace BoletoNet
             string _headerLote = "";
             return _headerLote;
         }
+
+        /// <summary>
+        /// Gera registros de detalhe do arquivo remessa - SEGMENTO A
+        /// </summary>
+        public virtual string GerarDetalheSegmentoARemessa(Boleto boleto, int numeroRegistro)
+        {
+            string _segmentoP = "";
+            return _segmentoP;
+        }
+        /// <summary>
+        /// Gera registros de detalhe do arquivo remessa - SEGMENTO B
+        /// </summary>
+        public virtual string GerarDetalheSegmentoBRemessa(Boleto boleto, int numeroRegistro)
+        {
+            string _segmentoP = "";
+            return _segmentoP;
+        }
+
         /// <summary>
         /// Gera registros de detalhe do arquivo remessa - SEGMENTO P
         /// </summary>
@@ -404,7 +435,7 @@ namespace BoletoNet
 
             for (int i = seq.Length; i > 0; i--)
             {
-                r = (Convert.ToInt32(Microsoft.VisualBasic.Strings.Mid(seq, i, 1)) * p);
+                r = (Convert.ToInt32(seq.Mid(i, 1)) * p);
 
                 if (r > 9)
                     r = (r / 10) + (r % 10);
@@ -464,7 +495,7 @@ namespace BoletoNet
 
             for (int i = seq.Length; i > 0; i--)
             {
-                n = Microsoft.VisualBasic.Strings.Mid(seq, i, 1);
+                n = seq.Mid(i, 1);
 
                 s = s + (Convert.ToInt32(n) * p);
 
@@ -501,7 +532,7 @@ namespace BoletoNet
 
             for (int i = seq.Length; i > 0; i--)
             {
-                s = s + (Convert.ToInt32(Microsoft.VisualBasic.Strings.Mid(seq, i, 1)) * p);
+                s = s + (Convert.ToInt32(seq.Mid( i, 1)) * p);
                 if (p == b)
                     p = 2;
                 else
@@ -574,7 +605,7 @@ namespace BoletoNet
 
             while (pos <= seq.Length)
             {
-                num = Microsoft.VisualBasic.Strings.Mid(seq, pos, 1);
+                num = seq.Mid( pos, 1);
                 total += Convert.ToInt32(num) * mult;
 
                 mult -= 1;
@@ -613,7 +644,7 @@ namespace BoletoNet
 
             while (pos <= seq.Length)
             {
-                num = Microsoft.VisualBasic.Strings.Mid(seq, pos, 1);
+                num = seq.Mid( pos, 1);
                 total += Convert.ToInt32(num) * mult;
 
                 mult -= 1;

@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Web.UI;
-using BoletoNet;
 using System.Globalization;
+using System.Web.UI;
+using BoletoNet.Util;
 
 [assembly: WebResource("BoletoNet.Imagens.033.jpg", "image/jpg")]
-
 namespace BoletoNet
 {
     /// <author>  
@@ -199,7 +198,10 @@ namespace BoletoNet
         {
             //throw new NotImplementedException("Função não implementada.");
             if (!((boleto.Carteira == "102") || (boleto.Carteira == "101") || (boleto.Carteira == "201")))
-                throw new NotImplementedException("Carteira não implementada.");
+            {
+                string exceptionMessage = String.Format("A carteira '{0}' não foi implementada. Carteiras válidas: 101, 102 e 201.", boleto.Carteira);
+                throw new NotImplementedException(exceptionMessage);
+            }
 
             //Banco 353  - Utilizar somente 08 posições do Nosso Numero (07 posições + DV), zerando os 05 primeiros dígitos
             if (this.Codigo == 353)
@@ -226,7 +228,9 @@ namespace BoletoNet
             if (boleto.Cedente.Codigo.ToString().Length > 7)
                 throw new NotImplementedException("Código cedente deve ter 7 posições.");
 
-            boleto.LocalPagamento += "Grupo Santander - GC";
+            // Atribui o nome do banco ao local de pagamento
+			if (string.IsNullOrEmpty(boleto.LocalPagamento))
+				boleto.LocalPagamento = "Grupo Santander - GC";
 
             if (EspecieDocumento.ValidaSigla(boleto.EspecieDocumento) == "")
                boleto.EspecieDocumento = new EspecieDocumento_Santander("2");
@@ -322,7 +326,7 @@ namespace BoletoNet
 
             while (pos <= seq.Length)
             {
-                num = Microsoft.VisualBasic.Strings.Mid(seq, pos, 1);
+                num = seq.Mid( pos, 1);
                 total += Convert.ToInt32(num) * mult;
 
                 mult -= 1;

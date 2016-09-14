@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace BoletoNet.Util
@@ -43,5 +41,32 @@ namespace BoletoNet.Util
                 while (e1.MoveNext() && e2.MoveNext())
                     yield return resultSelector(e1.Current, e2.Current);
         }
+
+        
+    }
+
+    /// <summary>
+    /// Classe com Métodos de Extensão para strings atendendo o padrão do Visual Basic (Substituindo a necessidade de importar a biblioteca Microsoft.VisualBasic)
+    /// </summary>
+    public static class Strings
+    {
+        public static string Mid(this string str, int start, int? length = null)
+        {
+            if (!length.HasValue)
+                return str.Substring(start - 1);
+            else
+                return str.Substring(start -1, length.Value);
+        }
+
+        public static string Left(this string s, int length)
+        {
+            return s.Substring(0, length);
+        }
+
+        public static string Right(this string str, int length)
+        {
+            return str.Substring(str.Length - length);
+        }
+
     }
 }
