@@ -47,7 +47,7 @@ namespace BoletoNet
         public override void ValidaBoleto(Boleto boleto)
         {
             if (string.IsNullOrEmpty(boleto.Carteira))
-                throw new NotImplementedException("Carteira não informada. Utilize a carteira 11, 16, 17, 17-019, 17-027, 17-035, 18, 18-019, 18-027, 18-035, 18-140 ou 31.");
+                throw new NotImplementedException("Carteira não informada. Utilize a carteira 11, 16, 17, 17-019, 17-027, 18, 18-019, 18-027, 18-035, 18-140, 17-159, 17-140, 17-067 ou 31.");
 
             //Verifica as carteiras implementadas
             if (!boleto.Carteira.Equals("11") &
@@ -55,7 +55,11 @@ namespace BoletoNet
                 !boleto.Carteira.Equals("17") &
                 !boleto.Carteira.Equals("17-019") &
                 !boleto.Carteira.Equals("17-027") &
-                !boleto.Carteira.Equals("17-035") &
+				!boleto.Carteira.Equals("17-035") &
+                !boleto.Carteira.Equals("17-067") &
+                !boleto.Carteira.Equals("17-140") &
+                !boleto.Carteira.Equals("17-159") &
+                !boleto.Carteira.Equals("17-167")&
                 !boleto.Carteira.Equals("18") &
                 !boleto.Carteira.Equals("18-019") &
                 !boleto.Carteira.Equals("18-027") &
@@ -63,7 +67,7 @@ namespace BoletoNet
                 !boleto.Carteira.Equals("18-140") &
                 !boleto.Carteira.Equals("31"))
 
-                throw new NotImplementedException("Carteira não informada. Utilize a carteira 11, 16, 17, 17-019, 17-027, 17-035, 18, 18-019, 18-027, 18-035, 18-140 ou 31.");
+                throw new NotImplementedException("Carteira não informada. Utilize a carteira 11, 16, 17, 17-019, 17-027, 18, 18-019, 18-027, 18-035, 18-140, 17-159, 17-140, 17-067 ou 31.");
 
             //Verifica se o nosso número é válido
             if (Utils.ToString(boleto.NossoNumero) == string.Empty)
@@ -141,9 +145,9 @@ namespace BoletoNet
             }
             #endregion Carteira 17
 
-            #region Carteira 17-019
+            #region Carteira 17-019, 17-067 e 17-167
             //Carteira 17, com variação 019
-            if (boleto.Carteira.Equals("17-019"))
+            if (boleto.Carteira.Equals("17-019") || boleto.Carteira.Equals("17-067") || boleto.Carteira.Equals("17-167"))
             {
                 /*
                  * Convênio de 7 posições
@@ -182,11 +186,11 @@ namespace BoletoNet
                 else
                     boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 11);
             }
-            #endregion Carteira 17-019
+            #endregion Carteira 17-019, 17-067 e 17-167
 
             #region Carteira 17-027
-            //Carteira 17, com variação 027
-            if (boleto.Carteira.Equals("17-027"))
+            //Carteira 17, com variação 027, 129 e 140
+            if (boleto.Carteira.Equals("17-027") || boleto.Carteira.Equals("17-159") || boleto.Carteira.Equals("17-140"))
             {
                 /*
                  * Convênio de 7 posições
@@ -268,7 +272,6 @@ namespace BoletoNet
                     boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 11);
             }
             #endregion Carteira 17-035
-
             #region Carteira 18
             //Carteira 18 com nosso número de 11 posições
             if (boleto.Carteira.Equals("18"))
@@ -540,8 +543,9 @@ namespace BoletoNet
             #endregion Agência e Conta Corrente
 
             //Atribui o nome do banco ao local de pagamento
-            if (boleto.LocalPagamento == "Até o vencimento, preferencialmente no ")
-                boleto.LocalPagamento = "Pagável em qualquer banco até o vencimento. Após, atualize o boleto no site bb.com.br.";
+            //Atribui o nome do banco ao local de pagamento
+            if (string.IsNullOrEmpty(boleto.LocalPagamento))
+                boleto.LocalPagamento = "Até o vencimento, preferencialmente no " + Nome;
 
             //Verifica se data do processamento é valida
             //if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
@@ -676,8 +680,8 @@ namespace BoletoNet
             }
             #endregion Carteira 17
 
-            #region Carteira 17-019
-            if (boleto.Carteira.Equals("17-019"))
+            #region Carteira 17-019, 17-067 e 17-167
+            if (boleto.Carteira.Equals("17-019") || boleto.Carteira.Equals("17-067") || boleto.Carteira.Equals("17-167"))
             {
                 if (boleto.Cedente.Convenio.ToString().Length == 7)
                 {
@@ -735,10 +739,10 @@ namespace BoletoNet
                     throw new Exception("Código do convênio informado é inválido. O código do convenio deve ter 4, 6, ou 7 dígitos.");
                 }
             }
-            #endregion Carteira 17-019
+            #endregion Carteira 17-019, 17-067 e 17-167
 
-            #region Carteira 17-027
-            if (boleto.Carteira.Equals("17-027"))
+            #region Carteira 17-027, 17-140 e 17-159
+            if (boleto.Carteira.Equals("17-027") || boleto.Carteira.Equals("17-140") || boleto.Carteira.Equals("17-159"))
             {
                 if (boleto.Cedente.Convenio.ToString().Length == 7)
                 {
@@ -796,7 +800,8 @@ namespace BoletoNet
                     throw new Exception("Código do convênio informado é inválido. O código do convenio deve ter 4, 6, ou 7 dígitos.");
                 }
             }
-            #endregion Carteira 17-027
+            #endregion Carteira 17-027, 17-140 e 17-159
+
 
             #region Carteira 17-035
             if (boleto.Carteira.Equals("17-035"))
@@ -858,7 +863,6 @@ namespace BoletoNet
                 }
             }
             #endregion Carteira 17-035
-
             #region Carteira 18
             if (boleto.Carteira.Equals("18"))
             {
@@ -1262,7 +1266,11 @@ namespace BoletoNet
             {
                 case "17-019":
                 case "17-027":
-                case "17-035":
+				case "17-035":
+                case "17-067":
+                case "17-140":
+                case "17-159":
+                case "17-167":
                 case "18-019":
                     boleto.NossoNumero = string.Format("{0}/{1}", LimparCarteira(boleto.Carteira), boleto.NossoNumero);
                     return;
@@ -1472,12 +1480,15 @@ namespace BoletoNet
                 // 2 ou 3 – para carteira 11/17 modalidade Vinculada/Caucionada e carteira 31; 
                 // 4 – para carteira 11/17 modalidade Descontada e carteira 51; 
                 // 7 – para carteira 17 modalidade Simples.
-                if (boleto.ModalidadeCobranca == 0) {
-                    if (boleto.Carteira.Equals("17-019") || boleto.Carteira.Equals("17-027") || boleto.Carteira.Equals("17-035"))
+                if (boleto.ModalidadeCobranca == 0)
+                {
+                    if (boleto.Carteira.Equals("17-019") || boleto.Carteira.Equals("17-027") || boleto.Carteira.Equals("17-035") || boleto.Carteira.Equals("17-140") || boleto.Carteira.Equals("17-159") || boleto.Carteira.Equals("17-067") || boleto.Carteira.Equals("17-167"))
                         _segmentoP += "7";
                     else
                         _segmentoP += "0";
-                } else {
+                }
+                else
+                {
                     _segmentoP += boleto.ModalidadeCobranca.ToString();
                 }
 
@@ -1564,9 +1575,6 @@ namespace BoletoNet
                             /*codigo_protesto = "3"; 
                             dias_protesto = "00";*/
                             break;
-                            /*
-                             * Bloco do "default" comentado por Jéferson, jefhtavares em 26/11 se fossem adicionadas mais de duas instruções e a instrução de protesto fosse a última a mesma não iria aparecer no arquivo
-                             */
                     }
                 }
 
