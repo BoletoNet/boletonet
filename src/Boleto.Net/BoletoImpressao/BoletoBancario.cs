@@ -388,9 +388,9 @@ namespace BoletoNet
                     html.Replace("(Texto de responsabilidade do cedente)", "(Todas as informações deste bloqueto são de exclusiva responsabilidade do cedente)");
                 }
 
-                //Para carteiras "17-019", "17-027", "17-035" e "18-019" do Banco do Brasil, a ficha de compensação não possui código da carteira
+                //Para carteiras "17-019" e "18-019" do Banco do Brasil, a ficha de compensação não possui código da carteira
                 //na formatação do campo.
-                if (Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("17-027") | Boleto.Carteira.Equals("17-035") | Boleto.Carteira.Equals("18-019")))
+                if (Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("17-027") | Boleto.Carteira.Equals("18-019") | Boleto.Carteira.Equals("17-159") | Boleto.Carteira.Equals("17-140") | Boleto.Carteira.Equals("17-067")))
                 {
                     html.Replace("Carteira /", "");
                     html.Replace("@NOSSONUMERO", "@NOSSONUMEROBB");
@@ -401,10 +401,6 @@ namespace BoletoNet
                     if (Boleto.Banco.Codigo == 33)
                     {
                         html.Replace("Carteira /", "");
-                    }
-                    else
-                    {
-                        html.Replace("@ADICNSTRUCAO", string.Empty);
                     }
                 }
 
@@ -696,10 +692,10 @@ namespace BoletoNet
                 .Replace("@DATAPROCESSAMENTO", Boleto.DataProcessamento.ToString("dd/MM/yyyy"))
 
             #region Implementação para o Banco do Brasil
-                    //Variável inserida para atender às especificações das carteiras "17-019", "17-027", "17-035" e "18-019" do Banco do Brasil
-                    //apenas para a ficha de compensação.
-                    //Como a variável não existirá se não forem as carteiras "17-019", "17-027", "17-035" e "18-019", não foi colocado o [if].
-                    .Replace("@NOSSONUMEROBB", Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("17-027") | Boleto.Carteira.Equals("17-035") | Boleto.Carteira.Equals("18-019")) ? Boleto.NossoNumero.Substring(3) : string.Empty)
+                //Variável inserida para atender às especificações das carteiras "17-019", "17-027" e "18-019" do Banco do Brasil
+                //apenas para a ficha de compensação.
+                //Como a variável não existirá se não forem as carteiras "17-019", "17-027", "17-019", "17-035", "17-140", "17-159", "17-067", "17-167" e "18-019", não foi colocado o [if].
+                .Replace("@NOSSONUMEROBB", Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("17-027") | Boleto.Carteira.Equals("17-035") | Boleto.Carteira.Equals("18-019") | Boleto.Carteira.Equals("17-140") | Boleto.Carteira.Equals("17-159") | Boleto.Carteira.Equals("17-067") | Boleto.Carteira.Equals("17-167")) ? Boleto.NossoNumero.Substring(3) : string.Empty)
             #endregion Implementação para o Banco do Brasil
 
                 .Replace("@NOSSONUMERO", Boleto.NossoNumero)
