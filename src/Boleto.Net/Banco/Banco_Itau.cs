@@ -1111,7 +1111,15 @@ namespace BoletoNet
                 if (boleto.Moeda == 9)
                     _detalhe += "I"; //O código da carteira só muda para dois tipos, quando a cobrança for em dólar
 
-                _detalhe += "01"; // Identificação da ocorrência - 01 REMESSA
+                if (boleto.Remessa == null || string.IsNullOrEmpty(boleto.Remessa.CodigoOcorrencia.Trim()))
+                {
+                    _detalhe += "01";
+                }
+                else
+                {
+                    _detalhe += boleto.Remessa.CodigoOcorrencia.PadLeft(2, '0');
+                }
+
                 _detalhe += Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, ' ', 0, true, true, false);
                 _detalhe += boleto.DataVencimento.ToString("ddMMyy");
                 _detalhe += Utils.FitStringLength(boleto.ValorBoleto.ToString("0.00").Replace(",", ""), 13, 13, '0', 0, true, true, true);
