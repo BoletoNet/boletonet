@@ -225,8 +225,9 @@ namespace BoletoNet
                 if (boleto.NossoNumero.Length != 12)
                     throw new NotSupportedException("Nosso Número deve ter 12 posições para o banco 033.");
             }
-            if (boleto.Cedente.Codigo.ToString().Length > 7)
-                throw new NotImplementedException("Código cedente deve ter 7 posições.");
+
+            if (boleto.Cedente.Codigo.ToString().Length > 8)
+                throw new NotImplementedException("Código cedente deve ter 8 posições.");
 
             // Atribui o nome do banco ao local de pagamento
 			if (string.IsNullOrEmpty(boleto.LocalPagamento))
