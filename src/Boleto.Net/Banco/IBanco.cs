@@ -110,6 +110,10 @@ namespace BoletoNet
         /// Gera o Trailer de lote do arquivo de remessa
         /// </summary>
         string GerarTrailerLoteRemessa(int numeroRegistro, Boleto boletos);
+        /// <summary>
+        /// Gera os registros de Mensagem Variavel do arquivo de remessa
+        /// </summary>
+        string GerarMensagemVariavelRemessa(Boleto boleto, ref int numeroRegistro, TipoArquivo tipoArquivo);
 
         DetalheSegmentoTRetornoCNAB240 LerDetalheSegmentoTRetornoCNAB240(string registro);
 

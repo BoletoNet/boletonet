@@ -484,6 +484,18 @@ namespace BoletoNet
             }
         }
 
+        public override string GerarMensagemVariavelRemessa(Boleto boleto, ref int numeroRegistro, TipoArquivo tipoArquivo)
+        {
+            try
+            {
+                return _IBanco.GerarMensagemVariavelRemessa(boleto, ref numeroRegistro, tipoArquivo);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do registro MENSAGEM VARIAVEL do arquivo de REMESSA.", ex);
+            }
+        }
+
         # endregion
 
         #region Métodos de Leitura do arquivo de Retorno
