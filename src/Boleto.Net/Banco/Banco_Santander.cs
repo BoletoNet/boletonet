@@ -219,7 +219,7 @@ namespace BoletoNet
 
             if (this.Codigo == 33)
             {
-                if (boleto.NossoNumero.Length == 7 && boleto.Carteira.Equals("101"))
+                if (boleto.NossoNumero.Length < 12 && boleto.Carteira.Equals("101"))
                     boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, "0", 12, true);
 
                 if (boleto.NossoNumero.Length != 12)
@@ -696,7 +696,7 @@ namespace BoletoNet
                 _segmentoP += " ";
 
                 //Código de movimento remessa ==> 016 - 017
-                _segmentoP += "01";
+                _segmentoP += boleto.Remessa.CodigoOcorrencia;
 
                 //Agência do Cedente ==> 018 –021
                 _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true);
@@ -815,7 +815,7 @@ namespace BoletoNet
                 string codigo_protesto = "0";
                 string dias_protesto = "00";
 
-                foreach (Instrucao_Santander instrucao in boleto.Instrucoes)
+                foreach (var instrucao in boleto.Instrucoes)
                 {
                     switch ((EnumInstrucoes_Santander)instrucao.Codigo)
                     {
@@ -886,7 +886,7 @@ namespace BoletoNet
                 _segmentoQ += " ";
 
                 //Código de movimento remessa ==> 016 - 017
-                _segmentoQ += "01";
+                _segmentoQ += boleto.Remessa.CodigoOcorrencia;
 
                 if (boleto.Sacado.CPFCNPJ.Length <= 11)
                     //Tipo de inscrição do sacado ==> 018 - 018
@@ -979,7 +979,7 @@ namespace BoletoNet
                 _segmentoR += " ";
 
                 //Código de movimento ==> 016 - 017
-                _segmentoR += "01";
+                _segmentoR += boleto.Remessa.CodigoOcorrencia;
 
                 if (boleto.OutrosDescontos > 0)
                 {
@@ -1088,7 +1088,7 @@ namespace BoletoNet
                 _segmentoS += " ";
 
                 //Código de movimento ==> 016 - 017
-                _segmentoS += "01";
+                _segmentoS += boleto.Remessa.CodigoOcorrencia;
 
                 //Identificação da impressão ==> 018 - 018
                 _segmentoS += "2";
@@ -1098,7 +1098,7 @@ namespace BoletoNet
                 //Mensagem 7 ==> 099 - 138
                 for (int i = 0; i < 3; i++)
                 {
-                    if (boleto.Instrucoes.Count > 1)
+                    if (boleto.Instrucoes.Count > i)
                         _segmentoS += Utils.FitStringLength(boleto.Instrucoes[i].Descricao, 40, 40, ' ', 0, true, true, false);
                     else
                         _segmentoS += Utils.FitStringLength(" ", 40, 40, ' ', 0, true, true, false);
