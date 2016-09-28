@@ -542,7 +542,7 @@ namespace BoletoNet
                 _header += "01";
 
                 //Literal de serviço ==> 012 - 026
-                _header += "COBRANCA";
+                _header += Utils.FitStringLength("COBRANCA", 15, 15, ' ', 0, true, true, false);
 
                 //Código de Transmissão ==> 027 - 046
                 _header += Utils.FitStringLength(cedente.CodigoTransmissao, 20, 20, '0', 0, true, true, true);
@@ -578,7 +578,7 @@ namespace BoletoNet
                 _header += Utils.FitStringLength(" ", 47, 47, ' ', 0, true, true, false);
 
                 //Mensagem 6 ==> 352 - 391
-                _header += Utils.FitStringLength(" ", 47, 47, ' ', 0, true, true, false);
+                _header += Utils.FitStringLength(" ", 40, 40, ' ', 0, true, true, false);
 
                 //Número da versão da remessa (opcional) ==> 392 - 394
                 _header += Utils.FitStringLength(" ", 3, 3, ' ', 0, true, true, false);
