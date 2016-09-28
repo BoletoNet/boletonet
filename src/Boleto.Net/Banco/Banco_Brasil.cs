@@ -1667,21 +1667,22 @@ namespace BoletoNet
                 {
                     // Código da multa 2 - percentual
                     _segmentoR += "2";
-                    _segmentoR += Utils.FitStringLength(boleto.DataMulta.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
-                    _segmentoR += Utils.FitStringLength(boleto.PercMulta.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
-
                 } else if (boleto.ValorMulta > 0)
                 {
                     // Código da multa 1 - valor fixo
                     _segmentoR += "1";
-                    _segmentoR += Utils.FitStringLength(boleto.DataMulta.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
-                    _segmentoR += Utils.FitStringLength(boleto.ValorMulta.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
-
                 } else
                 {
                     // Código da multa 0 - sem multa
-                    _segmentoR += "0";
-                    _segmentoR += Utils.FitStringLength(boleto.DataMulta.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
+                    _segmentoR += "0";                   
+                }
+
+                _segmentoR += Utils.FitStringLength(boleto.DataMulta.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
+
+                // Multa em Percentual (%), Valor (R$) ou sem multa
+                if (boleto.PercMulta > 0) {
+                    _segmentoR += Utils.FitStringLength(boleto.PercMulta.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
+                } else {
                     _segmentoR += Utils.FitStringLength(boleto.ValorMulta.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
                 }
 
