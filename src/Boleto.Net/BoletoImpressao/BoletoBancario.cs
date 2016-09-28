@@ -631,6 +631,9 @@ namespace BoletoNet
                     case 1:
                         agenciaCodigoCedente = string.Format("{0}-{1}/{2}-{3}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Utils.FormatCode(Cedente.ContaBancaria.Conta, 6), Cedente.ContaBancaria.DigitoConta);
                         break;
+                    case 399:
+                        agenciaCodigoCedente = string.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo.ToString() + Cedente.DigitoCedente.ToString(), 7));
+                        break;
                     default:
                         agenciaCodigoCedente = string.Format("{0}/{1}-{2}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo.ToString(), 6), Cedente.DigitoCedente.ToString());
                         break;
@@ -647,7 +650,7 @@ namespace BoletoNet
                 }
                 else if (Boleto.Banco.Codigo == 399)
                     //agenciaCodigoCedente = Utils.FormatCode(Cedente.Codigo.ToString(), 7); -> para Banco HSBC mostra apenas código Cedente - por Ponce em 08/06/2012
-                    agenciaCodigoCedente = String.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Cedente.Codigo.ToString()); //Solicitação do HSBC que mostrasse agencia/Conta - por Transis em 24/02/15
+                    agenciaCodigoCedente = String.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo.ToString(), 7)); //Solicitação do HSBC que mostrasse agencia/Conta - por Transis em 24/02/15
 
                 else if (Boleto.Banco.Codigo == 748)
                     agenciaCodigoCedente = string.Format("{0}.{1}.{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.OperacaConta, Cedente.Codigo);
