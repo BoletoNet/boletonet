@@ -220,7 +220,7 @@ namespace BoletoNet
 
             if (this.Codigo == 33)
             {
-                if (boleto.NossoNumero.Length < 12 && boleto.Carteira.Equals("101"))
+                if (boleto.NossoNumero.Length < 12 && (boleto.Carteira.Equals("101") || boleto.Carteira.Equals("102")))
                     boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, "0", 12, true);
 
                 if (boleto.NossoNumero.Length != 12)
