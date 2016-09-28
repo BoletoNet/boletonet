@@ -1926,7 +1926,11 @@ namespace BoletoNet
                 int DataOcorrencia = Convert.ToInt32(registro.Substring(137, 8));
                 detalhe.DataOcorrencia = Convert.ToDateTime(DataOcorrencia.ToString("##-##-####"));
                 int DataOcorrenciaSacado = Convert.ToInt32(registro.Substring(157, 8));
-                detalhe.DataOcorrenciaSacado = Convert.ToDateTime(DataOcorrenciaSacado.ToString("##-##-####"));
+                if (DataOcorrenciaSacado > 0)
+                    detalhe.DataOcorrenciaSacado = Convert.ToDateTime(DataOcorrenciaSacado.ToString("##-##-####"));
+                else
+                    detalhe.DataOcorrenciaSacado = DateTime.Now;
+
                 decimal JurosMultaEncargos = Convert.ToUInt64(registro.Substring(17, 15));
                 detalhe.JurosMultaEncargos = JurosMultaEncargos / 100;
                 decimal ValorDescontoConcedido = Convert.ToUInt64(registro.Substring(32, 15));
