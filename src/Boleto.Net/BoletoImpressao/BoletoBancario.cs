@@ -646,12 +646,9 @@ namespace BoletoNet
                         agenciaCodigoCedente = String.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo.ToString(), 6));
                 }
                 else if (Boleto.Banco.Codigo == 399)
-                { // para Banco HSBC mostra apenas código Cedente - por Ponce em 08/06/2012
-                    if (Boleto.Carteira == "CNR")
-                        agenciaCodigoCedente = Utils.FormatCode(Cedente.Codigo.ToString(), 7);
-                    else  // para Banco HSBC CSB mosrtra também a agência - por Eduardo Chagas em 24/04/2015
-                        agenciaCodigoCedente = String.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo.ToString(), 7));
-                }
+                    //agenciaCodigoCedente = Utils.FormatCode(Cedente.Codigo.ToString(), 7); -> para Banco HSBC mostra apenas código Cedente - por Ponce em 08/06/2012
+                    agenciaCodigoCedente = String.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Cedente.Codigo.ToString()); //Solicitação do HSBC que mostrasse agencia/Conta - por Transis em 24/02/15
+
                 else if (Boleto.Banco.Codigo == 748)
                     agenciaCodigoCedente = string.Format("{0}.{1}.{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.OperacaConta, Cedente.Codigo);
                 else
