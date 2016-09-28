@@ -51,8 +51,8 @@ namespace BoletoNet
             {
                 int numeroRegistro = 0;
                 int numeroRegistroDetalhe = 1;
-                string strline;                
-                    StreamWriter incluiLinha = new StreamWriter(arquivo);
+                string strline;
+                StreamWriter incluiLinha = new StreamWriter(arquivo);
                 if (banco.Codigo == 104)//quando é caixa verifica o modelo de leiatue que é está em boletos.remssa.tipodocumento
                     strline = banco.GerarHeaderRemessa(numeroConvenio, cedente, TipoArquivo.CNAB240, numeroArquivoRemessa, boletos[0]);
                 else
@@ -61,8 +61,8 @@ namespace BoletoNet
                 numeroRegistro++;
 
                 //
-                    incluiLinha.WriteLine(strline);
-                    OnLinhaGerada(null, strline, EnumTipodeLinha.HeaderDeArquivo);
+                incluiLinha.WriteLine(strline);
+                OnLinhaGerada(null, strline, EnumTipodeLinha.HeaderDeArquivo);
                 if (banco.Codigo == 104)//quando é caixa verifica o modelo de leiatue que é está em boletos.remssa.tipodocumento
                     strline = banco.GerarHeaderLoteRemessa(numeroConvenio, cedente, numeroArquivoRemessa, TipoArquivo.CNAB240, boletos[0]);
                 else
@@ -147,6 +147,58 @@ namespace BoletoNet
 
                         incluiLinha.Close();
                     }
+                    #endregion
+                }
+                else if (banco.Codigo == 33)
+                {
+                    #region se Banco Santander - 33
+                    foreach (Boleto boleto in boletos)
+                    {
+                        boleto.Banco = banco;
+
+                        strline = boleto.Banco.GerarDetalheSegmentoPRemessa(boleto, numeroRegistroDetalhe, numeroConvenio);
+
+                        incluiLinha.WriteLine(strline);
+                        OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoP);
+                        numeroRegistro++;
+                        numeroRegistroDetalhe++;
+
+                        strline = boleto.Banco.GerarDetalheSegmentoQRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
+                        incluiLinha.WriteLine(strline);
+                        OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoQ);
+                        numeroRegistro++;
+                        numeroRegistroDetalhe++;
+
+                        if (boleto.ValorMulta > 0 || boleto.OutrosDescontos > 0)
+                        {
+                            strline = boleto.Banco.GerarDetalheSegmentoRRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
+                            incluiLinha.WriteLine(strline);
+                            OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoR);
+                            numeroRegistro++;
+                            numeroRegistroDetalhe++;
+                        }
+
+                        strline = boleto.Banco.GerarDetalheSegmentoSRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
+                        incluiLinha.WriteLine(strline);
+                        OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoS);
+                        numeroRegistro++;
+                        numeroRegistroDetalhe++;
+                    }
+
+
+                    numeroRegistro--;
+                    strline = banco.GerarTrailerLoteRemessa(numeroRegistro);
+                    incluiLinha.WriteLine(strline);
+                    OnLinhaGerada(null, strline, EnumTipodeLinha.TraillerDeLote);
+
+                    numeroRegistro++;
+                    numeroRegistro++;
+
+                    strline = banco.GerarTrailerArquivoRemessa(numeroRegistro);
+                    incluiLinha.WriteLine(strline);
+                    OnLinhaGerada(null, strline, EnumTipodeLinha.TraillerDeArquivo);
+
+                    incluiLinha.Close();
                     #endregion
                 }
                 else if (banco.Codigo == 237) // bradesco

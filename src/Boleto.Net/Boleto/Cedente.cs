@@ -15,6 +15,7 @@ namespace BoletoNet
         private ContaBancaria _contaBancaria;
         private int _convenio = 0;
         private int _numeroSequencial;
+        private string _codigoTransmissao;
         private int _numeroBordero;
         private int _digitoCedente = -1;
         private string _carteira;
@@ -198,6 +199,21 @@ namespace BoletoNet
             set
             {
                 _numeroSequencial = value;
+            }
+        }
+
+        /// <summary>
+        /// Código de Transmissão para geração de remessa
+        /// </summary>
+        public string CodigoTransmissao
+        {
+            get
+            {
+                return _codigoTransmissao;
+            }
+            set
+            {
+                _codigoTransmissao = value;
             }
         }
 

@@ -222,6 +222,14 @@ namespace BoletoNet
             return _segmentoR;
         }
         /// <summary>
+        /// Gera registros de detalhe do arquivo remessa - SEGMENTO S
+        /// </summary>
+        public virtual string GerarDetalheSegmentoSRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+        {
+            string _segmentoS = "";
+            return _segmentoS;
+        }
+        /// <summary>
         /// Gera os registros de Trailer de arquivo do arquivo de remessa
         /// </summary>
         public virtual string GerarTrailerArquivoRemessa(int numeroRegistro)
