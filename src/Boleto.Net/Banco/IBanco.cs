@@ -119,6 +119,8 @@ namespace BoletoNet
 
         DetalheSegmentoURetornoCNAB240 LerDetalheSegmentoURetornoCNAB240(string registro);
 
+        DetalheSegmentoYRetornoCNAB240 LerDetalheSegmentoYRetornoCNAB240(string registro);
+
         DetalheSegmentoWRetornoCNAB240 LerDetalheSegmentoWRetornoCNAB240(string registro);
 
         DetalheRetorno LerDetalheRetornoCNAB400(string registro);

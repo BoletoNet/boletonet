@@ -78,6 +78,7 @@
     <Compile Include="Arquivo\DetalheSegmentoERetornoCNAB240.cs" />
     <Compile Include="Arquivo\DetalheSegmentoWRetornoCNAB240.cs" />
     <Compile Include="Arquivo\CBR643\HeaderCbr643.cs" />
+    <Compile Include="Arquivo\DetalheSegmentoYRetornoCNAB240.cs" />
     <Compile Include="Arquivo\HeaderDeArquivoCNAB240.cs" />
     <Compile Include="Arquivo\CBR643\LinhaCbr643.cs" />
     <Compile Include="Arquivo\LinhaDeArquivoGeradaArgs.cs" />

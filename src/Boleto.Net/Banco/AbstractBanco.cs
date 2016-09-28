@@ -329,6 +329,15 @@ namespace BoletoNet
             return detalhe;
         }
 
+        public virtual DetalheSegmentoYRetornoCNAB240 LerDetalheSegmentoYRetornoCNAB240(string registro)
+        {
+            var detalhe = new DetalheSegmentoYRetornoCNAB240(registro);
+
+            detalhe.LerDetalheSegmentoYRetornoCNAB240(registro);
+
+            return detalhe;
+        }
+
         public virtual DetalheRetorno LerDetalheRetornoCNAB400(string registro)
         {
             try
