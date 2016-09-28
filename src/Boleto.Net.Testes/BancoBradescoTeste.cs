@@ -31,7 +31,7 @@ namespace BoletoNet.Testes
 
             boletoBancario.Boleto.Valida();
 
-            string nossoNumeroValido = "16/00970171092-1";
+            string nossoNumeroValido = "016/00970171092-1";
 
             Assert.AreEqual(boletoBancario.Boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido");
         }
@@ -90,7 +90,7 @@ namespace BoletoNet.Testes
 
             boletoBancario.Boleto.Valida();
 
-            string nossoNumeroValido = "09/00000018194-6";
+            string nossoNumeroValido = "009/00000018194-6";
 
             Assert.AreEqual(boletoBancario.Boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido");
         }
@@ -203,7 +203,7 @@ namespace BoletoNet.Testes
 
             boletoBancario.Boleto.Valida();
 
-            string nossoNumeroValido = "25/97000005287-P";
+            string nossoNumeroValido = "025/97000005287-P";
 
             Assert.AreEqual( boletoBancario.Boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido" );
         }
@@ -261,7 +261,7 @@ namespace BoletoNet.Testes
 
             boletoBancario.Boleto.Valida();
 
-            string nossoNumeroValido = "26/97000005287-3";
+            string nossoNumeroValido = "026/97000005287-3";
 
             Assert.AreEqual(boletoBancario.Boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido");
         }
