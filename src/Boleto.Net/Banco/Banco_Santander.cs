@@ -1905,7 +1905,7 @@ namespace BoletoNet
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro ao processar arquivo de RETORNO - SEGMENTO T.", ex);
+                throw new Exception("Erro ao processar arquivo de RETORNO - SEGMENTO U.", ex);
             }
 
 
@@ -1917,7 +1917,7 @@ namespace BoletoNet
             {
                 DetalheSegmentoURetornoCNAB240 detalhe = new DetalheSegmentoURetornoCNAB240(registro);
 
-                if (registro.Substring(13, 1) != "U")
+                if (registro.Substring(13, 1) != "Y")
                     throw new Exception("Registro inválido. O detalhe não possuí as características do segmento U.");
 
                 detalhe.CodigoOcorrenciaSacado = registro.Substring(15, 2);
