@@ -998,7 +998,7 @@ namespace BoletoNet
                 _segmentoR = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
 
                 //Numero do lote remessa ==> 004 - 007
-                _segmentoR += Utils.FitStringLength("1", 4, 4, '0', 0, true, true, true);
+                _segmentoR += Utils.FitStringLength(boleto.Remessa.NumeroLote.ToString(), 4, 4, '0', 0, true, true, true);
 
                 //Tipo de registro ==> 008 - 008
                 _segmentoR += "3";
