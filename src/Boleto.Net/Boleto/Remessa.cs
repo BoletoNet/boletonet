@@ -43,12 +43,26 @@ namespace BoletoNet
         /// Código de Ocorrência Utilizado na geração da Remessa.
         /// |Identificado no Banrisul        como "CODIGO OCORRENCIA" by sidneiklein|
         /// |Identificado no Banco do Brasil como "COMANDO"           by sidneiklein|
+        /// |Identificado no Santander como "CÓDIGO DE MOVIMENTO REMESSA"           by Leandro Morais
         /// </summary>
         public string CodigoOcorrencia
         {
             get { return _CodigoOcorrencia; }
             set { _CodigoOcorrencia = value; }
         }
+
+        private int _NumeroLote;
+        /// <summary>
+        /// Numero do lote de remessa
+        /// </summary>
+        public int NumeroLote
+        {
+            get { return _NumeroLote; }
+            set { _NumeroLote = value; }
+        }
+
+
         #endregion
+
     }
 }
