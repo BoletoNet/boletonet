@@ -1500,7 +1500,7 @@ namespace BoletoNet
                     detalhe.MotivosRejeicao = this.MotivosRejeicaoCSB(registro.Substring(301, 2));
                     detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
                     detalhe.NumeroDocumento = registro.Substring(116, 10);
-                    detalhe.NossoNumero = registro.Substring(126, 11);
+                    detalhe.NossoNumero = registro.Substring(126, 10);
                     detalhe.DataVencimento = Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
                     decimal valorTitulo = Convert.ToInt64(registro.Substring(152, 13));
                     detalhe.ValorTitulo = valorTitulo / 100;
@@ -1530,7 +1530,7 @@ namespace BoletoNet
                     detalhe.Conta = Utils.ToInt32(registro.Substring(24, 11));
                     detalhe.UsoEmpresa = registro.Substring(37, 16);
                     detalhe.NossoNumeroComDV = registro.Substring(62, 16);
-                    detalhe.NossoNumero = registro.Substring(62, 16); //Sem o DV
+                    detalhe.NossoNumero = registro.Substring(62, 15); //Sem o DV
                     detalhe.Carteira = registro.Substring(107, 1);
                     detalhe.CodigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2));
                     detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
