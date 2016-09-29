@@ -421,9 +421,9 @@ namespace BoletoNet
 
                     case TipoArquivo.CNAB400:
                         if (cedente.Carteira == "1")
-                            _header = GerarHeaderRemessaCNAB400CSB(0, cedente);
+                            _header = GerarHeaderRemessaCNAB400CSB(numeroConvenio, cedente);
                         else
-                            _header = GerarHeaderRemessaCNAB400CNR(0, cedente);
+                            _header = GerarHeaderRemessaCNAB400CNR(numeroConvenio, cedente);
                         break;
                     case TipoArquivo.Outro:
                         throw new Exception("Tipo de arquivo inexistente.");
@@ -544,7 +544,7 @@ namespace BoletoNet
             }
         }
 
-        private string GerarHeaderRemessaCNAB400CSB(int numeroConvenio, Cedente cedente)
+        private string GerarHeaderRemessaCNAB400CSB(string numeroConvenio, Cedente cedente)
         {
             try
             {
@@ -642,13 +642,13 @@ namespace BoletoNet
                 switch (tipoArquivo)
                 {
                     case TipoArquivo.CNAB240:
+                        _detalhe = GerarDetalheRemessaCNAB240();
+                        break;
+                    case TipoArquivo.CNAB400:
                         if (boleto.Carteira == "1")
                             _detalhe = GerarDetalheRemessaCNAB400CSB(boleto, numeroRegistro, tipoArquivo);
                         else
                             _detalhe = GerarDetalheRemessaCNAB400CNR(boleto, numeroRegistro, tipoArquivo);
-                        break;
-                    case TipoArquivo.CNAB400:
-                        _detalhe = GerarDetalheRemessaCNAB400(boleto, numeroRegistro, tipoArquivo);
                         break;
                     case TipoArquivo.Outro:
                         throw new Exception("Tipo de arquivo inexistente.");
