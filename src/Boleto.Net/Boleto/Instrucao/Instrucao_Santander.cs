@@ -13,7 +13,11 @@ namespace BoletoNet
         NaoBaixar = 04,
         Protestar = 06,
         NaoProtestar = 07,
-        NaoCobrarJurosDeMora = 08
+        NaoCobrarJurosDeMora = 08,
+
+        Multa = 80,
+        ProtestarAposNDiasCorridos = 81,
+        ProtestarAposNDiasUteis = 82,
     }
 
     #endregion
@@ -36,18 +40,23 @@ namespace BoletoNet
 
         public Instrucao_Santander(int codigo)
         {
-            this.carregar(codigo, 0);
+            this.carregar(codigo, 0, 0);
         }
 
         public Instrucao_Santander(int codigo, int nrDias)
         {
-            this.carregar(codigo, nrDias);
+            this.carregar(codigo, nrDias, 0);
+        }
+
+        public Instrucao_Santander(int codigo, decimal valorJurosMulta)
+        {
+            this.carregar(codigo, 0, valorJurosMulta);
         }
         #endregion
 
         #region Metodos Privados
 
-        private void carregar(int idInstrucao, int nrDias)
+        private void carregar(int idInstrucao, int nrDias, decimal valorJurosMulta)
         {
             try
             {
@@ -79,6 +88,18 @@ namespace BoletoNet
                     case EnumInstrucoes_Santander.NaoCobrarJurosDeMora:
                         this.Codigo = (int)EnumInstrucoes_Santander.NaoCobrarJurosDeMora;
                         this.Descricao = "Não cobrar juros de mora";
+                        break;
+                    case EnumInstrucoes_Santander.ProtestarAposNDiasCorridos:
+                        Codigo = (int)EnumInstrucoes_Santander.ProtestarAposNDiasCorridos;
+                        Descricao = "Protestar no " + nrDias + "º dia corrido após vencimento";
+                        break;
+                    case EnumInstrucoes_Santander.ProtestarAposNDiasUteis:
+                        Codigo = (int)EnumInstrucoes_Santander.ProtestarAposNDiasUteis;
+                        Descricao = "Protestar no " + nrDias + "º dia útil após vencimento";
+                        break;
+                    case EnumInstrucoes_Santander.Multa:
+                        this.Codigo = (int)EnumInstrucoes_Santander.Multa;
+                        this.Descricao = "Após vencimento cobrar Multa de " + valorJurosMulta + "%";
                         break;
                     default:
                         this.Codigo = 0;

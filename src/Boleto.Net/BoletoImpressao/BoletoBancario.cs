@@ -516,26 +516,25 @@ namespace BoletoNet
 			var cedente = ObterNomeCpfCnpj(Cedente.Nome, Cedente.CPFCNPJ);
             var infoCedente = ObterInformacoesCedente();
 
-			//Caso não oculte o Endereço do Sacado,
-			if (!OcultarEnderecoSacado)
-			{
-				String enderecoSacado = "";
+            //Caso não oculte o Endereço do Sacado,
+            if (!OcultarEnderecoSacado) {
+                var endereco = Sacado.Endereco;
 
-				if (Sacado.Endereco.CEP == String.Empty)
-					enderecoSacado = string.Format("{0} - {1}/{2}", Sacado.Endereco.Bairro, Sacado.Endereco.Cidade, Sacado.Endereco.UF);
-				else
-					enderecoSacado = string.Format("{0} - {1}/{2} - CEP: {3}", Sacado.Endereco.Bairro,
-					Sacado.Endereco.Cidade, Sacado.Endereco.UF, Utils.FormataCEP(Sacado.Endereco.CEP));
+                if (!string.IsNullOrEmpty(endereco.End)) {
+                    var numero = !string.IsNullOrEmpty(endereco.Numero) ? ", " + endereco.Numero : null;
+                    var complemento = !string.IsNullOrEmpty(endereco.Complemento) ? " - " + endereco.Complemento : null;
 
-				if (Sacado.Endereco.End != string.Empty && enderecoSacado != string.Empty)
-                {
-                    string Numero = !String.IsNullOrEmpty(Sacado.Endereco.Numero) ? ", "  + Sacado.Endereco.Numero : "";
+                    var enderecoLinha1 = endereco.End + numero + complemento;
+                    var enderecoLinha2 = endereco.CEP == string.Empty ?
+                        $"{endereco.Bairro} - {endereco.Cidade}/{endereco.UF}" :
+                        $"{endereco.Bairro} - {endereco.Cidade}/{endereco.UF} - CEP: {Utils.FormataCEP(endereco.CEP)}";
 
-					if (infoSacado == string.Empty)
-						infoSacado += InfoSacado.Render(Sacado.Endereco.End + Numero, enderecoSacado, false);
-					else
-						infoSacado += InfoSacado.Render(Sacado.Endereco.End + Numero, enderecoSacado, true);
-                }
+                    if (infoSacado == string.Empty)
+                        infoSacado += InfoSacado.Render(enderecoLinha1, enderecoLinha2, false);
+                    else
+                        infoSacado += InfoSacado.Render(enderecoLinha1, enderecoLinha2, true);
+                } 
+               
 				//"Informações do Sacado" foi introduzido para possibilitar que o boleto na informe somente o endereço do sacado
 				//como em outras situaçoes onde se imprime matriculas, codigos e etc, sobre o sacado.
 				//Sendo assim o endereço do sacado passa a ser uma Informaçao do Sacado que é adicionada no momento da renderização
