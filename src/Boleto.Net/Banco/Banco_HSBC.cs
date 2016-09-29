@@ -895,6 +895,9 @@ namespace BoletoNet
                     case "4": //DuplicataServico
                         _detalhe += "10";
                         break;
+                    case "98":  //Cobrança com emissão total do bloqueto pelo cliente
+                        _detalhe += "98"; //Cobrança com emissão total do bloqueto pelo cliente
+                        break;
                 }
 
                 //Aceite ==> 150 - 150
