@@ -833,7 +833,7 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, false); 
 
                 //Nosso Número==> 063 - 073
-                _detalhe += Utils.FitStringLength(boleto.NossoNumero + Mod11(boleto.NossoNumero, 7).ToString(), 11, 11, '0', 0, true, true, false);
+                _detalhe += Utils.FitStringLength(boleto.NossoNumero + Mod11Hsbc(boleto.NossoNumero, 7).ToString(), 11, 11, '0', 0, true, true, false);
 
                 if (boleto.OutrosDescontos > 0)
                 {
