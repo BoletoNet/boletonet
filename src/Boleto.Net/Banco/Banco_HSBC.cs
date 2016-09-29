@@ -611,7 +611,7 @@ namespace BoletoNet
                 //Número sequencial ==> 395 - 400
                 _header += Utils.FitStringLength("1", 6, 6, '0', 0, true, true, true);
 
-                _header = Utils.SubstituiCaracteresEspeciais(_header);
+                _header = Utils.SubstituiCaracteresEspeciais(_header).ToUpper();
 
                 return _header;
             }
@@ -815,7 +815,7 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.Cedente.CPFCNPJ, 14, 14, '0', 0, true, true, true);
 
                 //Zero ==> 018 - 018
-                _detalhe = "0";
+                _detalhe += "0";
 
                 //Código da agência cedente ==> 019 - 022
                 _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true);
@@ -830,10 +830,10 @@ namespace BoletoNet
                 _detalhe += "  ";
 
                 //Controle do Participante  ==> 038 - 062
-                _detalhe += new string(' ', 25);
+                _detalhe += Utils.FitStringLength(boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, false); 
 
                 //Nosso Número==> 063 - 073
-                _detalhe += Utils.FitStringLength(boleto.NossoNumero, 4, 4, '0', 0, true, true, true);
+                _detalhe += Utils.FitStringLength(boleto.NossoNumero + Mod11(boleto.NossoNumero, 7).ToString(), 11, 11, '0', 0, true, true, false);
 
                 if (boleto.OutrosDescontos > 0)
                 {
@@ -861,7 +861,7 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.Remessa.CodigoOcorrencia, 2, 2, '0', 0, true, true, true);
 
                 // Seu Número ==> 111 - 120
-                _detalhe += Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, '0', 0, true, true, true);
+                _detalhe += Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, ' ', 0, true, true, false);
 
                 //Vencimento ==> 121 - 126
                 _detalhe += boleto.DataVencimento.ToString("ddMMyy");
@@ -898,7 +898,7 @@ namespace BoletoNet
                 }
 
                 //Aceite ==> 150 - 150
-                _detalhe += Utils.FitStringLength(boleto.Aceite, 1, 1, '0', 0, true, true, true);
+                _detalhe += "A";
 
                 //Data de Emissao ==> 151 - 156
                 _detalhe += boleto.DataDocumento.ToString("ddMMyy");
@@ -920,6 +920,8 @@ namespace BoletoNet
                     _detalhe += Utils.FitStringLength(boleto.JurosMora.ToString("f").Replace(",", "").Replace(".", ""), 13, 13, '0', 0, true, true, true);
                 else if (boleto.PercJurosMora > 0)
                     _detalhe += Utils.FitStringLength(boleto.JurosMora.ToString("f").Replace(",", "").Replace(".", ""), 13, 13, '0', 0, true, true, true);
+                else
+                    _detalhe += new string('0', 13);
 
                 //Desconto Data ==> 174 - 179
                 _detalhe += "999999";
@@ -928,7 +930,7 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.ValorDesconto.ToString("f").Replace(",", "").Replace(".", ""), 13, 13, '0', 0, true, true, true);
 
                 //Valor do IOF ==> 193 - 205
-                _detalhe += new string('0', 13);
+                _detalhe += new string(' ', 13);
 
                 //Valor do Abatimento ==> 206 - 218 (preencher somente quando o codigo da ocorrencia for 4 ou 5)
                 _detalhe += new string('0', 13);
@@ -946,7 +948,7 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Nome.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
 
                 //Endereço do Pagador ==> 275 - 312
-                _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.End.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
+                _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.End.TrimStart(' '), 38, 38, ' ', 0, true, true, false).ToUpper();
 
                 //Instrução de não recebimento do boleto ==> 313 - 314
                 _detalhe += "  ";
@@ -964,7 +966,7 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.UF, 2, 2, ' ', 0, true, true, false).ToUpper();
 
                 //Sacador / Avalista ==> 352 - 390
-                _detalhe += Utils.FitStringLength(boleto.Sacado.Nome, 39, 39, ' ', 0, true, true, false).ToUpper();
+                _detalhe += new string(' ', 39);
 
                 //Tipo de Boleto ==> 391 - 391
                 _detalhe += " ";
@@ -999,7 +1001,7 @@ namespace BoletoNet
                     case TipoArquivo.CNAB240:
                         throw new Exception("Mensagem Variavel nao existe para o tipo CNAB 240.");
                     case TipoArquivo.CNAB400:
-                        _detalhe = GerarMensagemVariavelRemessaCNAB400(boleto, ref numeroRegistro, tipoArquivo);
+                        _detalhe = ""; //GerarMensagemVariavelRemessaCNAB400(boleto, ref numeroRegistro, tipoArquivo);
                         break;
                     case TipoArquivo.Outro:
                         throw new Exception("Tipo de arquivo inexistente.");
@@ -1211,10 +1213,358 @@ namespace BoletoNet
 
         #endregion
 
-        #region Métodos de processamento do arquivo retorno
+        #region Métodos de processamento do arquivo retorno CNAB400
+
+        /// <summary>
+        /// Verifica o tipo de ocorrência para o arquivo remessa
+        /// </summary>
+        public string OcorrenciaCSB(string codigo)
+        {
+            switch (codigo)
+            {
+                case "02":
+                    return "Entrada confirmada";
+                case "03":
+                    return "Entrada rejeitada ou Instrução rejeitada";
+                case "06":
+                    return "Liquidação normal em dinheiro";
+                case "07":
+                    return "Liquidação por conta em dinheiro";
+                case "09":
+                    return "Baixa automática";
+                case "10":
+                    return "Baixado conforme instruções";
+                case "11":
+                    return "Títulos em ser (Conciliação Mensal)";
+                case "12":
+                    return "Abatimento concedido";
+                case "13":
+                    return "Abatimento cancelado";
+                case "14":
+                    return "Vencimento prorrogado";
+                case "15":
+                    return "Liquidação em cartório em dinheiro";
+                case "16":
+                    return "Liquidação baixado/devolvido em data anterior dinheiro";
+                case "17":
+                    return "Entregue em cartório";
+                case "18":
+                    return "Instrução automática de protesto/serasa";
+                case "21":
+                    return "Instrução de alteração de mora";
+                case "22":
+                    return "Instrução de protesto/serasa processada/reemitida";
+                case "23":
+                    return "Cancelamento de protesto/serasa processado";
+                case "27":
+                    return "Número do cedente ou controle do participante alterado";
+                case "31":
+                    return "Liquidação normal em cheque/compensação/banco correspondente";
+                case "32":
+                    return "Liquidação em cartório em cheque";
+                case "33":
+                    return "Liquidação por conta em cheque";
+                case "36":
+                    return "Liquidação baixado/devolvido em data anterior em cheque";
+                case "37":
+                    return "Baixa de título protestado";
+                case "38":
+                    return "Liquidação de título não registrado em dinheiro";
+                case "39":
+                    return "Liquidação de título não registrado em cheque";
+                case "49":
+                    return "Vencimento alterado";
+                case "51":
+                    return "Título DDA aceito pelo sacado";
+                case "52":
+                    return "Título DDA não reconhecido pelo sacado";
+                case "69":
+                    return "Despesas/custas de cartório";
+                case "70":
+                    return "Ressarcimento sobre títulos";
+                case "71":
+                    return "Ocorrência/Instrução não permitida para título em garantia de operação";
+                case "72":
+                    return "Concessão de Desconto Aceito";
+                case "73":
+                    return "Cancelamento Condição de Desconto Fixo Aceito";
+                case "74":
+                    return "Cancelamento de Desconto Diário Aceito";
+                default:
+                    return "";
+            }
+        }
+
+        public string MotivosRejeicaoCSB(string codigo)
+        {
+            switch (codigo)
+            {
+                case "01":
+                    return "Valor do desconto não informado/inválido";
+                case "02":
+                    return "Inexistência de agência do HSBC na praça do sacado";
+                case "03":
+                    return "CEP do sacado incorreto ou inválido";
+                case "04":
+                    return "Cadastro do cedente não aceita banco correspondente";
+                case "05":
+                    return "Tipo de moeda inválido";
+                case "06":
+                    return "Prazo de protesto/serasa indefinido (não informado)/inválido ou prazo de protesto/serasa inferior ao tempo decorrido da data de vencimento em relação ao envio da instrução de alteração de prazo";
+                case "07":
+                    return "Data do vencimento inválida";
+                case "08":
+                    return "Nosso número(número bancário) utilizado não possui vinculação com a conta cobrança";
+                case "09":
+                    return "Taxa mensal de mora acima do permitido (170%)";
+                case "10":
+                    return "Taxa de multa acima do permitido (10% ao mês)";
+                case "11":
+                    return "Data limite de desconto inválida";
+                case "12":
+                    return "CEP Inválido/Inexistência de Ag HSBC";
+                case "13":
+                    return "Valor/Taxa de multa inválida";
+                case "14":
+                    return "Valor diário da multa não informado";
+                case "15":
+                    return "Quantidade de dias após vencimento para incidência da multa não informada";
+                case "16":
+                    return "Outras irregularidades";
+                case "17":
+                    return "Data de início da multa inválida";
+                case "18":
+                    return "Nosso número (número bancário) já existente para outro título";
+                case "19":
+                    return "Valor do título inválido";
+                case "20":
+                    return "Ausência CEP/Endereço/CNPJ ou Sacador Avalista";
+                case "21":
+                    return "Título sem borderô";
+                case "22":
+                    return "Número da conta do cedente não cadastrado";
+                case "23":
+                    return "Instrução não permitida para título em garantia de operação";
+                case "24":
+                    return "Condição de desconto não permitida para titulo em garantia de Operação";
+                case "25":
+                    return "Utilizada mais de uma instrução de multa";
+                case "26":
+                    return "Ausência do endereço do sacado";
+                case "27":
+                    return "CEP inválido.do sacado";
+                case "28":
+                    return "Ausência do CPF/CNPJ do sacado em título com instrução de protesto";
+                case "29":
+                    return "Agência cedente informada inválida";
+                case "30":
+                    return "Número da conta do cedente inválido";
+                case "31":
+                    return "Contrato garantia não cadastrado/inválido";
+                case "32":
+                    return "Tipo de carteira inválido";
+                case "33":
+                    return "Conta corrente do cedente não compatível com o órgão do contratante";
+                case "34":
+                    return "Faixa de aplicação não cadastrada/inválida";
+                case "35":
+                    return "Nosso número (número bancário) inválido";
+                case "36":
+                    return "Data de emissão do título inválida";
+                case "37":
+                    return "Valor do título acima de R$ 5.000.000,00 (Cinco milhões de reais)";
+                case "38":
+                    return "Data de desconto menor que data da emissão";
+                case "39":
+                    return "Espécie inválida";
+                case "40":
+                    return "Ausência no nome do sacador avalista";
+                case "41":
+                    return "Data de início de multa menor que data de emissão";
+                case "42":
+                    return "Quantidade de moeda variável inválida";
+                case "43":
+                    return "Controle do participante inválido";
+                case "44":
+                    return "Nosso número (número bancário) duplicado no mesmo movimento";
+                case "45":
+                    return "Título não aceito para compor a carteira de garantias";
+                case "50":
+                    return "Título liquidado";
+                case "51":
+                    return "Data de emissão da ocorrência inválida";
+                case "52":
+                    return "Nosso número (número bancário) duplicado";
+                case "53":
+                    return "Código de ocorrência comandada inválido";
+                case "54":
+                    return "Valor do desconto concedido inválido";
+                case "55":
+                    return "Data de prorrogação de vencimento não informada";
+                case "56":
+                    return "Outras irregularidades";
+                case "57":
+                    return "Ocorrência não permitida para título em garantia de operações";
+                case "58":
+                    return "Nosso número (número bancário) comandado na instrução/ocorrência não possui vinculação com a conta cobrança";
+                case "59":
+                    return "Nosso número (número bancário) comandado na baixa não possui vinculação com a conta cobrança";
+                case "60":
+                    return "Valor do desconto igual ou maior que o valor do título";
+                case "61":
+                    return "Titulo com valor em moeda variável não permite condição de desconto";
+                case "62":
+                    return "Data do desconto informada não coincide com o registro do título";
+                case "63":
+                    return "Titulo não possui condição de desconto diário";
+                case "64":
+                    return "Título baixado";
+                case "65":
+                    return "Título devolvido";
+                case "66":
+                    return "Valor do título não confere com o registrado";
+                case "67":
+                    return "Nosso número (número bancário) não informado";
+                case "68":
+                    return "Nosso número (número bancário) inválido";
+                case "69":
+                    return "Concessão de abatimento não é permitida para moeda diferente de Real";
+                case "70":
+                    return "Valor do abatimento concedido inválido(Valor do abatimento zerado, maior ou igual ao valor do título)";
+                case "71":
+                    return "Cancelamento comandado sobre título sem abatimento";
+                case "72":
+                    return "Concessão de desconto não é permitida para moeda diferente de real";
+                case "73":
+                    return "Valor do desconto não informado";
+                case "74":
+                    return "Cancelamento comandado sobre título sem desconto";
+                case "75":
+                    return "Data de vencimento alterado inválida";
+                case "76":
+                    return "Data de prorrogação de vencimento inválida";
+                case "77":
+                    return "Data da instrução inválida";
+                case "78":
+                    return "Protesto/Serasa comandado em duplicidade no mesmo dia";
+                case "79":
+                    return "Título não possui instrução de protesto/serasa ou está com entrada já confirmada em cartório";
+                case "80":
+                    return "Título não possui condição de desconto";
+                case "81":
+                    return "Título não possui instrução de abatimento";
+                case "82":
+                    return "Valor de juros inválido";
+                case "83":
+                    return "Nosso número (número bancário) inexistente";
+                case "84":
+                    return "Baixa/liquidação por órgão não autorizado";
+                case "85":
+                    return "Instrução de protesto/serasa recusada/inválida";
+                case "86":
+                    return "Instrução não permitida para banco correspondente";
+                case "87":
+                    return "Valor da instrução inválido";
+                case "88":
+                    return "Instrução inválida para tipo de carteira";
+                case "89":
+                    return "Valor do desconto informado não coincide com o registro do título";
+                default:
+                    return "";
+            }
+        }
+
+        #region Método de leitura do arquivo retorno
+
+        public override DetalheRetorno LerDetalheRetornoCNAB400(string registro)
+        {
+            try
+            {
+                int dataOcorrencia = Utils.ToInt32(registro.Substring(110, 6));
+                int dataVencimento = Utils.ToInt32(registro.Substring(146, 6));
+                int dataCredito;
+                DetalheRetorno detalhe = new DetalheRetorno(registro);
+                detalhe.CodigoInscricao = Utils.ToInt32(registro.Substring(1, 2));
+
+                if (detalhe.CodigoInscricao != 99)
+                {
+                    dataCredito = dataOcorrencia;
+
+                    detalhe.NumeroInscricao = registro.Substring(3, 14);
+                    detalhe.Agencia = Utils.ToInt32(registro.Substring(18, 4));
+                    detalhe.Conta = Utils.ToInt32(registro.Substring(24, 11));
+                    detalhe.UsoEmpresa = registro.Substring(37, 25);
+                    detalhe.Carteira = registro.Substring(107, 1);
+                    detalhe.CodigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2));
+                    detalhe.DescricaoOcorrencia = this.OcorrenciaCSB(registro.Substring(108, 2));
+                    detalhe.MotivosRejeicao = this.MotivosRejeicaoCSB(registro.Substring(301, 2));
+                    detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
+                    detalhe.NumeroDocumento = registro.Substring(116, 10);
+                    detalhe.NossoNumero = registro.Substring(126, 11);
+                    detalhe.DataVencimento = Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
+                    decimal valorTitulo = Convert.ToInt64(registro.Substring(152, 13));
+                    detalhe.ValorTitulo = valorTitulo / 100;
+                    detalhe.CodigoBanco = Utils.ToInt32(registro.Substring(165, 3));
+                    detalhe.AgenciaCobradora = Utils.ToInt32(registro.Substring(168, 5));
+                    detalhe.Especie = Utils.ToInt32(registro.Substring(173, 2));
+                    decimal tarifaCobranca = Convert.ToUInt64(registro.Substring(175, 13));
+                    detalhe.TarifaCobranca = tarifaCobranca / 100;
+                    decimal valorAbatimento = Convert.ToUInt64(registro.Substring(227, 13));
+                    detalhe.ValorAbatimento = valorAbatimento / 100;
+                    decimal valorPrincipal = Convert.ToUInt64(registro.Substring(253, 13));
+                    detalhe.ValorPrincipal = valorPrincipal / 100;
+                    detalhe.ValorPago = detalhe.ValorPrincipal;
+                    decimal jurosMora = Convert.ToUInt64(registro.Substring(266, 13));
+                    detalhe.JurosMora = jurosMora / 100;
+                    detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
+                    detalhe.DataCredito = Utils.ToDateTime(dataCredito.ToString("##-##-##"));
+                    detalhe.InstrucaoCancelada = Utils.ToInt32(registro.Substring(301, 4));
+                    detalhe.NumeroSequencial = Utils.ToInt32(registro.Substring(394, 6));
+                }
+                else
+                {
+                    dataCredito = Utils.ToInt32(registro.Substring(82, 6));
+
+                    detalhe.NumeroInscricao = registro.Substring(3, 14);
+                    detalhe.Agencia = Utils.ToInt32(registro.Substring(17, 5));
+                    detalhe.Conta = Utils.ToInt32(registro.Substring(24, 11));
+                    detalhe.UsoEmpresa = registro.Substring(37, 16);
+                    detalhe.NossoNumeroComDV = registro.Substring(62, 16);
+                    detalhe.NossoNumero = registro.Substring(62, 16); //Sem o DV
+                    detalhe.Carteira = registro.Substring(107, 1);
+                    detalhe.CodigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2));
+                    detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
+                    detalhe.NumeroDocumento = registro.Substring(116, 6);
+                    detalhe.DataVencimento = Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
+                    decimal valorTitulo = Convert.ToInt64(registro.Substring(152, 11));
+                    detalhe.ValorTitulo = valorTitulo / 100;
+                    detalhe.CodigoBanco = Utils.ToInt32(registro.Substring(165, 3));
+                    detalhe.AgenciaCobradora = Utils.ToInt32(registro.Substring(168, 5));
+                    detalhe.Especie = Utils.ToInt32(registro.Substring(173, 2));
+                    decimal iof = Convert.ToUInt64(registro.Substring(175, 9));
+                    detalhe.IOF = iof / 100;
+                    decimal valorPrincipal = Convert.ToUInt64(registro.Substring(253, 11));
+                    detalhe.ValorPrincipal = valorPrincipal / 100;
+                    detalhe.ValorPago = detalhe.ValorPrincipal;
+                    decimal jurosMora = Convert.ToUInt64(registro.Substring(266, 11));
+                    detalhe.JurosMora = jurosMora / 100;
+                    detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
+                    detalhe.DataCredito = Utils.ToDateTime(dataCredito.ToString("##-##-##"));
+                    detalhe.InstrucaoCancelada = Utils.ToInt32(registro.Substring(301, 4));
+                    detalhe.NumeroSequencial = Utils.ToInt32(registro.Substring(394, 6));
+                }
+
+                return detalhe;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao ler detalhe do arquivo de RETORNO / CNAB 400.", ex);
+            }
+        }
 
         #endregion
 
+        #endregion
 
         /// <summary>
         /// Efetua as Validações dentro da classe Boleto, para garantir a geração da remessa
