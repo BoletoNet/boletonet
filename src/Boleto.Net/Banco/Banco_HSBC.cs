@@ -1503,6 +1503,8 @@ namespace BoletoNet
                     detalhe.MotivosRejeicao = this.MotivosRejeicaoCSB(registro.Substring(301, 2));
                     detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
                     detalhe.NumeroDocumento = registro.Substring(116, 10);
+                    if (detalhe.NumeroDocumento.Contains("-"))
+                        detalhe.NumeroDocumento = detalhe.NumeroDocumento.Substring(0, detalhe.NumeroDocumento.LastIndexOf('-'));
                     detalhe.NossoNumero = registro.Substring(126, 10);
                     detalhe.DataVencimento = Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
                     decimal valorTitulo = Convert.ToInt64(registro.Substring(152, 13));
@@ -1538,6 +1540,8 @@ namespace BoletoNet
                     detalhe.CodigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2));
                     detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
                     detalhe.NumeroDocumento = registro.Substring(116, 6);
+                    if (detalhe.NumeroDocumento.Contains("-"))
+                        detalhe.NumeroDocumento = detalhe.NumeroDocumento.Substring(0, detalhe.NumeroDocumento.LastIndexOf('-'));
                     detalhe.DataVencimento = Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
                     decimal valorTitulo = Convert.ToInt64(registro.Substring(152, 11));
                     detalhe.ValorTitulo = valorTitulo / 100;
