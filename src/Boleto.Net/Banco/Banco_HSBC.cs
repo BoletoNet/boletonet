@@ -420,7 +420,7 @@ namespace BoletoNet
                 {
 
                     case TipoArquivo.CNAB400:
-                        if (cedente.Carteira == "1")
+                        if (cedente.Carteira == "1" || cedente.Carteira == "3" || cedente.Carteira == "4")
                             _header = GerarHeaderRemessaCNAB400CSB(numeroConvenio, cedente);
                         else
                             _header = GerarHeaderRemessaCNAB400CNR(numeroConvenio, cedente);
@@ -645,7 +645,7 @@ namespace BoletoNet
                         _detalhe = GerarDetalheRemessaCNAB240();
                         break;
                     case TipoArquivo.CNAB400:
-                        if (boleto.Carteira == "1")
+                        if (boleto.Carteira == "1" || boleto.Carteira == "3" || boleto.Carteira == "4")
                             _detalhe = GerarDetalheRemessaCNAB400CSB(boleto, numeroRegistro, tipoArquivo);
                         else
                             _detalhe = GerarDetalheRemessaCNAB400CNR(boleto, numeroRegistro, tipoArquivo);
