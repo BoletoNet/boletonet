@@ -50,6 +50,19 @@ namespace BoletoNet
             get { return _CodigoOcorrencia; }
             set { _CodigoOcorrencia = value; }
         }
+
+        private int _NumeroLote;
+        /// <summary>
+        /// Numero do lote de remessa
+        /// </summary>
+        public int NumeroLote
+        {
+            get { return _NumeroLote; }
+            set { _NumeroLote = value; }
+        }
+
+
         #endregion
+
     }
 }

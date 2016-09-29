@@ -155,6 +155,7 @@ namespace BoletoNet
                     foreach (Boleto boleto in boletos)
                     {
                         boleto.Banco = banco;
+                        boleto.Remessa.NumeroLote = numeroArquivoRemessa;
 
                         strline = boleto.Banco.GerarDetalheSegmentoPRemessa(boleto, numeroRegistroDetalhe, numeroConvenio);
 
