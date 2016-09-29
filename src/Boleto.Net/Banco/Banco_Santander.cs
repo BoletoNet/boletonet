@@ -178,11 +178,6 @@ namespace BoletoNet
             #endregion
 
             boleto.CodigoBarra.LinhaDigitavel = string.Format("{0}{1}{2}{3}{4}", grupo1, grupo2, grupo3, grupo4, grupo5);
-
-
-            //Usado somente no Santander
-            boleto.Cedente.ContaBancaria.Conta = boleto.Cedente.Codigo.ToString();
-
         }
 
         public override void FormataNossoNumero(Boleto boleto)
