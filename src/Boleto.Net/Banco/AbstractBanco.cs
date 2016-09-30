@@ -442,22 +442,6 @@ namespace BoletoNet
 
             return Utils.DateDiff(DateInterval.Day, dateBase, boleto.DataVencimento);
         }
-        public static long FatorVencimento2000(Boleto boleto)
-        {
-            var dateBase = new DateTime(2000, 7, 3, 0, 0, 0);
-
-            //Verifica se a data esta dentro do range utilizavel
-            var dataAtual = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-            long rangeUtilizavel = Utils.DateDiff(DateInterval.Day, dataAtual, boleto.DataVencimento);
-
-            if (rangeUtilizavel > 5500 || rangeUtilizavel < -3000)
-                throw new Exception("Data do vencimento fora do range de utilização proposto pela CENEGESC. Comunicado FEBRABAN de n° 082/2012 de 14/06/2012");
-
-            while (boleto.DataVencimento > dateBase.AddDays(9999))
-                dateBase = boleto.DataVencimento.AddDays(-(((Utils.DateDiff(DateInterval.Day, dateBase, boleto.DataVencimento) - 9999) - 1) + 1000));
-
-            return Utils.DateDiff(DateInterval.Day, dateBase, boleto.DataVencimento) + 1000;
-        }
 
         #region Mod
         internal static int Mod10(string seq)
