@@ -91,6 +91,10 @@ namespace BoletoNet
         /// </summary>
         string GerarDetalheSegmentoRRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo);
         /// <summary>
+        /// Gera os registros de detalhe do arquivo de remessa - SEGMENTO S
+        /// </summary>
+        string GerarDetalheSegmentoSRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo);
+        /// <summary>
         /// Gera o Trailer de arquivo do arquivo de remessa
         /// </summary>
         string GerarTrailerArquivoRemessa(int numeroRegistro);
@@ -106,10 +110,16 @@ namespace BoletoNet
         /// Gera o Trailer de lote do arquivo de remessa
         /// </summary>
         string GerarTrailerLoteRemessa(int numeroRegistro, Boleto boletos);
+        /// <summary>
+        /// Gera os registros de Mensagem Variavel do arquivo de remessa
+        /// </summary>
+        string GerarMensagemVariavelRemessa(Boleto boleto, ref int numeroRegistro, TipoArquivo tipoArquivo);
 
         DetalheSegmentoTRetornoCNAB240 LerDetalheSegmentoTRetornoCNAB240(string registro);
 
         DetalheSegmentoURetornoCNAB240 LerDetalheSegmentoURetornoCNAB240(string registro);
+
+        DetalheSegmentoYRetornoCNAB240 LerDetalheSegmentoYRetornoCNAB240(string registro);
 
         DetalheSegmentoWRetornoCNAB240 LerDetalheSegmentoWRetornoCNAB240(string registro);
 
