@@ -106,14 +106,6 @@ namespace BoletoNet
             return _remessa;
         }
         /// <summary>
-        /// Gera registros de Mensagem Variavel do arquivo remessa
-        /// </summary>
-        public virtual string GerarMensagemVariavelRemessa(Boleto boleto, ref int numeroRegistro, TipoArquivo tipoArquivo)
-        {
-            string _remessa = "";
-            return _remessa;
-        }
-        /// <summary>
         /// Gera os registros de Trailer do arquivo de remessa
         /// </summary>
         public virtual string GerarTrailerRemessa(int numeroRegistro, TipoArquivo tipoArquivo, Cedente cedente, decimal vltitulostotal)
