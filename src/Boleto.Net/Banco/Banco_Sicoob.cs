@@ -44,7 +44,8 @@ namespace BoletoNet
             int resto = 0;
             String constante = "319731973197319731973";
             String cooperativa = boleto.Cedente.ContaBancaria.Agencia;
-            String codigo = boleto.Cedente.Codigo + boleto.Cedente.DigitoCedente.ToString();
+            //Foi retirado o digito do cendente por não constar nas especificações do banco.
+            String codigo = boleto.Cedente.Codigo;
             String nossoNumero = boleto.NossoNumero;
             StringBuilder seqValidacao = new StringBuilder();
 
@@ -393,7 +394,7 @@ namespace BoletoNet
                 header += Utils.FormatCode(cedente.CPFCNPJ, "0", 14, true); //Posição 019 a 032   Número de Inscrição da Empresa
                 header += Utils.FormatCode("", "0", 20, true); //Posição 033 a 052     Código do Convênio no Sicoob: Brancos
                 header += Utils.FormatCode(cedente.ContaBancaria.Agencia, 5);//Posição 053 a 057     Prefixo da Cooperativa: vide planilha "Capa" deste arquivo
-                header += new string(' ', 1);  //Posição 058 a 058
+                header += Utils.FormatCode(cedente.ContaBancaria.DigitoAgencia, "0", 1);  //Posição 058 a 058 Digito Agência
                 header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 12, true);   //Posição 059 a 070
                 header += cedente.ContaBancaria.DigitoConta;  //Posição 071 a 71
                 header += new string(' ', 1); //Posição 072 a 72     Dígito Verificador da Ag/Conta: Brancos
@@ -1002,7 +1003,6 @@ namespace BoletoNet
                 detalhe.DigitoAgencia = registro.Substring(22, 1);
                 detalhe.Conta = Convert.ToInt32(registro.Substring(23, 12));
                 detalhe.DigitoConta = registro.Substring(35, 1);
-
                 detalhe.NossoNumero = registro.Substring(37, 20);
                 detalhe.CodigoCarteira = Convert.ToInt32(registro.Substring(57, 1));
                 detalhe.NumeroDocumento = registro.Substring(58, 15);
