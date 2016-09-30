@@ -64,7 +64,7 @@ namespace BoletoNet
 
 		private string _tipoModalidade = string.Empty;
 		private Remessa _remessa;
-        private string _numeroControleParticipante;
+        private string _numeroControle;
         
 		private ObservableCollection<GrupoDemonstrativo> _demonstrativos;
 
@@ -538,10 +538,10 @@ namespace BoletoNet
         /// <summary> 
         /// Recupara o número do Controle de participante.
         /// </summary>        
-        public string NumeroControleParticipante
+        public string NumeroControle
         {
-            get { return _numeroControleParticipante; }
-            set { _numeroControleParticipante = value; }
+            get { return _numeroControle; }
+            set { _numeroControle = value; }
         }
 
         public IBancoCarteira BancoCarteira { get; set; }
