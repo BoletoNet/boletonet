@@ -689,8 +689,6 @@ namespace BoletoNet
                 // USO DO BANCO - Identificação da operação no Banco (posição 87 a 107)
                 string identificaOperacaoBanco = new string(' ', 10);
                 string nrDeControle = Utils.FitStringLength(boleto.NumeroDocumento.TrimStart(' '), 25, 25, ' ', 0, true, true, false);
-                //string nrDeControle = boleto.NumeroDocumento // new string(' ', 25);
-
                 string mensagem = new string(' ', 12);
                 string mensagem2 = new string(' ', 60);
 
@@ -713,7 +711,8 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 7, 7, '0', 0, true, true, true); //Conta Corrente(7)
                 _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoConta, 1, 1, '0', 0, true, true, true);//D da conta(1)
                 //Nº de Controle do Participante - uso livre da empresa (25, A)  //  brancos
-                _detalhe += nrDeControle;
+                _detalhe += Utils.FitStringLength(boleto.NumeroControleParticipante, 25, 25, ' ', 0, true, true, false);
+
                 //Código do Banco, só deve ser preenchido quando cliente cedente optar por "Débito Automático".
                 _detalhe += "000";
                 //0=sem multa, 2=com multa (1, N)
@@ -813,8 +812,8 @@ namespace BoletoNet
                 //Valida se tem instrução no list de instruções, repassa ao arquivo de remessa
                 string vInstrucao1 = "00"; //1ª instrução (2, N) Caso Queira colocar um cod de uma instrução. ver no Manual caso nao coloca 00
                 string vInstrucao2 = "00"; //2ª instrução (2, N) Caso Queira colocar um cod de uma instrução. ver no Manual caso nao coloca 00
-                
-                foreach (IInstrucao instrucao in boleto.Instrucoes)
+
+                foreach (Instrucao_Bradesco instrucao in boleto.Instrucoes)
                 {
                     switch ((EnumInstrucoes_Bradesco)instrucao.Codigo)
                     {
