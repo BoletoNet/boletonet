@@ -64,7 +64,7 @@ namespace BoletoNet
                 if (boleto.NossoNumero.Length == 10) 
                 { 
                     string codigoCedente = boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.Codigo;
-				//14 POSIÇOES
+
                     campoLivre = boleto.NossoNumero + codigoCedente;
                 } 
                 //14 POSIÇOES
@@ -371,20 +371,13 @@ namespace BoletoNet
 
         public override void ValidaBoleto(Boleto boleto)
         {
-            if (boleto.Carteira.Equals("SR"))
-            {
-                if (boleto.NossoNumero.Length < 10) {
-                    boleto.NossoNumero = "8" + long.Parse(boleto.NossoNumero).ToString("D9");
-                }
+            if (boleto.Carteira.Equals("SR")) {
+                // Modalidade 2 para boleto sem registro.
+                const string modalidadeCarteira = "2";
+                // Emissor do boleto 4 sendo o beneficiário.
+                const string emissaoCedente = "4";
 
-                if ((boleto.NossoNumero.Length != 10) && (boleto.NossoNumero.Length != 14) && (boleto.NossoNumero.Length != 17))
-                {
-                    throw new Exception("Nosso Número inválido, Para Caixa Econômica - Carteira SR o Nosso Número deve conter 10, 14 ou 17 posições.");
-                }
-
-                if (boleto.Cedente.Codigo.Length < 11) {
-                    throw new Exception("O código do cedente deve conter pelo menos 11 dígitos");
-                }
+                boleto.NossoNumero = modalidadeCarteira + emissaoCedente + boleto.NossoNumero.PadLeft(15, '0');
             }
             else if (boleto.Carteira.Equals("RG"))
             {
