@@ -20,6 +20,7 @@ namespace BoletoNet
         decimal _valorOutrosCreditos;
         DateTime _dataOcorrencia;
         DateTime _dataCredito;
+        string _codigoOcorrencia;
         string _codigoOcorrenciaSacado;
         DateTime _dataOcorrenciaSacado;
         decimal _valorOcorrenciaSacado;
@@ -115,6 +116,12 @@ namespace BoletoNet
             set { _codigoOcorrenciaSacado = value; }
         }
 
+        public string CodigoOcorrencia
+        {
+            get { return _codigoOcorrencia; }
+            set { _codigoOcorrencia = value; }
+        }
+
         public DateTime DataOcorrenciaSacado
         {
             get { return _dataOcorrenciaSacado; }
@@ -156,6 +163,8 @@ namespace BoletoNet
                 if (registro.Substring(153, 4) != "    ")
                     dataOcorrenciaSacado = registro.Substring(157, 8);
 
+                CodigoOcorrencia = registro.Substring(15, 2);
+
                 decimal jurosMultaEncargos = Convert.ToInt64(registro.Substring(17, 15));
                 JurosMultaEncargos = jurosMultaEncargos / 100;
                 decimal valorDescontoConcedido = Convert.ToInt64(registro.Substring(32, 15));
@@ -176,14 +185,15 @@ namespace BoletoNet
                 //DataOcorrencia = Convert.ToDateTime(dataOcorrencia.ToString("##-##-####"));
                 DataOcorrencia = DateTime.ParseExact(dataOcorrencia, "ddMMyyyy", CultureInfo.InvariantCulture);
                 string dataCredito = registro.Substring(145, 8);
-                if (!string.IsNullOrEmpty(dataCredito))
+                if (!string.IsNullOrEmpty(dataCredito) && (dataCredito) != "00000000")
                 {
                     //DataCredito = Convert.ToDateTime(dataCredito.ToString("##-##-####"));
                     DataCredito = DateTime.ParseExact(dataCredito, "ddMMyyyy", CultureInfo.InvariantCulture);
                 }
+               
 
                 CodigoOcorrenciaSacado = registro.Substring(153, 4);
-                if (!string.IsNullOrEmpty(dataOcorrenciaSacado) && Convert.ToInt16(dataOcorrenciaSacado) != 0)
+                if (!string.IsNullOrEmpty(dataOcorrenciaSacado) && (dataOcorrenciaSacado) != "00000000")
                 {
                     //DataOcorrenciaSacado = Convert.ToDateTime(dataOcorrenciaSacado.ToString("##-##-####"));
                     DataOcorrenciaSacado = DateTime.ParseExact(dataOcorrenciaSacado, "ddMMyyyy", CultureInfo.InvariantCulture);

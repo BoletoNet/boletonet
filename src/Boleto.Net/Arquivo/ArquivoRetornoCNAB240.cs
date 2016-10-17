@@ -89,17 +89,14 @@ namespace BoletoNet
                                     detalheRetorno.SegmentoE = new DetalheSegmentoERetornoCNAB240();
                                     detalheRetorno.SegmentoE.LerDetalheSegmentoERetornoCNAB240(linha);
                                 }
-                                else
+                                else if (linha.Substring(13, 1) == "T")
                                 {
-                                    OnLinhaLida(detalheRetorno, linha, EnumTipodeLinhaLida.DetalheSegmentoT);
-                                    //detalheRetorno.SegmentoT.LerDetalheSegmentoTRetornoCNAB240(linha);
+                                    //Irá ler o Segmento T e em sequencia o Segmento U
                                     detalheRetorno.SegmentoT = banco.LerDetalheSegmentoTRetornoCNAB240(linha);
-
                                     linha = stream.ReadLine();
-
-                                    OnLinhaLida(detalheRetorno, linha, EnumTipodeLinhaLida.DetalheSegmentoU);
-                                    //detalheRetorno.SegmentoU.LerDetalheSegmentoURetornoCNAB240(linha);
                                     detalheRetorno.SegmentoU = banco.LerDetalheSegmentoURetornoCNAB240(linha);
+
+                                    OnLinhaLida(detalheRetorno, linha, EnumTipodeLinhaLida.DetalheSegmentoU);                                    
 
                                 }
                                 ListaDetalhes.Add(detalheRetorno);

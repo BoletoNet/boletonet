@@ -125,7 +125,8 @@ namespace BoletoNet {
         ///														&lt;/td&gt;
         ///												&lt;/tr&gt;
         ///												&lt;tr class=&quot;cp h12 At rBb&quot;&gt;
-        ///														&lt;td&gt;        /// [rest of string was truncated]&quot;;.
+        ///														&lt;td&gt;
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Carne {
             get {
@@ -524,14 +525,14 @@ namespace BoletoNet {
         ///				&lt;tr class=&quot;rc6&quot;&gt;
         ///						&lt;td class=&quot;w478&quot;&gt;
         ///								&lt;div class=&quot;ctN pL10&quot;&gt;Instruções (Texto de responsabilidade do beneficiário)&lt;/div&gt;
-        ///                &lt;div class=&quot;cpN pL10&quot; style=&quot;height:105px; overflow:hidden&quot;&gt;@INSTRUCOES&lt;/div&gt;
-        ///                &lt;div class=&quot;cpN pL10&quot; &gt;@ADICNSTRUCAO&lt;/div&gt;
+        ///                &lt;div class=&quot;cpN pL10 it&quot; style=&quot;height:105px; overflow:hidden&quot;&gt;@INSTRUCOES&lt;/div&gt;                
         ///						&lt;/td&gt;
         ///						&lt;td class=&quot;w186&quot;&gt;
         ///								&lt;div class=&quot;t&quot;&gt;(-) Desconto / Abatimentos&lt;/div&gt;
         ///								&lt;div class=&quot;c BB&quot;&gt;@DESCONTOS&lt;/div&gt;
         ///								&lt;div class=&quot;t&quot;&gt;(-) Outras deduções&lt;/div&gt;
-        ///							 [rest of string was truncated]&quot;;.
+        ///								&lt;div class=&quot;c BB&quot;&gt;@OUTRASDEDUCOES&lt;/div&gt;
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReciboCedenteParte6 {
             get {
@@ -749,7 +750,7 @@ namespace BoletoNet {
         ///						&lt;td class=&quot;w180 Ar&quot;&gt;Autenticação mecânica&lt;/td&gt;
         ///				&lt;/tr&gt;
         ///				&lt;tr class=&quot;cpN h12&quot;&gt;
-        ///						&lt;td class=&quot;pL6&quot;&gt;@INSTRUCOES&lt;/td&gt;
+        ///						&lt;td class=&quot;pL6 it&quot;&gt;@INSTRUCOES&lt;/td&gt;
         ///						&lt;td class=&quot;pL6 Ar&quot;&gt;@AUTENTICACAOMECANICA&lt;/td&gt;
         ///				&lt;/tr&gt;
         ///		&lt;/table&gt;.

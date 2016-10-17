@@ -19,7 +19,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -42,6 +42,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Boleto.Net.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NReco.PdfGenerator, Version=1.1.12.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
@@ -72,6 +78,7 @@
     <Compile Include="Arquivo\DetalheSegmentoERetornoCNAB240.cs" />
     <Compile Include="Arquivo\DetalheSegmentoWRetornoCNAB240.cs" />
     <Compile Include="Arquivo\CBR643\HeaderCbr643.cs" />
+    <Compile Include="Arquivo\DetalheSegmentoYRetornoCNAB240.cs" />
     <Compile Include="Arquivo\HeaderDeArquivoCNAB240.cs" />
     <Compile Include="Arquivo\CBR643\LinhaCbr643.cs" />
     <Compile Include="Arquivo\LinhaDeArquivoGeradaArgs.cs" />
@@ -93,7 +100,9 @@
     <Compile Include="Banco\Carteiras\IBancoCarteira.cs" />
     <Compile Include="Banco\Carteiras\TipoCarteiraAttribute.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Cecred.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Nordeste.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Sicoob.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_BancoNordeste.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Banestes.cs" />
     <Compile Include="Banco\Banco_Bansirul.cs" />
     <Compile Include="Banco\Banco_Basa.cs" />
@@ -128,6 +137,7 @@
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento.cs" />
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_BancoBrasil.cs" />
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Caixa.cs" />
+    <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Cecred.cs" />
     <Compile Include="Boleto\CodigoMovimento\ICodigoMovimento.cs" />
     <Compile Include="Boleto\CodigoRejeicao\AbstractCodigoRejeicao.cs" />
     <Compile Include="Boleto\CodigoRejeicao\CodigoRejeicao.cs" />
@@ -303,10 +313,11 @@
     <EmbeddedResource Include="BoletoImpressao\BoletoNetPDF.css" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Boleto.Net.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Imagens\085.jpg" />
+    <EmbeddedResource Include="Imagens\085.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -1,5 +1,7 @@
-﻿using System;
+using System;
+using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.IO;
 
 namespace BoletoNet.Testes
 {
@@ -29,7 +31,7 @@ namespace BoletoNet.Testes
 
             boletoBancario.Boleto.Valida();
 
-            string nossoNumeroValido = "16/00970171092-1";
+            string nossoNumeroValido = "016/00970171092-1";
 
             Assert.AreEqual(boletoBancario.Boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido");
         }
@@ -88,7 +90,7 @@ namespace BoletoNet.Testes
 
             boletoBancario.Boleto.Valida();
 
-            string nossoNumeroValido = "09/00000018194-6";
+            string nossoNumeroValido = "009/00000018194-6";
 
             Assert.AreEqual(boletoBancario.Boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido");
         }
@@ -115,6 +117,61 @@ namespace BoletoNet.Testes
             string codigoBarraValida = "23793535800007620000539090000001819400324630";
 
             Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.Codigo, codigoBarraValida, "Código de Barra inválido");
+        }
+
+        [TestMethod]
+        public void Bradesco_Carteira_09_ArquivoRemessa()
+        {
+            Cedente objCEDENTE = new Cedente(
+               "12345678000155",
+               "TESTE",
+               "1111",
+               "11234",
+               "1"
+               );
+            objCEDENTE.Codigo = "123456";
+            objCEDENTE.Convenio = 9;
+
+            //Inst�ncia de Boleto
+            Boleto objBOLETO = new Boleto();
+            //O nosso-numero deve ser de 11 posi��es
+            objBOLETO.EspecieDocumento = new EspecieDocumento(237,"12");
+            objBOLETO.DataVencimento = DateTime.Now.AddDays(10);
+            objBOLETO.ValorBoleto = 90;
+            objBOLETO.Carteira ="09";
+            objBOLETO.NossoNumero = ("00000012345");
+            objBOLETO.Cedente = objCEDENTE;
+            //O n� do documento deve ser de 10 posi��es
+            objBOLETO.NumeroDocumento = "1234567890";
+            //A data do documento � a data de emiss�o do boleto
+            objBOLETO.DataDocumento = DateTime.Now;
+            //A data de processamento � a data em que foi processado o documento, portanto � da data de emiss�o do boleto
+            objBOLETO.DataProcessamento = DateTime.Now;
+            objBOLETO.Sacado = new Sacado("12345678000255", "TESTE SACADO");
+            objBOLETO.Sacado.Endereco.End = "END SACADO";
+            objBOLETO.Sacado.Endereco.Bairro = "BAIRRO SACADO";
+            objBOLETO.Sacado.Endereco.Cidade = "CIDADE SACADO";
+            objBOLETO.Sacado.Endereco.CEP = "CEP SACADO";
+            objBOLETO.Sacado.Endereco.UF = "RR";
+
+            objBOLETO.PercMulta = 10;
+            objBOLETO.JurosMora = 5;
+
+            // nao precisa desta parte no boleto do brasdesco.
+            /*objBOLETO.Remessa = new Remessa()
+            {
+                Ambiente = Remessa.TipoAmbiemte.Producao,
+                CodigoOcorrencia = "01",
+            };*/
+
+            Boletos objBOLETOS = new Boletos();
+            objBOLETOS.Add(objBOLETO);
+
+            var mem = new MemoryStream();
+            var objREMESSA = new ArquivoRemessa(TipoArquivo.CNAB400);
+            objREMESSA.GerarArquivoRemessa("09", new Banco(237), objCEDENTE, objBOLETOS, mem, 1000);
+
+
         }
         #endregion
 
@@ -146,7 +203,7 @@ namespace BoletoNet.Testes
 
             boletoBancario.Boleto.Valida();
 
-            string nossoNumeroValido = "25/97000005287-P";
+            string nossoNumeroValido = "025/97000005287-P";
 
             Assert.AreEqual( boletoBancario.Boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido" );
         }
@@ -204,7 +261,7 @@ namespace BoletoNet.Testes
 
             boletoBancario.Boleto.Valida();
 
-            string nossoNumeroValido = "26/97000005287-3";
+            string nossoNumeroValido = "026/97000005287-3";
 
             Assert.AreEqual(boletoBancario.Boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido");
         }

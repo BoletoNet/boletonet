@@ -53,7 +53,12 @@ namespace BoletoNet
         {
             this.carregar(codigo, valor);
         }
-		#endregion 
+
+        public Instrucao_Itau(int codigo, double valor, EnumTipoValor tipoValor)
+        {
+            this.carregar(codigo, valor, tipoValor);
+        }
+        #endregion
 
         #region Metodos Privados
 
@@ -116,7 +121,7 @@ namespace BoletoNet
             }
         }
 
-        private void carregar(int idInstrucao, double valor)
+        private void carregar(int idInstrucao, double valor, EnumTipoValor tipoValor = EnumTipoValor.Percentual)
         {
             try
             {
@@ -126,12 +131,16 @@ namespace BoletoNet
                 switch ((EnumInstrucoes_Itau)idInstrucao)
                 {
                     case EnumInstrucoes_Itau.JurosdeMora:
-                        this.Codigo = (int)EnumInstrucoes_Itau.JurosdeMora;
-                        this.Descricao = "Após vencimento cobrar mora diária de " + valor + " %";
+                        this.Codigo = (int)EnumInstrucoes_Itau.JurosdeMora;   
+                        this.Descricao = String.Format("Após vencimento cobrar juros de {0} {1} por dia de atraso",
+                            (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("F2")),
+                            (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
                         break;
                     case EnumInstrucoes_Itau.MultaVencimento:
                         this.Codigo = (int)EnumInstrucoes_Itau.MultaVencimento;
-                        this.Descricao = "Após vencimento cobrar multa de " + valor + " %";
+                        this.Descricao = String.Format("Após vencimento cobrar multa de {0} {1}",
+                            (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("F2")),
+                            (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
                         break;
                 }
             }

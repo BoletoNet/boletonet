@@ -52,26 +52,35 @@ namespace BoletoNet
         {
             this.carregar(codigo, valor);
         }
+
+        public Instrucao_Bradesco(int codigo, double valor, EnumTipoValor tipoValor)
+        {
+            this.carregar(codigo, valor, tipoValor);
+        }
         #endregion Construtores
 
         #region Metodos Privados
 
-        private void carregar(int idInstrucao, double valor)
+        private void carregar(int idInstrucao, double valor, EnumTipoValor tipoValor = EnumTipoValor.Percentual)
         {
             try
             {
-                this.Banco = new Banco_Sicredi();
+                this.Banco = new Banco_Bradesco();
                 this.Valida();
 
                 switch ((EnumInstrucoes_Bradesco)idInstrucao)
                 {
                     case EnumInstrucoes_Bradesco.OutrasInstrucoes_ExibeMensagem_MoraDiaria:
                         this.Codigo = 0;
-                        this.Descricao = "Após vencimento cobrar mora diária de R$ " + valor;
+                        this.Descricao = String.Format("Após vencimento cobrar juros de {0} {1} por dia de atraso",
+                            (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("F2")),
+                            (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
                         break;
                     case EnumInstrucoes_Bradesco.OutrasInstrucoes_ExibeMensagem_MultaVencimento:
                         this.Codigo = 0;
-                        this.Descricao = "Após vencimento cobrar multa de " + valor + "%";
+                        this.Descricao = String.Format("Após vencimento cobrar multa de {0} {1}",
+                            (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("F2")),
+                            (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
                         break;
                     default:
                         this.Codigo = 0;

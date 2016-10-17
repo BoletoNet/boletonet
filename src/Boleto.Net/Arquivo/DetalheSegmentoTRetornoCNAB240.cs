@@ -223,7 +223,7 @@ namespace BoletoNet
                 decimal valorTarifas = Convert.ToUInt64(registro.Substring(198, 15));
                 ValorTarifas = valorTarifas / 100;
                 CodigoRejeicao = registro.Substring(213, 10);
-                UsoFebraban = registro.Substring(224, 17);
+                UsoFebraban = registro.Substring(224, 16);
             }
             catch (Exception ex)
             {
