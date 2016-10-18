@@ -1871,12 +1871,12 @@ namespace BoletoNet
                 segmentoT.CodigoCarteira = Convert.ToInt32(registro.Substring(57, 1)); //15
                 segmentoT.NumeroDocumento = registro.Substring(58, 15); //16
                 segmentoT.DataVencimento = registro.Substring(73, 8).ToString() == "00000000" ? DateTime.Now : DateTime.ParseExact(registro.Substring(73, 8), "ddMMyyyy", CultureInfo.InvariantCulture); //17
-                segmentoT.ValorTitulo = Convert.ToDecimal(registro.Substring(81, 15)); //18
+                segmentoT.ValorTitulo = Convert.ToDecimal(registro.Substring(81, 15)) / 100; //18
                 segmentoT.IdentificacaoTituloEmpresa = registro.Substring(105, 25); //23
                 segmentoT.TipoInscricao = Convert.ToInt32(registro.Substring(132, 1)); //25
                 segmentoT.NumeroInscricao = registro.Substring(133, 15); //26
                 segmentoT.NomeSacado = registro.Substring(148, 40); //27
-                segmentoT.ValorTarifas = Convert.ToDecimal(registro.Substring(198, 15)); //29
+                segmentoT.ValorTarifas = Convert.ToDecimal(registro.Substring(198, 15)) / 100; //29
                 //Jéferson (jefhtavares) em 12/12/2013 - O campo Valor Tarifas é composto de 15 posições (199-213) e não de 13
                 segmentoT.CodigoRejeicao = registro.Substring(213, 1) == "A" ? registro.Substring(214, 9) : registro.Substring(213, 10); //30
                 segmentoT.UsoFebraban = _cnab31;
@@ -1901,14 +1901,14 @@ namespace BoletoNet
                 var segmentoU = new DetalheSegmentoURetornoCNAB240(registro);
                 
                 segmentoU.Servico_Codigo_Movimento_Retorno = Convert.ToDecimal(registro.Substring(15, 2)); //07.3U|Serviço|Cód. Mov.|Código de Movimento Retorno
-                segmentoU.JurosMultaEncargos = Convert.ToDecimal(registro.Substring(17, 15));
-                segmentoU.ValorDescontoConcedido = Convert.ToDecimal(registro.Substring(32, 15));
-                segmentoU.ValorAbatimentoConcedido = Convert.ToDecimal(registro.Substring(47, 15));
-                segmentoU.ValorIOFRecolhido = Convert.ToDecimal(registro.Substring(62, 15));
-                segmentoU.ValorOcorrenciaSacado = segmentoU.ValorPagoPeloSacado = Convert.ToDecimal(registro.Substring(77, 15));
-                segmentoU.ValorLiquidoASerCreditado = Convert.ToDecimal(registro.Substring(92, 15));
-                segmentoU.ValorOutrasDespesas = Convert.ToDecimal(registro.Substring(107, 15));
-                segmentoU.ValorOutrosCreditos = Convert.ToDecimal(registro.Substring(122, 15));
+                segmentoU.JurosMultaEncargos = Convert.ToDecimal(registro.Substring(17, 15)) / 100;
+                segmentoU.ValorDescontoConcedido = Convert.ToDecimal(registro.Substring(32, 15)) / 100;
+                segmentoU.ValorAbatimentoConcedido = Convert.ToDecimal(registro.Substring(47, 15)) / 100;
+                segmentoU.ValorIOFRecolhido = Convert.ToDecimal(registro.Substring(62, 15)) / 100;
+                segmentoU.ValorOcorrenciaSacado = segmentoU.ValorPagoPeloSacado = Convert.ToDecimal(registro.Substring(77, 15)) / 100;
+                segmentoU.ValorLiquidoASerCreditado = Convert.ToDecimal(registro.Substring(92, 15)) / 100;
+                segmentoU.ValorOutrasDespesas = Convert.ToDecimal(registro.Substring(107, 15)) / 100;
+                segmentoU.ValorOutrosCreditos = Convert.ToDecimal(registro.Substring(122, 15)) / 100;
                 segmentoU.CodigoOcorrenciaSacado = registro.Substring(153, 4);
                 segmentoU.DataOcorrencia = segmentoU.DataOcorrencia = DateTime.ParseExact(registro.Substring(137, 8), "ddMMyyyy", CultureInfo.InvariantCulture);
                 segmentoU.DataCredito = registro.Substring(145, 8) == "00000000" ? 
