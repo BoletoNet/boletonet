@@ -107,6 +107,7 @@ namespace BoletoNet
                     // carteira/nosso numero
                     _dacNossoNumero = Mod10(boleto.Carteira + boleto.NossoNumero);
 
+                boleto.DigitoNossoNumero = _dacNossoNumero.ToString();
 
                 //Atribui o nome do banco ao local de pagamento
                 if (string.IsNullOrEmpty(boleto.LocalPagamento))
