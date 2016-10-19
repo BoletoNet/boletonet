@@ -44,8 +44,7 @@ namespace BoletoNet
             int resto = 0;
             String constante = "319731973197319731973";
             String cooperativa = boleto.Cedente.ContaBancaria.Agencia;
-            //Foi retirado o digito do cendente por não constar nas especificações do banco.
-            String codigo = boleto.Cedente.Codigo;
+            String codigo = boleto.Cedente.Codigo + boleto.Cedente.DigitoCedente.ToString();
             String nossoNumero = boleto.NossoNumero;
             StringBuilder seqValidacao = new StringBuilder();
 
