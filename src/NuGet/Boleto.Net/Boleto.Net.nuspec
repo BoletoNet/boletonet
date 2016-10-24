@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-16"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
-        <id>Boleto.Net</id>
-        <title>Boleto.Net</title>
-        <version>2.1.0</version>
+        <id>Boleto.Net.Fortes</id>
+        <title>Boleto.Net.Fortes</title>
+        <version>2.1.193</version>
         <authors>BoletoNet</authors>
         <owners>BoletoNet</owners>
         <licenseUrl>https://github.com/BoletoNet/boletonet/blob/master/LICENSE</licenseUrl>
