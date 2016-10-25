@@ -51,13 +51,17 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BancoBanestesTeste.cs" />
     <Compile Include="BancoBradescoTeste.cs" />
     <Compile Include="BancoBrasil\BancoBrasil17027Teste.cs" />
+    <Compile Include="BancoBrasil\BancoBrasil17035Teste.cs" />
     <Compile Include="BancoBrasil\BancoBrasilCarteira18Teste.cs" />
     <Compile Include="BancoItauTeste.cs" />
     <Compile Include="BancoSantanderTeste.cs" />
@@ -67,7 +71,6 @@
     <Compile Include="CecredTeste.cs" />
     <Compile Include="FatorVencimentoTeste.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Banco_BanestesTeste.cs" />
     <Compile Include="Retorno\ArquivoRetornoCrb643Teste.cs" />
   </ItemGroup>
   <ItemGroup>

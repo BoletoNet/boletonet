@@ -136,6 +136,14 @@ namespace BoletoNet
             }
         }
 
+        /// <summary>
+        /// Caminho onde se encontra a ferramenta WkHtmlToPdf.
+        /// Se os arquivos do WkHtmlToPdf não estiverem presentes no caminho,
+        /// eles serão criados automaticamente pelo NReco PdfGenerator.
+        /// </summary>
+        [Browsable(true), Description("Caminho onde se encontra a ferramenta WkHtmlToPdf.")]
+        public string PdfToolPath { get; set; }
+
         #region Propriedades
         [Browsable(true), Description("Mostra o comprovante de entrega sem dados para marcar")]
         public bool MostrarComprovanteEntregaLivre
@@ -382,7 +390,7 @@ namespace BoletoNet
 
                 //Para carteiras "17-019" e "18-019" do Banco do Brasil, a ficha de compensação não possui código da carteira
                 //na formatação do campo.
-                if (Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("17-027") | Boleto.Carteira.Equals("18-019")))
+                if (Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("17-027") | Boleto.Carteira.Equals("18-019") | Boleto.Carteira.Equals("17-159") | Boleto.Carteira.Equals("17-140") | Boleto.Carteira.Equals("17-067")))
                 {
                     html.Replace("Carteira /", "");
                     html.Replace("@NOSSONUMERO", "@NOSSONUMEROBB");
@@ -393,15 +401,6 @@ namespace BoletoNet
                     if (Boleto.Banco.Codigo == 33)
                     {
                         html.Replace("Carteira /", "");
-                    }
-                    // 85 - CECRED
-                    if (Boleto.Banco.Codigo == 85)
-                    {
-                        html.Replace("@ADICNSTRUCAO", "Após o vencimento acesso o site www.credifoz.coop.br para atualizar seu boleto.");
-                    }
-                    else
-                    {
-                        html.Replace("@ADICNSTRUCAO", string.Empty);
                     }
                 }
 
@@ -632,6 +631,9 @@ namespace BoletoNet
                     case 1:
                         agenciaCodigoCedente = string.Format("{0}-{1}/{2}-{3}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Utils.FormatCode(Cedente.ContaBancaria.Conta, 6), Cedente.ContaBancaria.DigitoConta);
                         break;
+                    case 399:
+                        agenciaCodigoCedente = string.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo.ToString() + Cedente.DigitoCedente.ToString(), 7));
+                        break;
                     default:
                         agenciaCodigoCedente = string.Format("{0}/{1}-{2}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo.ToString(), 6), Cedente.DigitoCedente.ToString());
                         break;
@@ -648,8 +650,7 @@ namespace BoletoNet
                 }
                 else if (Boleto.Banco.Codigo == 399)
                     //agenciaCodigoCedente = Utils.FormatCode(Cedente.Codigo.ToString(), 7); -> para Banco HSBC mostra apenas código Cedente - por Ponce em 08/06/2012
-                    agenciaCodigoCedente = String.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Cedente.Codigo.ToString()); //Solicitação do HSBC que mostrasse agencia/Conta - por Transis em 24/02/15
-
+                    agenciaCodigoCedente = String.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo.ToString(), 7)); //Solicitação do HSBC que mostrasse agencia/Conta - por Transis em 24/02/15
                 else if (Boleto.Banco.Codigo == 748)
                     agenciaCodigoCedente = string.Format("{0}.{1}.{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.OperacaConta, Cedente.Codigo);
                 else
@@ -693,10 +694,10 @@ namespace BoletoNet
                 .Replace("@DATAPROCESSAMENTO", Boleto.DataProcessamento.ToString("dd/MM/yyyy"))
 
             #region Implementação para o Banco do Brasil
-                    //Variável inserida para atender às especificações das carteiras "17-019", "17-027" e "18-019" do Banco do Brasil
-                    //apenas para a ficha de compensação.
-                    //Como a variável não existirá se não forem as carteiras "17-019", "17-027" e "18-019", não foi colocado o [if].
-                    .Replace("@NOSSONUMEROBB", Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("17-027") | Boleto.Carteira.Equals("18-019")) ? Boleto.NossoNumero.Substring(3) : string.Empty)
+                //Variável inserida para atender às especificações das carteiras "17-019", "17-027" e "18-019" do Banco do Brasil
+                //apenas para a ficha de compensação.
+                //Como a variável não existirá se não forem as carteiras "17-019", "17-027", "17-019", "17-035", "17-140", "17-159", "17-067", "17-167" e "18-019", não foi colocado o [if].
+                .Replace("@NOSSONUMEROBB", Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("17-027") | Boleto.Carteira.Equals("17-035") | Boleto.Carteira.Equals("18-019") | Boleto.Carteira.Equals("17-140") | Boleto.Carteira.Equals("17-159") | Boleto.Carteira.Equals("17-067") | Boleto.Carteira.Equals("17-167")) ? Boleto.NossoNumero.Substring(3) : string.Empty)
             #endregion Implementação para o Banco do Brasil
 
                 .Replace("@NOSSONUMERO", Boleto.NossoNumero)
@@ -1206,7 +1207,11 @@ namespace BoletoNet
 
         public byte[] MontaBytesPDF(bool convertLinhaDigitavelToImage = false)
         {
-            return (new NReco.PdfGenerator.HtmlToPdfConverter()).GeneratePdf(this.MontaHtmlEmbedded(convertLinhaDigitavelToImage, true));
+            var converter = new NReco.PdfGenerator.HtmlToPdfConverter();
+            if (!string.IsNullOrEmpty(this.PdfToolPath)) {
+                converter.PdfToolPath = this.PdfToolPath;
+            }
+            return converter.GeneratePdf(this.MontaHtmlEmbedded(convertLinhaDigitavelToImage, true));
         }
         
         /// <summary>
@@ -1241,7 +1246,15 @@ namespace BoletoNet
                 htmlBoletos.Append("</div>");
             }
             htmlBoletos.Append("</body></html>");
-            return (new NReco.PdfGenerator.HtmlToPdfConverter() { CustomWkHtmlArgs = CustomSwitches, Grayscale = PretoBranco }).GeneratePdf(htmlBoletos.ToString());
+            var converter = new NReco.PdfGenerator.HtmlToPdfConverter()
+            {
+              CustomWkHtmlArgs = CustomSwitches,
+              Grayscale = PretoBranco
+            };
+            if (!string.IsNullOrEmpty(this.PdfToolPath)) {
+                converter.PdfToolPath = this.PdfToolPath;
+            }
+            return converter.GeneratePdf(htmlBoletos.ToString());
         }
         
         #endregion Geração do Html OffLine
