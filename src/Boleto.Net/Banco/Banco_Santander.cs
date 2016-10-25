@@ -1111,6 +1111,7 @@ namespace BoletoNet
         public override string GerarDetalheSegmentoQRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo) {
             try {
                 var sacado = boleto.Sacado;
+                var cedente = boleto.Cedente;
                 var registro = new StringBuilder();
                 var endereco = Utils.FormatarEnderecoComNumero(sacado.Endereco.End, sacado.Endereco.Numero, 40);
 
@@ -1161,13 +1162,13 @@ namespace BoletoNet
                 registro.Append(Utils.FormatCode(sacado.Endereco.UF, " ", 2));
 
                 // 154 - 154 Tipo de inscrição Sacador/avalista
-                registro.Append(sacado.CPFCNPJ.Length == 11 ? "1" : "2");
+                registro.Append(cedente.CPFCNPJ.Length == 11 ? "1" : "2");
 
                 // 155 - 169 Nº de inscrição Sacador/avalista
-                registro.Append(Utils.FormatCode(sacado.CPFCNPJ, "0", 15, true));
+                registro.Append(Utils.FormatCode(cedente.CPFCNPJ, "0", 15, true));
 
                 // 170 - 209 Nome do Sacador/avalista
-                registro.Append(Utils.FormatCode(sacado.Nome, " ", 40));
+                registro.Append(Utils.FormatCode(cedente.Nome, " ", 40));
 
                 // 210 - 212 Identificador de carne
                 registro.Append("000");
