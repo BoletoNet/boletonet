@@ -371,18 +371,14 @@ namespace BoletoNet
 
         public override void ValidaBoleto(Boleto boleto)
         {
-            if (boleto.Carteira.Equals("SR")) {
-                // Modalidade 2 para boleto sem registro.
-                const string modalidadeCarteira = "2";
-                // Emissor do boleto 4 sendo o beneficiário.
-                const string emissaoCedente = "4";
+            // Modalidade 2 para boleto sem registro.
+            const string modalidadeCarteira = "2";
+            // Emissor do boleto 4 sendo o beneficiário.
+            const string emissaoCedente = "4";
 
-                boleto.NossoNumero = modalidadeCarteira + emissaoCedente + boleto.NossoNumero.PadLeft(15, '0');
-            }
-            else if (boleto.Carteira.Equals("RG"))
+            if (boleto.Carteira.Equals("SR") || boleto.Carteira.Equals("RG")) 
             {
-                if (boleto.NossoNumero.Length != 17)
-                    throw new Exception("Nosso número inválido. Para Caixa Econômica - SIGCB carteira rápida, o nosso número deve conter 17 caracteres.");
+                boleto.NossoNumero = modalidadeCarteira + emissaoCedente + boleto.NossoNumero.PadLeft(15, '0');
             }
             else if (boleto.Carteira.Equals("CS"))
             {
@@ -421,10 +417,6 @@ namespace BoletoNet
 
             if (boleto.Cedente.Carteira == null) {
                 throw new Exception("Código da carteira não pode ser vazio.");
-            }
-
-            if (!boleto.Carteira.Equals("SR") && ConverterParaInt(boleto.Cedente.Carteira) == 0) {
-                throw new Exception("Código da carteira deve ser preenchido somente com números.");
             }
 
             if (boleto.Cedente.DigitoCedente == -1)
