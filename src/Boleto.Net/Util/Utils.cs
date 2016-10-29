@@ -127,26 +127,6 @@ namespace BoletoNet
         }
 
         /// <summary>
-        /// Remove todos os acentos das palavras.
-        /// </summary>
-        /// <param name="value">palavra acentuada</param>
-        /// <returns>palavra sem acento</returns>
-        internal static String RemoveAcento(String value)
-        {
-            String normalizedString = value.Normalize(NormalizationForm.FormD);
-            StringBuilder stringBuilder = new StringBuilder();
-
-            for (int i = 0; i < normalizedString.Length; i++)
-            {
-                Char c = normalizedString[i];
-                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
-                    stringBuilder.Append(c);
-            }
-
-            return stringBuilder.ToString();
-        }
-
-        /// <summary>
         /// retorna um array de strings de tamanho variável com os dados da linha (pode ser usado para qualquer leitura de arquivos de retorno || remessa)
         /// os dados no string pattern correspondem a intervalos fechados na matemática ex: [2-19] (fechado de 2 a 19)
         /// </summary>
@@ -447,48 +427,60 @@ namespace BoletoNet
             return tipo;
         }
 
-        public static string SubstituiCaracteresEspeciais(string strline)
+        public static string RemoveCaracteresEspeciais(string str)
         {
-            try
+            var sb = new StringBuilder();
+            foreach (char c in str)
             {
-                strline = strline.Replace("ã", "a");
-                strline = strline.Replace('Ã', 'A');
-                strline = strline.Replace('â', 'a');
-                strline = strline.Replace('Â', 'A');
-                strline = strline.Replace('á', 'a');
-                strline = strline.Replace('Á', 'A');
-                strline = strline.Replace('à', 'a');
-                strline = strline.Replace('À', 'A');
-                strline = strline.Replace('ç', 'c');
-                strline = strline.Replace('Ç', 'C');
-                strline = strline.Replace('é', 'e');
-                strline = strline.Replace('É', 'E');
-                strline = strline.Replace('Ê', 'E');
-                strline = strline.Replace('ê', 'e');
-                strline = strline.Replace('õ', 'o');
-                strline = strline.Replace('Õ', 'O');
-                strline = strline.Replace('ó', 'o');
-                strline = strline.Replace('Ó', 'O');
-                strline = strline.Replace('ô', 'o');
-                strline = strline.Replace('Ô', 'O');
-                strline = strline.Replace('ú', 'u');
-                strline = strline.Replace('Ú', 'U');
-                strline = strline.Replace('ü', 'u');
-                strline = strline.Replace('Ü', 'U');
-                strline = strline.Replace('í', 'i');
-                strline = strline.Replace('Í', 'I');
-                strline = strline.Replace('ª', 'a');
-                strline = strline.Replace('º', 'o');
-                strline = strline.Replace('°', 'o');
-                strline = strline.Replace('&', 'e');
+                switch (c)
+                {
+                    // exceções
+                    case 'ª':
+                        sb.Append('a');
+                        continue;
+                    case 'º':
+                        sb.Append('o');
+                        continue;
+                    case '°':
+                        sb.Append('o');
+                        continue;
+                    case '&':
+                        sb.Append('e');
+                        continue;
+                    case '¹':
+                        sb.Append('1');
+                        continue;
+                    case '²':
+                        sb.Append('2');
+                        continue;
+                    case '³':
+                        sb.Append('3');
+                        continue;
+                }
 
-                return strline;
+                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' || c == '_' || c == ' ' || c == ',')
+                {
+                    sb.Append(c);
+                }
             }
-            catch (Exception ex)
+            return sb.ToString();
+        }
+
+        public static string SubstituiCaracteresEspeciais(string text)
+        {
+            if (!string.IsNullOrEmpty(text))
             {
-                Exception tmpEx = new Exception("Erro ao formatar string.", ex);
-                throw tmpEx;
+                var sbReturn = new StringBuilder();
+                var arrayText = text.Normalize(NormalizationForm.FormD).ToCharArray();
+
+                foreach (char letter in arrayText)
+                {
+                    if (CharUnicodeInfo.GetUnicodeCategory(letter) != UnicodeCategory.NonSpacingMark)
+                        sbReturn.Append(letter);
+                }
+                return RemoveCaracteresEspeciais(sbReturn.ToString());
             }
+            return string.Empty;
         }
 
         /// <summary>

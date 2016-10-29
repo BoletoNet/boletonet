@@ -508,7 +508,7 @@ namespace BoletoNet
                 //Reservado (uso Banco) ==> 167 - 240
                 header += Utils.FormatCode("", " ", 74);
 
-                return Utils.RemoveAcento(header);
+                return Utils.SubstituiCaracteresEspeciais(header);
 
             }
             catch (Exception ex)
@@ -688,7 +688,7 @@ namespace BoletoNet
                 //Reservado (uso Banco) ==> 200 - 240
                 header += Utils.FormatCode("", " ", 41);
 
-                return Utils.RemoveAcento(header);
+                return Utils.SubstituiCaracteresEspeciais(header);
             }
             catch (Exception e)
             {
