@@ -156,7 +156,7 @@ namespace Boleto.Net.Testes.BancoItau
              */
 
             var remessa = File.ReadAllText(arquivoRemessa);
-            var isValid = remessa.EndsWith("\r\n");
+            var isValid = remessa.EndsWith(Environment.NewLine);
 
             Assert.IsTrue(isValid);
         }
