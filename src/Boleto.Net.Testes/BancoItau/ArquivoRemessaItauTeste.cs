@@ -83,24 +83,19 @@ namespace Boleto.Net.Testes.BancoItau
              */
 
             bool linhasCorretas = true;
-            int count = 1;
-            int linhaParaVerificar = 2;
+            int linhaNumero = 1;
 
             var relatorio = new StringBuilder("Linhas com valor do título negativo:\n");
 
             foreach (string linha in File.ReadLines(arquivoRemessa))
             {
-                if (count == linhaParaVerificar)
+                var trecho = linha.Substring(120, 30);
+                if (trecho.Contains('-'))
                 {
-                    var trecho = linha.Substring(120, 30);
-                    if (trecho.Contains('-'))
-                    {
-                        linhasCorretas = false;
-                        relatorio.Append(count + ",");
-                    }
-                    linhaParaVerificar += 10;
+                    linhasCorretas = false;
+                    relatorio.Append(linhaNumero + ",");
                 }
-                count++;
+                linhaNumero++;
             }
             Assert.IsTrue(linhasCorretas, "\n" + relatorio.ToString().TrimEnd(','));
         }
