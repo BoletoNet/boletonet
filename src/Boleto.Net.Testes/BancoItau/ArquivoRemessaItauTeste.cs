@@ -155,8 +155,8 @@ namespace Boleto.Net.Testes.BancoItau
              * Solução: Adicionar uma quebra de linha pressionando 'Enter' após a linha que começa com o 9
              */
 
-            var remessa = File.ReadAllText(arquivoRemessa, Encoding.Default);
-            var isValid = remessa.EndsWith(Environment.NewLine);
+            var remessa = File.ReadAllText(arquivoRemessa);
+            var isValid = remessa.EndsWith("\n");
 
             Assert.IsTrue(isValid);
         }
