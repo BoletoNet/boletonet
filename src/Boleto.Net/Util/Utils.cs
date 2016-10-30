@@ -427,7 +427,7 @@ namespace BoletoNet
             return tipo;
         }
 
-        public static string SubstituirOuRemoverCaracteres(string text)
+        public static string SubstituiCaracteresEspeciais(string text)
         {
             if (!string.IsNullOrEmpty(text))
             {
