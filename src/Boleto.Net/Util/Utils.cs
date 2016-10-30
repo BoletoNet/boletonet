@@ -427,58 +427,26 @@ namespace BoletoNet
             return tipo;
         }
 
-        public static string RemoveCaracteresEspeciais(string str)
-        {
-            var sb = new StringBuilder();
-            foreach (char c in str)
-            {
-                switch (c)
-                {
-                    // exceções
-                    case 'ª':
-                        sb.Append('a');
-                        continue;
-                    case 'º':
-                        sb.Append('o');
-                        continue;
-                    case '°':
-                        sb.Append('o');
-                        continue;
-                    case '&':
-                        sb.Append('e');
-                        continue;
-                    case '¹':
-                        sb.Append('1');
-                        continue;
-                    case '²':
-                        sb.Append('2');
-                        continue;
-                    case '³':
-                        sb.Append('3');
-                        continue;
-                }
-
-                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' || c == '_' || c == ' ' || c == ',')
-                {
-                    sb.Append(c);
-                }
-            }
-            return sb.ToString();
-        }
-
-        public static string SubstituiCaracteresEspeciais(string text)
+        public static string SubstituirOuRemoverCaracteres(string text)
         {
             if (!string.IsNullOrEmpty(text))
             {
-                var sbReturn = new StringBuilder();
-                var arrayText = text.Normalize(NormalizationForm.FormD).ToCharArray();
+                var sb = new StringBuilder();
+                var arrayChar = text.Normalize(NormalizationForm.FormD).ToCharArray();
 
-                foreach (char letter in arrayText)
+                foreach (char c in arrayChar)
                 {
-                    if (CharUnicodeInfo.GetUnicodeCategory(letter) != UnicodeCategory.NonSpacingMark)
-                        sbReturn.Append(letter);
+                    if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                        sb.Append(c);
                 }
-                return RemoveCaracteresEspeciais(sbReturn.ToString());
+                return Regex.Replace(sb.ToString(), "[^0-9a-zA-Z°ºª&¹²³ ]+", "")
+                    .Replace("ª", "a")
+                    .Replace("º", "o")
+                    .Replace("°", "o")
+                    .Replace("&", "e")
+                    .Replace("¹", "1")
+                    .Replace("²", "2")
+                    .Replace("³", "3");
             }
             return string.Empty;
         }
