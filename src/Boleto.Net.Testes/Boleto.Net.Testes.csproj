@@ -63,7 +63,8 @@
     <Compile Include="BancoBrasil\BancoBrasil17027Teste.cs" />
     <Compile Include="BancoBrasil\BancoBrasil17035Teste.cs" />
     <Compile Include="BancoBrasil\BancoBrasilCarteira18Teste.cs" />
-    <Compile Include="BancoItauTeste.cs" />
+    <Compile Include="BancoItau\ArquivoRemessaItauTeste.cs" />
+    <Compile Include="BancoItau\BancoItauTeste.cs" />
     <Compile Include="BancoSantanderTeste.cs" />
     <Compile Include="BancoSicoobTeste.cs" />
     <Compile Include="BancoBrasil\BancoBrasil17019Teste.cs" />
@@ -78,6 +79,17 @@
       <Project>{f173e80b-e36b-48ad-b483-a27f8ca86f3c}</Project>
       <Name>Boleto.Net</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BancoItau\REMESSA.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="BancoItau\REMESSA_TESTES_FALHANDO.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BancoItau\ArquivoRemessaItau.playlist" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
