@@ -425,6 +425,18 @@ namespace BoletoNet
             }
         }
 
+        public override string GerarDetalheSegmentoSRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+        {
+            try
+            {
+                return _IBanco.GerarDetalheSegmentoSRemessa(boleto, numeroRegistro, tipoArquivo);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração dos registros de DETALHE do arquivo de REMESSA.", ex);
+            }
+        }
+
         public override string GerarTrailerArquivoRemessa(int numeroRegistro)
         {
             try
@@ -469,6 +481,18 @@ namespace BoletoNet
             catch (Exception ex)
             {
                 throw new Exception("Erro durante a geração do registro TRAILER do arquivo de REMESSA.", ex);
+            }
+        }
+
+        public override string GerarMensagemVariavelRemessa(Boleto boleto, ref int numeroRegistro, TipoArquivo tipoArquivo)
+        {
+            try
+            {
+                return _IBanco.GerarMensagemVariavelRemessa(boleto, ref numeroRegistro, tipoArquivo);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do registro MENSAGEM VARIAVEL do arquivo de REMESSA.", ex);
             }
         }
 
