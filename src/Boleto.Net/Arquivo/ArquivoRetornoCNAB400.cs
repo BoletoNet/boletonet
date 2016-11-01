@@ -43,7 +43,8 @@ namespace BoletoNet
                 linha = stream.ReadLine();
 
                 // 85 - CECRED - Código de registro detalhe 7 para CECRED
-                if (banco.Codigo == 85) {
+                // 1 - Banco do Brasil- Código de registro detalhe 7 
+                if (banco.Codigo == 85 || banco.Codigo == 1) {
                     IdRegistroDetalhe = "7";
                 } else {
                     IdRegistroDetalhe = "1";

@@ -444,8 +444,7 @@
 				&lt;tr class="rc6"&gt;
 						&lt;td class="w478"&gt;
 								&lt;div class="ctN pL10"&gt;Instruções (Texto de responsabilidade do beneficiário)&lt;/div&gt;
-                &lt;div class="cpN pL10 it" style="height:105px; overflow:hidden"&gt;@INSTRUCOES&lt;/div&gt;
-                &lt;div class="cpN pL10" &gt;@ADICNSTRUCAO&lt;/div&gt;
+                &lt;div class="cpN pL10 it" style="height:105px; overflow:hidden"&gt;@INSTRUCOES&lt;/div&gt;                
 						&lt;/td&gt;
 						&lt;td class="w186"&gt;
 								&lt;div class="t"&gt;(-) Desconto / Abatimentos&lt;/div&gt;
