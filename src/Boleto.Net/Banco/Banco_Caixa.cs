@@ -371,14 +371,20 @@ namespace BoletoNet
 
         public override void ValidaBoleto(Boleto boleto)
         {
-            // Modalidade 2 para boleto sem registro.
-            const string modalidadeCarteira = "2";
             // Emissor do boleto 4 sendo o beneficiário.
             const string emissaoCedente = "4";
 
-            if (boleto.Carteira.Equals("SR") || boleto.Carteira.Equals("RG")) 
+            if (boleto.Carteira == "SR")
             {
-                boleto.NossoNumero = modalidadeCarteira + emissaoCedente + boleto.NossoNumero.PadLeft(15, '0');
+                const string modalidadeCarteiraSemRegistro = "2";
+
+                boleto.NossoNumero = modalidadeCarteiraSemRegistro + emissaoCedente + boleto.NossoNumero.PadLeft(15, '0');
+            }
+            else if (boleto.Carteira == "RG")
+            {
+                const string modalidadeCarteiraComRegistro = "1";
+
+                boleto.NossoNumero = modalidadeCarteiraComRegistro + emissaoCedente + boleto.NossoNumero.PadLeft(15, '0');
             }
             else if (boleto.Carteira.Equals("CS"))
             {
