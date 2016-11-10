@@ -208,7 +208,10 @@ namespace BoletoNet
 
         public override void FormataNossoNumero(Boleto boleto)
         {
-            boleto.NossoNumero = string.Format("{0}/{1}-{2}", boleto.Carteira, boleto.NossoNumero, boleto.DigitoNossoNumero);
+            if (!boleto.TipoArquivo.HasValue) {
+                // essa formatação do NossoNumero deve apenas ocorrer quando o boleto for impresso.
+                boleto.NossoNumero = $"{boleto.Carteira}/{boleto.NossoNumero}-{boleto.DigitoNossoNumero}";
+            }
         }
         public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos)
         {
@@ -775,7 +778,7 @@ namespace BoletoNet
                 */
                 _detalhe += "01";
 
-                _detalhe += Utils.Right(boleto.NumeroDocumento, 10, '0', true); //Nº do Documento (10, A)
+                _detalhe += boleto.NumeroDocumento.PadLeft(10, '0'); //Nº do Documento (10, A)
                 _detalhe += boleto.DataVencimento.ToString("ddMMyy"); //Data do Vencimento do Título (10, N) DDMMAA
 
                 //Valor do Título (13, N)
@@ -805,7 +808,7 @@ namespace BoletoNet
                 string vInstrucao1 = "00"; //1ª instrução (2, N) Caso Queira colocar um cod de uma instrução. ver no Manual caso nao coloca 00
                 string vInstrucao2 = "00"; //2ª instrução (2, N) Caso Queira colocar um cod de uma instrução. ver no Manual caso nao coloca 00
                 
-                foreach (Instrucao_Bradesco instrucao in boleto.Instrucoes)
+                foreach (IInstrucao instrucao in boleto.Instrucoes)
                 {
                     switch ((EnumInstrucoes_Bradesco)instrucao.Codigo)
                     {

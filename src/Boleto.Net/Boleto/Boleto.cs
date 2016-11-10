@@ -555,7 +555,15 @@ namespace BoletoNet
 
 		public IBancoCarteira BancoCarteira { get; set; }
 
-		#endregion Properties
+        /// <summary>
+        /// Tipo do arquivo que o boleto será gerado.
+        /// </summary>
+        /// <remarks>
+        /// Esta propriedade serve para que seja possível particularizar a geração do boleto baseado no tipo de arquivo de remessa.
+        /// </remarks>
+	    public TipoArquivo? TipoArquivo { get; set; }
+
+	    #endregion Properties
 
 		public void Valida()
 		{
