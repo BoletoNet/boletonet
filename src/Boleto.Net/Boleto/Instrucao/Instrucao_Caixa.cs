@@ -23,7 +23,7 @@ namespace BoletoNet
 
     #endregion
 
-    public class Instrucao_Caixa : AbstractInstrucao, IInstrucao
+    public sealed class Instrucao_Caixa : AbstractInstrucao, IInstrucao
     {
 
         #region Construtores
@@ -42,33 +42,61 @@ namespace BoletoNet
 
         public Instrucao_Caixa(int codigo)
         {
-            this.carregar(codigo, 0, 0);
+            this.Carregar(codigo, 0);
         }
 
         public Instrucao_Caixa(int codigo, int nrDias)
         {
-            this.carregar(codigo, nrDias, 0);
+            this.Carregar(codigo, nrDias);
         }
 
         public Instrucao_Caixa(int codigo, decimal valor)
         {
-            this.carregar(codigo, 0, valor);
+            this.Carregar(codigo, valor);
         }
 
         #endregion
 
         #region Metodos Privados
 
-        private void carregar(int idInstrucao, int nrDias, decimal valor)
-        {
-            try
-            {
+        public override bool Carregar(int idInstrucao, decimal valor) {
+            try {
                 this.Banco = new Banco_Caixa();
 
                 //  this.Valida();
 
-                switch ((EnumInstrucoes_Caixa)idInstrucao)
-                {
+                switch ((EnumInstrucoes_Caixa)idInstrucao) {
+                    case EnumInstrucoes_Caixa.JurosdeMora:
+                        this.Codigo = (int)EnumInstrucoes_Caixa.JurosdeMora;
+                        this.Descricao = "Após vencimento cobrar Juros de " + valor + "%";
+                        break;
+                    case EnumInstrucoes_Caixa.Multa:
+                        this.Codigo = (int)EnumInstrucoes_Caixa.Multa;
+                        this.Descricao = "Após vencimento cobrar Multa de " + valor + "%";
+                        break;
+                    case EnumInstrucoes_Caixa.DescontoporDia:
+                        this.Codigo = (int)EnumInstrucoes_Caixa.DescontoporDia;
+                        this.Descricao = "Conceder desconto de " + valor + "%" + " por dia de antecipação";
+                        break;
+                    default:
+                        this.Codigo = 0;
+                        this.Descricao = "( Selecione )";
+                        break;
+                }
+
+                return Codigo > 0;
+            } catch (Exception ex) {
+                throw new Exception("Erro ao carregar objeto", ex);
+            }
+        }
+
+        public override bool Carregar(int idInstrucao, int nrDias) {
+            try {
+                this.Banco = new Banco_Caixa();
+
+                //  this.Valida();
+
+                switch ((EnumInstrucoes_Caixa)idInstrucao) {
                     case EnumInstrucoes_Caixa.Protestar:
                         this.Codigo = (int)EnumInstrucoes_Caixa.Protestar;
                         this.Descricao = "Protestar após " + nrDias + " dias úteis.";
@@ -101,18 +129,6 @@ namespace BoletoNet
                         this.Codigo = (int)EnumInstrucoes_Caixa.DevolverAposNDias;
                         this.Descricao = "Devolver após " + nrDias + " dias do vencimento";
                         break;
-                    case EnumInstrucoes_Caixa.JurosdeMora:
-                        this.Codigo = (int)EnumInstrucoes_Caixa.JurosdeMora;
-                        this.Descricao = "Após vencimento cobrar Juros de " + valor + "%";
-                        break;
-                    case EnumInstrucoes_Caixa.Multa:
-                        this.Codigo = (int)EnumInstrucoes_Caixa.Multa;
-                        this.Descricao = "Após vencimento cobrar Multa de " + valor + "%";
-                        break;
-                    case EnumInstrucoes_Caixa.DescontoporDia:
-                        this.Codigo = (int)EnumInstrucoes_Caixa.DescontoporDia;
-                        this.Descricao = "Conceder desconto de " + valor + "%" + " por dia de antecipação";
-                        break;
                     default:
                         this.Codigo = 0;
                         this.Descricao = "( Selecione )";
@@ -120,9 +136,9 @@ namespace BoletoNet
                 }
 
                 this.QuantidadeDias = nrDias;
-            }
-            catch (Exception ex)
-            {
+
+                return Codigo > 0;
+            } catch (Exception ex) {
                 throw new Exception("Erro ao carregar objeto", ex);
             }
         }

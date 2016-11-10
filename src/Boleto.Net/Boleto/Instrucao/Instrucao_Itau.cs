@@ -23,7 +23,7 @@ namespace BoletoNet
 
     #endregion 
 
-    public class Instrucao_Itau: AbstractInstrucao, IInstrucao
+    public sealed class Instrucao_Itau: AbstractInstrucao, IInstrucao
     {
 
         #region Construtores 
@@ -42,23 +42,22 @@ namespace BoletoNet
 
         public Instrucao_Itau(int codigo, int nrDias)
         {
-            this.carregar(codigo, nrDias);
+            this.Carregar(codigo, nrDias);
         }
 
         public Instrucao_Itau(int codigo)
         {
-            this.carregar(codigo, 0);
+            this.Carregar(codigo, 0);
         }
-        public Instrucao_Itau(int codigo, double valor)
+        public Instrucao_Itau(int codigo, decimal valor)
         {
-            this.carregar(codigo, valor);
+            this.Carregar(codigo, valor);
         }
-		#endregion 
+        #endregion
 
         #region Metodos Privados
 
-        private void carregar(int idInstrucao, int nrDias)
-        {
+        public override bool Carregar(int idInstrucao, int nrDias) {
             try
             {
                 this.Banco = new Banco_Itau();
@@ -109,6 +108,8 @@ namespace BoletoNet
                 }
 
                 this.QuantidadeDias = nrDias;
+
+                return Codigo > 0;
             }
             catch (Exception ex)
             {
@@ -116,8 +117,7 @@ namespace BoletoNet
             }
         }
 
-        private void carregar(int idInstrucao, double valor)
-        {
+        public override bool Carregar(int idInstrucao, decimal valor) {
             try
             {
                 this.Banco = new Banco_Itau();
@@ -134,8 +134,9 @@ namespace BoletoNet
                         this.Descricao = "Após vencimento cobrar multa de " + valor + " %";
                         break;
                 }
-            }
-             catch (Exception ex)
+
+                return Codigo > 0;
+            } catch (Exception ex)
             {
                 throw new Exception("Erro ao carregar objeto", ex);
             }
