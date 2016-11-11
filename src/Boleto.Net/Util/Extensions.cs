@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Collections;
 using System.Threading;
+using System.Globalization;
 
 namespace BoletoNet.Util
 {
@@ -42,6 +43,30 @@ namespace BoletoNet.Util
                     yield return resultSelector(e1.Current, e2.Current);
         }
 
+        /// <summary>
+        /// Retorna o valor atual removendo a vírgula
+        /// </summary>
+        /// <param name="valor"></param>
+        /// <returns></returns>
+        public static string ApenasNumeros(this decimal valor)
+        {
+            return valor.ToString("0.00", CultureInfo.GetCultureInfo("pt-BR")).Replace(",", "");
+        }
+
+        /// <summary>
+        /// Retorna o valor atual removendo a vírgula
+        /// </summary>
+        /// <param name="valor"></param>
+        /// <returns></returns>
+        public static string ApenasNumeros(this decimal? valor)
+        {
+            if (valor != null)
+            {
+                return valor.Value.ToString("0.00", CultureInfo.GetCultureInfo("pt-BR")).Replace(",", "");
+            }
+
+            return string.Empty;
+        }
         
     }
 
