@@ -34,7 +34,7 @@ namespace BoletoNet
                 StreamReader stream = new StreamReader(arquivo, System.Text.Encoding.UTF8);
                 string linha = "";
                 // Identificação do registro detalhe
-                string IdRegistroDetalhe = string.Empty;
+                List<string> IdsRegistroDetalhe = new List<string>();
 
                 // Lendo o arquivo
                 linha = stream.ReadLine();
@@ -43,14 +43,22 @@ namespace BoletoNet
                 linha = stream.ReadLine();
 
                 // 85 - CECRED - Código de registro detalhe 7 para CECRED
-                // 1 - Banco do Brasil- Código de registro detalhe 7 
-                if (banco.Codigo == 85 || banco.Codigo == 1) {
-                    IdRegistroDetalhe = "7";
-                } else {
-                    IdRegistroDetalhe = "1";
+                // 1 - Banco do Brasil- Código de registro detalhe 7 para convênios com 7 posições, e detalhe 1 para convênios com 6 posições(colocado as duas, pois não interferem em cada tipo de arquivo)
+                if (banco.Codigo == 85)
+                {
+                    IdsRegistroDetalhe.Add("7");
+                }
+                else if (banco.Codigo == 1)
+                {
+                    IdsRegistroDetalhe.Add("1");//Para convênios de 6 posições
+                    IdsRegistroDetalhe.Add("7");//Para convênios de 7 posições
+                }
+                else
+                {
+                    IdsRegistroDetalhe.Add("1");
                 }
 
-                while (DetalheRetorno.PrimeiroCaracter(linha) == IdRegistroDetalhe)
+                while (IdsRegistroDetalhe.Contains(DetalheRetorno.PrimeiroCaracter(linha)))
                 {
                     DetalheRetorno detalhe = banco.LerDetalheRetornoCNAB400(linha);
                     ListaDetalhe.Add(detalhe);
