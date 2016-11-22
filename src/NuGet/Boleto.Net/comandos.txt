@@ -1,2 +1,3 @@
 nuget pack
+
 nuget push  Boleto.Net.Fortes.2.1.191.nupkg -ApiKey  B9DB79D1404F4A2882277406BBBD5B85 -Source http://fortesnuget.azurewebsites.net/
