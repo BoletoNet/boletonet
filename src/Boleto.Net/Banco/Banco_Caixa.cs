@@ -1144,6 +1144,7 @@ namespace BoletoNet
                 //
                 string vLinha = reg.LinhaRegistro;
                 string _header = Utils.SubstituiCaracteresEspeciais(vLinha);
+                _header = _header.Replace("REMESSAPRODUCAO", "REMESSA-PRODUCAO");
                 //
                 return _header;
             }
