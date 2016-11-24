@@ -996,9 +996,12 @@ namespace BoletoNet
                 header += " ";                                                                          // Uso Exclusivo FEBRABAN/CNAB
                 header += "01";                                                                         // Código de Movimento Remessa
                 header += Utils.FormatCode("", " ", 48);                                                // Uso Exclusivo FEBRABAN/CNAB 
-                header += "1";                                          // Código da Multa '1' = Valor Fixo,'2' = Percentual,'0' = Sem Multa 
+                header += boleto.PercMulta > 0 ? "2" : boleto.ValorMulta > 0 ? "1" : "0";               // Código da Multa '1' = Valor Fixo,'2' = Percentual,'0' = Sem Multa 
                 header += boleto.DataMulta.ToString("ddMMyyyy");                                        // Data da Multa 
-                header += Utils.FormatCode(boleto.ValorMulta.ToString().Replace(",", "").Replace(".", ""), "0", 13); // Valor/Percentual a Ser Aplicado
+
+                var valor = boleto.PercMulta > 0 ? boleto.PercMulta : boleto.ValorMulta;
+                header += Utils.FormatCode(valor.ToString().Replace(",", "").Replace(".", ""), "0", 13);// Valor/Percentual a Ser Aplicado
+
                 header += Utils.FormatCode("", " ", 10);                                                // Informação ao Sacado
                 header += Utils.FormatCode("", " ", 40);                                                // Mensagem 3
                 header += Utils.FormatCode("", " ", 40);                                                // Mensagem 4

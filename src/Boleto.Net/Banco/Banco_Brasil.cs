@@ -1573,7 +1573,8 @@ namespace BoletoNet
                 }
 
                 _segmentoR += Utils.FitStringLength(boleto.DataMulta.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
-                _segmentoR += Utils.FitStringLength(boleto.ValorMulta.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
+                var valor = boleto.PercMulta > 0 ? boleto.PercMulta : boleto.ValorMulta;
+                _segmentoR += Utils.FitStringLength(valor.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
                 _segmentoR += _brancos110;
                 _segmentoR += "0000000000000000"; //16 zeros
                 _segmentoR += " "; //1 branco
