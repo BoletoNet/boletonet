@@ -190,8 +190,7 @@ namespace BoletoNet
                         numeroRegistro++;
                         numeroRegistroDetalhe++;
 
-                        if (boleto.ValorMulta > 0)
-                        {
+                        if (boleto.ValorMulta > 0 || boleto.PercMulta > 0) {
                             strline = boleto.Banco.GerarDetalheSegmentoRRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
                             arquivoBuilder.AppendLine(strline);
                             OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoR);

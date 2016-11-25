@@ -1229,13 +1229,14 @@ namespace BoletoNet
                 registro.Append(Utils.FormatCode(string.Empty, " ", 24));
 
                 // 066 - 066 Código da multa 
-                registro.Append("1");
+                registro.Append(boleto.PercMulta > 0 ? "2" : "1");
 
                 // 067 - 074 Data da multa
-                registro.Append(Utils.FormatCode(string.Empty, "0", 8, true));
+                registro.Append(Utils.FormatCode(boleto.DataVencimento.FormatarData(), "0", 8, true));
 
                 // 075 - 089 Valor/Percentual a ser aplicado 
-                registro.Append(Utils.FormatCode(boleto.ValorMulta.FormatarDinheiro(), "0", 15, true));
+                var valor = boleto.PercMulta > 0 ? boleto.PercMulta : boleto.ValorMulta;
+                registro.Append(Utils.FormatCode(valor.FormatarDinheiro(),"0", 15, true));
 
                 // 090 - 099 Reservado (uso Banco)
                 registro.Append(Utils.FormatCode(string.Empty, " ", 10));
