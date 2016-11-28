@@ -11,6 +11,7 @@ namespace Boleto.Net.Testes.Retorno
     public class ArquivoRetornoCrb643Teste
     {
         private ArquivoRetornoCrb643 arquivoRetorno;
+        private ArquivoRetornoCNAB400 arquivoRetornoCNAB400;
 
         const string ARQUIVO_RETORNO =
 @"02RETORNO01COBRANCA       34746000203289000000MINHA EMPRESA DE EXEMPLO      001BANCO DO BRASIL2807140002172                      000003925032479234  1234567                                                                                                                                                                                                                                              000001
@@ -23,6 +24,10 @@ namespace Boleto.Net.Testes.Retorno
             arquivoRetorno = new ArquivoRetornoCrb643();
             using (new MemoryStream(Encoding.UTF8.GetBytes(ARQUIVO_RETORNO)))
                 arquivoRetorno.LerArquivoRetorno(new Banco(001), new MemoryStream(Encoding.UTF8.GetBytes(ARQUIVO_RETORNO)));
+
+            arquivoRetornoCNAB400 = new ArquivoRetornoCNAB400();
+            using (new MemoryStream(Encoding.UTF8.GetBytes(ARQUIVO_RETORNO)))
+                arquivoRetornoCNAB400.LerArquivoRetorno(new Banco(001), new MemoryStream(Encoding.UTF8.GetBytes(ARQUIVO_RETORNO)));
         }
 
         [TestMethod]
@@ -50,6 +55,13 @@ namespace Boleto.Net.Testes.Retorno
             var linhaDetalhe = arquivoRetorno.Linhas.OfType<TrailerCbr643>().FirstOrDefault();
             Assert.IsNotNull(linhaDetalhe);
             Assert.AreEqual(3, linhaDetalhe.SequencialRegistro);
+        }
+
+        [TestMethod]
+        public void PossoLerALinhaDeDetalheCNAB400()
+        {
+            var temLinhasDetalhe = arquivoRetornoCNAB400.ListaDetalhe.Count != 0;
+            Assert.AreEqual(true, temLinhasDetalhe);
         }
     }
 }

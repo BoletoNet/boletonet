@@ -719,7 +719,7 @@ namespace BoletoNet
                 _detalhe += boleto.DataVencimento.ToString("ddMMyyyy");
 
                 //Valor da parcela ==> 129 - 140
-                _detalhe += Utils.FitStringLength(boleto.ValorBoleto.ToString("0.00").Replace(",", ""), 12, 12, '0', 0, true, true, true);
+                _detalhe += Utils.FitStringLength(boleto.ValorBoleto.ApenasNumeros(), 12, 12, '0', 0, true, true, true);
 
                 //Banco cobrador ==> 141 - 143
                 _detalhe += Utils.FitStringLength(boleto.Banco.Codigo.ToString(), 3, 3, '0', 0, true, true, true);
