@@ -508,7 +508,7 @@ namespace BoletoNet
                 //Reservado (uso Banco) ==> 167 - 240
                 header += Utils.FormatCode("", " ", 74);
 
-                return Utils.RemoveAcento(header);
+                return Utils.SubstituiCaracteresEspeciais(header);
 
             }
             catch (Exception ex)
@@ -688,7 +688,7 @@ namespace BoletoNet
                 //Reservado (uso Banco) ==> 200 - 240
                 header += Utils.FormatCode("", " ", 41);
 
-                return Utils.RemoveAcento(header);
+                return Utils.SubstituiCaracteresEspeciais(header);
             }
             catch (Exception e)
             {
@@ -774,7 +774,7 @@ namespace BoletoNet
                 _segmentoP += boleto.DataVencimento.ToString("ddMMyyyy");
 
                 //Valor nominal do título ==> 086 - 100
-                _segmentoP += Utils.FitStringLength(boleto.ValorBoleto.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
+                _segmentoP += Utils.FitStringLength(boleto.ValorBoleto.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
 
                 //Agência encarregada da cobrança ==> 101 - 104
                 _segmentoP += "0000";
@@ -803,7 +803,7 @@ namespace BoletoNet
                     _segmentoP += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
 
                     //Valor da mora/dia ou Taxa mensal ==> 127 - 141
-                    _segmentoP += Utils.FitStringLength(boleto.JurosMora.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
+                    _segmentoP += Utils.FitStringLength(boleto.JurosMora.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 }
                 else
                 {
@@ -826,7 +826,7 @@ namespace BoletoNet
                     _segmentoP += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
 
                     //Valor ou Percentual do desconto concedido ==> 151 - 165
-                    _segmentoP += Utils.FitStringLength(boleto.ValorDesconto.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
+                    _segmentoP += Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 }
                 else
                     _segmentoP += "0".PadLeft(24, '0');
@@ -1019,7 +1019,7 @@ namespace BoletoNet
                     _segmentoR += boleto.DataOutrosDescontos.ToString("ddMMyyyy");
 
                     //Valor/Percentual a ser concedido ==> 027 - 041
-                    _segmentoR += Utils.FitStringLength(boleto.OutrosDescontos.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
+                    _segmentoR += Utils.FitStringLength(boleto.OutrosDescontos.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 }
                 else
                 {
@@ -1045,7 +1045,7 @@ namespace BoletoNet
                     _segmentoR += boleto.DataMulta.ToString("ddMMyyyy");
 
                     //Valor/Percentual a ser aplicado ==> 075 - 089
-                    _segmentoR += Utils.FitStringLength(boleto.PercMulta.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
+                    _segmentoR += Utils.FitStringLength(boleto.PercMulta.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 }
                 else if (boleto.ValorMulta > 0)
                 {
@@ -1056,7 +1056,7 @@ namespace BoletoNet
                     _segmentoR += boleto.DataMulta.ToString("ddMMyyyy");
 
                     //Valor/Percentual a ser aplicado ==> 075 - 089
-                    _segmentoR += Utils.FitStringLength(boleto.ValorMulta.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
+                    _segmentoR += Utils.FitStringLength(boleto.ValorMulta.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 }
                 else
                 {
@@ -1272,7 +1272,7 @@ namespace BoletoNet
                     _detalhe += "4";
 
                 //Percentual multa por atraso % ==> 079 - 082
-                _detalhe += Utils.FitStringLength(boleto.PercMulta.ToString("0.00").Replace(",", ""), 4, 4, '0', 0, true, true, true);
+                _detalhe += Utils.FitStringLength(boleto.PercMulta.ApenasNumeros(), 4, 4, '0', 0, true, true, true);
                 //Unidade de valor moeda corrente ==> 083 - 084
                 _detalhe += "00";
 
@@ -1325,7 +1325,7 @@ namespace BoletoNet
                 _detalhe += boleto.DataVencimento.ToString("ddMMyy");
 
                 //Valor do título - moeda corrente ==> 127 - 139
-                _detalhe += Utils.FitStringLength(boleto.ValorBoleto.ToString("0.00").Replace(",", ""), 13, 13, '0', 0, true, true, true);
+                _detalhe += Utils.FitStringLength(boleto.ValorBoleto.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
 
                 //Número do Banco cobrador ==> 140 - 142
                 _detalhe += "033";
@@ -1399,13 +1399,13 @@ namespace BoletoNet
                     _detalhe += "00"; //Não há instruções
 
                 //Valor de mora a ser cobrado por dia de atraso == > 161 - 173
-                _detalhe += Utils.FitStringLength(boleto.JurosMora.ToString("0.00").Replace(",", ""), 13, 13, '0', 0, true, true, true);
+                _detalhe += Utils.FitStringLength(boleto.JurosMora.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
 
                 //Data limite para concessão de desconto ==> 174 - 179
                 _detalhe += boleto.DataVencimento.ToString("ddMMyy");
 
                 //Valor de desconto a ser concedido ==> 180 - 192
-                _detalhe += Utils.FitStringLength(boleto.ValorDesconto.ToString("0.00").Replace(",", ""), 13, 13, '0', 0, true, true, true);
+                _detalhe += Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
                 
                 //Valor do IOF a ser recolhido pelo Banco para nota de seguro ==> 192 - 205
                 _detalhe += "0000000000000";
@@ -1757,7 +1757,7 @@ namespace BoletoNet
                 _trailer += Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true);
 
                 //Valor total dos títulos ==> 008 - 020
-                _trailer += Utils.FitStringLength(vltitulostotal.ToString("0.00").Replace(",", ""), 13, 13, '0', 0, true, true, true);
+                _trailer += Utils.FitStringLength(vltitulostotal.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
 
                 //Zeros ==> 021 - 394
                 _trailer += complemento;

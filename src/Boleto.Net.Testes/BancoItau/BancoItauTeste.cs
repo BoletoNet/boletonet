@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BoletoNet.Testes
+namespace BoletoNet.Testes.BancoItau
 {
     [TestClass]
     public class BancoItauTeste

@@ -107,6 +107,7 @@ namespace BoletoNet
                     // carteira/nosso numero
                     _dacNossoNumero = Mod10(boleto.Carteira + boleto.NossoNumero);
 
+                boleto.DigitoNossoNumero = _dacNossoNumero.ToString();
 
                 //Atribui o nome do banco ao local de pagamento
                 if (string.IsNullOrEmpty(boleto.LocalPagamento))
@@ -789,7 +790,7 @@ namespace BoletoNet
                 _segmentoP += Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, ' ', 0, true, true, false);
                 _segmentoP += "     ";
                 _segmentoP += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
-                _segmentoP += Utils.FitStringLength(boleto.ValorBoleto.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
+                _segmentoP += Utils.FitStringLength(boleto.ValorBoleto.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 _segmentoP += "00000";
                 _segmentoP += " ";
                 _segmentoP += "01";
@@ -797,7 +798,7 @@ namespace BoletoNet
                 _segmentoP += Utils.FitStringLength(boleto.DataDocumento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
                 _segmentoP += "0";
                 _segmentoP += Utils.FitStringLength(boleto.DataJurosMora.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
-                _segmentoP += Utils.FitStringLength(boleto.JurosMora.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
+                _segmentoP += Utils.FitStringLength(boleto.JurosMora.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 _segmentoP += "0";
                 _segmentoP += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
                 _segmentoP += Utils.FitStringLength("0", 15, 15, '0', 0, true, true, true);
@@ -910,7 +911,7 @@ namespace BoletoNet
                 }
 
                 _segmentoR += Utils.FitStringLength(boleto.DataMulta.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
-                _segmentoR += Utils.FitStringLength(boleto.ValorMulta.ToString("0.00").Replace(",", ""), 15, 15, '0', 0, true, true, true);
+                _segmentoR += Utils.FitStringLength(boleto.ValorMulta.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 _segmentoR += _brancos110;
                 _segmentoR += "0000000000000000"; //16 zeros
                 _segmentoR += " "; //1 branco
@@ -1097,7 +1098,7 @@ namespace BoletoNet
                 // para títulos que já estão no banco, portanto o campo será preenchido com zeros.
                 _detalhe += "0000";
 
-                _detalhe += nrDocumento; // Utils.FitStringLength(boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, false); //Identificação do título na empresa
+                _detalhe += Utils.FitStringLength(boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, false); //Identificação do título na empresa
                 _detalhe += Utils.FitStringLength(boleto.NossoNumero, 8, 8, '0', 0, true, true, true);
                 // Quantidade de moeda variável - Preencher com zeros se a moeda for REAL
                 // O manual do Banco ITAÚ não diz como preencher caso a moeda não seja o REAL
@@ -1110,10 +1111,13 @@ namespace BoletoNet
                 if (boleto.Moeda == 9)
                     _detalhe += "I"; //O código da carteira só muda para dois tipos, quando a cobrança for em dólar
 
-                _detalhe += "01"; // Identificação da ocorrência - 01 REMESSA
+                if (boleto.Remessa != null) // Identificação da ocorrência - 02 PEDIDO DE BAIXA
+                    _detalhe += boleto.Remessa.CodigoOcorrencia;
+                else
+                    _detalhe += "01"; // Identificação da ocorrência - 01 REMESSA
                 _detalhe += Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, ' ', 0, true, true, false);
                 _detalhe += boleto.DataVencimento.ToString("ddMMyy");
-                _detalhe += Utils.FitStringLength(boleto.ValorBoleto.ToString("0.00").Replace(",", ""), 13, 13, '0', 0, true, true, true);
+                _detalhe += Utils.FitStringLength(boleto.ValorBoleto.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
                 _detalhe += "341";
                 _detalhe += "00000"; // Agência onde o título será cobrado - no arquivo de remessa, preencher com ZEROS
 
@@ -1155,11 +1159,11 @@ namespace BoletoNet
                 //Caso seja expresso em moeda variável, deverá ser preenchido com cinco casas decimais.
 
                 //_detalhe += "0000000000000";
-                _detalhe += Utils.FitStringLength(boleto.JurosMora.ToString("0.00").Replace(",", ""), 13, 13, '0', 0, true, true, true);
+                _detalhe += Utils.FitStringLength(boleto.JurosMora.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
 
                 // Data limite para desconto
                 _detalhe += boleto.DataVencimento.ToString("ddMMyy");
-                _detalhe += Utils.FitStringLength(boleto.ValorDesconto.ToString("0.00").Replace(",", ""), 13, 13, '0', 0, true, true, true);
+                _detalhe += Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
                 _detalhe += "0000000000000"; // Valor do IOF
                 _detalhe += "0000000000000"; // Valor do Abatimento
 
