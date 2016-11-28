@@ -972,7 +972,7 @@ namespace BoletoNet
                 //Reservado (uso Banco) ==> 222 - 240
                 _segmentoQ += " ".PadLeft(19, ' ');
 
-                return _segmentoQ;
+                return Utils.SubstituiCaracteresEspeciais(_segmentoQ);
 
             }
             catch (Exception ex)
