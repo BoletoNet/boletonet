@@ -170,11 +170,11 @@ namespace BoletoNet
             int soma = 0;
             int resultado = 0;
             int dv = 0;
-
-            String codigoValidacao = boleto.Banco.Codigo.ToString() + boleto.Moeda.ToString() + FatorVencimento2000(boleto).ToString() +
-                Utils.FormatCode(boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", ""), 10) +
-                Utils.FormatCode(boleto.Carteira + boleto.Cedente.ContaBancaria.Agencia + boleto.TipoModalidade + boleto.Cedente.DigitoCedente + boleto.Cedente.Codigo +
-                this.FormataNumeroTitulo(boleto) + this.FormataNumeroParcela(boleto), 25);
+				
+		    String codigoValidacao = boleto.Banco.Codigo.ToString() + boleto.Moeda.ToString() + FatorVencimento(boleto).ToString() +
+                Utils.FormatCode(boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", ""), 10) + boleto.Carteira +
+                boleto.Cedente.ContaBancaria.Agencia + boleto.TipoModalidade + boleto.Cedente.Codigo + boleto.Cedente.DigitoCedente +
+                this.FormataNumeroTitulo(boleto) + this.FormataNumeroParcela(boleto);
 
             //Calculando
             for (int i = (codigoValidacao.Length - 1); i >= 0; i--)
@@ -985,7 +985,7 @@ namespace BoletoNet
 
         #endregion
 
-        #region ::. Arquivo de Retorno CNAB400 .::
+        #region ::. Arquivo de Retorno CNAB240 .::
 
         public override DetalheSegmentoTRetornoCNAB240 LerDetalheSegmentoTRetornoCNAB240(string registro)
         {
