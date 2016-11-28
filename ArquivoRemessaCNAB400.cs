@@ -67,7 +67,7 @@ namespace BoletoNet
                     incluiLinha.WriteLine(strline);
                     vltitulostotal += boleto.ValorBoleto;   //Uso apenas no registro TRAILER do banco Santander - jsoda em 09/05/2012 - Add no registro TRAILER do banco Banrisul - sidneiklein em 08/08/2013
                     numeroRegistro++;
-
+                    
                     // 85 - CECRED
                     if (banco.Codigo == 85) {
                         if (boleto.PercMulta > 0 || boleto.ValorMulta > 0) {
