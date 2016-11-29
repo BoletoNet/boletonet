@@ -1224,6 +1224,19 @@ namespace BoletoNet
             }
         }
 
+        public string GerarRegistroDetalhe5(Boleto boleto, int numeroRegistro)
+        {
+            StringBuilder detalhe = new StringBuilder();
+            detalhe.Append("2");                                        // 001
+            detalhe.Append("2");                                        // 002 VALOR EM PERCENTUAL
+            detalhe.Append(boleto.DataMulta.ToString("ddMMyyyy"));      // 003-010
+            detalhe.Append(Utils.FitStringLength(Convert.ToInt32(boleto.PercMulta * 100).ToString(), 13, 13, '0', 0, true, true, true)); // 011-023
+            detalhe.Append(new string(' ', 371));                       // 024 a 394
+            detalhe.Append(Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true)); // 395 a 400
+            //Retorno
+            return Utils.SubstituiCaracteresEspeciais(detalhe.ToString());
+        }
+
         # endregion DETALHE
 
         # region TRAILER CNAB240
