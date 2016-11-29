@@ -1215,8 +1215,8 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAAAA_________, 0192, 008, 0, DateTime.Now, ' '));                                  // posição 192 até 199 (8) - Data de Geração do Arquivo                
                 /*Data do Crédito
                 Data de efetivação do crédito referente ao pagamento do título de cobrança. 
-                Informação enviada somente no arquivo de retorno.*/
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAAAA_________, 0200, 008, 0, DateTime.Now, '0'));                             // posição 200 até 207 (8) - Data do Crédito
+                Informação enviada somente no arquivo de retorno. 2.1 Data do Crédito Filler 200 207 9(008) Preencher com zeros C003 */
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0200, 008, 0, '0', '0'));                             // posição 200 até 207 (8) - Data do Crédito
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0208, 033, 0, string.Empty, ' '));                                  // posição 208 até 240(33) - Uso Exclusivo FEBRABAN/CNAB
                 //
                 reg.CodificarLinha();
