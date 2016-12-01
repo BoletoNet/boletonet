@@ -1083,7 +1083,7 @@ namespace BoletoNet
                 segmentoT.CodigoBanco = Convert.ToInt32(registro.Substring(0, 3));
                 segmentoT.IdCodigoMovimento = Convert.ToInt32(registro.Substring(15, 2));
                 segmentoT.CodigoMovimento = new CodigoMovimento(001, segmentoT.IdCodigoMovimento);
-                segmentoT.NossoNumero = registro.Substring(39, 17);
+                segmentoT.NossoNumero = registro.Substring(39, 18);
                 segmentoT.CodigoCarteira = Convert.ToInt32(registro.Substring(57, 1));
                 segmentoT.NumeroDocumento = registro.Substring(58, 11);
                 segmentoT.DataVencimento = registro.Substring(73, 8).ToString() == "00000000" ? DateTime.Now : DateTime.ParseExact(registro.Substring(73, 8), "ddMMyyyy", CultureInfo.InvariantCulture);
