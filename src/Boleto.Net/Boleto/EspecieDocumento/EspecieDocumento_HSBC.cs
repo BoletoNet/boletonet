@@ -32,6 +32,7 @@ namespace BoletoNet
         ParcelaConsorcio = 22, //PC –  PARCELA DE CONSÓRCIO
         NotaFiscal = 23, //NF-Nota Fiscal
         DocumentoDivida = 24, //DD-Documento de Dívida
+        CobrancaEmissaoCliente = 98,
         Outros = 99, //Outros
         PD = 0
     }
@@ -97,6 +98,7 @@ namespace BoletoNet
                 case EnumEspecieDocumento_HSBC.ParcelaConsorcio: return "22";
                 case EnumEspecieDocumento_HSBC.NotaFiscal: return "23";
                 case EnumEspecieDocumento_HSBC.DocumentoDivida: return "24";
+                case EnumEspecieDocumento_HSBC.CobrancaEmissaoCliente: return "98";
                 case EnumEspecieDocumento_HSBC.Outros: return "99";
                 case EnumEspecieDocumento_HSBC.PD: return "0";
                 default: return "99";
@@ -132,6 +134,7 @@ namespace BoletoNet
                 case "22": return EnumEspecieDocumento_HSBC.ParcelaConsorcio;
                 case "23": return EnumEspecieDocumento_HSBC.NotaFiscal;
                 case "24": return EnumEspecieDocumento_HSBC.DocumentoDivida;
+                case "98": return EnumEspecieDocumento_HSBC.CobrancaEmissaoCliente;
                 case "99": return EnumEspecieDocumento_HSBC.Outros;
                 case "0": return EnumEspecieDocumento_HSBC.PD;
                 default: return EnumEspecieDocumento_HSBC.Outros;
@@ -270,6 +273,11 @@ namespace BoletoNet
                         this.Codigo = getCodigoEspecieByEnum(EnumEspecieDocumento_HSBC.Outros);
                         this.Especie = "OUTROS";
                         this.Sigla = "OUTROS";
+                        break;
+                    case EnumEspecieDocumento_HSBC.CobrancaEmissaoCliente:
+                        this.Codigo = getCodigoEspecieByEnum(EnumEspecieDocumento_HSBC.CobrancaEmissaoCliente);
+                        this.Especie = "COBRANÇA COM EMISSÃO TOTAL DO BLOQUETO PELO CLIENTE";
+                        this.Sigla = "PD";
                         break;
                     case EnumEspecieDocumento_HSBC.PD:
                         this.Codigo = getCodigoEspecieByEnum(EnumEspecieDocumento_HSBC.PD);
