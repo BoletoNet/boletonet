@@ -4,26 +4,26 @@ using System.Text;
 
 namespace BoletoNet
 {
+    #region Enumerado
+
+    public enum EnumEspecieDocumento_Sicredi
+    {
+        DuplicataMercantilIndicacao,
+        DuplicataRural,
+        NotaPromissoria,
+        NotaPromissoriaRural,
+        NotaSeguros,
+        Recibo,
+        LetraCambio,
+        NotaDebito,
+        DuplicataServicoIndicacao,
+        Outros,
+    }
+
+    #endregion 
+    
     public class EspecieDocumento_Sicredi : AbstractEspecieDocumento, IEspecieDocumento
     {
-        #region Enumerado
-
-        public enum EnumEspecieDocumento_Sicredi
-        {
-            DuplicataMercantilIndicacao,
-            DuplicataRural,
-            NotaPromissoria,
-            NotaPromissoriaRural,
-            NotaSeguros,
-            Recibo,
-            LetraCambio,
-            NotaDebito,
-            DuplicataServicoIndicacao,
-            Outros,
-        }
-
-        #endregion 
-
         #region Construtores
 
         public EspecieDocumento_Sicredi()
@@ -51,7 +51,7 @@ namespace BoletoNet
 
         #endregion
 
-         public static string getCodigoEspecieByEnum(EnumEspecieDocumento_Sicredi especie)
+         public string getCodigoEspecieByEnum(EnumEspecieDocumento_Sicredi especie)
         {
             switch (especie)
             {
@@ -163,9 +163,10 @@ namespace BoletoNet
         public static EspeciesDocumento CarregaTodas()
         {
             EspeciesDocumento especiesDocumento = new EspeciesDocumento();
+            EspecieDocumento_Sicredi ed = new EspecieDocumento_Sicredi();
 
             foreach (EnumEspecieDocumento_Sicredi item in Enum.GetValues(typeof(EnumEspecieDocumento_Sicredi)))
-                especiesDocumento.Add(new EspecieDocumento_Sicredi(getCodigoEspecieByEnum(item)));
+                especiesDocumento.Add(new EspecieDocumento_Sicredi(ed.getCodigoEspecieByEnum(item)));
 
             return especiesDocumento;
         }

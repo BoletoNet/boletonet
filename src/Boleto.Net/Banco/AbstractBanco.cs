@@ -98,6 +98,14 @@ namespace BoletoNet
             string _remessa = "";
             return _remessa;
         }
+        /// Gera registros de Mensagem Variavel do arquivo remessa
+        /// </summary>
+        public virtual string GerarMensagemVariavelRemessa(Boleto boleto, ref int numeroRegistro, TipoArquivo tipoArquivo)
+        {
+            string _remessa = "";
+            return _remessa;
+        }
+
         /// <summary>
         /// Gera os registros de Trailer do arquivo de remessa
         /// </summary>
@@ -222,6 +230,14 @@ namespace BoletoNet
             return _segmentoR;
         }
         /// <summary>
+        /// Gera registros de detalhe do arquivo remessa - SEGMENTO S
+        /// </summary>
+        public virtual string GerarDetalheSegmentoSRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+        {
+            string _segmentoS = "";
+            return _segmentoS;
+        }
+        /// <summary>
         /// Gera os registros de Trailer de arquivo do arquivo de remessa
         /// </summary>
         public virtual string GerarTrailerArquivoRemessa(int numeroRegistro)
@@ -309,6 +325,15 @@ namespace BoletoNet
             var detalhe = new DetalheSegmentoURetornoCNAB240(registro);
 
             detalhe.LerDetalheSegmentoURetornoCNAB240(registro);
+
+            return detalhe;
+        }
+
+        public virtual DetalheSegmentoYRetornoCNAB240 LerDetalheSegmentoYRetornoCNAB240(string registro)
+        {
+            var detalhe = new DetalheSegmentoYRetornoCNAB240(registro);
+
+            detalhe.LerDetalheSegmentoYRetornoCNAB240(registro);
 
             return detalhe;
         }
