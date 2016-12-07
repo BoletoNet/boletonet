@@ -25,7 +25,7 @@ namespace BoletoNet
 		private int _numeroParcela;
 		private decimal _valorBoleto;
 		private decimal _valorCobrado;
-		private string _localPagamento = "Até o vencimento, preferencialmente no ";
+        private string _localPagamento = null;// "Até o vencimento, preferencialmente no ";
 		private int _quantidadeMoeda = 1;
 		private string _valorMoeda = string.Empty;
 		private IList<IInstrucao> _instrucoes = new List<IInstrucao>();

@@ -90,11 +90,12 @@ namespace BoletoNet
                 _dacNossoNumero = Mod11Hsbc(boleto.NossoNumero, 7).ToString();//por Transis em 25/02/15
 
                 //Atribui o nome do banco ao local de pagamento
-                boleto.LocalPagamento = "PAGAR EM QUALQUER AGÊNCIA BANCARIA ATÉ O VENCIMENTO OU CANAIS ELETRONICOS DO HSBC";
+                if (string.IsNullOrEmpty(boleto.LocalPagamento))
+                    boleto.LocalPagamento = "PAGAR EM QUALQUER AGÊNCIA BANCARIA ATÉ O VENCIMENTO OU CANAIS ELETRONICOS DO HSBC";
 
                 //Verifica se data do processamento é valida
-				//if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
-				if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
+                //if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
+                if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                     boleto.DataProcessamento = DateTime.Now;
 
                 //Verifica se data do documento é valida

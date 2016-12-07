@@ -267,12 +267,13 @@ namespace BoletoNet
         public override void ValidaBoleto(Boleto boleto)
         {
             //Atribui o nome do banco ao local de pagamento
-            boleto.LocalPagamento += Nome + "";
+            if (string.IsNullOrEmpty(boleto.LocalPagamento))
+                boleto.LocalPagamento = string.Format("Até o vencimento, preferencialmente no {0}.", Nome);
 
 
             //Verifica se data do processamento é valida
-			//if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
-			if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
+            //if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
+            if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 boleto.DataProcessamento = DateTime.Now;
 
 
@@ -284,7 +285,8 @@ namespace BoletoNet
             boleto.QuantidadeMoeda = 0;
 
             //Atribui o nome do banco ao local de pagamento
-            boleto.LocalPagamento = "PAGÁVEL EM QUALQUER CORRESPONDENTE BANCÁRIO PERTO DE VOCÊ!";
+            if (string.IsNullOrEmpty(boleto.LocalPagamento))
+                boleto.LocalPagamento = "PAGÁVEL EM QUALQUER CORRESPONDENTE BANCÁRIO PERTO DE VOCÊ!";
 
             //Aplicando formatações
             this.FormataCodigoCliente(boleto);

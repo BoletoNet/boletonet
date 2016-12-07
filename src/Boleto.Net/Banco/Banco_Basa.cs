@@ -157,11 +157,12 @@ namespace BoletoNet
                 throw new NotImplementedException("Carteira não implementada. Utilize a carteira CNR.");
 
             //Atribui o nome do banco ao local de pagamento
-            boleto.LocalPagamento += Nome + "";
+            if (string.IsNullOrEmpty(boleto.LocalPagamento))
+                boleto.LocalPagamento = string.Format("Até o vencimento, preferencialmente no {0}.", Nome);
 
             //Verifica se data do processamento é valida
-			//if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
-			if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
+            //if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
+            if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 boleto.DataProcessamento = DateTime.Now;
 
 

@@ -47,9 +47,9 @@ namespace BoletoNet
 
             boleto.NossoNumero = CalcularNCNossoNumero(boleto.NossoNumero);
 
-            //Atribui o nome do banco ao local de pagamento
-            if (boleto.LocalPagamento == "Até o vencimento, preferencialmente no ")
-                boleto.LocalPagamento += Nome;
+            //Atribui o nome do banco ao local de pagamento            
+            if (string.IsNullOrEmpty(boleto.LocalPagamento))
+                boleto.LocalPagamento = string.Format("Até o vencimento, preferencialmente no {0}.", Nome);
 
             //Verifica se data do processamento é valida
             if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
