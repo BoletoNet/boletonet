@@ -110,8 +110,7 @@ namespace BoletoNet {
             if (boleto.NossoNumero.Length != 9)
                 throw new NotSupportedException("Nosso Número deve ter 9 posições para o banco 085.");
 
-            if (string.IsNullOrEmpty(boleto.LocalPagamento))
-                boleto.LocalPagamento = "PAGAVEL PREFERENCIALMENTE NAS COOPERATIVAS DO SISTEMA CECRED. APOS VENCIMENTO PAGAR SOMENTE NA COOPERATIVA";
+            boleto.LocalPagamento = "PAGAVEL PREFERENCIALMENTE NAS COOPERATIVAS DO SISTEMA CECRED. APOS VENCIMENTO PAGAR SOMENTE NA COOPERATIVA";
 
             //if (EspecieDocumento.ValidaSigla(boleto.EspecieDocumento) == "")
             //    boleto.EspecieDocumento = new EspecieDocumento_Santander("2");

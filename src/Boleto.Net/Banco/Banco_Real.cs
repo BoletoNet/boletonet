@@ -55,8 +55,7 @@ namespace BoletoNet
             boleto.Cedente.ContaBancaria.DigitoConta = _dacContaCorrente.ToString();
 
             //Atribui o nome do banco ao local de pagamento
-            if (string.IsNullOrEmpty(boleto.LocalPagamento))
-                boleto.LocalPagamento = string.Format("Até o vencimento, preferencialmente no {0}.", Nome);
+            boleto.LocalPagamento += Nome;
 
             //Verifica se o nosso número é válido
             if (Utils.ToInt64(boleto.NossoNumero) == 0)

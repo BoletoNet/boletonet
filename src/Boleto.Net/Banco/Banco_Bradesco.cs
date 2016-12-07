@@ -273,6 +273,7 @@ namespace BoletoNet
             if (string.IsNullOrEmpty(boleto.LocalPagamento))
                 boleto.LocalPagamento = "PAGÁVEL PREFERENCIALMENTE NAS AGÊNCIAS DO BRADESCO";
 
+
             // Calcula o DAC do Nosso Número
             _dacNossoNumero = CalcularDigitoNossoNumero(boleto);
             boleto.DigitoNossoNumero = _dacNossoNumero;

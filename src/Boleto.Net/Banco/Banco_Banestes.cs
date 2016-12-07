@@ -41,8 +41,7 @@ namespace BoletoNet
                 // 00 - Sem registro;
 
                 //Atribui o nome do banco ao local de pagamento
-                if(string.IsNullOrEmpty(boleto.LocalPagamento))
-                    boleto.LocalPagamento = string.Format("Até o vencimento, preferencialmente no {0}. Após o vencimento, somente no {0}", Nome);
+                boleto.LocalPagamento += Nome + ". Após o vencimento, somente no BANESTES";
 
                 //Verifica se o nosso número é válido
                 if (Utils.ToInt64(boleto.NossoNumero) == 0)
