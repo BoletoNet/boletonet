@@ -123,7 +123,7 @@ namespace BoletoNet
                             numeroRegistro++;
                             numeroRegistroDetalhe++;
 
-                            if (boleto.PercMulta > 0 || boleto.PercMulta > 0)
+                            if (boleto.ValorMulta > 0 || boleto.PercMulta > 0)
                             {
                                 strline = boleto.Banco.GerarDetalheSegmentoRRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
                                 incluiLinha.WriteLine(strline);
