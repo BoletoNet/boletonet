@@ -125,8 +125,7 @@ namespace BoletoNet {
         ///														&lt;/td&gt;
         ///												&lt;/tr&gt;
         ///												&lt;tr class=&quot;cp h12 At rBb&quot;&gt;
-        ///														&lt;td&gt;
-        /// [rest of string was truncated]&quot;;.
+        ///														&lt;td&gt;        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Carne {
             get {
@@ -531,8 +530,7 @@ namespace BoletoNet {
         ///								&lt;div class=&quot;t&quot;&gt;(-) Desconto / Abatimentos&lt;/div&gt;
         ///								&lt;div class=&quot;c BB&quot;&gt;@DESCONTOS&lt;/div&gt;
         ///								&lt;div class=&quot;t&quot;&gt;(-) Outras deduções&lt;/div&gt;
-        ///								&lt;div class=&quot;c BB&quot;&gt;@OUTRASDEDUCOES&lt;/div&gt;
-        /// [rest of string was truncated]&quot;;.
+        ///								&lt;div class=&quot;c BB&quot;&gt;@OUTRASDEDUCOES&lt;/div&gt;        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReciboCedenteParte6 {
             get {
