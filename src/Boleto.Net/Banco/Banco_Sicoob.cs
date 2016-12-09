@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Web.UI;
+using BoletoNet.Util;
 
 [assembly: WebResource("BoletoNet.Imagens.756.jpg", "image/jpg")]
 namespace BoletoNet
@@ -446,7 +447,7 @@ namespace BoletoNet
                 _detalhe.Append("01"); //Posição 109 a 110 - REGISTRO DE TITULOS
                 _detalhe.Append(Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, '0', 0, true, true, true)); //Posição 111 a 120
                 _detalhe.Append(boleto.DataVencimento.ToString("ddMMyy")); //Posição 121 a 126
-                _detalhe.Append(Utils.FitStringLength(boleto.ValorBoleto.ToString("0.00").Replace(",", ""), 13, 13, '0', 0, true, true, true)); //Posição 127 a 139 
+                _detalhe.Append(Utils.FitStringLength(boleto.ValorBoleto.ApenasNumeros(), 13, 13, '0', 0, true, true, true)); //Posição 127 a 139 
                 _detalhe.Append(boleto.Banco.Codigo); //Posição 140 a 142
                 _detalhe.Append(Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true)); //Posição 143 a 146
                 _detalhe.Append(Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoAgencia, 1, 1, '0', 0, true, true, true)); //Posição 147
@@ -460,9 +461,9 @@ namespace BoletoNet
                 _detalhe.Append(Utils.FitStringLength(Convert.ToInt32(boleto.PercMulta * 10000).ToString(), 6, 6, '0', 1, true, true, true)); //Posição 167 a 172
                 _detalhe.Append(" "); //Posição 173
                 _detalhe.Append(Utils.FitStringLength((boleto.DataDesconto == DateTime.MinValue ? "0" : boleto.DataDesconto.ToString("ddMMyy")), 6, 6, '0', 0, true, true, true)); //Posição 174 a 179
-                _detalhe.Append(Utils.FitStringLength(boleto.ValorDesconto.ToString("0.00").Replace(",", ""), 13, 13, '0', 0, true, true, true)); //Posição 180 a 192
-                _detalhe.Append("9" + Utils.FitStringLength(boleto.IOF.ToString("0.00").Replace(",", ""), 12, 12, '0', 0, true, true, true)); //Posição 193 a 205
-                _detalhe.Append(Utils.FitStringLength(boleto.Abatimento.ToString("0.00").Replace(",", ""), 13, 13, '0', 0, true, true, true)); //Posição 206 a 218
+                _detalhe.Append(Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 13, 13, '0', 0, true, true, true)); //Posição 180 a 192
+                _detalhe.Append("9" + Utils.FitStringLength(boleto.IOF.ApenasNumeros(), 12, 12, '0', 0, true, true, true)); //Posição 193 a 205
+                _detalhe.Append(Utils.FitStringLength(boleto.Abatimento.ApenasNumeros(), 13, 13, '0', 0, true, true, true)); //Posição 206 a 218
                 _detalhe.Append(Utils.IdentificaTipoInscricaoSacado(boleto.Sacado.CPFCNPJ)); //Posição 219 a 220
                 _detalhe.Append(Utils.FitStringLength(boleto.Sacado.CPFCNPJ.Replace(".", "").Replace("-", "").Replace("/", ""), 14, 14, '0', 0, true, true, true)); //Posição 221 a 234
                 _detalhe.Append(Utils.FitStringLength(boleto.Sacado.Nome, 40, 40, ' ', 0, true, true, false)); //Posição 235 a 274

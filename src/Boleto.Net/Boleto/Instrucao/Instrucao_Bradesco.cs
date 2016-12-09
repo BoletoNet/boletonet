@@ -15,6 +15,8 @@ namespace BoletoNet
         ProtestarAposNDiasUteis = 82,
         NaoReceberAposNDias = 91,
         DevolverAposNDias = 92,
+        ComDesconto = 93,
+        BoletoOriginal = 94,
 
         OutrasInstrucoes_ExibeMensagem_MoraDiaria = 900,
         OutrasInstrucoes_ExibeMensagem_MultaVencimento = 901
@@ -57,6 +59,12 @@ namespace BoletoNet
         {
             this.carregar(codigo, valor, tipoValor);
         }
+
+        public Instrucao_Bradesco(int codigo, double valor, DateTime data, EnumTipoValor tipoValor)
+        {
+            this.carregar(codigo, valor, data, tipoValor);
+        }
+
         #endregion Construtores
 
         #region Metodos Privados
@@ -144,6 +152,38 @@ namespace BoletoNet
                 throw new Exception("Erro ao carregar objeto", ex);
             }
         }
+
+        private void carregar(int idInstrucao, double valor, DateTime data, EnumTipoValor tipoValor = EnumTipoValor.Reais)
+        {
+            try
+            {
+                this.Banco = new Banco_Bradesco();
+                this.Valida();
+
+                switch ((EnumInstrucoes_Bradesco)idInstrucao)
+                {
+                    case EnumInstrucoes_Bradesco.ComDesconto:
+                        this.Codigo = (int)EnumInstrucoes_Bradesco.ComDesconto;
+                        this.Descricao = String.Format("Desconto de pontualidade no valor de {0} {1} se pago até " + data.ToShortDateString(),
+                            (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("C")),
+                            (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
+                        break;
+                    case EnumInstrucoes_Bradesco.BoletoOriginal:
+                        this.Codigo = (int)EnumInstrucoes_Bradesco.BoletoOriginal;
+                        this.Descricao = "Vencimento " + data.ToShortDateString() + ", no valor de " + valor.ToString("C") + "";
+                        break;
+                    default:
+                        this.Codigo = 0;
+                        this.Descricao = " (Selecione) ";
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao carregar objeto", ex);
+            }
+        }
+
 
         public override void Valida()
         {
