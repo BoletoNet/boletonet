@@ -77,6 +77,18 @@ namespace BoletoNet
                             numeroRegistro++;
                         }
                     }
+
+                    // 341 - Banco Itau
+                    if (banco.Codigo == 341)
+                    {
+                        if (boleto.PercMulta > 0 || boleto.ValorMulta > 0)
+                        {
+                            Banco_Itau _banco = new Banco_Itau();
+                            strline = _banco.GerarRegistroDetalhe5(boleto, numeroRegistro);
+                            incluiLinha.WriteLine(strline);
+                            numeroRegistro++;
+                        }
+                    }
                     if ((boleto.Instrucoes != null && boleto.Instrucoes.Count > 0) || (boleto.Sacado.Instrucoes != null && boleto.Sacado.Instrucoes.Count > 0))
                     {
                         strline = boleto.Banco.GerarMensagemVariavelRemessa(boleto, ref numeroRegistro, TipoArquivo.CNAB400);
