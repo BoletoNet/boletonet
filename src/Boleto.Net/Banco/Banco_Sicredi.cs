@@ -771,7 +771,7 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0020, 028, 0, string.Empty, ' '));                              //020-047
                 #region Nosso Número + DV
                 boleto.DigitoNossoNumero = DigNossoNumeroSicredi(boleto);
-                string vAuxNossoNumeroComDV = boleto.NossoNumero.Replace("/", "").Replace("-", "");
+                string vAuxNossoNumeroComDV = boleto.NossoNumero + boleto.DigitoNossoNumero;
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0048, 009, 0, vAuxNossoNumeroComDV, '0'));                      //048-056
                 #endregion
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0057, 006, 0, string.Empty, ' '));                              //057-062
