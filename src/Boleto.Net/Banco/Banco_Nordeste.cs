@@ -571,7 +571,7 @@ namespace BoletoNet
         {
             try
             {
-                TRegistroEDI_BancoBrasil_Retorno reg = new TRegistroEDI_BancoBrasil_Retorno();
+                TRegistroEDI_Banco_Nordeste_Retorno reg = new TRegistroEDI_Banco_Nordeste_Retorno();
                 //
                 reg.LinhaRegistro = registro;
                 reg.DecodificarLinha();
@@ -605,9 +605,6 @@ namespace BoletoNet
                 detalhe.Carteira = reg.Carteira;
                 detalhe.CodigoOcorrencia = Utils.ToInt32(reg.Comando);
                 //
-                int dataLiquidacao = Utils.ToInt32(reg.DataLiquidacao);
-                detalhe.DataLiquidacao = Utils.ToDateTime(dataLiquidacao.ToString("##-##-##"));
-                //
                 detalhe.NumeroDocumento = reg.NumeroTituloCedente;
                 //detalhe. = reg.Brancos2;
                 //
@@ -620,20 +617,20 @@ namespace BoletoNet
                 //detalhe. = reg.DVPrefixoRecebedora;
                 detalhe.Especie = Utils.ToInt32(reg.EspecieTitulo);
                 //
-                int dataCredito = Utils.ToInt32(reg.DataCredito);
-                detalhe.DataOcorrencia = Utils.ToDateTime(dataCredito.ToString("##-##-##"));
+                int dataOcorrencia = Utils.ToInt32(reg.DataOcorrencia);
+                detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
                 //
                 detalhe.TarifaCobranca = (Convert.ToInt64(reg.ValorTarifa) / 100);
                 detalhe.OutrasDespesas = (Convert.ToInt64(reg.OutrasDespesas) / 100);
                 detalhe.ValorOutrasDespesas = (Convert.ToInt64(reg.JurosDesconto) / 100);
-                detalhe.IOF = (Convert.ToInt64(reg.IOFDesconto) / 100);
+                //detalhe.IOF = (Convert.ToInt64(reg.IOFDesconto) / 100);
                 detalhe.Abatimentos = (Convert.ToInt64(reg.ValorAbatimento) / 100);
                 detalhe.Descontos = (Convert.ToInt64(reg.DescontoConcedido) / 100);
                 detalhe.ValorPrincipal = (Convert.ToInt64(reg.ValorRecebido) / 100);
                 detalhe.JurosMora = (Convert.ToInt64(reg.JurosMora) / 100);
-                detalhe.OutrosCreditos = (Convert.ToInt64(reg.OutrosRecebimentos) / 100);
+                //detalhe.OutrosCreditos = (Convert.ToInt64(reg.OutrosRecebimentos) / 100);
                 //detalhe. = reg.AbatimentoNaoAproveitado;
-                detalhe.ValorPago = (Convert.ToInt64(reg.ValorLancamento) / 100);
+                detalhe.ValorPago = (Convert.ToInt64(reg.ValorRecebido) / 100);                
                 //detalhe. = reg.IndicativoDebitoCredito;
                 //detalhe. = reg.IndicadorValor;
                 //detalhe. = reg.ValorAjuste;
