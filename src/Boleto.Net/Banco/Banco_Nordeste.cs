@@ -588,9 +588,9 @@ namespace BoletoNet
                 //detalhe. = reg.NumeroConvenioCobranca;
                 //detalhe. = reg.NumeroControleParticipante;
                 //
-                detalhe.NossoNumeroComDV = reg.NossoNumero;
-                detalhe.NossoNumero = reg.NossoNumero.Substring(0, reg.NossoNumero.Length - 1); //Nosso Número sem o DV!
-                detalhe.DACNossoNumero = reg.NossoNumero.Substring(reg.NossoNumero.Length - 1); //DV
+                detalhe.NossoNumeroComDV = reg.NossoNumero+reg.NossoNumeroDV;
+                detalhe.NossoNumero = reg.NossoNumero; //Nosso Número sem o DV!
+                detalhe.DACNossoNumero = reg.NossoNumeroDV;
                 //
                 //detalhe. = reg.TipoCobranca;
                 //detalhe. = reg.TipoCobrancaEspecifico;

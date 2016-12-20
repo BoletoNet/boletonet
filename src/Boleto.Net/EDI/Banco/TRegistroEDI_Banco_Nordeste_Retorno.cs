@@ -83,6 +83,14 @@ namespace BoletoNet.EDI.Banco
             get { return _NossoNumero; }
             set { _NossoNumero = value; }
         }
+
+        private string _NossoNumeroDV;
+        public string NossoNumeroDV
+        {
+            get { return _NossoNumeroDV; }
+            set { _NossoNumeroDV = value; }
+        }
+
         private string _TipoCobranca = String.Empty;
 
         public string TipoCobranca
@@ -433,7 +441,7 @@ namespace BoletoNet.EDI.Banco
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0032, 006, 0, string.Empty, ' ')); //032-037 Brancos
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0038, 025, 0, string.Empty, ' ')); //038-062 Número Controle
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0063, 007, 0, string.Empty, ' ')); //063-069 Nosso Número
-            this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0070, 070, 0, string.Empty, ' ')); //070-070 Dígito do Nosso Número
+            this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0070, 001, 0, string.Empty, ' ')); //070-070 Dígito do Nosso Número
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0071, 010, 0, string.Empty, ' ')); //071-080 Número do Contrato
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0081, 027, 0, string.Empty, ' ')); //081-107 Brancos 
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0108, 001, 0, string.Empty, ' ')); //108-108 Carteira
@@ -494,6 +502,7 @@ namespace BoletoNet.EDI.Banco
             this._DVContaCorrente = (string)this._CamposEDI[6].ValorNatural;
             this._NumeroControleParticipante = (string)this._CamposEDI[8].ValorNatural;
             this._NossoNumero = (string)this._CamposEDI[9].ValorNatural;
+            this._NossoNumeroDV = (string)this._CamposEDI[10].ValorNatural;
             this._Carteira = (string)this._CamposEDI[13].ValorNatural;
 
             this._Comando = (string)this._CamposEDI[14].ValorNatural;            
