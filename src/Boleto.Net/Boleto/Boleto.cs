@@ -25,7 +25,7 @@ namespace BoletoNet
 		private int _numeroParcela;
 		private decimal _valorBoleto;
 		private decimal _valorCobrado;
-		private string _localPagamento = "Até o vencimento, preferencialmente no ";
+		private string _localPagamento = null;
 		private int _quantidadeMoeda = 1;
 		private string _valorMoeda = string.Empty;
 		private IList<IInstrucao> _instrucoes = new List<IInstrucao>();
@@ -553,10 +553,6 @@ namespace BoletoNet
 			// Validações básicas, caso ainda tenha implementada na classe do banco.ValidaBoleto()
 			if (this.Cedente == null)
 				throw new Exception("Cedente não cadastrado.");
-
-			// Atribui o nome do banco ao local de pagamento
-			// Comentada por duplicidade no nome do banco
-			////this.LocalPagamento += this.Banco.Nome + string.Empty;
 
 			// Verifica se data do processamento é valida
 			// if (this.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
