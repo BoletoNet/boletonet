@@ -141,7 +141,7 @@ namespace BoletoNet
             #region Grupo3
 
             string nossoNumero2 = nossoNumero.Substring(7, 6); //6
-            
+
             string tipoCarteira = boleto.Carteira;//3
             string calculoDV3 = Mod10(string.Format("{0}{1}{2}", nossoNumero2, IOS, tipoCarteira)).ToString();//1
             string grupo3 = string.Format("{0}{1}{2}{3}", nossoNumero2, IOS, tipoCarteira, calculoDV3);
@@ -167,7 +167,7 @@ namespace BoletoNet
 
             #region Grupo5
 
-             //4
+            //4
             string valorNominal = Utils.FormatCode(boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", ""), 10);//10
 
             string grupo5 = string.Format("{0}{1}", fatorVencimento, valorNominal);
@@ -226,8 +226,8 @@ namespace BoletoNet
                 throw new NotImplementedException("Código cedente deve ter 8 posições.");
 
             // Atribui o nome do banco ao local de pagamento
-			if (string.IsNullOrEmpty(boleto.LocalPagamento))
-				boleto.LocalPagamento = "Grupo Santander - GC";
+            if (string.IsNullOrEmpty(boleto.LocalPagamento))
+                boleto.LocalPagamento = "Grupo Santander - GC";
 
             if (EspecieDocumento.ValidaSigla(boleto.EspecieDocumento) == "")
                 boleto.EspecieDocumento = new EspecieDocumento_Santander("2");
@@ -323,7 +323,7 @@ namespace BoletoNet
 
             while (pos <= seq.Length)
             {
-                num = seq.Mid( pos, 1);
+                num = seq.Mid(pos, 1);
                 total += Convert.ToInt32(num) * mult;
 
                 mult -= 1;
@@ -460,10 +460,10 @@ namespace BoletoNet
             {
                 //Código do Banco na compensação ==> 001 - 003
                 string header = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
-                
+
                 //Lote de serviço ==> 004 - 007
                 header += "0000";
-                
+
                 //Tipo de registro ==> 008 - 008
                 header += "0";
 
@@ -643,7 +643,7 @@ namespace BoletoNet
 
                 //Tipo de operação ==> 009 - 009
                 header += "R";
-                
+
                 //Tipo de serviço ==> 010 - 011
                 header += "01";
 
@@ -658,13 +658,13 @@ namespace BoletoNet
 
                 //Tipo de inscrição da empresa ==> 018 - 018
                 header += (cedente.CPFCNPJ.Length == 11 ? "1" : "2");
-                
+
                 //Nº de inscrição da empresa ==> 019 - 033
                 header += Utils.FormatCode(cedente.CPFCNPJ, "0", 15, true);
 
                 //Reservado (uso Banco) ==> 034 – 053
                 header += Utils.FormatCode("", " ", 20);
-                
+
                 //Código de Transmissão ==> 054 - 068
                 header += Utils.FormatCode(cedente.CodigoTransmissao, "0", 15, true);
 
@@ -710,7 +710,7 @@ namespace BoletoNet
                 _segmentoP = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
 
                 //Numero do lote remessa ==> 004 - 007
-                _segmentoP += Utils.FitStringLength(boleto.Remessa.NumeroLote.ToString(), 4, 4, '0', 0, true, true, true);
+                _segmentoP += Utils.FitStringLength("1", 4, 4, '0', 0, true, true, true);
 
                 //Tipo de registro => 008 - 008
                 _segmentoP += "3";
@@ -797,7 +797,10 @@ namespace BoletoNet
                 if (boleto.JurosMora > 0)
                 {
                     //Código do juros de mora ==> 118 - 118
-                    _segmentoP += "1";
+                    if (!String.IsNullOrWhiteSpace(boleto.CodJurosMora)) //Possibilita passar o código 2 para JurosMora ao Mes, senão for setado, assume o valor padrão 1 para JurosMora ao Dia
+                        _segmentoP += Utils.FitStringLength(boleto.CodJurosMora.ToString(), 1, 1, '0', 0, true, true, true); 
+                    else
+                        _segmentoP += "1";
 
                     //Data do juros de mora ==> 119 - 126
                     _segmentoP += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
@@ -870,7 +873,7 @@ namespace BoletoNet
                 _segmentoP += "0";
 
                 //Número de dias para Baixa/Devolução ==> 226 - 227
-                _segmentoP += "00";
+                _segmentoP += Utils.FitStringLength(boleto.NumeroDiasBaixa.ToString(), 2, 2, '0', 0, true, true, true); 
 
                 //Código da moeda ==> 228 - 229
                 _segmentoP += "00";
@@ -993,7 +996,7 @@ namespace BoletoNet
                 _segmentoR = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
 
                 //Numero do lote remessa ==> 004 - 007
-                _segmentoR += Utils.FitStringLength(boleto.Remessa.NumeroLote.ToString(), 4, 4, '0', 0, true, true, true);
+                _segmentoR += Utils.FitStringLength("1", 4, 4, '0', 0, true, true, true);
 
                 //Tipo de registro ==> 008 - 008
                 _segmentoR += "3";
@@ -1406,7 +1409,7 @@ namespace BoletoNet
 
                 //Valor de desconto a ser concedido ==> 180 - 192
                 _detalhe += Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
-                
+
                 //Valor do IOF a ser recolhido pelo Banco para nota de seguro ==> 192 - 205
                 _detalhe += "0000000000000";
 
@@ -1763,7 +1766,7 @@ namespace BoletoNet
                 _trailer += complemento;
 
                 //Número sequencial do registro no arquivo ==> 395 - 400
-                _trailer += Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true); 
+                _trailer += Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true);
 
                 _trailer = Utils.SubstituiCaracteresEspeciais(_trailer);
 
