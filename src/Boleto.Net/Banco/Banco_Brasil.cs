@@ -1482,7 +1482,7 @@ namespace BoletoNet
                 // 7 – para carteira 17 modalidade Simples.
                 if (boleto.ModalidadeCobranca == 0)
                 {
-                    if (boleto.Carteira.Equals("17-019") || boleto.Carteira.Equals("17-027") || boleto.Carteira.Equals("17-035") || boleto.Carteira.Equals("17-140") || boleto.Carteira.Equals("17-159") || boleto.Carteira.Equals("17-067") || boleto.Carteira.Equals("17-167"))
+                    if (boleto.Carteira.Equals("17-019") || boleto.Carteira.Equals("17-027") || boleto.Carteira.Equals("17-035") || boleto.Carteira.Equals("17-140") || boleto.Carteira.Equals("17-159") || boleto.Carteira.Equals("17-067") || boleto.Carteira.Equals("17-167") || boleto.Carteira.Equals("17"))
                         _segmentoP += "7";
                     else
                         _segmentoP += "0";
@@ -1495,7 +1495,7 @@ namespace BoletoNet
                 // Campo não tratado pelo BB. Forma de cadastramento do título no banco. Pode ser branco/espaço, 0, 1=cobrança registrada, 2=sem registro.
                 _segmentoP += "1";
                 // Campo não tratado pelo BB. Tipo de documento. Pode ser branco, 0, 1=tradicional, 2=escritural.
-                _segmentoP += "1";
+                _segmentoP += "2";
                 // Campo não tratado pelo BB. Identificação de emissão do boleto. Pode ser branco/espaço, 0, ou:
                 // No caso de carteira 11/12/31/51, utilizar código 1 – Banco emite, 4 – Banco reemite, 5 – Banco não reemite, porém nestes dois últimos casos, 
                 // o código de Movimento Remessa (posições 16 a 17) deve ser código '31'.
@@ -1512,7 +1512,7 @@ namespace BoletoNet
                 _segmentoP += "2";
                 _segmentoP += Utils.FitStringLength(boleto.NumeroDocumento, 15, 15, ' ', 0, true, true, false);
                 _segmentoP += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
-                _segmentoP += Utils.FitStringLength(boleto.ValorBoleto.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
+                _segmentoP += Utils.FitStringLength(boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", ""), 15, 15, '0', 0, true, true, true);
                 _segmentoP += "00000 ";
                 _segmentoP += Utils.FitStringLength(boleto.EspecieDocumento.Codigo.ToString(), 2, 2, '0', 0, true, true, true);
                 _segmentoP += "N";
@@ -1548,14 +1548,14 @@ namespace BoletoNet
 
                 _segmentoP += "000000000000000";
                 _segmentoP += "000000000000000";
-                _segmentoP += Utils.FitStringLength(boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, false);
+                _segmentoP += Utils.FitStringLength(boleto.NumeroDocumento, 25, 25, '0', 0, true, true, true);
 
                 //alterado por marcelhsouza em 28/03/2013
                 //O Banco do Brasil trata somente os códigos '1' – Protestar dias corridos, '2' – Protestar dias úteis, e '3' – Não protestar.
                 string codigo_protesto = "3";
                 string dias_protesto = "00";
 
-                foreach (var instrucao in boleto.Instrucoes)
+                foreach (IInstrucao instrucao in boleto.Instrucoes)
                 {
                     switch ((EnumInstrucoes_BancoBrasil)instrucao.Codigo)
                     {
@@ -1595,7 +1595,7 @@ namespace BoletoNet
 
                 //_segmentoP += "2000090000000000 ";
 
-                _segmentoP = Utils.SubstituiCaracteresEspeciais(_segmentoP);
+                _segmentoP = Utils.SubstituiCaracteresEspeciais(_segmentoP.ToUpper());
 
                 return _segmentoP;
 
@@ -1741,28 +1741,29 @@ namespace BoletoNet
         {
             try
             {
-                //string _brancos217 = new string(' ', 217);
-                string _zeros = new string('0', 92);
-                string _brancos = new string(' ', 125);
+                string trailer = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
+                trailer += Utils.FitStringLength("1", 4, 4, '0', 0, true, true, true);
+                trailer += "5";
+                trailer += Utils.FormatCode("", " ", 9);
 
-                string _trailerLote;
+                #region Pega o Numero de Registros + 1(HeaderLote) + 1(TrailerLote)
+                int vQtdeRegLote = numeroRegistro; // (numeroRegistro + 2);
+                trailer += Utils.FitStringLength(vQtdeRegLote.ToString(), 6, 6, '0', 0, true, true, true);  //posição 18 até 23   (6) - Quantidade de Registros no Lote
+                //deve considerar 1 registro a mais - Header
+                #endregion
 
-                _trailerLote = "00100015         ";
-                _trailerLote += Utils.FitStringLength((numeroRegistro + 1).ToString(), 6, 6, '0', 0, true, true, true);//deve considerar 1 registro a mais - Header
-                _trailerLote += _zeros;
-                _trailerLote += _brancos;
 
-                //_trailerLote += _brancos217;
-
-                _trailerLote = Utils.SubstituiCaracteresEspeciais(_trailerLote);
-
-                return _trailerLote;
+                trailer += Utils.FormatCode("", "0", 92, true);
+                trailer += Utils.FormatCode("", " ", 125);
+                trailer = Utils.SubstituiCaracteresEspeciais(trailer);
+                return trailer;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                throw new Exception("Erro durante a geração do TRAILER de lote do arquivo de REMESSA.", ex);
+                throw new Exception("Erro durante a geração do registro TRAILER do LOTE de REMESSA.", e);
             }
         }
+
         public override string GerarTrailerArquivoRemessa(int numeroRegistro)
         {
             try
@@ -1816,7 +1817,7 @@ namespace BoletoNet
                 // Como não sei onde pegar esse nº, deixei como padrão.
                 //alterado por marcelhsouza em 28/03/2013
                 //_headerLote += "020";
-                _headerLote += "000"; //no header do arquivo esta 000, entao aqui deve-se por 000, poderia ser 020 SE no header do arquivo tivesse 030
+                _headerLote += "042"; //no header do arquivo esta 000, entao aqui deve-se por 000, poderia ser 020 SE no header do arquivo tivesse 030
                 _headerLote += " ";
 
                 if (cedente.CPFCNPJ.Length <= 11)
@@ -1831,7 +1832,7 @@ namespace BoletoNet
                 // - nº da carteira 9(02)
                 // - variação (se houver) 9(03)
                 if (cedente.Carteira.Length == 2)
-                    _headerLote += cedente.Carteira.ToString() + "000  ";
+                    _headerLote += cedente.Carteira.ToString() + "019  ";
                 else
                     _headerLote += cedente.Carteira.Replace("-", "") + "  ";
 
@@ -1851,7 +1852,7 @@ namespace BoletoNet
                 _headerLote += "00000000";
                 _headerLote += _brancos33;
 
-                _headerLote = Utils.SubstituiCaracteresEspeciais(_headerLote);
+                _headerLote = Utils.SubstituiCaracteresEspeciais(_headerLote.ToUpper());
 
                 return _headerLote;
 
@@ -1868,32 +1869,25 @@ namespace BoletoNet
                 string _brancos20 = new string(' ', 20);
                 string _brancos10 = new string(' ', 10);
                 string _header;
-                string _convenio = null;
-
-                _convenio += Utils.FitStringLength(cedente.Convenio.ToString(), 9, 9, '0', 0, true, true, true);
-                _convenio += "0014";
-                // O Código da carteira é dividida em 2 partes:
-                // - nº da carteira 9(02)
-                // - variação (se houver) 9(03)
-                if (cedente.Carteira.Length == 2)
-                    _convenio += cedente.Carteira.ToString() + "000  ";
-                else
-                    _convenio += cedente.Carteira.Replace("-", "") + "  ";
-
+                
                 _header = "00100000         ";
                 if (cedente.CPFCNPJ.Length <= 11)
                     _header += "1";
                 else
                     _header += "2";
                 _header += Utils.FitStringLength(cedente.CPFCNPJ, 14, 14, '0', 0, true, true, true);
-                _header += _convenio;
+                _header += Utils.FitStringLength(cedente.Convenio.ToString(), 9, 9, '0', 0, true, true, true);
+                _header += "0014";
+                _header += Utils.FitStringLength(cedente.Carteira, 2, 2, '0', 0, true, true, true);
+                _header += "019";
+                _header += "  ";
                 _header += Utils.FitStringLength(cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true);
                 _header += Utils.FitStringLength(cedente.ContaBancaria.DigitoAgencia, 1, 1, ' ', 0, true, true, false);
                 _header += Utils.FitStringLength(cedente.ContaBancaria.Conta, 12, 12, '0', 0, true, true, true);
                 _header += Utils.FitStringLength(cedente.ContaBancaria.DigitoConta, 1, 1, ' ', 0, true, true, false);
-                _header += " "; // DÍGITO VERIFICADOR DA AG./CONTA
+                _header += "0"; // DÍGITO VERIFICADOR DA AG./CONTA
                 _header += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false);
-                _header += Utils.FitStringLength("BANCO DO BRASIL S.A.", 30, 30, ' ', 0, true, true, false);
+                _header += Utils.FitStringLength("BANCO DO BRASIL", 30, 30, ' ', 0, true, true, false);
                 _header += _brancos10;
                 _header += "1";
                 _header += DateTime.Now.ToString("ddMMyyyy");
@@ -1905,16 +1899,16 @@ namespace BoletoNet
                 // Campo não criticado pelo sistema, informar ZEROS ou nº da versão do layout do arquivo que foi utilizado
                 // para a formatação dos campos.
                 // Como não sei onde pegar esse nº, deixei como padrão.
-                _header += "000";
+                _header += "050";
                 _header += "00000";
                 _header += _brancos20;
                 _header += _brancos20;
                 _header += _brancos10;
                 _header += "    ";
-                _header += "000  ";
+                _header += "     ";
                 _header += _brancos10;
 
-                _header = Utils.SubstituiCaracteresEspeciais(_header);
+                _header = Utils.SubstituiCaracteresEspeciais(_header.ToUpper());
 
                 return _header;
             }
@@ -2046,7 +2040,7 @@ namespace BoletoNet
                 segmentoU.ValorOutrosCreditos = Convert.ToDecimal(registro.Substring(122, 15)) / 100;
                 segmentoU.DataOcorrencia = segmentoU.DataOcorrencia = DateTime.ParseExact(registro.Substring(137, 8), "ddMMyyyy", CultureInfo.InvariantCulture);
                 segmentoU.DataCredito = registro.Substring(145, 8).ToString() == "00000000" ? segmentoU.DataOcorrencia : DateTime.ParseExact(registro.Substring(145, 8), "ddMMyyyy", CultureInfo.InvariantCulture);
-                segmentoU.CodigoOcorrenciaSacado = registro.Substring(153, 4);
+                segmentoU.CodigoOcorrenciaSacado = registro.Substring(15, 2);
 
                 return segmentoU;
             }

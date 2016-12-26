@@ -1,7 +1,7 @@
-using System;
-using System.Web.UI;
 using BoletoNet.Util;
+using System;
 using System.Text;
+using System.Web.UI;
 
 [assembly: WebResource("BoletoNet.Imagens.341.jpg", "image/jpg")]
 namespace BoletoNet
@@ -111,7 +111,7 @@ namespace BoletoNet
 
                 //Atribui o nome do banco ao local de pagamento
                 if (string.IsNullOrEmpty(boleto.LocalPagamento))
-                    boleto.LocalPagamento = "Até o vencimento no ITAÚ. Após o vencimento, somente no ITAÚ";
+                    boleto.LocalPagamento = "PAGÁVEL PREFERENCIALMENTE NAS AGÊNCIAS DO ITAÚ";
 
                 //Verifica se o nosso número é válido
                 if (Utils.ToInt64(boleto.NossoNumero) == 0)

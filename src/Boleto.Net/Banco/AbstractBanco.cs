@@ -105,7 +105,6 @@ namespace BoletoNet
             string _remessa = "";
             return _remessa;
         }
-
         /// <summary>
         /// Gera os registros de Trailer do arquivo de remessa
         /// </summary>

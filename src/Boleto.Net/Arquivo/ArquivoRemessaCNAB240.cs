@@ -122,15 +122,15 @@ namespace BoletoNet
                             OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoQ);
                             numeroRegistro++;
                             numeroRegistroDetalhe++;
-                            //segmento R não implementado...
-                            //if (boleto.ValorMulta > 0)
-                            //{
-                            //    strline = boleto.Banco.GerarDetalheSegmentoRRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
-                            //    incluiLinha.WriteLine(strline);
-                            //    OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoR);
-                            //    numeroRegistro++;
-                            //    numeroRegistroDetalhe++;
-                            //}
+
+                            if (boleto.ValorMulta > 0 || boleto.PercMulta > 0)
+                            {
+                                strline = boleto.Banco.GerarDetalheSegmentoRRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
+                                incluiLinha.WriteLine(strline);
+                                OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoR);
+                                numeroRegistro++;
+                                numeroRegistroDetalhe++;
+                            }
                         }
 
                         numeroRegistro--;
@@ -186,8 +186,6 @@ namespace BoletoNet
                         numeroRegistroDetalhe++;
                     }
 
-
-                    numeroRegistro--;
                     strline = banco.GerarTrailerLoteRemessa(numeroRegistro);
                     incluiLinha.WriteLine(strline);
                     OnLinhaGerada(null, strline, EnumTipodeLinha.TraillerDeLote);

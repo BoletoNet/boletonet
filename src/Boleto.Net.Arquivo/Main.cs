@@ -632,6 +632,8 @@ namespace BoletoNet.Arquivo
                 LerRetorno(748);
             else if (radioButtonBanrisul.Checked)
                 LerRetorno(041);
+            else if (radioButtonBNB.Checked)
+                LerRetorno(4);
         }
 
         private void gerarToolStripMenuItem1_Click(object sender, EventArgs e)
