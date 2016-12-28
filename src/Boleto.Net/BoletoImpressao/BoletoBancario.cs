@@ -144,6 +144,13 @@ namespace BoletoNet
         [Browsable(true), Description("Caminho onde se encontra a ferramenta WkHtmlToPdf.")]
         public string PdfToolPath { get; set; }
 
+        /// <summary>
+        /// Caminho onde a NReco gera os arquivos temporários necessários para a construção do PDF.
+        /// Se o caminho não for especificado a ferramenta utilizará a pasta retornada pelo método Path.GetTempPath().
+        /// </summary>
+        [Browsable(true), Description("Caminho onde a NReco gera os arquivos temporários necessários para a construção do PDF.")]
+        public string TempFilesPath { get; set; }
+
         #region Propriedades
         [Browsable(true), Description("Mostra o comprovante de entrega sem dados para marcar")]
         public bool MostrarComprovanteEntregaLivre
@@ -1208,6 +1215,11 @@ namespace BoletoNet
         public byte[] MontaBytesPDF(bool convertLinhaDigitavelToImage = false)
         {
             var converter = new NReco.PdfGenerator.HtmlToPdfConverter();
+
+            if (!string.IsNullOrWhiteSpace(TempFilesPath)){
+                converter.TempFilesPath = this.TempFilesPath;
+            }
+
             if (!string.IsNullOrEmpty(this.PdfToolPath)) {
                 converter.PdfToolPath = this.PdfToolPath;
             }
@@ -1254,6 +1266,10 @@ namespace BoletoNet
             if (!string.IsNullOrEmpty(this.PdfToolPath)) {
                 converter.PdfToolPath = this.PdfToolPath;
             }
+            if (!string.IsNullOrEmpty(this.TempFilesPath)) {
+                converter.TempFilesPath = this.TempFilesPath;
+            }
+
             return converter.GeneratePdf(htmlBoletos.ToString());
         }
         
