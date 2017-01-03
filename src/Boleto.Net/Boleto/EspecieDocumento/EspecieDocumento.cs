@@ -61,7 +61,16 @@ namespace BoletoNet
 
         public override string Sigla
         {
-            get { return _IEspecieDocumento.Sigla; }
+            get
+            {
+
+                if (_IEspecieDocumento == null)
+                {
+                    return string.Empty;
+                }
+
+                return _IEspecieDocumento.Sigla;
+            }
             set { _IEspecieDocumento.Sigla = value; }
         }
 
