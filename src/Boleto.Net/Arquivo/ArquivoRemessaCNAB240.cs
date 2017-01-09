@@ -25,6 +25,7 @@ namespace BoletoNet
                 bool vRetorno = true;
                 string vMsg = string.Empty;
                 //
+                //
                 foreach (Boleto boleto in boletos)
                 {
                     string vMsgBol = string.Empty;

@@ -663,6 +663,7 @@ namespace BoletoNet.Arquivo
                 {
                     //if (radioButtonSantander.Checked)
                     //    GeraArquivoCNAB240Santander(saveFileDialog.OpenFile());
+
                 }
 
                 MessageBox.Show("Arquivo gerado com sucesso!", "Teste", MessageBoxButtons.OK, MessageBoxIcon.Information);
