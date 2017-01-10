@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="BancoBanestesTeste.cs" />
     <Compile Include="BancoBradescoTeste.cs" />
+    <Compile Include="BancoBrasil\BancoBrasil17043Teste.cs" />
     <Compile Include="BancoBrasil\BancoBrasil17027Teste.cs" />
     <Compile Include="BancoBrasil\BancoBrasil17035Teste.cs" />
     <Compile Include="BancoBrasil\BancoBrasilCarteira18Teste.cs" />
