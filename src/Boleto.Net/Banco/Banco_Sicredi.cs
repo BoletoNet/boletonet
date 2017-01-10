@@ -44,7 +44,7 @@ namespace BoletoNet
                 throw new NotImplementedException("Nosso número inválido");
             else if (boleto.NossoNumero.Length == 6)
             {
-                boleto.NossoNumero = DateTime.Now.ToString("yy") + boleto.NossoNumero;
+                boleto.NossoNumero = boleto.DataDocumento.ToString("yy") + boleto.NossoNumero;
                 boleto.DigitoNossoNumero = DigNossoNumeroSicredi(boleto);
                 boleto.NossoNumero += boleto.DigitoNossoNumero;
             }
