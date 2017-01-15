@@ -503,7 +503,10 @@ namespace BoletoNet
 
                 //Identificação de Ocorrência ==> 109 a 110
                 detalhe.CodigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2));
-
+                
+                //Descrição da ocorrência
+                detalhe.DescricaoOcorrencia = this.Ocorrencia(registro.Substring(108, 2));
+		
                 //Data Ocorrência no Banco ==> 111 a 116
                 int dataOcorrencia = Utils.ToInt32(registro.Substring(110, 6));
                 detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
