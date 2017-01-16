@@ -121,7 +121,7 @@ namespace BoletoNet
                     case EnumEspecieDocumento_Santander.Recibo:
                         this.Codigo = ed.getCodigoEspecieByEnum(EnumEspecieDocumento_Santander.Recibo);
                         this.Especie = "Recibo";
-                        this.Sigla = "R";
+                        this.Sigla = "RC";
                         break;
                     case EnumEspecieDocumento_Santander.LetraCambio353:
                         this.Codigo = ed.getCodigoEspecieByEnum(EnumEspecieDocumento_Santander.LetraCambio353);
