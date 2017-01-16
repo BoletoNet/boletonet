@@ -112,12 +112,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="barra" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>imagens\barra.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -347,7 +347,7 @@
   <data name="ReciboCedenteParte10" xml:space="preserve">
     <value>&lt;table class="w666 ctN"&gt;
 				&lt;tr&gt;
-						&lt;td class="pL6  w409"&gt;Sacador / Avalista&lt;/td&gt;
+						&lt;td class="pL6  w409"&gt;Sacador / Avalista: @AVALISTA&lt;/td&gt;
 						&lt;td class="w250 Ar"&gt;Autenticação mecânica - &lt;b class="cpN"&gt;Ficha de Compensação&lt;/b&gt;&lt;/td&gt;
 				&lt;/tr&gt;
 				&lt;tr class="h13"&gt;&lt;td colspan="3" /&gt;&lt;/tr&gt;
@@ -741,7 +741,7 @@
   <data name="ReciboSacadoParte10" xml:space="preserve">
     <value>&lt;table class="w666"&gt;
 				&lt;tr class="ct h13"&gt;
-						&lt;td class="w659"&gt;Beneficiário Endereço / Sacador Avalista&lt;/td&gt;
+						&lt;td class="w659"&gt;Beneficiário Endereço / Sacador Avalista: @AVALISTA&lt;/td&gt; 
 				&lt;/tr&gt;
 				&lt;tr class="cp h12 rBb"&gt;
 						&lt;td class="At"&gt;@ENDERECOCEDENTE&lt;/td&gt;
