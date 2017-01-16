@@ -86,11 +86,11 @@ namespace BoletoNet
                 string o = value.Trim().Replace(".", "").Replace("-", "").Replace("/", "");
                 
                 //if (o == null || (o.Length != 11 && o.Length != 14))
-                //    throw new ArgumentException("O CPF/CNPJ inválido. Utilize 11 dígitos para CPF ou 14 para CPNJ.");
+                //    throw new ArgumentException("O CPF/CNPJ inválido. Utilize 11 dígitos para CPF ou 14 para CNPJ.");
                 if (o == null || o == string.Empty)//Flavio(fhlviana@hotmail.com) - em razao da adiçao da possibilidade do boleto nao apresentar CPF ou CNPJ na renderização
                     _cpfcnpj = string.Empty;
                 else if (o.Length != 11 && o.Length != 14)
-                    throw new ArgumentException("O CPF/CNPJ inválido. Utilize 11 dígitos para CPF ou 14 para CPNJ.");
+                    throw new ArgumentException("O CPF/CNPJ inválido. Utilize 11 dígitos para CPF ou 14 para CNPJ.");
 
                 //this._cpfcnpj = value;
                 _cpfcnpj = o;//Flavio(fhlviana@hotmail.com) - se existe um conjunto de funções na classe "Utils" para gerar o CPF
