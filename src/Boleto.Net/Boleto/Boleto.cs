@@ -136,7 +136,7 @@ namespace BoletoNet
 		#endregion Construtor
 
 		#region Properties
-
+		
 		public ObservableCollection<GrupoDemonstrativo> Demonstrativos
 		{
 			get
@@ -365,6 +365,14 @@ namespace BoletoNet
 			get { return this._sacado; }
 			set { this._sacado = value; }
 		}
+
+		/// <summary>
+		/// Dados do avalista.
+		/// Este campo é necessário para correspondentes bancários, como 
+		/// por exemplo o Banco Daycoval.
+		/// O avalista deve ser exibido para que estes bancos homologuem.
+		/// </summary>
+		public Cedente Avalista { get; set; }
 
 		/// <summary> 
 		/// Para uso do banco 
