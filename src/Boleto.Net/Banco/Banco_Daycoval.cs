@@ -68,7 +68,7 @@ namespace BoletoNet
 					case TipoArquivo.Outro:
 						break;
 					default:
-						throw new ArgumentOutOfRangeException(nameof(tipoArquivo), tipoArquivo, null);
+						throw new ArgumentOutOfRangeException("tipoArquivo", tipoArquivo, null);
 				}
 
 				return detalhe;
@@ -105,7 +105,7 @@ namespace BoletoNet
 					case TipoArquivo.Outro:
 						break;
 					default:
-						throw new ArgumentOutOfRangeException(nameof(tipoArquivo), tipoArquivo, null);
+						throw new ArgumentOutOfRangeException("tipoArquivo", tipoArquivo, null);
 				}
 
 				return header;
@@ -138,7 +138,7 @@ namespace BoletoNet
 					case TipoArquivo.Outro:
 						break;
 					default:
-						throw new ArgumentOutOfRangeException(nameof(tipoArquivo), tipoArquivo, null);
+						throw new ArgumentOutOfRangeException("tipoArquivo", tipoArquivo, null);
 				}
 
 				return trailer;
@@ -200,7 +200,7 @@ namespace BoletoNet
 
 		public override void ValidaBoleto(Boleto boleto)
 		{
-			if (this._banco == null && this.Codigo != boleto.Banco?.Codigo)
+			if (this._banco == null && this.Codigo != boleto.Banco.Codigo)
 			{
 				this._banco = boleto.Banco;
 			}
@@ -212,7 +212,7 @@ namespace BoletoNet
 				this._banco = new Banco_Bradesco();
 			}
 
-			this._banco?.ValidaBoleto(boleto);
+			this._banco.ValidaBoleto(boleto);
 		}
 
 		#endregion
@@ -287,7 +287,15 @@ namespace BoletoNet
 				Utils.SubstituiCaracteresEspeciais(
 					Utils.FitStringLength(boleto.Sacado.Endereco.Cidade, 15, 15, ' ', 0, true, true, false)));
 			detalhe.Append(Utils.FitStringLength(boleto.Sacado.Endereco.UF, 2, 2, ' ', 0, true, true, false));
-			detalhe.Append(Utils.FitStringLength(boleto.Avalista?.Nome, 30, 30, ' ', 0, true, true, false));
+			if (boleto.Avalista != null)
+			{
+				detalhe.Append(Utils.FitStringLength(boleto.Avalista.Nome, 30, 30, ' ', 0, true, true, false));
+			}
+			else
+			{
+				detalhe.Append(Utils.FitStringLength(string.Empty, 30, 30, ' ', 0, true, true, false));
+			}
+
 			detalhe.Append(Utils.FitStringLength(string.Empty, 10, 10, ' ', 0, true, true, false)); // Brancos
 			detalhe.Append("00"); // Dias para início do protesto
 			detalhe.Append(boleto.Moeda == 9 ? 0 : 2);

@@ -66,7 +66,7 @@ namespace BoletoNet
 					case TipoArquivo.Outro:
 						break;
 					default:
-						throw new ArgumentOutOfRangeException(nameof(tipoArquivo), tipoArquivo, null);
+						throw new ArgumentOutOfRangeException("tipoArquivo", tipoArquivo, null);
 				}
 
 				return detalhe;
@@ -105,7 +105,7 @@ namespace BoletoNet
 					case TipoArquivo.Outro:
 						break;
 					default:
-						throw new ArgumentOutOfRangeException(nameof(tipoArquivo), tipoArquivo, null);
+						throw new ArgumentOutOfRangeException("tipoArquivo", tipoArquivo, null);
 				}
 
 				return header;
@@ -138,7 +138,7 @@ namespace BoletoNet
 					case TipoArquivo.Outro:
 						break;
 					default:
-						throw new ArgumentOutOfRangeException(nameof(tipoArquivo), tipoArquivo, null);
+						throw new ArgumentOutOfRangeException("tipoArquivo", tipoArquivo, null);
 				}
 
 				return trailer;
@@ -201,7 +201,7 @@ namespace BoletoNet
 
 		public override void ValidaBoleto(Boleto boleto)
 		{
-			if (this._banco == null && this.Codigo != boleto.Banco?.Codigo)
+			if (this._banco == null && this.Codigo != boleto.Banco.Codigo)
 			{
 				this._banco = boleto.Banco;
 			}
@@ -213,7 +213,7 @@ namespace BoletoNet
 				this._banco = new Banco_Bradesco();
 			}
 
-			this._banco?.ValidaBoleto(boleto);
+			this._banco.ValidaBoleto(boleto);
 		}
 
 		#endregion
