@@ -15,7 +15,7 @@ namespace BoletoNet.Excecoes
 		#region Constructors and Destructors
 
 		public TamanhoNossoNumeroInvalidoException(int tamanhoMaximo)
-			: base($"O tamanho máximo para o campo 'nosso número' é de {tamanhoMaximo} caracteres.")
+			: base(string.Format("O tamanho máximo para o campo 'nosso número' é de {0} caracteres.", tamanhoMaximo))
 		{
 		}
 
