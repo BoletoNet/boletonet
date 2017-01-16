@@ -728,7 +728,7 @@ namespace BoletoNet
                 .Replace("@IMAGEMCODIGOBARRA", imagemCodigoBarras)
                 .Replace("@ACEITE", Boleto.Aceite).ToString()
                 .Replace("@ENDERECOCEDENTE", MostrarEnderecoCedente ? enderecoCedente : "")
-				.Replace("@AVALISTA", $"{Boleto.Avalista?.Nome} - {Boleto.Avalista?.CPFCNPJ}")
+				.Replace("@AVALISTA", string.Format("{0} - {1}", Boleto.Avalista?.Nome, Boleto.Avalista?.CPFCNPJ))
 				.Replace("Ar\">R$", RemoveSimboloMoedaValorDocumento ? "Ar\">" : "Ar\">R$");
 
         }
