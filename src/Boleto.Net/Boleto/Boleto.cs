@@ -48,6 +48,7 @@ namespace BoletoNet
 
 		private decimal _percJurosMora;
 		private decimal _jurosMora;
+        private string _codJurosMora = string.Empty;
 		private decimal _iof;
 		private decimal _abatimento;
 		private decimal _percMulta;
@@ -61,6 +62,7 @@ namespace BoletoNet
 		private DateTime _dataOutrosDescontos;
 		private short _percentualIOS;
         private short _modalidadeCobranca = 0;
+        private short _numeroDiasBaixa = 0;
 
 		private string _tipoModalidade = string.Empty;
 		private Remessa _remessa;
@@ -382,7 +384,7 @@ namespace BoletoNet
 		}
 
 		/// <summary>
-		/// Percentual de Juros de Mora (ao dia)
+		/// Percentual de Juros de Mora (ao dia, ao mes setar codJurosMora com "2")
 		/// </summary>
 		public decimal PercJurosMora
 		{
@@ -399,10 +401,20 @@ namespace BoletoNet
 			set { this._jurosMora = value; }
 		}
 
-		/// <summary>
-		/// Caso a empresa tenha no convênio Juros permanentes cadastrados
-		/// </summary>
-		public bool JurosPermanente
+
+        /// <summary> 
+		/// Código de Juros de mora (1 = ao dia, 2 = ao mes)
+		/// </summary>  
+        public string CodJurosMora
+        {
+            get { return this._codJurosMora; }
+            set { this._codJurosMora = value; }
+        }
+
+        /// <summary>
+        /// Caso a empresa tenha no convênio Juros permanentes cadastrados
+        /// </summary>
+        public bool JurosPermanente
 		{
 			get { return this._jurosPermanente; }
 			set { this._jurosPermanente = value; }
@@ -534,6 +546,14 @@ namespace BoletoNet
             set { this._modalidadeCobranca = value; }
         }
 
+        /// <summary> 
+        /// Número de dias para Baixa/Devolução
+        /// </summary>
+        public short NumeroDiasBaixa
+        {
+            get { return this._numeroDiasBaixa; }
+            set { this._numeroDiasBaixa = value; }
+        }
         /// <summary>
         /// Retorna os Parâmetros utilizados na geração da Remessa para o Boleto
         /// </summary>

@@ -602,7 +602,7 @@ namespace BoletoNet
                 header += "0000000";
                 header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 5, true);
                 header += " ";
-                header += " ";
+                header += Utils.FormatCode(String.IsNullOrEmpty(cedente.ContaBancaria.DigitoConta) ? " " : cedente.ContaBancaria.DigitoConta, " ", 1, true);
                 header += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false);                
                 header += Utils.FormatCode("BANCO ITAU SA", " ", 30);
                 header += Utils.FormatCode("", " ", 10);
@@ -741,7 +741,7 @@ namespace BoletoNet
                 header += Utils.FormatCode("", "0", 7);
                 header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 5, true);
                 header += " ";
-                header += " ";
+                header += Utils.FormatCode(String.IsNullOrEmpty(cedente.ContaBancaria.DigitoConta) ? " " : cedente.ContaBancaria.DigitoConta, " ", 1, true);
                 header += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false);
                 header += Utils.FormatCode("", " ", 80);
                 header += Utils.FormatCode("", "0", 8, true);
@@ -754,6 +754,7 @@ namespace BoletoNet
             catch (Exception e)
             {
                 throw new Exception("Erro ao gerar HEADER DO LOTE do arquivo de remessa.", e);
+
             }
         }
 
@@ -766,7 +767,7 @@ namespace BoletoNet
         public override string GerarDetalheSegmentoPRemessa(Boleto boleto, int numeroRegistro, string numeroConvenio)
         {
             try
-            {
+            {                
                 string _segmentoP;
                 _segmentoP = "341";
                 _segmentoP += "0001";
@@ -781,10 +782,10 @@ namespace BoletoNet
                 _segmentoP += "0000000";
                 _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 5, 5, '0', 0, true, true, true);
                 _segmentoP += " ";
-                _segmentoP += " ";
+                _segmentoP += Utils.FormatCode(String.IsNullOrEmpty(boleto.Cedente.ContaBancaria.DigitoConta) ? " " : boleto.Cedente.ContaBancaria.DigitoConta, " ", 1, true);
                 _segmentoP += Utils.FitStringLength(boleto.Carteira, 3, 3, '0', 0, true, true, true);
                 _segmentoP += Utils.FitStringLength(boleto.NossoNumero, 8, 8, '0', 0, true, true, true);
-                _segmentoP += " ";
+                _segmentoP += Utils.FitStringLength(boleto.DigitoNossoNumero, 1, 1, '0', 1, true, true, true);
                 _segmentoP += "        ";
                 _segmentoP += "00000";
                 _segmentoP += Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, ' ', 0, true, true, false);
@@ -1187,7 +1188,7 @@ namespace BoletoNet
                 // a) 2o e 3o descontos: para de operar com mais de um desconto(depende de cadastramento prévio do 
                 // indicador 19.0 pelo Banco Itaú, conforme item 5)
                 // b) Mensagens ao sacado: se utilizados as instruções 93 ou 94 (Nota 11), transcrever a mensagem desejada
-                _detalhe += Utils.FitStringLength(boleto.Sacado.Nome, 30, 30, ' ', 0, true, true, false).ToUpper();
+                _detalhe += new string(' ', 30);
                 _detalhe += "    "; // Complemento do registro
                 _detalhe += boleto.DataVencimento.ToString("ddMMyy");
                 // PRAZO - Quantidade de DIAS - ver nota 11(A) - depende das instruções de cobrança 
@@ -1239,76 +1240,82 @@ namespace BoletoNet
 
         # endregion DETALHE
 
-        # region TRAILER CNAB240
-
-        /// <summary>
-        ///POS INI/FINAL	DESCRIÇÃO	                   A/N	TAM	DEC	CONTEÚDO	NOTAS
-        ///--------------------------------------------------------------------------------
-        ///001 - 003	Código do Banco na compensação	    N	003		341	
-        ///004 - 007	Lote de serviço	                    N	004		Nota 5 
-        ///008 - 008	Registro Trailer de Lote            N	001     5
-        ///009 - 017	Complemento de Registros            A	009     Brancos
-        ///018 - 023    Qtd. Registros do Lote              N   006     Nota 15     
-        ///024 - 041    Soma Valor dos Débitos do Lote      N   018     Nota 14     
-        ///042 - 059    Soma Qtd. de Moedas do Lote         N   018     Nota 14
-        ///060 - 230    Complemento de Registros            A   171     Brancos
-        ///231 - 240    Cód. Ocr. para Retorno              A   010     Brancos
-        /// </summary>
-
+        # region TRAILER CNAB240        
+        //suelton@gmail.com - 05/01/2017 - atualização pra o cnab240
         public override string GerarTrailerLoteRemessa(int numeroRegistro)
         {
             try
             {
-                string trailer = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
-                trailer += Utils.FormatCode("", "0", 4, true);
-                trailer += "5";
-                trailer += Utils.FormatCode("", " ", 9);
-                trailer += Utils.FormatCode("", "0", 6, true);
-                trailer += Utils.FormatCode("", "0", 18, true);
-                trailer += Utils.FormatCode("", "0", 18, true);
-                trailer += Utils.FormatCode("", " ", 171);
-                trailer += Utils.FormatCode("", " ", 10);
-                trailer = Utils.SubstituiCaracteresEspeciais(trailer);
+                string header = Utils.FormatCode(Codigo.ToString(), "0", 3, true);                      // código do banco na compensação - 001-003 9(03) - 341
+                header += "0001";                                                                       // Lote de Serviço - 004-007 9(04) - Nota 1
+                header += "5";                                                                          // Tipo de Registro - 008-008 9(01) - 5
+                header += Utils.FormatCode("", " ", 9);                                                 // Complemento de Registro - 009-017 X(09) - Brancos
+                header += Utils.FormatCode(numeroRegistro.ToString(), "0", 6, true);                    // Quantidade de Registros do Lote - 018-023 9(06) - Nota 26
 
-                return trailer;
+                // Totalização da Cobrança Simples
+                header += Utils.FormatCode("", "0", 6);                                                 // Quantidade de Títulos em Cobrança Simples - 024-029 9(06) - Nota 24
+                header += Utils.FormatCode("", "0", 17);                                                // Valor Total dos Títulos em Carteiras - 030-046 9(15)V9(02) - Nota 24
+
+                //Totalização cobrança vinculada
+                header += Utils.FormatCode("", "0", 6);                                                 // Qtde de titulos em cobrança vinculada - 047-052 9(06) - Nota 24
+                header += Utils.FormatCode("", "0", 17);                                                // Valor total títulos em cobrança vinculada - 053-069 9(15)V9(02) - Nota 24
+
+                header += Utils.FormatCode("", "0", 46);                                                // Complemento de Registro - 070-115 X(08) - Zeros
+                header += Utils.FormatCode("", " ", 8);                                                 // Referência do Aviso bancário - 116-123 X(08) - Nota 25
+                header += Utils.FormatCode("", " ", 117);                                               // Complemento de Registro - 124-240 X(117) - Brancos
+
+                return header;
             }
             catch (Exception e)
             {
-                throw new Exception("Erro durante a geração do registro TRAILER do LOTE de REMESSA.", e);
+                throw new Exception("Erro ao gerar Trailer de Lote do arquivo de remessa.", e);
             }
+
+            #region Informações geradas de forma inconsistente
+            //suelton@gmail.com - 04/01/2017 - Gerando informações inconsistentes
+            //try
+            //{
+            //    string trailer = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
+            //    trailer += Utils.FormatCode("", "0", 4, true);
+            //    trailer += "5";
+            //    trailer += Utils.FormatCode("", " ", 9);
+            //    trailer += Utils.FormatCode("", "0", 6, true);
+            //    trailer += Utils.FormatCode("", "0", 18, true);
+            //    trailer += Utils.FormatCode("", "0", 18, true);
+            //    trailer += Utils.FormatCode("", " ", 171);
+            //    trailer += Utils.FormatCode("", " ", 10);
+            //    trailer = Utils.SubstituiCaracteresEspeciais(trailer);
+
+            //    return trailer;
+            //}
+            //catch (Exception e)
+            //{
+            //    throw new Exception("Erro durante a geração do registro TRAILER do LOTE de REMESSA.", e);
+            //} 
+            #endregion
         }
 
-        /// <summary>
-        ///POS INI/FINAL	DESCRIÇÃO	                   A/N	TAM	DEC	CONTEÚDO	NOTAS
-        ///--------------------------------------------------------------------------------
-        ///001 - 003	Código do Banco na compensação	    N	003		341	
-        ///004 - 007	Lote de serviço	                    N	004		9999 
-        ///008 - 008	Registro Trailer de Arquivo         N	001     9
-        ///009 - 017	Complemento de Registros            A	009     Brancos
-        ///018 - 023    Qtd. Lotes do Arquivo               N   006     Nota 15     
-        ///024 - 029    Qtd. Registros do Arquivo           N   006     Nota 15     
-        ///030 - 240    Complemento de Registros            A   211     Brancos
-        /// </summary>
-
+        
+        //suelton@gmail.com - 05/01/2017 - atualização pra o cnab240
         public override string GerarTrailerArquivoRemessa(int numeroRegistro)
         {
             try
             {
-                string trailer = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
-                trailer += "9999";
-                trailer += "9";
-                trailer += Utils.FormatCode("", " ", 9);
-                trailer += Utils.FormatCode("", "0", 6, true);
-                trailer += Utils.FormatCode("", "0", 6, true);
-                trailer += Utils.FormatCode("", " ", 211);
-                trailer = Utils.SubstituiCaracteresEspeciais(trailer);
+                string header = Utils.FormatCode(Codigo.ToString(), "0", 3, true);                      // código do banco na compensação - 001-003 (03) - 341
+                header += "9999";                                                                       // Lote de Serviço - 004-007 9(04) - '9999'
+                header += "9";                                                                          // Tipo de Registro - 008-008 9(1) - '9'
+                header += Utils.FormatCode("", " ", 9);                                                 // Complemento de Registro - 009-017 X(09) - Brancos
+                header += "000001";                                                                     // Quantidade de Lotes do Arquivo - 018-023 9(06) - Nota 26
+                header += Utils.FormatCode(numeroRegistro.ToString(), "0", 6, true);                    // Quantidade de Registros do Arquivo - 024-029 9(06) - Nota 26
+                header += Utils.FormatCode("", "0", 6);                                                 // Complemento de Registro - 030-035 9(06)
+                header += Utils.FormatCode("", " ", 205);                                               // Complemento de Registro - 036-240 X(205) - Brancos
 
-                return trailer;
+                return header;
             }
             catch (Exception e)
             {
-                throw new Exception("Erro durante a geração do registro TRAILER do ARQUIVO de REMESSA.", e);
-            }
+                throw new Exception("Erro ao gerar Trailer de arquivo de remessa.", e);
+            }           
         }
         #endregion
 

@@ -186,6 +186,7 @@
     <Compile Include="Boleto\DemonstrativoValoresBoleto\ItemDemonstrativo.cs" />
     <Compile Include="Boleto\Sacado\InformacoesSacado.cs" />
     <Compile Include="Boleto\Sacado\InfoSacado.cs" />
+    <Compile Include="EDI\Banco\TRegistroEDI_Banco_Nordeste_Retorno.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_Cecred_Retorno.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_Sicredi_Retorno.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_BancoBrasil_Retorno.cs" />
