@@ -385,7 +385,7 @@ namespace BoletoNet
                 case "03":
                     return "03-Entrada Rejeitada";
                 case "04":
-                    return "04-Alteração de Dados-Nova entrada ou Alteração/Exclusõa de dados acatada";
+                    return "04-Alteração de Dados-Nova entrada ou Alteração/Exclusão de dados acatada";
                 case "05":
                     return "05-Alteração de dados-Baixa";
                 case "06":
