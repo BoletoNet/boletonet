@@ -1960,6 +1960,7 @@ namespace BoletoNet
             {
                 DetalheSegmentoYRetornoCNAB240 detalhe = new DetalheSegmentoYRetornoCNAB240(registro);
 
+                if (registro.Substring(13, 1) != "Y")
                     throw new Exception("Registro inválido. O detalhe não possuí as características do segmento Y.");
 
                 detalhe.CodigoMovimento = Convert.ToInt32(registro.Substring(15, 2));
