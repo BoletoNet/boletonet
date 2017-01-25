@@ -1123,7 +1123,7 @@ namespace BoletoNet
                 _detalhe += "00000"; // Agência onde o título será cobrado - no arquivo de remessa, preencher com ZEROS
 
                 _detalhe += Utils.FitStringLength(EspecieDocumento.ValidaCodigo(boleto.EspecieDocumento).ToString(), 2, 2, '0', 0, true, true, true);
-                _detalhe += "N"; // Identificação de título, Aceito ou Não aceito
+                _detalhe += "A"; // Identificação de título, Aceito ou Não aceito
 
                 //A data informada neste campo deve ser a mesma data de emissão do título de crédito 
                 //(Duplicata de Serviço / Duplicata Mercantil / Nota Fiscal, etc), que deu origem a esta Cobrança. 
@@ -1188,7 +1188,7 @@ namespace BoletoNet
                 // a) 2o e 3o descontos: para de operar com mais de um desconto(depende de cadastramento prévio do 
                 // indicador 19.0 pelo Banco Itaú, conforme item 5)
                 // b) Mensagens ao sacado: se utilizados as instruções 93 ou 94 (Nota 11), transcrever a mensagem desejada
-                _detalhe += new string(' ', 30);
+                _detalhe += Utils.FitStringLength(boleto.Sacado.Nome, 30, 30, ' ', 0, true, true, false).ToUpper();
                 _detalhe += "    "; // Complemento do registro
                 _detalhe += boleto.DataVencimento.ToString("ddMMyy");
                 // PRAZO - Quantidade de DIAS - ver nota 11(A) - depende das instruções de cobrança 
@@ -1240,8 +1240,22 @@ namespace BoletoNet
 
         # endregion DETALHE
 
-        # region TRAILER CNAB240        
-        //suelton@gmail.com - 05/01/2017 - atualização pra o cnab240
+        # region TRAILER CNAB240
+
+        /// <summary>
+        ///POS INI/FINAL	DESCRIÇÃO	                   A/N	TAM	DEC	CONTEÚDO	NOTAS
+        ///--------------------------------------------------------------------------------
+        ///001 - 003	Código do Banco na compensação	    N	003		341	
+        ///004 - 007	Lote de serviço	                    N	004		Nota 5 
+        ///008 - 008	Registro Trailer de Lote            N	001     5
+        ///009 - 017	Complemento de Registros            A	009     Brancos
+        ///018 - 023    Qtd. Registros do Lote              N   006     Nota 15     
+        ///024 - 041    Soma Valor dos Débitos do Lote      N   018     Nota 14     
+        ///042 - 059    Soma Qtd. de Moedas do Lote         N   018     Nota 14
+        ///060 - 230    Complemento de Registros            A   171     Brancos
+        ///231 - 240    Cód. Ocr. para Retorno              A   010     Brancos
+        /// </summary>
+
         public override string GerarTrailerLoteRemessa(int numeroRegistro)
         {
             try
@@ -1295,8 +1309,18 @@ namespace BoletoNet
             #endregion
         }
 
-        
-        //suelton@gmail.com - 05/01/2017 - atualização pra o cnab240
+        /// <summary>
+        ///POS INI/FINAL	DESCRIÇÃO	                   A/N	TAM	DEC	CONTEÚDO	NOTAS
+        ///--------------------------------------------------------------------------------
+        ///001 - 003	Código do Banco na compensação	    N	003		341	
+        ///004 - 007	Lote de serviço	                    N	004		9999 
+        ///008 - 008	Registro Trailer de Arquivo         N	001     9
+        ///009 - 017	Complemento de Registros            A	009     Brancos
+        ///018 - 023    Qtd. Lotes do Arquivo               N   006     Nota 15     
+        ///024 - 029    Qtd. Registros do Arquivo           N   006     Nota 15     
+        ///030 - 240    Complemento de Registros            A   211     Brancos
+        /// </summary>
+
         public override string GerarTrailerArquivoRemessa(int numeroRegistro)
         {
             try
@@ -1382,6 +1406,94 @@ namespace BoletoNet
 
         # endregion
 
+        /// <summary>
+        /// DETALHE do arquivo CNAB
+        /// Gera o DETALHE do arquivo remessa de acordo com o lay-out informado
+        /// </summary>
+
+        public override string GerarMensagemVariavelRemessa(Boleto boleto, ref int numeroRegistro, TipoArquivo tipoArquivo)
+        {
+            try
+            {
+                string _detalhe = "";
+
+                switch (tipoArquivo)
+                {
+                    case TipoArquivo.CNAB240:
+                        throw new Exception("Mensagem Variavel nao existe para o tipo CNAB 240.");
+                        break;
+                    case TipoArquivo.CNAB400:
+                        _detalhe = GerarMensagemVariavelRemessaCNAB400(boleto, ref numeroRegistro, tipoArquivo);
+                        break;
+                    case TipoArquivo.Outro:
+                        throw new Exception("Tipo de arquivo inexistente.");
+                }
+
+                return _detalhe;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do DETALHE arquivo de REMESSA.", ex);
+            }
+        }
+
+        public string GerarMensagemVariavelRemessaCNAB400(Boleto boleto, ref int numeroRegistro, TipoArquivo tipoArquivo)
+        {
+            try
+            {
+                string _registroOpcional = "";
+                //detalhe                           (tamanho,tipo) A= Alfanumerico, N= Numerico
+                _registroOpcional = "2"; //Identificação do Registro         (1, N)
+
+                //Mensagem 1 (80, A)
+                if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 0)
+                    _registroOpcional += boleto.Instrucoes[0].Descricao.PadRight(80, ' ').Substring(0, 80);
+                else
+                    _registroOpcional += new string(' ', 80);
+
+                //Mensagem 2 (80, A)
+                if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 1)
+                    _registroOpcional += boleto.Instrucoes[1].Descricao.PadRight(80, ' ').Substring(0, 80);
+                else
+                    _registroOpcional += new string(' ', 80);
+
+                //Mensagem 3 (80, A)
+                if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 2)
+                    _registroOpcional += boleto.Instrucoes[2].Descricao.PadRight(80, ' ').Substring(0, 80);
+                else
+                    _registroOpcional += new string(' ', 80);
+
+                //Mensagem 4 (80, A)
+                if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 3)
+                    _registroOpcional += boleto.Instrucoes[3].Descricao.PadRight(80, ' ').Substring(0, 80);
+                else
+                    _registroOpcional += new string(' ', 80);
+
+                _registroOpcional += new string(' ', 6); //Data limite para concessão de Desconto 2 (6, N) DDMMAA
+                _registroOpcional += new string(' ', 13);//Valor do Desconto (13, N) 
+                _registroOpcional += new string(' ', 6);//Data limite para concessão de Desconto 3 (6, N) DDMMAA
+                _registroOpcional += new string(' ', 13);//Valor do Desconto (13, N)
+                _registroOpcional += new string(' ', 7);//Reserva (7, A)
+                _registroOpcional += Utils.FitStringLength(boleto.Carteira, 3, 3, '0', 0, true, true, true); //Carteira (3, N)
+                _registroOpcional += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true); //Agência (5, N) 
+                _registroOpcional += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 7, 7, '0', 0, true, true, true); //Conta Corrente (7, N)
+                _registroOpcional += Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoConta, 1, 1, '0', 0, true, true, true); //Dígito C/C (1, A)
+                _registroOpcional += Utils.FitStringLength(boleto.NossoNumero, 11, 11, '0', 0, true, true, true); //Nosso Número (11, N)
+                _registroOpcional += Utils.FitStringLength("0", 1, 1, '0', 0, true, true, true); //DAC Nosso Número (1, A)
+
+                //Nº Seqüencial do Registro (06, N)
+                _registroOpcional += Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true);
+
+                _registroOpcional = Utils.SubstituiCaracteresEspeciais(_registroOpcional);
+
+                return _registroOpcional;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao gerar REGISTRO OPCIONAL do arquivo CNAB400.", ex);
+            }
+        }
         #endregion
 
         #region Métodos de processamento do arquivo retorno CNAB400
@@ -1480,6 +1592,38 @@ namespace BoletoNet
             }
         }
 
+        public override HeaderRetorno LerHeaderRetornoCNAB400(string registro)
+        {
+            try
+            {
+                HeaderRetorno header = new HeaderRetorno(registro);
+                header.TipoRegistro = Utils.ToInt32(registro.Substring(000, 1));
+                header.CodigoRetorno = Utils.ToInt32(registro.Substring(001, 1));
+                header.LiteralRetorno = registro.Substring(002, 7);
+                header.CodigoServico = Utils.ToInt32(registro.Substring(009, 2));
+                header.LiteralServico = registro.Substring(011, 15);
+                header.Agencia = Utils.ToInt32(registro.Substring(026, 4));
+                header.ComplementoRegistro1 = Utils.ToInt32(registro.Substring(030, 2));
+                header.Conta = Utils.ToInt32(registro.Substring(032, 5));
+                header.DACConta = Utils.ToInt32(registro.Substring(037, 1));
+                header.ComplementoRegistro2 = registro.Substring(038, 8);
+                header.NomeEmpresa = registro.Substring(046, 30);
+                header.CodigoBanco = Utils.ToInt32(registro.Substring(076, 3));
+                header.NomeBanco = registro.Substring(079, 15);
+                header.DataGeracao = Utils.ToDateTime(Utils.ToInt32(registro.Substring(094, 6)).ToString("##-##-##"));
+                header.Densidade = Utils.ToInt32(registro.Substring(100, 5));
+                header.UnidadeDensidade = registro.Substring(105, 3);
+                header.NumeroSequencialArquivoRetorno = Utils.ToInt32(registro.Substring(108, 5));
+                header.DataCredito = Utils.ToDateTime(Utils.ToInt32(registro.Substring(113, 6)).ToString("##-##-##"));
+                header.ComplementoRegistro3 = registro.Substring(119, 275);
+                header.NumeroSequencial = Utils.ToInt32(registro.Substring(394, 6));
+                return header;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao ler header do arquivo de RETORNO / CNAB 400.", ex);
+            }
+        }
         #endregion
 
 

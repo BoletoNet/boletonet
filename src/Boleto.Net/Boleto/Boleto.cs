@@ -19,6 +19,7 @@ namespace BoletoNet
 		private string _variacaoCarteira = string.Empty;
 		private string _nossoNumero = string.Empty;
 		private string _digitoNossoNumero = string.Empty;
+        private bool _apenasRegistrar = false;
 		private DateTime _dataVencimento;
 		private DateTime _dataDocumento;
 		private DateTime _dataProcessamento;
@@ -63,11 +64,11 @@ namespace BoletoNet
 		private short _percentualIOS;
         private short _modalidadeCobranca = 0;
         private short _numeroDiasBaixa = 0;
+		private string _numeroControle;
 
 		private string _tipoModalidade = string.Empty;
 		private Remessa _remessa;
-        private string _numeroControle;
-        
+
 		private ObservableCollection<GrupoDemonstrativo> _demonstrativos;
 
 		#endregion
@@ -136,7 +137,7 @@ namespace BoletoNet
 		#endregion Construtor
 
 		#region Properties
-		
+
 		public ObservableCollection<GrupoDemonstrativo> Demonstrativos
 		{
 			get
@@ -315,6 +316,16 @@ namespace BoletoNet
 			get { return this._nossoNumero; }
 			set { this._nossoNumero = value; }
 		}
+
+        /// <summary> 
+        /// Condição para Emissão da Papeleta de Cobrança
+        /// 1 = Banco emite e Processa o registro. 2 = Cliente emite e o Banco somente processa o registro
+        /// </summary>        
+        public bool ApenasRegistrar
+        {
+            get { return _apenasRegistrar; }
+            set { _apenasRegistrar = value; }
+        }
 
 		/// <summary> 
 		/// Recupera o valor da moeda 
