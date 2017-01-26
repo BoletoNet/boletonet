@@ -32,7 +32,7 @@ namespace BoletoNet
         /// </summary>
         public string CalcularDigitoNossoNumero(Boleto boleto)
         {
-            return Mod11Bradesco(boleto.Carteira + boleto.NossoNumero, 7);
+            return Mod11Bradesco(boleto.Carteira + Utils.FitStringLength(boleto.NossoNumero, 11, 11, '0', 0, true, true, true), 7);
         }
 
         #region IBanco Members

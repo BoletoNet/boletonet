@@ -509,6 +509,73 @@ namespace BoletoNet
             }
         }
 
+        /// <summary>
+        /// Verifica o código do motivo da rejeição informada pelo banco
+        /// </summary>
+        public string MotivoRejeicao(string codigo)
+        {
+            switch (codigo)
+            {
+                case "03": return "03-AG. COBRADORA - CEP SEM ATENDIMENTO DE PROTESTO NO MOMENTO";
+                case "04": return "04-ESTADO - SIGLA DO ESTADO INVÁLIDA";
+                case "05": return "05-DATA VENCIMENTO - PRAZO DA OPERAÇÃO MENOR QUE PRAZO MÍNIMO OU MAIOR QUE O MÁXIMO";
+                case "07": return "07-VALOR DO TÍTULO - VALOR DO TÍTULO MAIOR QUE 10.000.000,00";
+                case "08": return "08-NOME DO PAGADOR - NÃO INFORMADO OU DESLOCADO";
+                case "09": return "09-AGENCIA/CONTA - AGÊNCIA ENCERRADA";
+                case "10": return "10-LOGRADOURO - NÃO INFORMADO OU DESLOCADO";
+                case "11": return "11-CEP - CEP NÃO NUMÉRICO OU CEP INVÁLIDO";
+                case "12": return "12-SACADOR / AVALISTA - NOME NÃO INFORMADO OU DESLOCADO (BANCOS CORRESPONDENTES)";
+                case "13": return "13-ESTADO/CEP - CEP INCOMPATÍVEL COM A SIGLA DO ESTADO";
+                case "14": return "14-NOSSO NÚMERO - NOSSO NÚMERO JÁ REGISTRADO NO CADASTRO DO BANCO OU FORA DA FAIXA";
+                case "15": return "15-NOSSO NÚMERO - NOSSO NÚMERO EM DUPLICIDADE NO MESMO MOVIMENTO";
+                case "18": return "18-DATA DE ENTRADA - DATA DE ENTRADA INVÁLIDA PARA OPERAR COM ESTA CARTEIRA";
+                case "19": return "19-OCORRÊNCIA - OCORRÊNCIA INVÁLIDA";
+                case "21": return "21-AG. COBRADORA - CARTEIRA NÃO ACEITA DEPOSITÁRIA CORRESPONDENTE ESTADO DA AGÊNCIA DIFERENTE DO ESTADO DO PAGADOR AG. COBRADORA NÃO CONSTA NO CADASTRO OU ENCERRANDO";
+                case "22": return "22-CARTEIRA - CARTEIRA NÃO PERMITIDA (NECESSÁRIO CADASTRAR FAIXA LIVRE)";
+                case "26": return "26-AGÊNCIA/CONTA - AGÊNCIA/CONTA NÃO LIBERADA PARA OPERAR COM COBRANÇA";
+                case "27": return "27-CNPJ INAPTO - CNPJ DO BENEFICIÁRIO INAPTO DEVOLUÇÃO DE TÍTULO EM GARANTIA";
+                case "29": return "29-CÓDIGO EMPRESA - CATEGORIA DA CONTA INVÁLIDA";
+                case "30": return "30-ENTRADA BLOQUEADA - ENTRADAS BLOQUEADAS, CONTA SUSPENSA EM COBRANÇA";
+                case "31": return "31-AGÊNCIA/CONTA - CONTA NÃO TEM PERMISSÃO PARA PROTESTAR (CONTATE SEU GERENTE)";
+                case "35": return "35-VALOR DO IOF - IOF MAIOR QUE 5%";
+                case "36": return "36-QTDADE DE MOEDA - QUANTIDADE DE MOEDA INCOMPATÍVEL COM VALOR DO TÍTULO";
+                case "37": return "37-CNPJ/CPF DO PAGADOR - NÃO NUMÉRICO OU IGUAL A ZEROS";
+                case "42": return "42-NOSSO NÚMERO - NOSSO NÚMERO FORA DE FAIXA";
+                case "52": return "52-AG. COBRADORA - EMPRESA NÃO ACEITA BANCO CORRESPONDENTE";
+                case "53": return "53-AG. COBRADORA - EMPRESA NÃO ACEITA BANCO CORRESPONDENTE - COBRANÇA MENSAGEM";
+                case "54": return "54-DATA DE VENCTO - BANCO CORRESPONDENTE - TÍTULO COM VENCIMENTO INFERIOR A 15 DIAS";
+                case "55": return "55-DEP/BCO CORRESP - CEP NÃO PERTENCE À DEPOSITÁRIA INFORMADA";
+                case "56": return "56-DT VENCTO/BCO CORRESP - VENCTO SUPERIOR A 180 DIAS DA DATA DE ENTRADA";
+                case "57": return "57-DATA DE VENCTO - CEP SÓ DEPOSITÁRIA BCO DO BRASIL COM VENCTO INFERIOR A 8 DIAS";
+                case "60": return "60-ABATIMENTO - VALOR DO ABATIMENTO INVÁLIDO";
+                case "61": return "61-JUROS DE MORA - JUROS DE MORA MAIOR QUE O PERMITIDO";
+                case "62": return "62-DESCONTO - VALOR DO DESCONTO MAIOR QUE VALOR DO TÍTULO";
+                case "63": return "63-DESCONTO DE ANTECIPAÇÃO - VALOR DA IMPORTÂNCIA POR DIA DE DESCONTO (IDD) NÃO PERMITIDO";
+                case "64": return "64-DATA DE EMISSÃO - DATA DE EMISSÃO DO TÍTULO INVÁLIDA";
+                case "65": return "65-TAXA FINANCTO - TAXA INVÁLIDA (VENDOR)";
+                case "66": return "66-DATA DE VENCTO - INVALIDA/FORA DE PRAZO DE OPERAÇÃO (MÍNIMO OU MÁXIMO)";
+                case "67": return "67-VALOR/QTIDADE - VALOR DO TÍTULO/QUANTIDADE DE MOEDA INVÁLIDO";
+                case "68": return "68-CARTEIRA - CARTEIRA INVÁLIDA OU NÃO CADASTRADA NO INTERCÂMBIO DA COBRANÇA";
+                case "69": return "69-CARTEIRA - CARTEIRA INVÁLIDA PARA TÍTULOS COM RATEIO DE CRÉDITO";
+                case "70": return "70-AGÊNCIA/CONTA - BENEFICIÁRIO NÃO CADASTRADO PARA FAZER RATEIO DE CRÉDITO";
+                case "78": return "78-AGÊNCIA/CONTA - DUPLICIDADE DE AGÊNCIA/CONTA BENEFICIÁRIA DO RATEIO DE CRÉDITO";
+                case "80": return "80-AGÊNCIA/CONTA - QUANTIDADE DE CONTAS BENEFICIÁRIAS DO RATEIO MAIOR DO QUE O PERMITIDO (MÁXIMO DE 30 CONTAS POR TÍTULO)";
+                case "81": return "81-AGÊNCIA/CONTA - CONTA PARA RATEIO DE CRÉDITO INVÁLIDA / NÃO PERTENCE AO ITAÚ";
+                case "82": return "82-DESCONTO/ABATI-MENTO - DESCONTO/ABATIMENTO NÃO PERMITIDO PARA TÍTULOS COM RATEIO DE CRÉDITO";
+                case "83": return "83-VALOR DO TÍTULO - VALOR DO TÍTULO MENOR QUE A SOMA DOS VALORES ESTIPULADOS PARA RATEIO";
+                case "84": return "84-AGÊNCIA/CONTA - AGÊNCIA/CONTA BENEFICIÁRIA DO RATEIO É A CENTRALIZADORA DE CRÉDITO DO BENEFICIÁRIO";
+                case "85": return "85-AGÊNCIA/CONTA - AGÊNCIA/CONTA DO BENEFICIÁRIO É CONTRATUAL / RATEIO DE CRÉDITO NÃO PERMITIDO";
+                case "86": return "86-TIPO DE VALOR - CÓDIGO DO TIPO DE VALOR INVÁLIDO / NÃO PREVISTO PARA TÍTULOS COM RATEIO DE CRÉDITO";
+                case "87": return "87-AGÊNCIA/CONTA - REGISTRO TIPO 4 SEM INFORMAÇÃO DE AGÊNCIAS/CONTAS BENEFICIÁRIAS DO RATEIO";
+                case "90": return "90-NRO DA LINHA - COBRANÇA MENSAGEM - NÚMERO DA LINHA DA MENSAGEM INVÁLIDO OU QUANTIDADE DE LINHAS EXCEDIDAS";
+                case "97": return "97-SEM MENSAGEM - COBRANÇA MENSAGEM SEM MENSAGEM (SÓ DE CAMPOS FIXOS), PORÉM COM REGISTRO DO TIPO 7 OU 8";
+                case "98": return "98-FLASH INVÁLIDO - REGISTRO MENSAGEM SEM FLASH CADASTRADO OU FLASH INFORMADO DIFERENTE DO CADASTRADO";
+                case "99": return "99-FLASH INVÁLIDO - CONTA DE COBRANÇA COM FLASH CADASTRADO E SEM REGISTRO DE MENSAGEM CORRESPONDENTE";
+                default:
+                    return string.Empty;
+            }
+        }
+
         # endregion
 
         # region Métodos de geração do arquivo remessa
@@ -1560,6 +1627,27 @@ namespace BoletoNet
                 detalhe.NomeSacado = registro.Substring(324, 30);
                 // 354 - 23 brancos
                 detalhe.Erros = registro.Substring(377, 8);
+
+                if (!string.IsNullOrWhiteSpace(detalhe.Erros))
+                {
+                    string detalheErro = detalhe.Erros;
+
+                    var motivo1 = MotivoRejeicao(detalhe.Erros.Substring(0, 2));
+                    var motivo2 = MotivoRejeicao(detalhe.Erros.Substring(2, 2));
+                    var motivo3 = MotivoRejeicao(detalhe.Erros.Substring(4, 2));
+
+                    if (!string.IsNullOrWhiteSpace(motivo1))
+                        detalheErro += " - " + motivo1;
+
+                    if (!string.IsNullOrWhiteSpace(motivo2))
+                        detalheErro += " / " + motivo2;
+
+                    if (!string.IsNullOrWhiteSpace(motivo3))
+                        detalheErro += " / " + motivo3;
+
+                    detalhe.Erros = detalheErro;
+                }
+
                 // 377 - Registros rejeitados ou alegação do sacado
                 // 386 - 7 brancos
 

@@ -45,7 +45,7 @@ namespace BoletoNet
 
                 // Lendo o arquivo
                 linha = stream.ReadLine();
-                banco.LerHeaderRetornoCNAB400(linha);
+                this.HeaderRetorno = banco.LerHeaderRetornoCNAB400(linha);
 
                 // Próxima linha (DETALHE)
                 linha = stream.ReadLine();
