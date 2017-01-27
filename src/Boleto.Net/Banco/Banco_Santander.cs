@@ -725,7 +725,7 @@ namespace BoletoNet
                 _segmentoP += " ";
 
                 //Código de movimento remessa ==> 016 - 017
-                _segmentoP += boleto.Remessa.CodigoOcorrencia;
+                _segmentoP += ObterCodigoDaOcorrencia(boleto);
 
                 //Agência do Cedente ==> 018 –021
                 _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true);

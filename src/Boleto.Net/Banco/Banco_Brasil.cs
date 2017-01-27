@@ -1,6 +1,4 @@
-
 using System;
-using System.Data;
 using System.Globalization;
 using System.Web.UI;
 using BoletoNet.Util;
@@ -1416,12 +1414,15 @@ namespace BoletoNet
         {
             try
             {
+                string _ocorrencia = ObterCodigoDaOcorrencia(boleto);
+
                 string _segmentoP;
                 string _nossoNumero;
 
                 _segmentoP = "00100013";
                 _segmentoP += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);
-                _segmentoP += "P 01";
+                _segmentoP += "P ";
+                _segmentoP += _ocorrencia;
                 _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true);
                 _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoAgencia, 1, 1, '0', 0, true, true, true);
                 _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 12, 12, '0', 0, true, true, true);
@@ -1605,6 +1606,7 @@ namespace BoletoNet
                 throw new Exception("Erro durante a geração do SEGMENTO P DO DETALHE do arquivo de REMESSA.", ex);
             }
         }
+
         public override string GerarDetalheSegmentoQRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
         {
             try

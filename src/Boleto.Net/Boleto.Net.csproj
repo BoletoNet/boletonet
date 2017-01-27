@@ -195,6 +195,7 @@
     <Compile Include="EDI\EDIBasicTypes.cs" />
     <Compile Include="EDI\EDIFile.cs" />
     <Compile Include="Enums\CategoriaLancamento.cs" />
+    <Compile Include="Enums\Extensions.cs" />
     <Compile Include="Enums\IsencaoCpmf.cs" />
     <Compile Include="Enums\TipoComplementoLancamento.cs" />
     <Compile Include="Enums\TipoLancamento.cs" />
@@ -231,7 +232,7 @@
     <Compile Include="Banco\Banco_Sudameris.cs" />
     <Compile Include="Enums\TipoArquivo.cs" />
     <Compile Include="Enums\TipoMovimento.cs" />
-    <Compile Include="Enums\TipoOcorrencia.cs" />
+    <Compile Include="Enums\TipoOcorrenciaRemessa.cs" />
     <Compile Include="Enums\TipoInscricao.cs" />
     <Compile Include="Boleto\Boletos.cs" />
     <Compile Include="Util\Extensions.cs" />

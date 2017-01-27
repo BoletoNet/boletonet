@@ -775,7 +775,7 @@ namespace BoletoNet
                 _segmentoP += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);
                 _segmentoP += "P";
                 _segmentoP += " ";
-                _segmentoP += "01";
+                _segmentoP += ObterCodigoDaOcorrencia(boleto);
                 _segmentoP += "0";
                 _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true);
                 _segmentoP += " ";
