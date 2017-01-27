@@ -841,7 +841,7 @@ namespace BoletoNet
                 _segmentoQ += "Q";
                 _segmentoQ += " ";
 
-                _segmentoQ += "01";
+                _segmentoQ += ObterCodigoDaOcorrencia(boleto);
                 if (boleto.Sacado.CPFCNPJ.Length <= 11)
                     _segmentoQ += "1";
                 else
@@ -889,7 +889,8 @@ namespace BoletoNet
                 _segmentoR += "0001";
                 _segmentoR += "3";
                 _segmentoR += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);
-                _segmentoR += "R 01";
+                _segmentoR += "R ";
+                _segmentoR += ObterCodigoDaOcorrencia(boleto);
                 // Desconto 2
                 _segmentoR += "000000000000000000000000"; //24 zeros
                 // Desconto 3
@@ -1112,10 +1113,8 @@ namespace BoletoNet
                 if (boleto.Moeda == 9)
                     _detalhe += "I"; //O código da carteira só muda para dois tipos, quando a cobrança for em dólar
 
-                if (boleto.Remessa != null) // Identificação da ocorrência - 02 PEDIDO DE BAIXA
-                    _detalhe += boleto.Remessa.CodigoOcorrencia;
-                else
-                    _detalhe += "01"; // Identificação da ocorrência - 01 REMESSA
+                _detalhe += ObterCodigoDaOcorrencia(boleto);
+
                 _detalhe += Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, ' ', 0, true, true, false);
                 _detalhe += boleto.DataVencimento.ToString("ddMMyy");
                 _detalhe += Utils.FitStringLength(boleto.ValorBoleto.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
