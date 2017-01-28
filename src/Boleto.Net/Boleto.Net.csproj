@@ -75,6 +75,7 @@
     <Compile Include="Arquivo\ArquivoRetornoCRB643.cs" />
     <Compile Include="Arquivo\CBR643\DetalheCbr643.cs" />
     <Compile Include="Arquivo\CBR643\TrailerCbr643.cs" />
+    <Compile Include="Arquivo\HeaderRetorno.cs" />
     <Compile Include="Arquivo\DetalheSegmentoERetornoCNAB240.cs" />
     <Compile Include="Arquivo\DetalheSegmentoWRetornoCNAB240.cs" />
     <Compile Include="Arquivo\CBR643\HeaderCbr643.cs" />
