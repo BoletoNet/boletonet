@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using BoletoNet.Util;
+using BoletoNet.Enums;
 
 namespace BoletoNet
 {
@@ -436,6 +437,16 @@ namespace BoletoNet
             {
                 throw new Exception("Erro ao ler header do arquivo de RETORNO / CNAB 400.", ex);
             }
+        }
+
+        /// <summary>
+        /// Obtem o código de ocorrência formatado, utiliza '01' - 'Entrada de titulos como padrão'
+        /// </summary>
+        /// <param name="boleto">Boleto</param>
+        /// <returns>Código da ocorrência</returns>
+        protected string ObterCodigoDaOcorrencia(Boleto boleto)
+        {
+            return boleto.Remessa != null ? Utils.FormatCode(boleto.Remessa.CodigoOcorrencia, 2) : TipoOcorrenciaRemessa.EntradaDeTitulos.Format();
         }
         # endregion
 

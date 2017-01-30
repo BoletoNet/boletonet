@@ -725,7 +725,7 @@ namespace BoletoNet
                 _segmentoP += " ";
 
                 //Código de movimento remessa ==> 016 - 017
-                _segmentoP += boleto.Remessa.CodigoOcorrencia;
+                _segmentoP += ObterCodigoDaOcorrencia(boleto);
 
                 //Agência do Cedente ==> 018 –021
                 _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true);
@@ -918,7 +918,7 @@ namespace BoletoNet
                 _segmentoQ += " ";
 
                 //Código de movimento remessa ==> 016 - 017
-                _segmentoQ += boleto.Remessa.CodigoOcorrencia;
+                _segmentoQ += ObterCodigoDaOcorrencia(boleto);
 
                 if (boleto.Sacado.CPFCNPJ.Length <= 11)
                     //Tipo de inscrição do sacado ==> 018 - 018
@@ -1011,7 +1011,7 @@ namespace BoletoNet
                 _segmentoR += " ";
 
                 //Código de movimento ==> 016 - 017
-                _segmentoR += boleto.Remessa.CodigoOcorrencia;
+                _segmentoR += ObterCodigoDaOcorrencia(boleto);
 
                 if (boleto.OutrosDescontos > 0)
                 {
@@ -1120,7 +1120,7 @@ namespace BoletoNet
                 _segmentoS += " ";
 
                 //Código de movimento ==> 016 - 017
-                _segmentoS += boleto.Remessa.CodigoOcorrencia;
+                _segmentoS += ObterCodigoDaOcorrencia(boleto);
 
                 //Identificação da impressão ==> 018 - 018
                 _segmentoS += "2";
@@ -1319,7 +1319,7 @@ namespace BoletoNet
                 //08 - Alteração do seu Número
                 //09 - Protestar
                 //18 - Sustar protesto
-                _detalhe += Utils.FitStringLength(boleto.Remessa.CodigoOcorrencia, 2, 2, '0', 0, true, true, true);
+                _detalhe += ObterCodigoDaOcorrencia(boleto);
 
                 //Nº do documento ==> 111 - 120
                 _detalhe += Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, ' ', 0, true, true, false);
