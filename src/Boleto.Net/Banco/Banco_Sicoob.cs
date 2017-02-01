@@ -553,7 +553,7 @@ namespace BoletoNet
                 _detalhe.Append(Utils.FitStringLength(boleto.Cedente.NumeroBordero.ToString(), 6, 6, '0', 0, true, true, true)); //Posição 096 a 101
                 _detalhe.Append(new string(' ', 5)); //Posição 102 a 106
                 _detalhe.Append(Utils.FitStringLength(boleto.TipoModalidade, 2, 2, '0', 0, true, true, true));  //Posição 107 a 108
-                _detalhe.Append("01"); //Posição 109 a 110 - REGISTRO DE TITULOS
+                _detalhe.Append(Utils.FitStringLength(boleto.Remessa.CodigoOcorrencia, 2, 2, '0', 0, true, true, true)); //Posição 109 a 110 - (1)REGISTRO DE TITULOS (2)Solicitação de Baixa
                 _detalhe.Append(Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, '0', 0, true, true, true)); //Posição 111 a 120
                 _detalhe.Append(boleto.DataVencimento.ToString("ddMMyy")); //Posição 121 a 126
                 _detalhe.Append(Utils.FitStringLength(boleto.ValorBoleto.ApenasNumeros(), 13, 13, '0', 0, true, true, true)); //Posição 127 a 139 
@@ -610,7 +610,7 @@ namespace BoletoNet
                 detalhe += Utils.FormatCode(numeroRegistro.ToString(), "0", 5, true); //Posição 009 a 013   Número Sequencial
                 detalhe += "P"; //Posição 014 Cód. Segmento do Registro Detalhe: "P"
                 detalhe += " ";  //Posição 015 Uso Exclusivo FEBRABAN/CNAB: Brancos
-                detalhe += "01"; //Posição 016 a 017       '01'  =  Entrada de Títulos
+                detalhe += Utils.FormatCode(boleto.Remessa.CodigoOcorrencia, 2); //Posição 016 a 017       '01'  =  Entrada de Títulos
                 detalhe += Utils.FormatCode(boleto.Cedente.ContaBancaria.Agencia, 5); //Posição 018 a 022     Prefixo da Cooperativa: vide planilha "Capa" deste arquivo
                 detalhe += Utils.FormatCode(boleto.Cedente.ContaBancaria.DigitoAgencia, "0", 1, true);  //Posição 023  Dígito Verificador do Prefixo: vide planilha "Capa" deste arquivo
                 detalhe += Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 12); //Posição 024 a 035 Conta Corrente: vide planilha "Capa" deste arquivo
@@ -622,7 +622,7 @@ namespace BoletoNet
                 detalhe += " ";  //Posição 060 Tipo de Documento: Brancos
                 detalhe += "2";  //Posição 061 "Identificação da Emissão do Boleto: 1=Sicoob Emite 2=Beneficiário Emite TODO:Deivid
                 detalhe += "2";  //Posição 062 "Identificação da distribuição do Boleto: 1=Sicoob Emite 2=Beneficiário Emite TODO:Deivid
-                detalhe += Utils.FormatCode(boleto.NumeroDocumento, 15); //Posição 063 a 075 Número do documento de cobrença. TODO:Deivid
+                detalhe += Utils.FormatCode(boleto.NumeroDocumento, 15); //Posição 063 a 075 Número do documento de cobrança. TODO:Deivid
                 detalhe += Utils.FormatCode(boleto.DataVencimento.ToString("ddMMyyyy"), 8);
                 string valorBoleto = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
                 valorBoleto = Utils.FormatCode(valorBoleto, 15);
