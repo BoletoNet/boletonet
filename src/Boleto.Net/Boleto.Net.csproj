@@ -201,6 +201,8 @@
     <Compile Include="Enums\TipoComplementoLancamento.cs" />
     <Compile Include="Enums\TipoLancamento.cs" />
     <Compile Include="Enums\TipoPessoa.cs" />
+    <Compile Include="Excecoes\BoletoNetException.cs" />
+    <Compile Include="Excecoes\NossoNumeroInvalidoException.cs" />
     <Compile Include="Excecoes\TamanhoNossoNumeroInvalidoException.cs" />
     <Compile Include="Util\BarCodeBase.cs" />
     <Compile Include="BoletoImpressao\BoletoBancario.cs" />

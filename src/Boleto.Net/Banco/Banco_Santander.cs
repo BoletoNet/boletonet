@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Web.UI;
 using BoletoNet.Util;
 using System.Linq;
+using BoletoNet.Excecoes;
 
 [assembly: WebResource("BoletoNet.Imagens.033.jpg", "image/jpg")]
 namespace BoletoNet
@@ -2002,5 +2003,17 @@ namespace BoletoNet
             return vRetorno;
         }
 
+        public override long ObterNossoNumeroSemConvenioOuDigitoVerificador(long convenio, string nossoNumero)
+        {
+            if (string.IsNullOrEmpty(nossoNumero) || nossoNumero.Length != 13)
+                throw new TamanhoNossoNumeroInvalidoException();
+
+            var nossoNumeroSemDV = nossoNumero.Substring(0, 12);
+
+            long numero;
+            if (long.TryParse(nossoNumeroSemDV, out numero))
+                return numero;
+            throw new NossoNumeroInvalidoException();
+        }
     }
 }

@@ -759,5 +759,14 @@ namespace BoletoNet
             return result;
         }
         #endregion Mod
+
+        /// <summary>
+        /// Obtém nosso número sem DV e sem código do Convênio.
+        /// </summary>
+        /// <returns></returns>
+        public virtual long ObterNossoNumeroSemConvenioOuDigitoVerificador(long convenio, string nossoNumero)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

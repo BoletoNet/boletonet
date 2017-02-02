@@ -75,6 +75,7 @@
     <Compile Include="Retorno\ArquivoRetornoCrb643Teste.cs" />
     <Compile Include="EnumExtensionTeste.cs" />
     <Compile Include="AbstractBancoTeste.cs" />
+    <Compile Include="Retorno\NossoNumeroRetornoTeste.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Boleto.Net\Boleto.Net.csproj">
