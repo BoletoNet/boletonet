@@ -647,6 +647,8 @@ namespace BoletoNet.Arquivo
                 LerRetorno(041);
             else if (radioButtonBNB.Checked)
                 LerRetorno(4);
+            else if (radioButtonBancoBrasil.Checked)
+                LerRetorno(1);
         }
 
         private void gerarToolStripMenuItem1_Click(object sender, EventArgs e)

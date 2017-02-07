@@ -1,3 +1,4 @@
+using BoletoNet.Excecoes;
 using BoletoNet.Util;
 using System;
 using System.Text;
@@ -1726,5 +1727,13 @@ namespace BoletoNet
             return vRetorno;
         }
 
+        public override long ObterNossoNumeroSemConvenioOuDigitoVerificador(long convenio, string nossoNumero)
+        {
+            //Itaú não utiliza DV ou convênio com o nosso número.
+            long numero;
+            if (long.TryParse(nossoNumero, out numero))
+                return numero;
+            throw new NossoNumeroInvalidoException();
+        }
     }
 }
