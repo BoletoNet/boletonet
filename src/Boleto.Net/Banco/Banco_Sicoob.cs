@@ -494,10 +494,11 @@ namespace BoletoNet
             {
                 string _detalhe = " ";
 
-                //if (string.IsNullOrEmpty(boleto.NossoNumero))
-                //{
+                //Se o nosso número ainda não foi formatado então formata
+                if (boleto.NossoNumero?.Length <= 7)
+                {
                     FormataNossoNumero(boleto);
-                //}
+                }
 
                 base.GerarDetalheRemessa(boleto, numeroRegistro, tipoArquivo);
 
