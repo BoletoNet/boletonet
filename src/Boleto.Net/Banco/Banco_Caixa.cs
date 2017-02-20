@@ -387,7 +387,7 @@ namespace BoletoNet
             }
             else
             {
-                if(Convert.ToInt64(boleto.NossoNumero).ToString().Length < 10)
+                if (Convert.ToInt64(boleto.NossoNumero).ToString().Length < 10)
                     boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 10);
 
                 if (boleto.NossoNumero.Length != 10)
@@ -1648,7 +1648,7 @@ namespace BoletoNet
             try
             {
                 //Variáveis Locais a serem Implementadas em nível de Config do Boleto...
-                boleto.Remessa.CodigoOcorrencia = "01"; //remessa p/ CAIXA ECONOMICA FEDERAL
+                boleto.Remessa.CodigoOcorrencia = boleto.Remessa.CodigoOcorrencia ?? "01"; //remessa p/ CAIXA ECONOMICA FEDERAL
                 //
                 base.GerarDetalheRemessa(boleto, numeroRegistro, tipoArquivo);
                 //
