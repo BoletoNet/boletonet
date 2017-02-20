@@ -2329,7 +2329,9 @@ namespace BoletoNet
 
                 var enderecoSacadoComNumero = boleto.Sacado.Endereco.End;
                 if (!string.IsNullOrEmpty(boleto?.Sacado?.Endereco?.Numero))
+                {
                     enderecoSacadoComNumero += " " + boleto.Sacado.Endereco.Numero;
+                }
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0275, 040, 0, enderecoSacadoComNumero.ToUpper(), ' '));         //275-314
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0315, 012, 0, boleto.Sacado.Endereco.Bairro.ToUpper(), ' '));   //315-326
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0327, 008, 0, boleto.Sacado.Endereco.CEP, '0'));                //327-334
