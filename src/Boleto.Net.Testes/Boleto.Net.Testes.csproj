@@ -94,6 +94,9 @@
   <ItemGroup>
     <None Include="BancoItau\ArquivoRemessaItau.playlist" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Retorno\" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
