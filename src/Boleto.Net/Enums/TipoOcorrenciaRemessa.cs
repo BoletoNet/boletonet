@@ -38,5 +38,6 @@ namespace BoletoNet
         AlteracaoDeContratoDeCobranca = 44, //Alteração de contrato de cobrança
         NegativacaoSemProtesto = 45, //Negativação Sem Protesto
         SolicitacaoDeBaixaDeTituloNegativadoSemProtesto = 46, //Solicitação de Baixa de Título Negativado Sem Protesto
+        AlteracaoDoValorNominalDoTitulo = 47, //Alteração do Valor Nominal do Título
     }
 }
