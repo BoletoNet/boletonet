@@ -2328,7 +2328,7 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0272, 003, 0, string.Empty, ' '));                              //272-274
 
                 var enderecoSacadoComNumero = boleto.Sacado.Endereco.End;
-                if (!string.IsNullOrEmpty(boleto?.Sacado?.Endereco?.Numero))
+                if (!string.IsNullOrEmpty(boleto.Sacado.Endereco.Numero))
                 {
                     enderecoSacadoComNumero += " " + boleto.Sacado.Endereco.Numero;
                 }
