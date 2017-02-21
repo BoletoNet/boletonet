@@ -115,9 +115,6 @@ namespace BoletoNet
             var valorDocumento = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
             valorDocumento = Utils.FormatCode(valorDocumento, 10);
 
-
-            string CampoZerado = "000";
-
             boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}",
                banco,
                moeda,
@@ -209,7 +206,6 @@ namespace BoletoNet
                 {
                     case TipoArquivo.CNAB240:
                         throw new NotImplementedException("Remessa não implementada!");
-                        break;
                     case TipoArquivo.CNAB400:
                         _header = GerarHeaderRemessaCNAB400(cedente, numeroArquivoRemessa);
                         break;
@@ -238,7 +234,6 @@ namespace BoletoNet
             {
                 case TipoArquivo.CNAB240:
                     throw new NotImplementedException("CNAB240 não implementado!");
-                    break;
                 case TipoArquivo.CNAB400:
                     vRetorno = ValidarRemessaCNAB400(numeroConvenio, banco, cedente, boletos, numeroArquivoRemessa, out vMsg);
                     break;
@@ -265,7 +260,6 @@ namespace BoletoNet
                 {
                     case TipoArquivo.CNAB240:
                         throw new NotImplementedException("Remessa não implementada!");
-                        break;
                     case TipoArquivo.CNAB400:
                         _detalhe = GerarDetalheRemessaCNAB400(boleto, numeroRegistro, tipoArquivo);
                         break;
@@ -309,7 +303,6 @@ namespace BoletoNet
                 {
                     case TipoArquivo.CNAB240:
                         throw new NotImplementedException("Remessa não implementada!");
-                        break;
                     case TipoArquivo.CNAB400:
                         _trailer = GerarTrailerRemessa400(numeroRegistro, 0);
                         break;
@@ -353,14 +346,12 @@ namespace BoletoNet
             {
                 case "4"://Cobranca Simples - Boleto Emitido Pelo Cliente 
                     return "21";
-                    break;
                 case "5"://Cobranca Vinculada - Boleto Emitido Pelo Cliente
                     return "41";
                 case "6"://Cobranca Caucionada - Boleto Emitido Pelo Cliente
                     return "31";
                 case "I"://Cobranca Simplificada(Sem Registro)
                     return "51";
-                    break;
 
                 //Caso esteja usando o tipo de operacao
                 case "21":
@@ -368,11 +359,8 @@ namespace BoletoNet
                 case "31":
                 case "51":
                     return carteira;
-                    break;
-
                 default:
                     throw new Exception("Carteira nao implementada");
-                    break;
             }
 
         }
@@ -384,17 +372,14 @@ namespace BoletoNet
             {
                 case "21"://Cobranca Simples - Boleto Emitido Pelo Cliente 
                     return "4";
-                    break;
                 case "41"://Cobranca Vinculada - Boleto Emitido Pelo Cliente
                     return "5";
                 case "31"://Cobranca Caucionada - Boleto Emitido Pelo Cliente
                     return "6";
                 case "51"://Cobranca Simplificada(Sem Registro)
                     return "I";
-                    break;
                 default:
                     throw new Exception("Codigo de Operacao nao implementado!");
-                    break;
             }
 
         }
@@ -505,7 +490,7 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0150, 001, 0, boleto.Aceite, ' '));                             //150-150
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAA___________, 0151, 006, 0, boleto.DataProcessamento, ' '));                  //151-156
                 string vInstrucao = "00";
-                if (!(boleto.Instrucoes == null || boleto.Instrucoes.Count == 0 || boleto.Instrucoes[0].Codigo == null))
+                if (!(boleto.Instrucoes == null || boleto.Instrucoes.Count == 0))
                     vInstrucao = boleto.Instrucoes[0].Codigo.ToString();
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0157, 004, 0, vInstrucao, '0'));                               //157-160
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0161, 013, 2, boleto.JurosMora, '0'));                         //161-173

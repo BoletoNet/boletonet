@@ -1199,7 +1199,6 @@ namespace BoletoNet
                 {
                     case TipoArquivo.CNAB240:
                         throw new Exception("Mensagem Variavel nao existe para o tipo CNAB 240.");
-                        break;
                     case TipoArquivo.CNAB400:
                         _detalhe = GerarMensagemVariavelRemessaCNAB400(boleto, ref numeroRegistro, tipoArquivo);
                         break;
