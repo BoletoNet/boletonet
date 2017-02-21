@@ -71,9 +71,15 @@ namespace BoletoNet
 			if (boleto.DataDocumento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 boleto.DataDocumento = DateTime.Now;
 
+            string infoFormatoCodigoCedente = "formato AAAAPPCCCCC, onde: AAAA = Número da agência, PP = Posto do beneficiário, CCCCC = Código do beneficiário";
+
             if (string.IsNullOrEmpty(boleto.Cedente.Codigo))
-                throw new BoletoNetException("Código do cedente deve ser informado.");
-            
+                throw new BoletoNetException("Código do cedente deve ser informado, " + infoFormatoCodigoCedente);
+            else if (boleto.Cedente.ContaBancaria != null && 
+                (!boleto.Cedente.Codigo.StartsWith(boleto.Cedente.ContaBancaria.Agencia) ||
+                (!boleto.Cedente.Codigo.EndsWith(boleto.Cedente.ContaBancaria.Conta))))
+                throw new BoletoNetException("Código do cedente deve estar no " + infoFormatoCodigoCedente);
+
             if (string.IsNullOrEmpty(boleto.Carteira))
                 throw new BoletoNetException("Tipo de carteira é obrigatório. " + ObterInformacoesCarteirasDisponiveis());
             else if (!CarteiraValida(boleto.Carteira))
@@ -567,12 +573,10 @@ namespace BoletoNet
 
         public string DigNossoNumeroSicredi(Boleto boleto)
         {
-            string agencia = boleto.Cedente.ContaBancaria.Agencia;    //código da cooperativa de crédito/agência beneficiária (aaaa)
-            string posto = boleto.Cedente.ContaBancaria.OperacaConta; //código do posto beneficiário (pp)
-            string cedente = boleto.Cedente.Codigo;                   //código do beneficiário (ccccc)
+            string codigoCedente = boleto.Cedente.Codigo;                   //código do beneficiário aaaappccccc
             string nossoNumero = boleto.NossoNumero;                  //ano atual (yy), indicador de geração do nosso número (b) e o número seqüencial do beneficiário (nnnnn);
 
-            string seq = string.Concat(agencia, posto, cedente, nossoNumero); // = aaaappcccccyybnnnnn
+            string seq = string.Concat(codigoCedente, nossoNumero); // = aaaappcccccyybnnnnn
             /* Variáveis
              * -------------
              * d - Dígito
@@ -765,24 +769,8 @@ namespace BoletoNet
 
         public string GerarDetalheRemessaCNAB400(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
         {
-            string _detalhe = string.Empty;
-            //Variáveis Locais a serem Implementadas em nível de Config do Boleto...
-            //boleto.Remessa.CodigoOcorrencia = "01"; //remessa p/ bANRISUL
-            //
             base.GerarDetalheRemessa(boleto, numeroRegistro, tipoArquivo);
-            //
-            //Redireciona para o Detalhe da remessa Conforme o "Tipo de Documento" = "Tipo de Cobrança do CNAB400":
-            //  A = 'A' - SICREDI com Registro
-            // C1 = 'C' - SICREDI sem Registro Impressão Completa pelo Sicredi
-            // C2 = 'C' - SICREDI sem Registro Pedido de bloquetos pré-impressos
-            if (boleto.Remessa.TipoDocumento.Equals("A"))
-                _detalhe = GerarDetalheRemessaCNAB400_A(boleto, numeroRegistro, tipoArquivo);
-            else if (boleto.Remessa.TipoDocumento.Equals("C1"))
-                _detalhe = GerarDetalheRemessaCNAB400_C1(boleto, numeroRegistro, tipoArquivo);
-            else if (boleto.Remessa.TipoDocumento.Equals("C2"))
-                _detalhe = GerarDetalheRemessaCNAB400_C2(boleto, numeroRegistro, tipoArquivo);
-
-            return _detalhe;
+            return GerarDetalheRemessaCNAB400_A(boleto, numeroRegistro, tipoArquivo);
         }
         public string GerarDetalheRemessaCNAB400_A(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
         {
@@ -897,20 +885,7 @@ namespace BoletoNet
                 throw new Exception("Erro ao gerar DETALHE do arquivo CNAB400.", ex);
             }
         }
-        public string GerarDetalheRemessaCNAB400_C1(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
-        {
-            //TODO
-            string _detalhe = String.Empty;
-            //
-            return _detalhe;
-        }
-        public string GerarDetalheRemessaCNAB400_C2(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
-        {
-            //TODO
-            string _detalhe = String.Empty;
-            //
-            return _detalhe;
-        }
+        
         public string GerarTrailerRemessa400(int numeroRegistro,  Cedente cedente)
         {
             try
