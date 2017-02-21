@@ -3,6 +3,9 @@ using System.Web.UI;
 using BoletoNet.Util;
 using System.Text;
 using BoletoNet.EDI.Banco;
+using BoletoNet.Excecoes;
+using System.Collections.Generic;
+using System.Linq;
 
 [assembly: WebResource("BoletoNet.Imagens.748.jpg", "image/jpg")]
 namespace BoletoNet
@@ -12,6 +15,10 @@ namespace BoletoNet
     /// </Author>
     internal class Banco_Sicredi : AbstractBanco, IBanco
     {
+        private static Dictionary<int, string> carteirasDisponiveis = new Dictionary<int, string>() {
+            { 1, "Com Registro" },
+            { 3, "Sem Registro" }
+        };
 
         /// <author>
         /// Classe responsavel em criar os campos do Banco Sicredi.
@@ -64,15 +71,35 @@ namespace BoletoNet
 			if (boleto.DataDocumento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 boleto.DataDocumento = DateTime.Now;
 
-            /* Comentado por sidneiklein pois a Carteira terá que vir preenchida pela classe, e não ser manipulada dentro da Boleto.DLL; 04/11/2013
-            if (RegistroByCarteira(boleto))
-                boleto.Carteira = "1";
-            else
-                boleto.Carteira = "3";
-            */
+            if (string.IsNullOrEmpty(boleto.Cedente.Codigo))
+                throw new BoletoNetException("Código do cedente deve ser informado.");
+            
+            if (string.IsNullOrEmpty(boleto.Carteira))
+                throw new BoletoNetException("Tipo de carteira é obrigatório. " + ObterInformacoesCarteirasDisponiveis());
+            else if (!CarteiraValida(boleto.Carteira))
+                throw new BoletoNetException("Carteira informada é inválida. Informe " + ObterInformacoesCarteirasDisponiveis());
+
             FormataCodigoBarra(boleto);
+            if (boleto.CodigoBarra.Codigo.Length != 44)
+                throw new BoletoNetException("Código de barras é inválido");
+
             FormataLinhaDigitavel(boleto);
             FormataNossoNumero(boleto);
+        }
+
+        private string ObterInformacoesCarteirasDisponiveis()
+        {
+            return string.Join(", ", carteirasDisponiveis.Select(o => string.Format("“{0}” – {1}", o.Key, o.Value)));
+        }
+
+        private bool CarteiraValida(string carteira)
+        {
+            int tipoCarteira;
+            if (int.TryParse(carteira, out tipoCarteira))
+            {
+                return carteirasDisponiveis.ContainsKey(tipoCarteira);
+            }
+            return false;
         }
 
         public override void FormataNossoNumero(Boleto boleto)
@@ -117,35 +144,51 @@ namespace BoletoNet
             string valorBoleto = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
             valorBoleto = Utils.FormatCode(valorBoleto, 10);
 
-            string cmp_livre =  boleto.Carteira + "1" + boleto.NossoNumero + boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.OperacaConta + boleto.Cedente.Codigo + "10";
+            var codigoCobranca = 1; //Código de cobrança com registro
+            string cmp_livre =
+                codigoCobranca +
+                boleto.Carteira +
+                Utils.FormatCode(boleto.NossoNumero, 9) +
+                Utils.FormatCode(boleto.Cedente.Codigo, 11) + "10";
+
             string dv_cmpLivre = digSicredi(cmp_livre).ToString();
 
-            boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}{5}", Utils.FormatCode(Codigo.ToString(), 3), boleto.Moeda, FatorVencimento(boleto), valorBoleto, cmp_livre, digSicredi(cmp_livre).ToString());
-
+            var codigoTemp = GerarCodigoDeBarras(boleto, valorBoleto, cmp_livre, dv_cmpLivre);
             int _dacBoleto = digSicredi(boleto.CodigoBarra.Codigo);
-
+            
             if (_dacBoleto == 0 || _dacBoleto > 9)
                 _dacBoleto = 1;
 
-
-            boleto.CodigoBarra.Codigo = Strings.Left(boleto.CodigoBarra.Codigo, 4) + _dacBoleto + Strings.Right(boleto.CodigoBarra.Codigo, 39);
+            boleto.CodigoBarra.Codigo = GerarCodigoDeBarras(boleto, valorBoleto, cmp_livre, dv_cmpLivre, _dacBoleto);
         }
 
-        public bool RegistroByCarteira(Boleto boleto)
+        private string GerarCodigoDeBarras(Boleto boleto, string valorBoleto, string cmp_livre, string dv_cmpLivre, int? dv_geral = null)
         {
-            bool valida = false;
-            if (boleto.Carteira == "112"
-                || boleto.Carteira == "115"
-                || boleto.Carteira == "104"
-                || boleto.Carteira == "147"
-                || boleto.Carteira == "188"
-                || boleto.Carteira == "108"
-                || boleto.Carteira == "109"
-                || boleto.Carteira == "150"
-                || boleto.Carteira == "121")
-                valida = true;
-            return valida;
+            return string.Format("{0}{1}{2}{3}{4}{5}{6}",
+                Utils.FormatCode(Codigo.ToString(), 3),
+                boleto.Moeda,
+                dv_geral.HasValue ? dv_geral.Value.ToString() : string.Empty,
+                FatorVencimento(boleto),
+                valorBoleto,
+                cmp_livre,
+                dv_cmpLivre);
         }
+
+        //public bool RegistroByCarteira(Boleto boleto)
+        //{
+        //    bool valida = false;
+        //    if (boleto.Carteira == "112"
+        //        || boleto.Carteira == "115"
+        //        || boleto.Carteira == "104"
+        //        || boleto.Carteira == "147"
+        //        || boleto.Carteira == "188"
+        //        || boleto.Carteira == "108"
+        //        || boleto.Carteira == "109"
+        //        || boleto.Carteira == "150"
+        //        || boleto.Carteira == "121")
+        //        valida = true;
+        //    return valida;
+        //}
 
         #region Métodos de Geração do Arquivo de Remessa
         public override string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
