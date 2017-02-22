@@ -4,6 +4,8 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading;
 
 namespace Boleto.Net.Testes.BancoSicredi
 {
@@ -33,35 +35,69 @@ namespace Boleto.Net.Testes.BancoSicredi
             {
                 Debug.WriteLine(e.Linha);
             };
-            byte[] arquivo;
+
             using (var stream = new MemoryStream())
             {                
-                arquivoRemessa.GerarArquivoRemessa("8120683004", banco, cedente, itensRemessa, stream, 1);
-                arquivo = stream.ToArray();
+                arquivoRemessa.GerarArquivoRemessa("08111081111", banco, cedente, itensRemessa, stream, 1);
+                var conteudo = Encoding.ASCII.GetString(stream.ToArray());
+                Debug.WriteLine(conteudo);
             }
         }
 
         private static BoletoBancario GerarBoleto()
         {
+            Thread.Sleep(500);
             DateTime vencimento = DateTime.Now.AddDays(5);
 
             var agencia = "0811";
             var conta = "81111";
 
-            var cedente = new Cedente("00.000.000/0000-00", "Empresa Teste", agencia, string.Empty, conta, "0");
+            var cedente = new Cedente("35.683.343/0001-82", "Empresa Teste", agencia, string.Empty, conta, "0");
             cedente.Codigo = "08111081111";
+            
+            BoletoNet.Boleto boleto = new BoletoNet.Boleto(vencimento, GerarValor(), "1", GerarNossoNumero(), cedente);
 
-            BoletoNet.Boleto boleto = new BoletoNet.Boleto(vencimento, 722.71M, "1", "17200096", cedente);
-
-            boleto.NumeroDocumento = "901900-069";
+            boleto.NumeroDocumento = GerarNumero();
             boleto.DataDocumento = DateTime.Now.AddDays(-15);
+            boleto.DataProcessamento = DateTime.Now;
+
+            boleto.Remessa = new Remessa(TipoOcorrenciaRemessa.EntradaDeTitulos);
+            //boleto.EspecieDocumento = new EspecieDocumento_Sicredi("A");
+
+            boleto.Sacado = new Sacado("87425264188", "Sacado teste", new Endereco()
+            {
+                CEP = "78945612",
+                Cidade = "Teste",
+                End = "End teste",
+            });
 
             var boletoBancario = new BoletoBancario();
-
             boletoBancario.CodigoBanco = 748;
-
             boletoBancario.Boleto = boleto;
+
             return boletoBancario;
+        }
+
+        private static decimal GerarValor()
+        {
+            Random r = new Random();
+            int rInt = r.Next(0, 100);
+            int range = 100;
+            return Convert.ToDecimal(r.NextDouble() * range);
+        }
+
+        private static string GerarNumero()
+        {
+            var rnd = new Random(DateTime.Now.Millisecond);
+            return rnd.Next(0, 99999).ToString();
+        }
+
+        private static string GerarNossoNumero()
+        {
+            var prefix = DateTime.Now.Year.ToString().Substring(2) + "20";
+
+            var rnd = new Random(DateTime.Now.Millisecond);
+            return prefix + rnd.Next(0, 9999).ToString();
         }
     }
 }

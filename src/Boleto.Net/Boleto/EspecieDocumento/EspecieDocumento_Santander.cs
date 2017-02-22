@@ -180,6 +180,11 @@ namespace BoletoNet
             return especiesDocumento;
         }
 
+        public override IEspecieDocumento DuplicataMercantil()
+        {
+            return new EspecieDocumento_Santander(getCodigoEspecieByEnum(EnumEspecieDocumento_Santander.DuplicataMercantil));
+        }
+
         #endregion
     }
 }

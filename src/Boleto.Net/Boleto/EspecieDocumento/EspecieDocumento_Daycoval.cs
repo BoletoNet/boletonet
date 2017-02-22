@@ -12,7 +12,11 @@ namespace BoletoNet
 
 	public class EspecieDocumento_Daycoval : AbstractEspecieDocumento, IEspecieDocumento
 	{
-		#region Constructors and Destructors
+        #region Constructors and Destructors
+
+        public EspecieDocumento_Daycoval()
+        {
+        }
 
 		public EspecieDocumento_Daycoval(string codigo)
 		{
@@ -108,6 +112,11 @@ namespace BoletoNet
 			}
 		}
 
-		#endregion
-	}
+        public override IEspecieDocumento DuplicataMercantil()
+        {
+            return new EspecieDocumento_Daycoval(RetornaCodigoEspecie(EnumEspecieDocumento_Daycoval.DuplicataMercantil));
+        }
+
+        #endregion
+    }
 }
