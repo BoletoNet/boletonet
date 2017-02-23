@@ -74,11 +74,13 @@ namespace BoletoNet
 
             string infoFormatoCodigoCedente = "formato AAAAPPCCCCC, onde: AAAA = Número da agência, PP = Posto do beneficiário, CCCCC = Código do beneficiário";
 
-            if (string.IsNullOrEmpty(boleto.Cedente.Codigo))
+            var codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo, 11);
+
+            if (string.IsNullOrEmpty(codigoCedente))
                 throw new BoletoNetException("Código do cedente deve ser informado, " + infoFormatoCodigoCedente);
             else if (boleto.Cedente.ContaBancaria != null && 
-                (!boleto.Cedente.Codigo.StartsWith(boleto.Cedente.ContaBancaria.Agencia) ||
-                (!boleto.Cedente.Codigo.EndsWith(boleto.Cedente.ContaBancaria.Conta))))
+                (!codigoCedente.StartsWith(boleto.Cedente.ContaBancaria.Agencia) ||
+                (!codigoCedente.EndsWith(boleto.Cedente.ContaBancaria.Conta))))
                 throw new BoletoNetException("Código do cedente deve estar no " + infoFormatoCodigoCedente);
 
             if (string.IsNullOrEmpty(boleto.Carteira))
@@ -91,7 +93,7 @@ namespace BoletoNet
                 throw new BoletoNetException("Código de barras é inválido");
 
             FormataLinhaDigitavel(boleto);
-            FormataNossoNumero(boleto);
+            //FormataNossoNumero(boleto);
         }
 
         private string ObterInformacoesCarteirasDisponiveis()
@@ -802,8 +804,12 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0019, 001, 0, CodJuros, ' '));                                  //019-019  Tipo de juros: 'A' - VALOR / 'B' PERCENTUAL
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0020, 028, 0, string.Empty, ' '));                              //020-047
                 #region Nosso Número + DV
-                boleto.DigitoNossoNumero = DigNossoNumeroSicredi(boleto);
-                string vAuxNossoNumeroComDV = boleto.NossoNumero + boleto.DigitoNossoNumero;
+                string vAuxNossoNumeroComDV = boleto.NossoNumero;
+                if (string.IsNullOrEmpty(boleto.DigitoNossoNumero) || boleto.NossoNumero.Length < 9)
+                {
+                    boleto.DigitoNossoNumero = DigNossoNumeroSicredi(boleto); 
+                    vAuxNossoNumeroComDV = boleto.NossoNumero + boleto.DigitoNossoNumero;
+                }
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0048, 009, 0, vAuxNossoNumeroComDV, '0'));                      //048-056
                 #endregion
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0057, 006, 0, string.Empty, ' '));                              //057-062
