@@ -415,22 +415,15 @@ namespace BoletoNet
                 header.LiteralRetorno = registro.Substring(002, 7);
                 header.CodigoServico = Utils.ToInt32(registro.Substring(009, 2));
                 header.LiteralServico = registro.Substring(011, 15);
-                header.Agencia = Utils.ToInt32(registro.Substring(026, 4));
-                header.ComplementoRegistro1 = Utils.ToInt32(registro.Substring(030, 2));
-                header.Conta = Utils.ToInt32(registro.Substring(032, 5));
-                header.DACConta = Utils.ToInt32(registro.Substring(037, 1));
-                header.ComplementoRegistro2 = registro.Substring(038, 8);
-                header.NomeEmpresa = registro.Substring(046, 30);
+                header.Agencia = Utils.ToInt32(registro.Substring(026, 5));
+                header.ComplementoRegistro2 = registro.Substring(031, 14);
                 header.CodigoBanco = Utils.ToInt32(registro.Substring(076, 3));
                 header.NomeBanco = registro.Substring(079, 15);
-                header.DataGeracao = Utils.ToDateTime(Utils.ToInt32(registro.Substring(094, 6)).ToString("##-##-##"));
-                header.Densidade = Utils.ToInt32(registro.Substring(100, 5));
-                header.UnidadeDensidade = registro.Substring(105, 3);
-                header.NumeroSequencialArquivoRetorno = Utils.ToInt32(registro.Substring(108, 5));
-                header.DataCredito = Utils.ToDateTime(Utils.ToInt32(registro.Substring(113, 6)).ToString("##-##-##"));
-                header.ComplementoRegistro3 = registro.Substring(119, 275);
+                header.DataGeracao = Utils.ToDateTime(Utils.ToInt32(registro.Substring(094, 8)).ToString("##-##-##"));
+                header.NumeroSequencialArquivoRetorno = Utils.ToInt32(registro.Substring(110, 7));
+                header.Versao = registro.Substring(390, 5);
                 header.NumeroSequencial = Utils.ToInt32(registro.Substring(394, 6));
-
+                
                 return header;
             }
             catch (Exception ex)
