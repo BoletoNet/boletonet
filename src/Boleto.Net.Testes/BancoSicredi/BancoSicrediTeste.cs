@@ -10,17 +10,21 @@ using System.Threading;
 namespace Boleto.Net.Testes.BancoSicredi
 {
     [TestClass]
+    [DeploymentItem(@"BancoSicredi\RetornoSicredi.txt", "BancoSicredi")]
     public class BancoSicrediTeste
     {
+        const string arquivoRemessa = @"BancoSicredi\RetornoSicredi.txt";
+
         [TestMethod]
-        public void ValidarBoleto()
+        public void BancoSicredi_ValidarBoleto()
         {
             BoletoBancario boletoBancario = GerarBoleto();
             boletoBancario.Boleto.Valida();
         }
 
+        #region Gerar remessa
         [TestMethod]
-        public void GerarRemessaCNAB400()
+        public void BancoSicredi_GerarRemessaCNAB400()
         {
             var boletos = Enumerable.Range(0, 3).Select(o => GerarBoleto());
 
@@ -37,7 +41,7 @@ namespace Boleto.Net.Testes.BancoSicredi
             };
 
             using (var stream = new MemoryStream())
-            {                
+            {
                 arquivoRemessa.GerarArquivoRemessa("08111081111", banco, cedente, itensRemessa, stream, 1);
                 var conteudo = Encoding.ASCII.GetString(stream.ToArray());
                 Debug.WriteLine(conteudo);
@@ -54,7 +58,7 @@ namespace Boleto.Net.Testes.BancoSicredi
 
             var cedente = new Cedente("35.683.343/0001-82", "Empresa Teste", agencia, string.Empty, conta, "0");
             cedente.Codigo = "08111081111";
-            
+
             BoletoNet.Boleto boleto = new BoletoNet.Boleto(vencimento, GerarValor(), "1", GerarNossoNumero(), cedente);
 
             boleto.NumeroDocumento = GerarNumero();
@@ -98,6 +102,25 @@ namespace Boleto.Net.Testes.BancoSicredi
 
             var rnd = new Random(DateTime.Now.Millisecond);
             return prefix + rnd.Next(0, 9999).ToString();
+        }
+        #endregion
+        
+        [TestMethod]
+        public void BancoSicredi_Caminho_Arquivo_Retorno()
+        {
+            Assert.IsTrue(File.Exists(arquivoRemessa), new FileNotFoundException().Message);
+        }
+
+        [TestMethod]
+        public void BancoSicredi_Ler_Retorno()
+        {
+            var banco = new Banco(748);
+
+            var retorno = new ArquivoRetornoCNAB400();
+            using (FileStream fs = File.Open(arquivoRemessa, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                retorno.LerArquivoRetorno(banco, fs);
+            }
         }
     }
 }
