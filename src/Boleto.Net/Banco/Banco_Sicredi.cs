@@ -1032,5 +1032,14 @@ namespace BoletoNet
 
         #endregion
 
+        public override long ObterNossoNumeroSemConvenioOuDigitoVerificador(long convenio, string nossoNumero)
+        {
+            long num;
+            if (nossoNumero.Length >= 8 && long.TryParse(nossoNumero.Substring(0, 8), out num))
+            {
+                return num;
+            }
+            throw new BoletoNetException("Nosso número é inválido!");
+        }
     }
 }
