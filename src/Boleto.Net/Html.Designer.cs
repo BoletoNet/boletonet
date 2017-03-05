@@ -506,12 +506,12 @@ namespace BoletoNet {
         ///						&lt;td class=&quot;w180&quot;&gt;(=) Valor documento&lt;/td&gt;
         ///				&lt;/tr&gt;
         ///				&lt;tr class=&quot;cp h12 rBb&quot;&gt;
-        ///						&lt;td&gt;&amp;nbsp;&lt;/td&gt;
+        ///						&lt;td&gt;@USODOBANCO&lt;/td&gt;
         ///						&lt;td class=&quot;Al&quot;&gt;@CARTEIRA&lt;/td&gt;
         ///						&lt;td class=&quot;Al&quot;&gt;@ESPECIE&lt;/td&gt;
         ///						&lt;td&gt;@QUANTIDADE&lt;/td&gt;
         ///						&lt;td&gt;@VALORDOCUMENTO&lt;/td&gt;
-        ///						&lt;td class=&quot;Ar&quot;&gt;@=VALO [rest of string was truncated]&quot;;.
+        ///						&lt;td class=&quot;Ar&quot;&gt;@ [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReciboCedenteParte5 {
             get {
