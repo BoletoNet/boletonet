@@ -36,7 +36,6 @@ namespace BoletoNet
             //Formata o tamanho do número da agência
             if (boleto.Cedente.ContaBancaria.Agencia.Length < 4)
                 boleto.Cedente.ContaBancaria.Agencia = Utils.FormatCode(boleto.Cedente.ContaBancaria.Agencia, 4);
-            
 
             //Formata o tamanho do número da conta corrente
             if (boleto.Cedente.ContaBancaria.Conta.Length < 5)
@@ -163,7 +162,13 @@ namespace BoletoNet
             string dv_cmpLivre = digSicredi(cmp_livre).ToString();
 
             var codigoTemp = GerarCodigoDeBarras(boleto, valorBoleto, cmp_livre, dv_cmpLivre);
-            int _dacBoleto = digSicredi(boleto.CodigoBarra.Codigo);
+
+            boleto.CodigoBarra.CampoLivre = cmp_livre;
+            boleto.CodigoBarra.FatorVencimento = FatorVencimento(boleto);
+            boleto.CodigoBarra.Moeda = 9;
+            boleto.CodigoBarra.ValorDocumento = valorBoleto;
+
+            int _dacBoleto = digSicredi(codigoTemp);
             
             if (_dacBoleto == 0 || _dacBoleto > 9)
                 _dacBoleto = 1;
