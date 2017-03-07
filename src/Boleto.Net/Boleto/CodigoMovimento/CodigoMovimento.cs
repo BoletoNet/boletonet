@@ -1,6 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
+using BoletoNet.Enums;
 
 namespace BoletoNet
 {
@@ -105,6 +104,9 @@ namespace BoletoNet
                     case 85:
                         _ICodigoMovimento = new CodigoMovimento_Cecred(codigoMovimento);
                         break;
+                    case 748:
+                        _ICodigoMovimento = new CodigoMovimento_Sicredi(codigoMovimento);
+                        break;
                     default:
                         throw new Exception("Código do banco não implementando: " + codigoBanco);
                 }
@@ -115,7 +117,12 @@ namespace BoletoNet
             }
         }
 
-        # endregion
+        public override TipoOcorrenciaRetorno ObterCorrespondenteFebraban()
+        {
+            return _ICodigoMovimento.ObterCorrespondenteFebraban();
+        }
+
+        #endregion
 
     }
 }

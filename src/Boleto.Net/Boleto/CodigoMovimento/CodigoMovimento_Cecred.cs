@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using BoletoNet.Enums;
 
-namespace BoletoNet {
+namespace BoletoNet
+{
     #region Enumerado
 
-    public enum EnumCodigoMovimento_Cecred {
+    public enum EnumCodigoMovimento_Cecred
+    {
         EntradaConfirmada = 2,
         EntradaRejeitada = 3,
         TransferenciaCarteiraEntrada = 4,
@@ -34,33 +36,44 @@ namespace BoletoNet {
 
     #endregion 
 
-    public class CodigoMovimento_Cecred : AbstractCodigoMovimento, ICodigoMovimento {
+    public class CodigoMovimento_Cecred : AbstractCodigoMovimento, ICodigoMovimento
+    {
         #region Construtores 
 
-        public CodigoMovimento_Cecred() {
-            try {
-            } catch (Exception ex) {
+        public CodigoMovimento_Cecred()
+        {
+            try
+            {
+            }
+            catch (Exception ex)
+            {
                 throw new Exception("Erro ao carregar objeto", ex);
             }
         }
 
-        public CodigoMovimento_Cecred(int codigo) {
-            try {
+        public CodigoMovimento_Cecred(int codigo)
+        {
+            try
+            {
                 this.carregar(codigo);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 throw new Exception("Erro ao carregar objeto", ex);
             }
         }
-
         #endregion
 
         #region Metodos Privados
 
-        private void carregar(int codigo) {
-            try {
+        private void carregar(int codigo)
+        {
+            try
+            {
                 this.Banco = new Banco_Brasil();
 
-                switch ((EnumCodigoMovimento_Cecred)codigo) {
+                switch ((EnumCodigoMovimento_Cecred)codigo)
+                {
                     case EnumCodigoMovimento_Cecred.EntradaConfirmada:
                         this.Codigo = (int)EnumCodigoMovimento_Cecred.EntradaConfirmada;
                         this.Descricao = "Entrada confirmada";
@@ -163,14 +176,19 @@ namespace BoletoNet {
                         break;
                 }
 
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 throw new Exception("Erro ao carregar objeto", ex);
             }
         }
 
-        private void Ler(int codigo) {
-            try {
-                switch (codigo) {
+        private void Ler(int codigo)
+        {
+            try
+            {
+                switch (codigo)
+                {
                     case 2:
                         this.Codigo = (int)EnumCodigoMovimento_Cecred.EntradaConfirmada;
                         this.Descricao = "Entrada confirmada";
@@ -192,7 +210,7 @@ namespace BoletoNet {
                         this.Descricao = "Liquidação";
                         break;
                     case 7:
-                        this.Codigo = (int)EnumCodigoMovimento_Cecred.ConfirmacaoRecebimentoDesconto ;
+                        this.Codigo = (int)EnumCodigoMovimento_Cecred.ConfirmacaoRecebimentoDesconto;
                         this.Descricao = "Confirmação do Recebimento da Instrução de Desconto";
                         break;
                     case 8:
@@ -272,12 +290,47 @@ namespace BoletoNet {
                         this.Descricao = "( Selecione )";
                         break;
                 }
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 throw new Exception("Erro ao carregar objeto", ex);
             }
         }
 
 
         #endregion
+
+        public override TipoOcorrenciaRetorno ObterCorrespondenteFebraban()
+        {
+            return ObterCorrespondenteFebraban(correspondentesFebraban, (EnumCodigoMovimento_Cecred)Codigo);
+        }
+
+        private Dictionary<EnumCodigoMovimento_Cecred, TipoOcorrenciaRetorno> correspondentesFebraban = new Dictionary<EnumCodigoMovimento_Cecred, TipoOcorrenciaRetorno>()
+        {
+            { EnumCodigoMovimento_Cecred.EntradaConfirmada                                     ,TipoOcorrenciaRetorno.EntradaConfirmada                                      },
+            { EnumCodigoMovimento_Cecred.EntradaRejeitada                                      ,TipoOcorrenciaRetorno.EntradaRejeitada                                       },
+            { EnumCodigoMovimento_Cecred.TransferenciaCarteiraEntrada                          ,TipoOcorrenciaRetorno.TransferenciaDeCarteiraEntrada                           },
+            { EnumCodigoMovimento_Cecred.TransferenciaCarteiraBaixa                            ,TipoOcorrenciaRetorno.TransferenciaDeCarteiraBaixa                             },
+            { EnumCodigoMovimento_Cecred.Liquidacao                                            ,TipoOcorrenciaRetorno.Liquidacao                                             },
+            { EnumCodigoMovimento_Cecred.ConfirmacaoRecebimentoDesconto                        ,TipoOcorrenciaRetorno.ConfirmacaoDoRecebimentoDaInstrucaoDeDesconto },
+            { EnumCodigoMovimento_Cecred.ConfirmacaoRecebimentoCancelamentoDesconto            ,TipoOcorrenciaRetorno.ConfirmacaoDoRecebimentoDoCancelamentoDoDesconto             },
+            { EnumCodigoMovimento_Cecred.Baixa                                                 ,TipoOcorrenciaRetorno.Baixa                                                  },
+            { EnumCodigoMovimento_Cecred.TitulosCarteira                                       ,TipoOcorrenciaRetorno.TitulosEmCarteira                                        },
+            { EnumCodigoMovimento_Cecred.ConfirmacaoRecebimentoInstrucaoAbatimento             ,TipoOcorrenciaRetorno.ConfirmacaoRecebimentoInstrucaoDeAbatimento              },
+            { EnumCodigoMovimento_Cecred.ConfirmacaoRecebimentoInstrucaoCancelamentoAbatimento ,TipoOcorrenciaRetorno.ConfirmacaoRecebimentoInstrucaoDeCancelamentoAbatimento  },
+            { EnumCodigoMovimento_Cecred.ConfirmacaoRecebimentoInstrucaoAlteracaoVencimento    ,TipoOcorrenciaRetorno.ConfirmacaoRecebimentoInstrucaoAlteracaoDeVencimento     },
+            { EnumCodigoMovimento_Cecred.LiquidacaoAposBaixa                                   ,TipoOcorrenciaRetorno.LiquidacaoAposBaixaOuLiquidacaoTituloNaoRegistrado },
+            { EnumCodigoMovimento_Cecred.ConfirmacaoRecebimentoInstrucaoProtesto               ,TipoOcorrenciaRetorno.ConfirmacaoRecebimentoInstrucaoDeProtesto                },
+            { EnumCodigoMovimento_Cecred.ConfirmacaoRecebimentoInstrucaoSustacaoProtesto       ,TipoOcorrenciaRetorno.ConfirmacaoRecebimentoInstrucaoDeSustacaoCancelamentoDeProtesto        },
+            { EnumCodigoMovimento_Cecred.RemessaCartorio                                       ,TipoOcorrenciaRetorno.RemessaACartorio                                        },
+            { EnumCodigoMovimento_Cecred.RetiradaCartorioManutencaoCarteira                    ,TipoOcorrenciaRetorno.RetiradaDeCartorioEManutencaoEmCarteira                     },
+            { EnumCodigoMovimento_Cecred.ProtestadoBaixado                                     ,TipoOcorrenciaRetorno.ProtestadoEBaixado                                      },
+            { EnumCodigoMovimento_Cecred.InstrucaoRejeitada                                    ,TipoOcorrenciaRetorno.InstrucaoRejeitada                                     },
+            { EnumCodigoMovimento_Cecred.ConfirmaçãoPedidoAlteracaoOutrosDados                 ,TipoOcorrenciaRetorno.ConfirmacaoDoPedidoDeAlteracaoDeOutrosDados                  },
+            { EnumCodigoMovimento_Cecred.DebitoTarifas                                         ,TipoOcorrenciaRetorno.DebitoDeTarifasCustas },
+            { EnumCodigoMovimento_Cecred.AlteracaoDadosRejeitada                               ,TipoOcorrenciaRetorno.AlteracaoDeDadosRejeitada                                },
+            { EnumCodigoMovimento_Cecred.AlteracaoDadosSacado                                  ,TipoOcorrenciaRetorno.ConfirmacaoDaAlteracaoDosdadosDoPagador },
+            { EnumCodigoMovimento_Cecred.InstrucaoCancelarProtesto                             ,TipoOcorrenciaRetorno.InstrucaoParacancelarProtestoConfirmada }
+        };
     }
 }
