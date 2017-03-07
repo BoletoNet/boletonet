@@ -1,5 +1,4 @@
 using System;
-using BoletoNet.Enums;
 
 namespace BoletoNet
 {
@@ -66,8 +65,8 @@ namespace BoletoNet
                         break;
                     //341 - Itaú
                     case 341:
-                        //_ICodigoMovimento = new CodigoMovimento_Itau();
-                        throw new Exception("Código do banco não implementando: " + codigoBanco);
+                        _ICodigoMovimento = new CodigoMovimento_Itau(codigoMovimento);
+                        break;
                     //1 - Banco do Brasil
                     case 1:
                         _ICodigoMovimento = new CodigoMovimento_BancoBrasil(codigoMovimento);
