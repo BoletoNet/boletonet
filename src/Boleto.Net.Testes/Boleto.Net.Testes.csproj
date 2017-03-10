@@ -69,10 +69,14 @@
     <Compile Include="BancoSicoobTeste.cs" />
     <Compile Include="BancoBrasil\BancoBrasil17019Teste.cs" />
     <Compile Include="BancoBrasil\BancoBrasilCarteira18019Teste.cs" />
+    <Compile Include="BancoSicredi\BancoSicrediTeste.cs" />
     <Compile Include="CecredTeste.cs" />
     <Compile Include="FatorVencimentoTeste.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Retorno\ArquivoRetornoCrb643Teste.cs" />
+    <Compile Include="EnumExtensionTeste.cs" />
+    <Compile Include="AbstractBancoTeste.cs" />
+    <Compile Include="Retorno\NossoNumeroRetornoTeste.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Boleto.Net\Boleto.Net.csproj">
@@ -85,6 +89,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="BancoItau\REMESSA_TESTES_FALHANDO.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="BancoSicredi\RetornoSicredi.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

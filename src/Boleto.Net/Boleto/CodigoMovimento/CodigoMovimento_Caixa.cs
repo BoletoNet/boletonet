@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using BoletoNet.Enums;
 
 namespace BoletoNet
 {
@@ -283,5 +284,36 @@ namespace BoletoNet
 
 
         #endregion
+
+        public override TipoOcorrenciaRetorno ObterCorrespondenteFebraban()
+        {
+            return ObterCorrespondenteFebraban(correspondentesFebraban, (EnumCodigoMovimento_Caixa)Codigo);
+        }
+
+        private Dictionary<EnumCodigoMovimento_Caixa, TipoOcorrenciaRetorno> correspondentesFebraban = new Dictionary<EnumCodigoMovimento_Caixa, TipoOcorrenciaRetorno>()
+        {
+            { EnumCodigoMovimento_Caixa.EntradaConfirmada                                          ,TipoOcorrenciaRetorno.EntradaConfirmada                                    },
+            { EnumCodigoMovimento_Caixa.EntradaRejeitada                                           ,TipoOcorrenciaRetorno.EntradaRejeitada                                     },
+            { EnumCodigoMovimento_Caixa.TransferenciaCarteiraEntrada                               ,TipoOcorrenciaRetorno.TransferenciaDeCarteiraEntrada                         },
+            { EnumCodigoMovimento_Caixa.TransferenciaCarteiraBaixa                                 ,TipoOcorrenciaRetorno.TransferenciaDeCarteiraBaixa                           },
+            { EnumCodigoMovimento_Caixa.Liquidacao                                                 ,TipoOcorrenciaRetorno.Liquidacao                                           },
+            { EnumCodigoMovimento_Caixa.Baixa                                                      ,TipoOcorrenciaRetorno.Baixa                                                },
+            { EnumCodigoMovimento_Caixa.TitulosCarteiraEmSer                                       ,TipoOcorrenciaRetorno.TitulosEmCarteira                                 },
+            { EnumCodigoMovimento_Caixa.ConfirmacaoRecebimentoInstrucaoAbatimento                  ,TipoOcorrenciaRetorno.ConfirmacaoRecebimentoInstrucaoDeAbatimento            },
+            { EnumCodigoMovimento_Caixa.ConfirmacaoRecebimentoInstrucaoCancelamentoAbatimento      ,TipoOcorrenciaRetorno.ConfirmacaoRecebimentoInstrucaoDeCancelamentoAbatimento},
+            { EnumCodigoMovimento_Caixa.ConfirmacaoRecebimentoInstrucaoAlteracaoVencimento         ,TipoOcorrenciaRetorno.ConfirmacaoRecebimentoInstrucaoAlteracaoDeVencimento   },
+            { EnumCodigoMovimento_Caixa.FrancoPagamento                                            ,TipoOcorrenciaRetorno.FrancoDePagamento                                      },
+            { EnumCodigoMovimento_Caixa.LiquidacaoAposBaixa                                        ,TipoOcorrenciaRetorno.LiquidacaoAposBaixaOuLiquidacaoTituloNaoRegistrado                                  },
+            { EnumCodigoMovimento_Caixa.ConfirmacaoRecebimentoInstrucaoProtesto                    ,TipoOcorrenciaRetorno.ConfirmacaoRecebimentoInstrucaoDeProtesto              },
+            { EnumCodigoMovimento_Caixa.ConfirmacaoRecebimentoInstrucaoSustacaoProtesto            ,TipoOcorrenciaRetorno.ConfirmacaoRecebimentoInstrucaoDeSustacaoCancelamentoDeProtesto      },
+            { EnumCodigoMovimento_Caixa.RemessaCartorio                                            ,TipoOcorrenciaRetorno.RemessaACartorio                                      },
+            { EnumCodigoMovimento_Caixa.RetiradaCartorioManutencaoCarteira                         ,TipoOcorrenciaRetorno.RetiradaDeCartorioEManutencaoEmCarteira                   },
+            { EnumCodigoMovimento_Caixa.ProtestadoBaixado                                          ,TipoOcorrenciaRetorno.ProtestadoEBaixado                                    },
+            { EnumCodigoMovimento_Caixa.InstrucaoRejeitada                                         ,TipoOcorrenciaRetorno.InstrucaoRejeitada                                   },
+            { EnumCodigoMovimento_Caixa.ConfirmaçãoPedidoAlteracaoOutrosDados                      ,TipoOcorrenciaRetorno.ConfirmacaoDoPedidoDeAlteracaoDeOutrosDados                },
+            { EnumCodigoMovimento_Caixa.DebitoTarifas                                              ,TipoOcorrenciaRetorno.DebitoDeTarifasCustas                                        },
+            { EnumCodigoMovimento_Caixa.OcorrenciaSacado                                           ,TipoOcorrenciaRetorno.OcorrenciasDoPagador},
+            { EnumCodigoMovimento_Caixa.AlteracaoDadosRejeitada                                    ,TipoOcorrenciaRetorno.AlteracaoDeDadosRejeitada }
+        };
     }
 }

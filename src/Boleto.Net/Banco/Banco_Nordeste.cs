@@ -115,9 +115,6 @@ namespace BoletoNet
             var valorDocumento = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
             valorDocumento = Utils.FormatCode(valorDocumento, 10);
 
-
-            string CampoZerado = "000";
-
             boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}",
                banco,
                moeda,
@@ -209,7 +206,6 @@ namespace BoletoNet
                 {
                     case TipoArquivo.CNAB240:
                         throw new NotImplementedException("Remessa não implementada!");
-                        break;
                     case TipoArquivo.CNAB400:
                         _header = GerarHeaderRemessaCNAB400(cedente, numeroArquivoRemessa);
                         break;
@@ -238,7 +234,6 @@ namespace BoletoNet
             {
                 case TipoArquivo.CNAB240:
                     throw new NotImplementedException("CNAB240 não implementado!");
-                    break;
                 case TipoArquivo.CNAB400:
                     vRetorno = ValidarRemessaCNAB400(numeroConvenio, banco, cedente, boletos, numeroArquivoRemessa, out vMsg);
                     break;
@@ -265,7 +260,6 @@ namespace BoletoNet
                 {
                     case TipoArquivo.CNAB240:
                         throw new NotImplementedException("Remessa não implementada!");
-                        break;
                     case TipoArquivo.CNAB400:
                         _detalhe = GerarDetalheRemessaCNAB400(boleto, numeroRegistro, tipoArquivo);
                         break;
@@ -309,7 +303,6 @@ namespace BoletoNet
                 {
                     case TipoArquivo.CNAB240:
                         throw new NotImplementedException("Remessa não implementada!");
-                        break;
                     case TipoArquivo.CNAB400:
                         _trailer = GerarTrailerRemessa400(numeroRegistro, 0);
                         break;
@@ -353,14 +346,12 @@ namespace BoletoNet
             {
                 case "4"://Cobranca Simples - Boleto Emitido Pelo Cliente 
                     return "21";
-                    break;
                 case "5"://Cobranca Vinculada - Boleto Emitido Pelo Cliente
                     return "41";
                 case "6"://Cobranca Caucionada - Boleto Emitido Pelo Cliente
                     return "31";
                 case "I"://Cobranca Simplificada(Sem Registro)
                     return "51";
-                    break;
 
                 //Caso esteja usando o tipo de operacao
                 case "21":
@@ -368,11 +359,8 @@ namespace BoletoNet
                 case "31":
                 case "51":
                     return carteira;
-                    break;
-
                 default:
                     throw new Exception("Carteira nao implementada");
-                    break;
             }
 
         }
@@ -384,17 +372,14 @@ namespace BoletoNet
             {
                 case "21"://Cobranca Simples - Boleto Emitido Pelo Cliente 
                     return "4";
-                    break;
                 case "41"://Cobranca Vinculada - Boleto Emitido Pelo Cliente
                     return "5";
                 case "31"://Cobranca Caucionada - Boleto Emitido Pelo Cliente
                     return "6";
                 case "51"://Cobranca Simplificada(Sem Registro)
                     return "I";
-                    break;
                 default:
                     throw new Exception("Codigo de Operacao nao implementado!");
-                    break;
             }
 
         }
@@ -505,7 +490,7 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0150, 001, 0, boleto.Aceite, ' '));                             //150-150
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAA___________, 0151, 006, 0, boleto.DataProcessamento, ' '));                  //151-156
                 string vInstrucao = "00";
-                if (!(boleto.Instrucoes == null || boleto.Instrucoes.Count == 0 || boleto.Instrucoes[0].Codigo == null))
+                if (!(boleto.Instrucoes == null || boleto.Instrucoes.Count == 0))
                     vInstrucao = boleto.Instrucoes[0].Codigo.ToString();
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0157, 004, 0, vInstrucao, '0'));                               //157-160
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0161, 013, 2, boleto.JurosMora, '0'));                         //161-173
@@ -571,7 +556,7 @@ namespace BoletoNet
         {
             try
             {
-                TRegistroEDI_BancoBrasil_Retorno reg = new TRegistroEDI_BancoBrasil_Retorno();
+                TRegistroEDI_Banco_Nordeste_Retorno reg = new TRegistroEDI_Banco_Nordeste_Retorno();
                 //
                 reg.LinhaRegistro = registro;
                 reg.DecodificarLinha();
@@ -588,9 +573,9 @@ namespace BoletoNet
                 //detalhe. = reg.NumeroConvenioCobranca;
                 //detalhe. = reg.NumeroControleParticipante;
                 //
-                detalhe.NossoNumeroComDV = reg.NossoNumero;
-                detalhe.NossoNumero = reg.NossoNumero.Substring(0, reg.NossoNumero.Length - 1); //Nosso Número sem o DV!
-                detalhe.DACNossoNumero = reg.NossoNumero.Substring(reg.NossoNumero.Length - 1); //DV
+                detalhe.NossoNumeroComDV = reg.NossoNumero+reg.NossoNumeroDV;
+                detalhe.NossoNumero = reg.NossoNumero; //Nosso Número sem o DV!
+                detalhe.DACNossoNumero = reg.NossoNumeroDV;
                 //
                 //detalhe. = reg.TipoCobranca;
                 //detalhe. = reg.TipoCobrancaEspecifico;
@@ -605,35 +590,32 @@ namespace BoletoNet
                 detalhe.Carteira = reg.Carteira;
                 detalhe.CodigoOcorrencia = Utils.ToInt32(reg.Comando);
                 //
-                int dataLiquidacao = Utils.ToInt32(reg.DataLiquidacao);
-                detalhe.DataLiquidacao = Utils.ToDateTime(dataLiquidacao.ToString("##-##-##"));
-                //
                 detalhe.NumeroDocumento = reg.NumeroTituloCedente;
                 //detalhe. = reg.Brancos2;
                 //
                 int dataVencimento = Utils.ToInt32(reg.DataVencimento);
                 detalhe.DataVencimento = Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
                 //
-                detalhe.ValorTitulo = (Convert.ToInt64(reg.ValorTitulo) / 100);
+                detalhe.ValorTitulo = (Convert.ToDecimal(reg.ValorTitulo) / 100);
                 detalhe.CodigoBanco = Utils.ToInt32(reg.CodigoBancoRecebedor);
                 detalhe.AgenciaCobradora = Utils.ToInt32(reg.PrefixoAgenciaRecebedora);
                 //detalhe. = reg.DVPrefixoRecebedora;
                 detalhe.Especie = Utils.ToInt32(reg.EspecieTitulo);
                 //
-                int dataCredito = Utils.ToInt32(reg.DataCredito);
-                detalhe.DataOcorrencia = Utils.ToDateTime(dataCredito.ToString("##-##-##"));
+                int dataOcorrencia = Utils.ToInt32(reg.DataOcorrencia);
+                detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
                 //
-                detalhe.TarifaCobranca = (Convert.ToInt64(reg.ValorTarifa) / 100);
-                detalhe.OutrasDespesas = (Convert.ToInt64(reg.OutrasDespesas) / 100);
-                detalhe.ValorOutrasDespesas = (Convert.ToInt64(reg.JurosDesconto) / 100);
-                detalhe.IOF = (Convert.ToInt64(reg.IOFDesconto) / 100);
-                detalhe.Abatimentos = (Convert.ToInt64(reg.ValorAbatimento) / 100);
-                detalhe.Descontos = (Convert.ToInt64(reg.DescontoConcedido) / 100);
+                detalhe.TarifaCobranca = (Convert.ToDecimal(reg.ValorTarifa) / 100);
+                detalhe.OutrasDespesas = (Convert.ToDecimal(reg.OutrasDespesas) / 100);
+                detalhe.ValorOutrasDespesas = (Convert.ToDecimal(reg.JurosDesconto) / 100);
+                //detalhe.IOF = (Convert.ToInt64(reg.IOFDesconto) / 100);
+                detalhe.Abatimentos = (Convert.ToDecimal(reg.ValorAbatimento) / 100);
+                detalhe.Descontos = (Convert.ToDecimal(reg.DescontoConcedido) / 100);
                 detalhe.ValorPrincipal = (Convert.ToInt64(reg.ValorRecebido) / 100);
-                detalhe.JurosMora = (Convert.ToInt64(reg.JurosMora) / 100);
-                detalhe.OutrosCreditos = (Convert.ToInt64(reg.OutrosRecebimentos) / 100);
+                detalhe.JurosMora = (Convert.ToDecimal(reg.JurosMora) / 100);
+                //detalhe.OutrosCreditos = (Convert.ToInt64(reg.OutrosRecebimentos) / 100);
                 //detalhe. = reg.AbatimentoNaoAproveitado;
-                detalhe.ValorPago = (Convert.ToInt64(reg.ValorLancamento) / 100);
+                detalhe.ValorPago = (Convert.ToDecimal(reg.ValorRecebido) / 100);                
                 //detalhe. = reg.IndicativoDebitoCredito;
                 //detalhe. = reg.IndicadorValor;
                 //detalhe. = reg.ValorAjuste;
