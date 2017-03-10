@@ -1773,6 +1773,7 @@ namespace BoletoNet
                 //reg.IdentificacaoOperacao;
                 detalhe.Carteira = reg.CodigoCarteira;
                 detalhe.CodigoOcorrencia = Utils.ToInt32(reg.CodigoOcorrencia);
+                detalhe.DescricaoOcorrencia = this.Ocorrencia(registro.Substring(108, 2));
                 //
                 int dataOcorrencia = Utils.ToInt32(reg.DataOcorrencia);
                 detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
@@ -1826,6 +1827,23 @@ namespace BoletoNet
                 throw new Exception("Erro ao ler detalhe do arquivo de RETORNO / CNAB 400.", ex);
             }
         }
+
+
+        public string Ocorrencia(string codigo)
+        {
+            int codigoMovimento = 0;
+
+            if (int.TryParse(codigo, out codigoMovimento)) { 
+                CodigoMovimento_Caixa movimento = new CodigoMovimento_Caixa(codigoMovimento);
+                return movimento.Descricao;
+            } else
+            {
+                return string.Format("Erro ao retornar descrição para a ocorrência {0}", codigo);
+            }
+
+            
+        }
+
         #endregion
 
 
