@@ -138,11 +138,6 @@ namespace BoletoNet
             return especiesDocumento;
         }
 
-        public override IEspecieDocumento DuplicataMercantil()
-        {
-            return new EspecieDocumento_Caixa(getCodigoEspecieByEnum(EnumEspecieDocumento_Caixa.DuplicataMercantil));
-        }
-
         #endregion
     }
 }

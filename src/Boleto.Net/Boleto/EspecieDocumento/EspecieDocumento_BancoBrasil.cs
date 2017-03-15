@@ -303,11 +303,6 @@ namespace BoletoNet
             }
         }
 
-        public override IEspecieDocumento DuplicataMercantil()
-        {
-            return new EspecieDocumento_BancoBrasil(getCodigoEspecieByEnum(EnumEspecieDocumento_BancoBrasil.DuplicataMercantil));
-        }
-
         #endregion
     }
 }

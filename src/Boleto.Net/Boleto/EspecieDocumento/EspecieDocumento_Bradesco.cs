@@ -196,11 +196,6 @@ namespace BoletoNet
             }
         }
 
-        public override IEspecieDocumento DuplicataMercantil()
-        {
-            return new EspecieDocumento_Bradesco(getCodigoEspecieByEnum(EnumEspecieDocumento_Bradesco.DuplicataMercantil));
-        }
-
         #endregion
     }
 }

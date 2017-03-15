@@ -638,8 +638,8 @@ namespace BoletoNet.Arquivo
                 form.CodigoBanco = Convert.ToInt16(radioButtonCaixa.Tag);
             else if (radioButtonBNB.Checked)
                 form.CodigoBanco = Convert.ToInt16(radioButtonBNB.Tag);
-            else if (rbMercantilBR.Checked)
-                form.CodigoBanco = Convert.ToInt16(rbMercantilBR.Tag);
+            else if (radioButtonMercantilBR.Checked)
+                form.CodigoBanco = Convert.ToInt16(radioButtonMercantilBR.Tag);
 
 
             form.ShowDialog();
@@ -659,7 +659,7 @@ namespace BoletoNet.Arquivo
                     GeraDadosSicredi();
                 else if (radioButtonBNB.Checked)
                     GeraDadosBancoDoNordeste();
-                else if (rbMercantilBR.Checked)
+                else if (radioButtonMercantilBR.Checked)
                     GeraDadosMercantil();
             }
             else if (radioButtonCNAB240.Checked)

@@ -48,7 +48,7 @@ namespace BoletoNet.Arquivo
             this.gerarToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.impressãoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBoxBancos = new System.Windows.Forms.GroupBox();
-            this.rbMercantilBR = new System.Windows.Forms.RadioButton();
+            this.radioButtonMercantilBR = new System.Windows.Forms.RadioButton();
             this.radioButtonBNB = new System.Windows.Forms.RadioButton();
             this.radioButtonBanrisul = new System.Windows.Forms.RadioButton();
             this.radioButtonSicredi = new System.Windows.Forms.RadioButton();
@@ -218,7 +218,7 @@ namespace BoletoNet.Arquivo
             // 
             this.groupBoxBancos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.groupBoxBancos.Controls.Add(this.rbMercantilBR);
+            this.groupBoxBancos.Controls.Add(this.radioButtonMercantilBR);
             this.groupBoxBancos.Controls.Add(this.radioButtonBNB);
             this.groupBoxBancos.Controls.Add(this.radioButtonBanrisul);
             this.groupBoxBancos.Controls.Add(this.radioButtonSicredi);
@@ -240,16 +240,16 @@ namespace BoletoNet.Arquivo
             this.groupBoxBancos.TabStop = false;
             this.groupBoxBancos.Text = "Bancos";
             // 
-            // rbMercantilBR
+            // radioButtonMercantilBR
             // 
-            this.rbMercantilBR.AutoSize = true;
-            this.rbMercantilBR.Location = new System.Drawing.Point(13, 317);
-            this.rbMercantilBR.Name = "rbMercantilBR";
-            this.rbMercantilBR.Size = new System.Drawing.Size(111, 17);
-            this.rbMercantilBR.TabIndex = 33;
-            this.rbMercantilBR.Tag = "389";
-            this.rbMercantilBR.Text = "Mercantil do Brasil";
-            this.rbMercantilBR.UseVisualStyleBackColor = true;
+            this.radioButtonMercantilBR.AutoSize = true;
+            this.radioButtonMercantilBR.Location = new System.Drawing.Point(13, 317);
+            this.radioButtonMercantilBR.Name = "radioButtonMercantilBR";
+            this.radioButtonMercantilBR.Size = new System.Drawing.Size(111, 17);
+            this.radioButtonMercantilBR.TabIndex = 33;
+            this.radioButtonMercantilBR.Tag = "389";
+            this.radioButtonMercantilBR.Text = "Mercantil do Brasil";
+            this.radioButtonMercantilBR.UseVisualStyleBackColor = true;
             // 
             // radioButtonBNB
             // 
@@ -500,7 +500,7 @@ namespace BoletoNet.Arquivo
         private System.Windows.Forms.RadioButton radioButtonBanrisul;
         private System.Windows.Forms.ColumnHeader columnHeader9;
         private System.Windows.Forms.RadioButton radioButtonBNB;
-        private System.Windows.Forms.RadioButton rbMercantilBR;
+        private System.Windows.Forms.RadioButton radioButtonMercantilBR;
     }
 }
 

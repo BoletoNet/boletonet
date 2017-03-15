@@ -42,7 +42,6 @@ namespace BoletoNet
         }
 
         # endregion
-
-        public abstract IEspecieDocumento DuplicataMercantil();
+     
     }
 }
