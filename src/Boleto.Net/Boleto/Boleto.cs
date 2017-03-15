@@ -19,6 +19,7 @@ namespace BoletoNet
 		private string _variacaoCarteira = string.Empty;
 		private string _nossoNumero = string.Empty;
 		private string _digitoNossoNumero = string.Empty;
+        private bool _apenasRegistrar = false;
 		private DateTime _dataVencimento;
 		private DateTime _dataDocumento;
 		private DateTime _dataProcessamento;
@@ -29,7 +30,7 @@ namespace BoletoNet
 		private int _quantidadeMoeda = 1;
 		private string _valorMoeda = string.Empty;
 		private IList<IInstrucao> _instrucoes = new List<IInstrucao>();
-		private IEspecieDocumento _especieDocumento = new EspecieDocumento();
+        private IEspecieDocumento _especieDocumento;
 		private string _aceite = "N";
 		private string _numeroDocumento = string.Empty;
 		private string _especie = "R$";
@@ -48,6 +49,7 @@ namespace BoletoNet
 
 		private decimal _percJurosMora;
 		private decimal _jurosMora;
+        private string _codJurosMora = string.Empty;
 		private decimal _iof;
 		private decimal _abatimento;
 		private decimal _percMulta;
@@ -61,6 +63,8 @@ namespace BoletoNet
 		private DateTime _dataOutrosDescontos;
 		private short _percentualIOS;
         private short _modalidadeCobranca = 0;
+        private short _numeroDiasBaixa = 0;
+		private string _numeroControle;
 
 		private string _tipoModalidade = string.Empty;
 		private Remessa _remessa;
@@ -255,7 +259,7 @@ namespace BoletoNet
 		/// </summary>
 		public IEspecieDocumento EspecieDocumento
 		{
-			get { return this._especieDocumento ?? (this._especieDocumento = new EspecieDocumento()); }
+			get { return this._especieDocumento ?? (this._especieDocumento = new EspecieDocumento().DuplicataMercantil(Banco)); }
 			set { this._especieDocumento = value; }
 		}
 
@@ -313,6 +317,16 @@ namespace BoletoNet
 			set { this._nossoNumero = value; }
 		}
 
+        /// <summary> 
+        /// Condição para Emissão da Papeleta de Cobrança
+        /// 1 = Banco emite e Processa o registro. 2 = Cliente emite e o Banco somente processa o registro
+        /// </summary>        
+        public bool ApenasRegistrar
+        {
+            get { return _apenasRegistrar; }
+            set { _apenasRegistrar = value; }
+        }
+
 		/// <summary> 
 		/// Recupera o valor da moeda 
 		/// </summary>  
@@ -363,6 +377,14 @@ namespace BoletoNet
 			set { this._sacado = value; }
 		}
 
+		/// <summary>
+		/// Dados do avalista.
+		/// Este campo é necessário para correspondentes bancários, como 
+		/// por exemplo o Banco Daycoval.
+		/// O avalista deve ser exibido para que estes bancos homologuem.
+		/// </summary>
+		public Cedente Avalista { get; set; }
+
 		/// <summary> 
 		/// Para uso do banco 
 		/// </summary>        
@@ -373,7 +395,7 @@ namespace BoletoNet
 		}
 
 		/// <summary>
-		/// Percentual de Juros de Mora (ao dia)
+		/// Percentual de Juros de Mora (ao dia, ao mes setar codJurosMora com "2")
 		/// </summary>
 		public decimal PercJurosMora
 		{
@@ -390,10 +412,20 @@ namespace BoletoNet
 			set { this._jurosMora = value; }
 		}
 
-		/// <summary>
-		/// Caso a empresa tenha no convênio Juros permanentes cadastrados
-		/// </summary>
-		public bool JurosPermanente
+
+        /// <summary> 
+		/// Código de Juros de mora (1 = ao dia, 2 = ao mes)
+		/// </summary>  
+        public string CodJurosMora
+        {
+            get { return this._codJurosMora; }
+            set { this._codJurosMora = value; }
+        }
+
+        /// <summary>
+        /// Caso a empresa tenha no convênio Juros permanentes cadastrados
+        /// </summary>
+        public bool JurosPermanente
 		{
 			get { return this._jurosPermanente; }
 			set { this._jurosPermanente = value; }
@@ -525,6 +557,14 @@ namespace BoletoNet
             set { this._modalidadeCobranca = value; }
         }
 
+        /// <summary> 
+        /// Número de dias para Baixa/Devolução
+        /// </summary>
+        public short NumeroDiasBaixa
+        {
+            get { return this._numeroDiasBaixa; }
+            set { this._numeroDiasBaixa = value; }
+        }
         /// <summary>
         /// Retorna os Parâmetros utilizados na geração da Remessa para o Boleto
         /// </summary>
@@ -534,7 +574,16 @@ namespace BoletoNet
 			set { this._remessa = value; }
 		}
 
-		public IBancoCarteira BancoCarteira { get; set; }
+        /// <summary> 
+        /// Recupara o número do Controle de participante.
+        /// </summary>        
+        public string NumeroControle
+        {
+            get { return _numeroControle; }
+            set { _numeroControle = value; }
+        }
+
+        public IBancoCarteira BancoCarteira { get; set; }
 
 		#endregion Properties
 

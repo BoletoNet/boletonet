@@ -510,10 +510,10 @@ namespace Boleto.Net.MVC.Models
             Instrucao_Sicredi item1 = new Instrucao_Sicredi(9, 5);
             Instrucao_Sicredi item2 = new Instrucao_Sicredi();
 
-            Cedente c = new Cedente("10.823.650/0001-90", "SAFIRALIFE", "4406", "22324");
-            c.Codigo = "13000";
+            Cedente c = new Cedente("10.823.650/0001-90", "SAFIRALIFE", "0811", "81111");
+            c.Codigo = "08111081111";
 
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 0.1m, "176", "00000001", c);
+            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 0.1m, "1", "00000001", c);
             b.NumeroDocumento = "00000001";
 
             b.Sacado = new Sacado("000.000.000-00", "Nome do seu Cliente ");
