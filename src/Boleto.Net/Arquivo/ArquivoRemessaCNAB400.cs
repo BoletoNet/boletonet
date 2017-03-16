@@ -27,9 +27,10 @@ namespace BoletoNet
             {
                 bool vRetorno = true;
                 string vMsg = string.Empty;
-                //
-                foreach (Boleto boleto in boletos)
+                if (boletos != null && boletos.Count > 0)
                 {
+                    Boleto boleto = boletos[0];
+
                     string vMsgBol = string.Empty;
                     bool vRetBol = boleto.Banco.ValidarRemessa(this.TipoArquivo, numeroConvenio, banco, cedente, boletos, numeroArquivoRemessa, out vMsgBol);
                     if (!vRetBol && !String.IsNullOrEmpty(vMsgBol))
@@ -38,7 +39,6 @@ namespace BoletoNet
                         vRetorno = vRetBol;
                     }
                 }
-                //
                 mensagem = vMsg;
                 return vRetorno;
             }
