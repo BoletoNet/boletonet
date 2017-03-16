@@ -187,26 +187,29 @@ namespace BoletoNet
                         numeroRegistro++;
                         numeroRegistroDetalhe++;
 
-                        strline = boleto.Banco.GerarDetalheSegmentoQRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
-                        incluiLinha.WriteLine(strline);
-                        OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoQ);
-                        numeroRegistro++;
-                        numeroRegistroDetalhe++;
-
-                        if (boleto.ValorMulta > 0 || boleto.OutrosDescontos > 0 || boleto.PercMulta > 0)
+                        if (boletos[0].Remessa.CodigoOcorrencia == "01")
                         {
-                            strline = boleto.Banco.GerarDetalheSegmentoRRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
+                            strline = boleto.Banco.GerarDetalheSegmentoQRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
                             incluiLinha.WriteLine(strline);
-                            OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoR);
+                            OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoQ);
+                            numeroRegistro++;
+                            numeroRegistroDetalhe++;
+
+                            if (boleto.ValorMulta > 0 || boleto.OutrosDescontos > 0 || boleto.PercMulta > 0)
+                            {
+                                strline = boleto.Banco.GerarDetalheSegmentoRRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
+                                incluiLinha.WriteLine(strline);
+                                OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoR);
+                                numeroRegistro++;
+                                numeroRegistroDetalhe++;
+                            }
+
+                            strline = boleto.Banco.GerarDetalheSegmentoSRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
+                            incluiLinha.WriteLine(strline);
+                            OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoS);
                             numeroRegistro++;
                             numeroRegistroDetalhe++;
                         }
-
-                        strline = boleto.Banco.GerarDetalheSegmentoSRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
-                        incluiLinha.WriteLine(strline);
-                        OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoS);
-                        numeroRegistro++;
-                        numeroRegistroDetalhe++;
                     }
 
                     strline = banco.GerarTrailerLoteRemessa(numeroRegistro);
