@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Web.UI;
 using BoletoNet.Util;
 using BoletoNet.EDI.Banco;
+using BoletoNet.Excecoes;
 
 [assembly: WebResource("BoletoNet.Imagens.001.jpg", "image/jpg")]
 namespace BoletoNet
@@ -2325,7 +2326,13 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0221, 014, 0, boleto.Sacado.CPFCNPJ, '0'));                     //221-234
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0235, 037, 0, boleto.Sacado.Nome.ToUpper(), ' '));              //235-271
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0272, 003, 0, string.Empty, ' '));                              //272-274
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0275, 040, 0, boleto.Sacado.Endereco.End.ToUpper(), ' '));      //275-314
+
+                var enderecoSacadoComNumero = boleto.Sacado.Endereco.End;
+                if (!string.IsNullOrEmpty(boleto.Sacado.Endereco.Numero))
+                {
+                    enderecoSacadoComNumero += " " + boleto.Sacado.Endereco.Numero;
+                }
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0275, 040, 0, enderecoSacadoComNumero.ToUpper(), ' '));         //275-314
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0315, 012, 0, boleto.Sacado.Endereco.Bairro.ToUpper(), ' '));   //315-326
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0327, 008, 0, boleto.Sacado.Endereco.CEP, '0'));                //327-334
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0335, 015, 0, boleto.Sacado.Endereco.Cidade.ToUpper(), ' '));   //335-349
@@ -2465,7 +2472,54 @@ namespace BoletoNet
                 throw new Exception("Erro ao ler detalhe do arquivo de RETORNO / CNAB 400.", ex);
             }
         }
-
         #endregion
+
+        public override long ObterNossoNumeroSemConvenioOuDigitoVerificador(long convenio, string nossoNumero)
+        {
+            if (string.IsNullOrEmpty(nossoNumero))
+                throw new NossoNumeroInvalidoException();
+
+            nossoNumero = nossoNumero.Trim();
+
+            int tamanhoConvenio = convenio.ToString().Length;
+            long result;
+            switch (tamanhoConvenio)
+            {
+                case 4:
+                    // Se convênio de 4 posições - normalmente carteira 17 - (0001 à 9999), informar NossoNumero com 11 caracteres, com DV, sendo:
+                    // 4 posições do nº do convênio e 7 posições do nº de controle (nº do documento) e DV.
+                    {
+                        if (nossoNumero.Length != 12)
+                            throw new TamanhoNossoNumeroInvalidoException();
+                        var numeroSemConvenio = nossoNumero.Substring(4);
+                        nossoNumero = numeroSemConvenio.Substring(0, 7);
+                    }
+                    break;
+                case 6:
+                    // Se convênio de 6 posições (acima de 10.000 à 999.999), informar NossoNumero com 11 caracteres + DV, sendo:
+                    // 6 posições do nº do convênio e 5 posições do nº de controle (nº do documento) e DV do nosso numero.
+                    {
+                        if (nossoNumero.Length != 12)
+                            throw new TamanhoNossoNumeroInvalidoException();
+                        var numeroSemConvenio = nossoNumero.Substring(6);
+                        nossoNumero = numeroSemConvenio.Substring(0, 5);
+                    }
+                    break;
+                case 7:
+                    // Se convênio de 7 posições (acima de 1.000.000 à 9.999.999), informar NossoNumero com 17 caracteres, sem DV, sendo:
+                    // 7 posições do nº do convênio e 10 posições do nº de controle (nº do documento)
+                    {
+                        if (nossoNumero.Length != 17)
+                            throw new TamanhoNossoNumeroInvalidoException();
+                        nossoNumero = nossoNumero.Substring(7);                        
+                    }
+                    break;
+                default:
+                    throw new Exception("Posições do nº de convênio deve ser 4, 6 ou 7.");
+            }
+            if (long.TryParse(nossoNumero, out result))
+                return result;
+            throw new NossoNumeroInvalidoException();
+        }
     }
 }

@@ -16,6 +16,10 @@ namespace BoletoNet {
         }
         #endregion
 
+        public EspecieDocumento_Cecred()
+        {
+        }
+
         public EspecieDocumento_Cecred(string codigo) {
             try {
                 this.carregar(codigo);
@@ -83,5 +87,9 @@ namespace BoletoNet {
             return especiesDocumento;
         }
 
+        public override IEspecieDocumento DuplicataMercantil()
+        {
+            return new EspecieDocumento_Cecred(getCodigoEspecieByEnum(EnumEspecieDocumento_Cecred.DuplicataMercantil));
+        }
     }
 }

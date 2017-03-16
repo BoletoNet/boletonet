@@ -1,3 +1,4 @@
+using BoletoNet.Excecoes;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -144,13 +145,13 @@ namespace BoletoNet
                     case 4:
                         _IEspecieDocumento = new EspecieDocumento_Nordeste(codigoEspecie);
                         break;
-					case 707:
-						this._IEspecieDocumento = new EspecieDocumento_Daycoval(codigoEspecie);
-		                break;
-					case 637:
-						this._IEspecieDocumento = new EspecieDocumento_Sofisa(codigoEspecie);
-						break;
-					default:
+                    case 707:
+                        this._IEspecieDocumento = new EspecieDocumento_Daycoval(codigoEspecie);
+                        break;
+                    case 637:
+                        this._IEspecieDocumento = new EspecieDocumento_Sofisa(codigoEspecie);
+                        break;
+                    default:
                         throw new Exception("Código do banco não implementando: " + codigoBanco);
                 }
             }
@@ -229,5 +230,37 @@ namespace BoletoNet
                 return "0";
             }
         }
+
+        public override IEspecieDocumento DuplicataMercantil()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEspecieDocumento DuplicataMercantil(IBanco banco)
+        {
+            if (!especiesDocumentosBancos.ContainsKey(banco.Codigo))
+                throw new BoletoNetException("Espécies de documentos não implementados para o banco.");
+
+            return especiesDocumentosBancos[banco.Codigo].DuplicataMercantil();
+        }
+
+        private static Dictionary<int, AbstractEspecieDocumento> especiesDocumentosBancos = new Dictionary<int, AbstractEspecieDocumento>() {
+                { 341, new EspecieDocumento_Itau       ()  },
+                { 479, new EspecieDocumento_BankBoston ()  },
+                { 1, new EspecieDocumento_BancoBrasil  ()  },
+                { 237, new EspecieDocumento_Bradesco   ()  },
+                { 356, new EspecieDocumento_Real       ()  },
+                { 33, new EspecieDocumento_Santander   ()  },
+                { 347, new EspecieDocumento_Sudameris  ()  },
+                { 104, new EspecieDocumento_Caixa      ()  },
+                { 399, new EspecieDocumento_HSBC       ()  },
+                { 748, new EspecieDocumento_Sicredi    ()  },
+                { 41, new EspecieDocumento_Banrisul    ()  },
+                { 85, new EspecieDocumento_Cecred      ()  },
+                { 756, new EspecieDocumento_Sicoob     ()  },
+                { 4, new EspecieDocumento_Nordeste     ()  },
+                { 707, new EspecieDocumento_Daycoval   ()  },
+                { 637, new EspecieDocumento_Sofisa     ()  }
+        };
     }
 }

@@ -337,6 +337,11 @@ namespace BoletoNet
             }
         }
 
+        public override IEspecieDocumento DuplicataMercantil()
+        {
+            return new EspecieDocumento_HSBC(getCodigoEspecieByEnum(EnumEspecieDocumento_HSBC.DuplicataMercantil));
+        }
+
         #endregion
     }
 }

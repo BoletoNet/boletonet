@@ -1,6 +1,6 @@
+using BoletoNet.Enums;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace BoletoNet
 {
@@ -30,25 +30,24 @@ namespace BoletoNet
         DebitoTarifas = 28,
         OcorrenciaSacado = 29,
         AlteracaoDadosRejeitada = 30,
-
     }
 
     #endregion 
 
-    public class CodigoMovimento_BancoBrasil: AbstractCodigoMovimento, ICodigoMovimento
+    public class CodigoMovimento_BancoBrasil : AbstractCodigoMovimento, ICodigoMovimento
     {
         #region Construtores 
 
-		public CodigoMovimento_BancoBrasil()
-		{
-			try
-			{
-			}
-			catch (Exception ex)
-			{
+        public CodigoMovimento_BancoBrasil()
+        {
+            try
+            {
+            }
+            catch (Exception ex)
+            {
                 throw new Exception("Erro ao carregar objeto", ex);
-			}
-		}
+            }
+        }
 
         public CodigoMovimento_BancoBrasil(int codigo)
         {
@@ -61,8 +60,8 @@ namespace BoletoNet
                 throw new Exception("Erro ao carregar objeto", ex);
             }
         }
-
-		#endregion 
+        
+        #endregion
 
         #region Metodos Privados
 
@@ -74,7 +73,7 @@ namespace BoletoNet
 
                 switch ((EnumCodigoMovimento_BancoBrasil)codigo)
                 {
-                    case  EnumCodigoMovimento_BancoBrasil.EntradaConfirmada:
+                    case EnumCodigoMovimento_BancoBrasil.EntradaConfirmada:
                         this.Codigo = (int)EnumCodigoMovimento_BancoBrasil.EntradaConfirmada;
                         this.Descricao = "Entrada confirmada";
                         break;
@@ -281,6 +280,36 @@ namespace BoletoNet
             }
         }
 
+        public override TipoOcorrenciaRetorno ObterCorrespondenteFebraban()
+        {
+            return ObterCorrespondenteFebraban(correspondentesFebraban, (EnumCodigoMovimento_BancoBrasil)Codigo);
+        }
+
+        private Dictionary<EnumCodigoMovimento_BancoBrasil, TipoOcorrenciaRetorno> correspondentesFebraban = new Dictionary<EnumCodigoMovimento_BancoBrasil, TipoOcorrenciaRetorno>()
+        {
+            { EnumCodigoMovimento_BancoBrasil.EntradaConfirmada, TipoOcorrenciaRetorno.EntradaConfirmada },
+            { EnumCodigoMovimento_BancoBrasil.EntradaRejeitada                                     , TipoOcorrenciaRetorno.EntradaRejeitada                                       },
+            { EnumCodigoMovimento_BancoBrasil.TransferenciaCarteiraEntrada                         , TipoOcorrenciaRetorno.TransferenciaDeCarteiraEntrada                           },
+            { EnumCodigoMovimento_BancoBrasil.TransferenciaCarteiraBaixa                           , TipoOcorrenciaRetorno.TransferenciaDeCarteiraBaixa                             },
+            { EnumCodigoMovimento_BancoBrasil.Liquidacao                                           , TipoOcorrenciaRetorno.Liquidacao                                             },
+            { EnumCodigoMovimento_BancoBrasil.Baixa                                                , TipoOcorrenciaRetorno.Baixa                                                  },
+            { EnumCodigoMovimento_BancoBrasil.TitulosCarteiraEmSer                                 , TipoOcorrenciaRetorno.TitulosEmCarteira                                   },
+            { EnumCodigoMovimento_BancoBrasil.ConfirmacaoRecebimentoInstrucaoAbatimento            , TipoOcorrenciaRetorno.ConfirmacaoRecebimentoInstrucaoDeAbatimento              },
+            { EnumCodigoMovimento_BancoBrasil.ConfirmacaoRecebimentoInstrucaoCancelamentoAbatimento, TipoOcorrenciaRetorno.ConfirmacaoRecebimentoInstrucaoDeCancelamentoAbatimento  },
+            { EnumCodigoMovimento_BancoBrasil.ConfirmacaoRecebimentoInstrucaoAlteracaoVencimento   , TipoOcorrenciaRetorno.ConfirmacaoRecebimentoInstrucaoAlteracaoDeVencimento     },
+            { EnumCodigoMovimento_BancoBrasil.FrancoPagamento                                      , TipoOcorrenciaRetorno.FrancoDePagamento                                        },
+            { EnumCodigoMovimento_BancoBrasil.LiquidacaoAposBaixa                                  , TipoOcorrenciaRetorno.LiquidacaoAposBaixaOuLiquidacaoTituloNaoRegistrado },
+            { EnumCodigoMovimento_BancoBrasil.ConfirmacaoRecebimentoInstrucaoProtesto              , TipoOcorrenciaRetorno.ConfirmacaoRecebimentoInstrucaoDeProtesto                },
+            { EnumCodigoMovimento_BancoBrasil.ConfirmacaoRecebimentoInstrucaoSustacaoProtesto      , TipoOcorrenciaRetorno.ConfirmacaoRecebimentoInstrucaoDeSustacaoCancelamentoDeProtesto        },
+            { EnumCodigoMovimento_BancoBrasil.RemessaCartorio                                      , TipoOcorrenciaRetorno.RemessaACartorio                                        },
+            { EnumCodigoMovimento_BancoBrasil.RetiradaCartorioManutencaoCarteira                   , TipoOcorrenciaRetorno.RetiradaDeCartorioEManutencaoEmCarteira                     },
+            { EnumCodigoMovimento_BancoBrasil.ProtestadoBaixado                                    , TipoOcorrenciaRetorno.ProtestadoEBaixado                                      },
+            { EnumCodigoMovimento_BancoBrasil.InstrucaoRejeitada                                   , TipoOcorrenciaRetorno.InstrucaoRejeitada                                     },
+            { EnumCodigoMovimento_BancoBrasil.ConfirmaçãoPedidoAlteracaoOutrosDados                , TipoOcorrenciaRetorno.ConfirmacaoDoPedidoDeAlteracaoDeOutrosDados                  },
+            { EnumCodigoMovimento_BancoBrasil.DebitoTarifas                                        , TipoOcorrenciaRetorno.DebitoDeTarifasCustas                                          },
+            { EnumCodigoMovimento_BancoBrasil.OcorrenciaSacado                                     , TipoOcorrenciaRetorno.OcorrenciasDoPagador                                       },
+            { EnumCodigoMovimento_BancoBrasil.AlteracaoDadosRejeitada                              , TipoOcorrenciaRetorno.AlteracaoDeDadosRejeitada }
+        };
 
         #endregion
     }

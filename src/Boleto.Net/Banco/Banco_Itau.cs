@@ -1,3 +1,4 @@
+using BoletoNet.Excecoes;
 using BoletoNet.Util;
 using System;
 using System.Text;
@@ -1487,7 +1488,6 @@ namespace BoletoNet
                 {
                     case TipoArquivo.CNAB240:
                         throw new Exception("Mensagem Variavel nao existe para o tipo CNAB 240.");
-                        break;
                     case TipoArquivo.CNAB400:
                         _detalhe = GerarMensagemVariavelRemessaCNAB400(boleto, ref numeroRegistro, tipoArquivo);
                         break;
@@ -1726,5 +1726,13 @@ namespace BoletoNet
             return vRetorno;
         }
 
+        public override long ObterNossoNumeroSemConvenioOuDigitoVerificador(long convenio, string nossoNumero)
+        {
+            //Itaú não utiliza DV ou convênio com o nosso número.
+            long numero;
+            if (long.TryParse(nossoNumero, out numero))
+                return numero;
+            throw new NossoNumeroInvalidoException();
+        }
     }
 }

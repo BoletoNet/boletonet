@@ -446,7 +446,7 @@ namespace BoletoNet
         /// <returns>Código da ocorrência</returns>
         protected string ObterCodigoDaOcorrencia(Boleto boleto)
         {
-            return boleto.Remessa != null ? Utils.FormatCode(boleto.Remessa.CodigoOcorrencia, 2) : TipoOcorrenciaRemessa.EntradaDeTitulos.Format();
+            return boleto.Remessa != null && !string.IsNullOrEmpty(boleto.Remessa.CodigoOcorrencia) ? Utils.FormatCode(boleto.Remessa.CodigoOcorrencia, 2) : TipoOcorrenciaRemessa.EntradaDeTitulos.Format();
         }
         # endregion
 
@@ -759,5 +759,14 @@ namespace BoletoNet
             return result;
         }
         #endregion Mod
+
+        /// <summary>
+        /// Obtém nosso número sem DV e sem código do Convênio.
+        /// </summary>
+        /// <returns></returns>
+        public virtual long ObterNossoNumeroSemConvenioOuDigitoVerificador(long convenio, string nossoNumero)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
