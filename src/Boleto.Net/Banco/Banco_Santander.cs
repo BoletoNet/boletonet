@@ -577,7 +577,7 @@ namespace BoletoNet
                 _header += Utils.FitStringLength(" ", 40, 40, ' ', 0, true, true, false);
 
                 //Número da versão da remessa (opcional) ==> 392 - 394
-                _header += Utils.FitStringLength(" ", 3, 3, ' ', 0, true, true, false);
+                _header += Utils.FitStringLength("0", 3, 3, '0', 0, true, true, true);
 
                 //Número sequencial do registro no arquivo ==> 395 - 400
                 _header += Utils.FitStringLength("1", 6, 6, '0', 0, true, true, true);
@@ -1199,7 +1199,6 @@ namespace BoletoNet
                 {
                     case TipoArquivo.CNAB240:
                         throw new Exception("Mensagem Variavel nao existe para o tipo CNAB 240.");
-                        break;
                     case TipoArquivo.CNAB400:
                         _detalhe = GerarMensagemVariavelRemessaCNAB400(boleto, ref numeroRegistro, tipoArquivo);
                         break;

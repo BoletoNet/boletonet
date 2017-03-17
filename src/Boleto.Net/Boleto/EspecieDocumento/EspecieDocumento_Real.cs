@@ -277,6 +277,11 @@ namespace BoletoNet
             return especiesDocumento;
         }
 
+        public override IEspecieDocumento DuplicataMercantil()
+        {
+            return new EspecieDocumento_Real(getCodigoEspecieByEnum(EnumEspecieDocumento_Real.DuplicataMercantil));
+        }
+
         #endregion
     }
 }

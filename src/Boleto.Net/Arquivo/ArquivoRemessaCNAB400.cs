@@ -93,7 +93,10 @@ namespace BoletoNet
                     {
                         strline = boleto.Banco.GerarMensagemVariavelRemessa(boleto, ref numeroRegistro, TipoArquivo.CNAB400);
                         if (!string.IsNullOrEmpty(strline) && !string.IsNullOrWhiteSpace(strline))
+                        { 
                             incluiLinha.WriteLine(strline);
+                            numeroRegistro++;
+                        }
                     }
                 }
 

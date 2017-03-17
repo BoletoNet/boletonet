@@ -7,7 +7,11 @@ namespace BoletoNet
 {
 	public class EspecieDocumento_Sofisa : AbstractEspecieDocumento, IEspecieDocumento
 	{
-		#region Constructors and Destructors
+        #region Constructors and Destructors
+
+        public EspecieDocumento_Sofisa()
+        {
+        }
 
 		public EspecieDocumento_Sofisa(string codigo)
 		{
@@ -139,6 +143,11 @@ namespace BoletoNet
 			}
 		}
 
-		#endregion
-	}
+        public override IEspecieDocumento DuplicataMercantil()
+        {
+            return new EspecieDocumento_Sofisa(RetornaCodigoEspecie(EnumEspecieDocumento_Sofisa.DuplicataMercantil));
+        }
+
+        #endregion
+    }
 }

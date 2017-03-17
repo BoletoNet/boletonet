@@ -197,6 +197,11 @@ namespace BoletoNet
             }
         }
 
+        public override IEspecieDocumento DuplicataMercantil()
+        {
+            return new EspecieDocumento_Sicoob(getCodigoEspecieByEnum(EnumEspecieDocumento_Sicoob.DuplicataMercantil));
+        }
+
         #endregion
     }
 }
