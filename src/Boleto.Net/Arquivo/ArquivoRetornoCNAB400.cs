@@ -8,12 +8,19 @@ namespace BoletoNet
     public class ArquivoRetornoCNAB400 : AbstractArquivoRetorno, IArquivoRetorno
     {
 
+        private HeaderRetorno _headerRetorno = new HeaderRetorno();
         private List<DetalheRetorno> _listaDetalhe = new List<DetalheRetorno>();
 
         public List<DetalheRetorno> ListaDetalhe
         {
             get { return _listaDetalhe; }
             set { _listaDetalhe = value; }
+        }
+
+        public HeaderRetorno HeaderRetorno
+        {
+            get { return _headerRetorno; }
+            set { _headerRetorno = value; }
         }
 
         #region Construtores
@@ -38,6 +45,7 @@ namespace BoletoNet
 
                 // Lendo o arquivo
                 linha = stream.ReadLine();
+                this.HeaderRetorno = banco.LerHeaderRetornoCNAB400(linha);
 
                 // Próxima linha (DETALHE)
                 linha = stream.ReadLine();

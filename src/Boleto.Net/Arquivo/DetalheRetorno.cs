@@ -496,6 +496,7 @@ namespace BoletoNet
                 decimal valorTitulo = Convert.ToInt64(registro.Substring(152, 13));
                 _valorTitulo = valorTitulo / 100;
                 _codigoBanco = Utils.ToInt32(registro.Substring(165, 3));
+                _bancoCobrador = Utils.ToInt32(registro.Substring(165, 3));
                 _agenciaCobradora = Utils.ToInt32(registro.Substring(168, 4));
                 _especie = Utils.ToInt32(registro.Substring(173, 2));
                 decimal tarifaCobranca = Convert.ToUInt64(registro.Substring(175, 13));

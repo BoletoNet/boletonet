@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Web.UI;
 using BoletoNet.Util;
 using System.Linq;
+using BoletoNet.Excecoes;
 
 [assembly: WebResource("BoletoNet.Imagens.033.jpg", "image/jpg")]
 namespace BoletoNet
@@ -576,7 +577,7 @@ namespace BoletoNet
                 _header += Utils.FitStringLength(" ", 40, 40, ' ', 0, true, true, false);
 
                 //Número da versão da remessa (opcional) ==> 392 - 394
-                _header += Utils.FitStringLength(" ", 3, 3, ' ', 0, true, true, false);
+                _header += Utils.FitStringLength("0", 3, 3, '0', 0, true, true, true);
 
                 //Número sequencial do registro no arquivo ==> 395 - 400
                 _header += Utils.FitStringLength("1", 6, 6, '0', 0, true, true, true);
@@ -710,7 +711,7 @@ namespace BoletoNet
                 _segmentoP = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
 
                 //Numero do lote remessa ==> 004 - 007
-                _segmentoP += Utils.FitStringLength(boleto.Remessa.NumeroLote.ToString(), 4, 4, '0', 0, true, true, true);
+                _segmentoP += Utils.FitStringLength("1", 4, 4, '0', 0, true, true, true);
 
                 //Tipo de registro => 008 - 008
                 _segmentoP += "3";
@@ -725,7 +726,7 @@ namespace BoletoNet
                 _segmentoP += " ";
 
                 //Código de movimento remessa ==> 016 - 017
-                _segmentoP += boleto.Remessa.CodigoOcorrencia;
+                _segmentoP += ObterCodigoDaOcorrencia(boleto);
 
                 //Agência do Cedente ==> 018 –021
                 _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true);
@@ -797,7 +798,10 @@ namespace BoletoNet
                 if (boleto.JurosMora > 0)
                 {
                     //Código do juros de mora ==> 118 - 118
-                    _segmentoP += "1";
+                    if (!String.IsNullOrEmpty(boleto.CodJurosMora)) //Possibilita passar o código 2 para JurosMora ao Mes, senão for setado, assume o valor padrão 1 para JurosMora ao Dia
+                        _segmentoP += Utils.FitStringLength(boleto.CodJurosMora.ToString(), 1, 1, '0', 0, true, true, true); 
+                    else
+                        _segmentoP += "1";
 
                     //Data do juros de mora ==> 119 - 126
                     _segmentoP += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
@@ -870,7 +874,7 @@ namespace BoletoNet
                 _segmentoP += "0";
 
                 //Número de dias para Baixa/Devolução ==> 226 - 227
-                _segmentoP += "00";
+                _segmentoP += Utils.FitStringLength(boleto.NumeroDiasBaixa.ToString(), 2, 2, '0', 0, true, true, true); 
 
                 //Código da moeda ==> 228 - 229
                 _segmentoP += "00";
@@ -915,7 +919,7 @@ namespace BoletoNet
                 _segmentoQ += " ";
 
                 //Código de movimento remessa ==> 016 - 017
-                _segmentoQ += boleto.Remessa.CodigoOcorrencia;
+                _segmentoQ += ObterCodigoDaOcorrencia(boleto);
 
                 if (boleto.Sacado.CPFCNPJ.Length <= 11)
                     //Tipo de inscrição do sacado ==> 018 - 018
@@ -993,7 +997,7 @@ namespace BoletoNet
                 _segmentoR = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
 
                 //Numero do lote remessa ==> 004 - 007
-                _segmentoR += Utils.FitStringLength(boleto.Remessa.NumeroLote.ToString(), 4, 4, '0', 0, true, true, true);
+                _segmentoR += Utils.FitStringLength("1", 4, 4, '0', 0, true, true, true);
 
                 //Tipo de registro ==> 008 - 008
                 _segmentoR += "3";
@@ -1008,7 +1012,7 @@ namespace BoletoNet
                 _segmentoR += " ";
 
                 //Código de movimento ==> 016 - 017
-                _segmentoR += boleto.Remessa.CodigoOcorrencia;
+                _segmentoR += ObterCodigoDaOcorrencia(boleto);
 
                 if (boleto.OutrosDescontos > 0)
                 {
@@ -1117,7 +1121,7 @@ namespace BoletoNet
                 _segmentoS += " ";
 
                 //Código de movimento ==> 016 - 017
-                _segmentoS += boleto.Remessa.CodigoOcorrencia;
+                _segmentoS += ObterCodigoDaOcorrencia(boleto);
 
                 //Identificação da impressão ==> 018 - 018
                 _segmentoS += "2";
@@ -1148,7 +1152,7 @@ namespace BoletoNet
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro durante a geração do SEGMENTO R DO DETALHE do arquivo de REMESSA.", ex);
+                throw new Exception("Erro durante a geração do SEGMENTO S DO DETALHE do arquivo de REMESSA.", ex);
             }
         }
 
@@ -1195,7 +1199,6 @@ namespace BoletoNet
                 {
                     case TipoArquivo.CNAB240:
                         throw new Exception("Mensagem Variavel nao existe para o tipo CNAB 240.");
-                        break;
                     case TipoArquivo.CNAB400:
                         _detalhe = GerarMensagemVariavelRemessaCNAB400(boleto, ref numeroRegistro, tipoArquivo);
                         break;
@@ -1316,7 +1319,7 @@ namespace BoletoNet
                 //08 - Alteração do seu Número
                 //09 - Protestar
                 //18 - Sustar protesto
-                _detalhe += Utils.FitStringLength(boleto.Remessa.CodigoOcorrencia, 2, 2, '0', 0, true, true, true);
+                _detalhe += ObterCodigoDaOcorrencia(boleto);
 
                 //Nº do documento ==> 111 - 120
                 _detalhe += Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, ' ', 0, true, true, false);
@@ -1900,7 +1903,7 @@ namespace BoletoNet
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro ao processar arquivo de RETORNO - SEGMENTO U.", ex);
+                throw new Exception("Erro ao processar arquivo de RETORNO - SEGMENTO T.", ex);
             }
 
 
@@ -1912,7 +1915,7 @@ namespace BoletoNet
             {
                 DetalheSegmentoURetornoCNAB240 detalhe = new DetalheSegmentoURetornoCNAB240(registro);
 
-                if (registro.Substring(13, 1) != "Y")
+                if (registro.Substring(13, 1) != "U")
                     throw new Exception("Registro inválido. O detalhe não possuí as características do segmento U.");
 
                 detalhe.CodigoOcorrenciaSacado = registro.Substring(15, 2);
@@ -1948,7 +1951,7 @@ namespace BoletoNet
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro ao processar arquivo de RETORNO - SEGMENTO T.", ex);
+                throw new Exception("Erro ao processar arquivo de RETORNO - SEGMENTO U.", ex);
             }
 
 
@@ -1960,7 +1963,7 @@ namespace BoletoNet
             {
                 DetalheSegmentoYRetornoCNAB240 detalhe = new DetalheSegmentoYRetornoCNAB240(registro);
 
-                if (registro.Substring(13, 1) != "U")
+                if (registro.Substring(13, 1) != "Y")
                     throw new Exception("Registro inválido. O detalhe não possuí as características do segmento Y.");
 
                 detalhe.CodigoMovimento = Convert.ToInt32(registro.Substring(15, 2));
@@ -1999,5 +2002,17 @@ namespace BoletoNet
             return vRetorno;
         }
 
+        public override long ObterNossoNumeroSemConvenioOuDigitoVerificador(long convenio, string nossoNumero)
+        {
+            if (string.IsNullOrEmpty(nossoNumero) || nossoNumero.Length != 13)
+                throw new TamanhoNossoNumeroInvalidoException();
+
+            var nossoNumeroSemDV = nossoNumero.Substring(0, 12);
+
+            long numero;
+            if (long.TryParse(nossoNumeroSemDV, out numero))
+                return numero;
+            throw new NossoNumeroInvalidoException();
+        }
     }
 }

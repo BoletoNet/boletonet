@@ -144,6 +144,13 @@ namespace BoletoNet
         [Browsable(true), Description("Caminho onde se encontra a ferramenta WkHtmlToPdf.")]
         public string PdfToolPath { get; set; }
 
+        /// <summary>
+        /// Caminho onde a NReco gera os arquivos temporários necessários para a construção do PDF.
+        /// Se o caminho não for especificado a ferramenta utilizará a pasta retornada pelo método Path.GetTempPath().
+        /// </summary>
+        [Browsable(true), Description("Caminho onde a NReco gera os arquivos temporários necessários para a construção do PDF.")]
+        public string TempFilesPath { get; set; }
+
         #region Propriedades
         [Browsable(true), Description("Mostra o comprovante de entrega sem dados para marcar")]
         public bool MostrarComprovanteEntregaLivre
@@ -674,54 +681,78 @@ namespace BoletoNet
 
             var valorBoleto = (Boleto.ValorBoleto == 0 ? "" : Boleto.ValorBoleto.ToString("C", CultureInfo.GetCultureInfo("PT-BR")));
 
-            return html
-                .Replace("@CODIGOBANCO", Utils.FormatCode(_ibanco.Codigo.ToString(), 3))
-                .Replace("@DIGITOBANCO", _ibanco.Digito)
-                //.Replace("@URLIMAGEMBARRAINTERNA", urlImagemBarraInterna)
-                //.Replace("@URLIMAGEMCORTE", urlImagemCorte)
-                //.Replace("@URLIMAGEMPONTO", urlImagemPonto)
-                .Replace("@URLIMAGEMLOGO", urlImagemLogo)
-                .Replace("@URLIMGCEDENTE", vLocalLogoCedente)
-                .Replace("@URLIMAGEMBARRA", urlImagemBarra)
-                .Replace("@LINHADIGITAVEL", Boleto.CodigoBarra.LinhaDigitavel)
-                .Replace("@LOCALPAGAMENTO", Boleto.LocalPagamento)
-                .Replace("@DATAVENCIMENTO", dataVencimento)
-                .Replace("@CEDENTE_BOLETO", !Cedente.MostrarCNPJnoBoleto ? Cedente.Nome : string.Format("{0}&nbsp;&nbsp;&nbsp;CNPJ: {1}", Cedente.Nome, Cedente.CPFCNPJcomMascara))
-                .Replace("@CEDENTE", Cedente.Nome)
-                .Replace("@DATADOCUMENTO", Boleto.DataDocumento.ToString("dd/MM/yyyy"))
-                .Replace("@NUMERODOCUMENTO", Boleto.NumeroDocumento)
-                .Replace("@ESPECIEDOCUMENTO", EspecieDocumento.ValidaSigla(Boleto.EspecieDocumento))
-                .Replace("@DATAPROCESSAMENTO", Boleto.DataProcessamento.ToString("dd/MM/yyyy"))
+	        return html.Replace("@CODIGOBANCO", Utils.FormatCode(_ibanco.Codigo.ToString(), 3))
+		        .Replace("@DIGITOBANCO", _ibanco.Digito)
+		        //.Replace("@URLIMAGEMBARRAINTERNA", urlImagemBarraInterna)
+		        //.Replace("@URLIMAGEMCORTE", urlImagemCorte)
+		        //.Replace("@URLIMAGEMPONTO", urlImagemPonto)
+		        .Replace("@URLIMAGEMLOGO", urlImagemLogo)
+		        .Replace("@URLIMGCEDENTE", vLocalLogoCedente)
+		        .Replace("@URLIMAGEMBARRA", urlImagemBarra)
+		        .Replace("@LINHADIGITAVEL", Boleto.CodigoBarra.LinhaDigitavel)
+		        .Replace("@LOCALPAGAMENTO", Boleto.LocalPagamento)
+		        .Replace("@DATAVENCIMENTO", dataVencimento)
+		        .Replace(
+			        "@CEDENTE_BOLETO",
+			        !Cedente.MostrarCNPJnoBoleto
+						? Cedente.Nome
+						: string.Format("{0}&nbsp;&nbsp;&nbsp;CNPJ: {1}", Cedente.Nome, Cedente.CPFCNPJcomMascara))
+		        .Replace("@CEDENTE", Cedente.Nome)
+		        .Replace("@DATADOCUMENTO", Boleto.DataDocumento.ToString("dd/MM/yyyy"))
+		        .Replace("@NUMERODOCUMENTO", Boleto.NumeroDocumento)
+		        .Replace("@ESPECIEDOCUMENTO", EspecieDocumento.ValidaSigla(Boleto.EspecieDocumento))
+		        .Replace("@DATAPROCESSAMENTO", Boleto.DataProcessamento.ToString("dd/MM/yyyy"))
 
-            #region Implementação para o Banco do Brasil
-                //Variável inserida para atender às especificações das carteiras "17-019", "17-027" e "18-019" do Banco do Brasil
-                //apenas para a ficha de compensação.
-                //Como a variável não existirá se não forem as carteiras "17-019", "17-027", "17-019", "17-035", "17-140", "17-159", "17-067", "17-167" e "18-019", não foi colocado o [if].
-                .Replace("@NOSSONUMEROBB", Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("17-027") | Boleto.Carteira.Equals("17-035") | Boleto.Carteira.Equals("18-019") | Boleto.Carteira.Equals("17-140") | Boleto.Carteira.Equals("17-159") | Boleto.Carteira.Equals("17-067") | Boleto.Carteira.Equals("17-167")) ? Boleto.NossoNumero.Substring(3) : string.Empty)
-            #endregion Implementação para o Banco do Brasil
+		        #region Implementação para o Banco do Brasil
 
-                .Replace("@NOSSONUMERO", Boleto.NossoNumero)
-                .Replace("@CARTEIRA", FormataDescricaoCarteira())
-                .Replace("@ESPECIE", Boleto.Especie)
-                .Replace("@QUANTIDADE", (Boleto.QuantidadeMoeda == 0 ? "" : Boleto.QuantidadeMoeda.ToString()))
-                .Replace("@VALORDOCUMENTO", Boleto.ValorMoeda)
-                .Replace("@=VALORDOCUMENTO", valorBoleto)
-                .Replace("@VALORCOBRADO", (Boleto.ValorCobrado == 0 ? "" : Boleto.ValorCobrado.ToString("C", CultureInfo.GetCultureInfo("PT-BR"))))
-                .Replace("@OUTROSACRESCIMOS", "")
-                .Replace("@OUTRASDEDUCOES", "")
-                .Replace("@DESCONTOS", (Boleto.ValorDesconto == 0 ? "" : Boleto.ValorDesconto.ToString("C", CultureInfo.GetCultureInfo("PT-BR"))))
-                .Replace("@AGENCIACONTA", agenciaCodigoCedente)
-                .Replace("@SACADO", sacado)
-                .Replace("@INFOSACADO", infoSacado)
-                .Replace("@AGENCIACODIGOCEDENTE", agenciaCodigoCedente)
-                .Replace("@CPFCNPJ", Cedente.CPFCNPJ)
-                .Replace("@MORAMULTA", (Boleto.ValorMulta == 0 ? "" : Boleto.ValorMulta.ToString("C", CultureInfo.GetCultureInfo("PT-BR"))))
-                .Replace("@AUTENTICACAOMECANICA", "")
-                .Replace("@USODOBANCO", Boleto.UsoBanco)
-                .Replace("@IMAGEMCODIGOBARRA", imagemCodigoBarras)
-                .Replace("@ACEITE", Boleto.Aceite).ToString()
-                .Replace("@ENDERECOCEDENTE", MostrarEnderecoCedente ? enderecoCedente : "")
-                .Replace("Ar\">R$", RemoveSimboloMoedaValorDocumento ? "Ar\">" : "Ar\">R$");
+		        //Variável inserida para atender às especificações das carteiras "17-019", "17-027" e "18-019" do Banco do Brasil
+		        //apenas para a ficha de compensação.
+		        //Como a variável não existirá se não forem as carteiras "17-019", "17-027", "17-019", "17-035", "17-140", "17-159", "17-067", "17-167" e "18-019", não foi colocado o [if].
+		        .Replace(
+			        "@NOSSONUMEROBB",
+			        Boleto.Banco.Codigo == 1
+					& (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("17-027") | Boleto.Carteira.Equals("17-035")
+						| Boleto.Carteira.Equals("18-019") | Boleto.Carteira.Equals("17-140") | Boleto.Carteira.Equals("17-159")
+						| Boleto.Carteira.Equals("17-067") | Boleto.Carteira.Equals("17-167"))
+						? Boleto.NossoNumero.Substring(3)
+						: string.Empty)
+		        #endregion Implementação para o Banco do Brasil
+
+		        .Replace("@NOSSONUMERO", Boleto.NossoNumero)
+		        .Replace("@CARTEIRA", FormataDescricaoCarteira())
+		        .Replace("@ESPECIE", Boleto.Especie)
+		        .Replace("@QUANTIDADE", (Boleto.QuantidadeMoeda == 0 ? "" : Boleto.QuantidadeMoeda.ToString()))
+		        .Replace("@VALORDOCUMENTO", Boleto.ValorMoeda)
+		        .Replace("@=VALORDOCUMENTO", valorBoleto)
+		        .Replace(
+			        "@VALORCOBRADO",
+			        (Boleto.ValorCobrado == 0 ? "" : Boleto.ValorCobrado.ToString("C", CultureInfo.GetCultureInfo("PT-BR"))))
+		        .Replace("@OUTROSACRESCIMOS", "")
+		        .Replace("@OUTRASDEDUCOES", "")
+		        .Replace(
+			        "@DESCONTOS",
+			        (Boleto.ValorDesconto == 0 ? "" : Boleto.ValorDesconto.ToString("C", CultureInfo.GetCultureInfo("PT-BR"))))
+		        .Replace("@AGENCIACONTA", agenciaCodigoCedente)
+		        .Replace("@SACADO", sacado)
+		        .Replace("@INFOSACADO", infoSacado)
+		        .Replace("@AGENCIACODIGOCEDENTE", agenciaCodigoCedente)
+		        .Replace("@CPFCNPJ", Cedente.CPFCNPJ)
+		        .Replace(
+			        "@MORAMULTA",
+			        (Boleto.ValorMulta == 0 ? "" : Boleto.ValorMulta.ToString("C", CultureInfo.GetCultureInfo("PT-BR"))))
+		        .Replace("@AUTENTICACAOMECANICA", "")
+		        .Replace("@USODOBANCO", Boleto.UsoBanco)
+		        .Replace("@IMAGEMCODIGOBARRA", imagemCodigoBarras)
+		        .Replace("@ACEITE", Boleto.Aceite)
+		        .ToString()
+		        .Replace("@ENDERECOCEDENTE", MostrarEnderecoCedente ? enderecoCedente : "")
+		        .Replace(
+			        "@AVALISTA",
+			        string.Format(
+				        "{0} - {1}",
+				        Boleto.Avalista != null ? Boleto.Avalista.Nome : string.Empty,
+				        Boleto.Avalista != null ? Boleto.Avalista.CPFCNPJ : string.Empty))
+		        .Replace("Ar\">R$", RemoveSimboloMoedaValorDocumento ? "Ar\">" : "Ar\">R$");
 
         }
 
@@ -1170,8 +1201,7 @@ namespace BoletoNet
 
             var assembly = Assembly.GetExecutingAssembly();
 
-            var streamLogo = assembly.GetManifestResourceStream("BoletoNet.Imagens." + CodigoBanco.ToString("000") + ".jpg");
-            string base64Logo = Convert.ToBase64String(new BinaryReader(streamLogo).ReadBytes((int)streamLogo.Length));
+            string base64Logo = Convert.ToBase64String(ObterLogoDoBanco(CodigoBanco));
             string fnLogo = string.Format("data:image/gif;base64,{0}", base64Logo);
 
             var streamBarra = assembly.GetManifestResourceStream("BoletoNet.Imagens.barra.gif");
@@ -1208,6 +1238,11 @@ namespace BoletoNet
         public byte[] MontaBytesPDF(bool convertLinhaDigitavelToImage = false)
         {
             var converter = new NReco.PdfGenerator.HtmlToPdfConverter();
+
+            if (!string.IsNullOrEmpty(TempFilesPath)){
+                converter.TempFilesPath = this.TempFilesPath;
+            }
+
             if (!string.IsNullOrEmpty(this.PdfToolPath)) {
                 converter.PdfToolPath = this.PdfToolPath;
             }
@@ -1254,6 +1289,10 @@ namespace BoletoNet
             if (!string.IsNullOrEmpty(this.PdfToolPath)) {
                 converter.PdfToolPath = this.PdfToolPath;
             }
+            if (!string.IsNullOrEmpty(this.TempFilesPath)) {
+                converter.TempFilesPath = this.TempFilesPath;
+            }
+
             return converter.GeneratePdf(htmlBoletos.ToString());
         }
         
@@ -1263,6 +1302,17 @@ namespace BoletoNet
         {
             C2of5i cb = new C2of5i(boleto.CodigoBarra.Codigo, 1, 50, boleto.CodigoBarra.Codigo.Length);
             return cb.ToBitmap();
+        }
+
+        /// <summary>
+        /// Obtem o array de bytes da logo do banco.
+        /// </summary>
+        /// <returns>bytes da logo</returns>
+        public static byte[] ObterLogoDoBanco(short codigoBanco)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var streamLogo = assembly.GetManifestResourceStream(string.Format("BoletoNet.Imagens.{0}.jpg", codigoBanco.ToString("000")));
+            return new BinaryReader(streamLogo).ReadBytes((int)streamLogo.Length);
         }
 
         private void CopiarStream(Stream entrada, Stream saida)

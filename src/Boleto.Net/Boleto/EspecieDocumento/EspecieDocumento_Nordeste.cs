@@ -158,6 +158,11 @@ namespace BoletoNet
             }
         }
 
+        public override IEspecieDocumento DuplicataMercantil()
+        {
+            return new EspecieDocumento_Nordeste(getCodigoEspecieByEnum(EnumEspecieDocumento_Nordeste.DuplicataMercantil));
+        }
+
         #endregion
     }
 }

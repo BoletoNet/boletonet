@@ -1,3 +1,4 @@
+using BoletoNet.Excecoes;
 using BoletoNet.Util;
 using System;
 using System.Text;
@@ -385,7 +386,7 @@ namespace BoletoNet
                 case "03":
                     return "03-Entrada Rejeitada";
                 case "04":
-                    return "04-Alteração de Dados-Nova entrada ou Alteração/Exclusõa de dados acatada";
+                    return "04-Alteração de Dados-Nova entrada ou Alteração/Exclusão de dados acatada";
                 case "05":
                     return "05-Alteração de dados-Baixa";
                 case "06":
@@ -509,6 +510,73 @@ namespace BoletoNet
             }
         }
 
+        /// <summary>
+        /// Verifica o código do motivo da rejeição informada pelo banco
+        /// </summary>
+        public string MotivoRejeicao(string codigo)
+        {
+            switch (codigo)
+            {
+                case "03": return "03-AG. COBRADORA - CEP SEM ATENDIMENTO DE PROTESTO NO MOMENTO";
+                case "04": return "04-ESTADO - SIGLA DO ESTADO INVÁLIDA";
+                case "05": return "05-DATA VENCIMENTO - PRAZO DA OPERAÇÃO MENOR QUE PRAZO MÍNIMO OU MAIOR QUE O MÁXIMO";
+                case "07": return "07-VALOR DO TÍTULO - VALOR DO TÍTULO MAIOR QUE 10.000.000,00";
+                case "08": return "08-NOME DO PAGADOR - NÃO INFORMADO OU DESLOCADO";
+                case "09": return "09-AGENCIA/CONTA - AGÊNCIA ENCERRADA";
+                case "10": return "10-LOGRADOURO - NÃO INFORMADO OU DESLOCADO";
+                case "11": return "11-CEP - CEP NÃO NUMÉRICO OU CEP INVÁLIDO";
+                case "12": return "12-SACADOR / AVALISTA - NOME NÃO INFORMADO OU DESLOCADO (BANCOS CORRESPONDENTES)";
+                case "13": return "13-ESTADO/CEP - CEP INCOMPATÍVEL COM A SIGLA DO ESTADO";
+                case "14": return "14-NOSSO NÚMERO - NOSSO NÚMERO JÁ REGISTRADO NO CADASTRO DO BANCO OU FORA DA FAIXA";
+                case "15": return "15-NOSSO NÚMERO - NOSSO NÚMERO EM DUPLICIDADE NO MESMO MOVIMENTO";
+                case "18": return "18-DATA DE ENTRADA - DATA DE ENTRADA INVÁLIDA PARA OPERAR COM ESTA CARTEIRA";
+                case "19": return "19-OCORRÊNCIA - OCORRÊNCIA INVÁLIDA";
+                case "21": return "21-AG. COBRADORA - CARTEIRA NÃO ACEITA DEPOSITÁRIA CORRESPONDENTE ESTADO DA AGÊNCIA DIFERENTE DO ESTADO DO PAGADOR AG. COBRADORA NÃO CONSTA NO CADASTRO OU ENCERRANDO";
+                case "22": return "22-CARTEIRA - CARTEIRA NÃO PERMITIDA (NECESSÁRIO CADASTRAR FAIXA LIVRE)";
+                case "26": return "26-AGÊNCIA/CONTA - AGÊNCIA/CONTA NÃO LIBERADA PARA OPERAR COM COBRANÇA";
+                case "27": return "27-CNPJ INAPTO - CNPJ DO BENEFICIÁRIO INAPTO DEVOLUÇÃO DE TÍTULO EM GARANTIA";
+                case "29": return "29-CÓDIGO EMPRESA - CATEGORIA DA CONTA INVÁLIDA";
+                case "30": return "30-ENTRADA BLOQUEADA - ENTRADAS BLOQUEADAS, CONTA SUSPENSA EM COBRANÇA";
+                case "31": return "31-AGÊNCIA/CONTA - CONTA NÃO TEM PERMISSÃO PARA PROTESTAR (CONTATE SEU GERENTE)";
+                case "35": return "35-VALOR DO IOF - IOF MAIOR QUE 5%";
+                case "36": return "36-QTDADE DE MOEDA - QUANTIDADE DE MOEDA INCOMPATÍVEL COM VALOR DO TÍTULO";
+                case "37": return "37-CNPJ/CPF DO PAGADOR - NÃO NUMÉRICO OU IGUAL A ZEROS";
+                case "42": return "42-NOSSO NÚMERO - NOSSO NÚMERO FORA DE FAIXA";
+                case "52": return "52-AG. COBRADORA - EMPRESA NÃO ACEITA BANCO CORRESPONDENTE";
+                case "53": return "53-AG. COBRADORA - EMPRESA NÃO ACEITA BANCO CORRESPONDENTE - COBRANÇA MENSAGEM";
+                case "54": return "54-DATA DE VENCTO - BANCO CORRESPONDENTE - TÍTULO COM VENCIMENTO INFERIOR A 15 DIAS";
+                case "55": return "55-DEP/BCO CORRESP - CEP NÃO PERTENCE À DEPOSITÁRIA INFORMADA";
+                case "56": return "56-DT VENCTO/BCO CORRESP - VENCTO SUPERIOR A 180 DIAS DA DATA DE ENTRADA";
+                case "57": return "57-DATA DE VENCTO - CEP SÓ DEPOSITÁRIA BCO DO BRASIL COM VENCTO INFERIOR A 8 DIAS";
+                case "60": return "60-ABATIMENTO - VALOR DO ABATIMENTO INVÁLIDO";
+                case "61": return "61-JUROS DE MORA - JUROS DE MORA MAIOR QUE O PERMITIDO";
+                case "62": return "62-DESCONTO - VALOR DO DESCONTO MAIOR QUE VALOR DO TÍTULO";
+                case "63": return "63-DESCONTO DE ANTECIPAÇÃO - VALOR DA IMPORTÂNCIA POR DIA DE DESCONTO (IDD) NÃO PERMITIDO";
+                case "64": return "64-DATA DE EMISSÃO - DATA DE EMISSÃO DO TÍTULO INVÁLIDA";
+                case "65": return "65-TAXA FINANCTO - TAXA INVÁLIDA (VENDOR)";
+                case "66": return "66-DATA DE VENCTO - INVALIDA/FORA DE PRAZO DE OPERAÇÃO (MÍNIMO OU MÁXIMO)";
+                case "67": return "67-VALOR/QTIDADE - VALOR DO TÍTULO/QUANTIDADE DE MOEDA INVÁLIDO";
+                case "68": return "68-CARTEIRA - CARTEIRA INVÁLIDA OU NÃO CADASTRADA NO INTERCÂMBIO DA COBRANÇA";
+                case "69": return "69-CARTEIRA - CARTEIRA INVÁLIDA PARA TÍTULOS COM RATEIO DE CRÉDITO";
+                case "70": return "70-AGÊNCIA/CONTA - BENEFICIÁRIO NÃO CADASTRADO PARA FAZER RATEIO DE CRÉDITO";
+                case "78": return "78-AGÊNCIA/CONTA - DUPLICIDADE DE AGÊNCIA/CONTA BENEFICIÁRIA DO RATEIO DE CRÉDITO";
+                case "80": return "80-AGÊNCIA/CONTA - QUANTIDADE DE CONTAS BENEFICIÁRIAS DO RATEIO MAIOR DO QUE O PERMITIDO (MÁXIMO DE 30 CONTAS POR TÍTULO)";
+                case "81": return "81-AGÊNCIA/CONTA - CONTA PARA RATEIO DE CRÉDITO INVÁLIDA / NÃO PERTENCE AO ITAÚ";
+                case "82": return "82-DESCONTO/ABATI-MENTO - DESCONTO/ABATIMENTO NÃO PERMITIDO PARA TÍTULOS COM RATEIO DE CRÉDITO";
+                case "83": return "83-VALOR DO TÍTULO - VALOR DO TÍTULO MENOR QUE A SOMA DOS VALORES ESTIPULADOS PARA RATEIO";
+                case "84": return "84-AGÊNCIA/CONTA - AGÊNCIA/CONTA BENEFICIÁRIA DO RATEIO É A CENTRALIZADORA DE CRÉDITO DO BENEFICIÁRIO";
+                case "85": return "85-AGÊNCIA/CONTA - AGÊNCIA/CONTA DO BENEFICIÁRIO É CONTRATUAL / RATEIO DE CRÉDITO NÃO PERMITIDO";
+                case "86": return "86-TIPO DE VALOR - CÓDIGO DO TIPO DE VALOR INVÁLIDO / NÃO PREVISTO PARA TÍTULOS COM RATEIO DE CRÉDITO";
+                case "87": return "87-AGÊNCIA/CONTA - REGISTRO TIPO 4 SEM INFORMAÇÃO DE AGÊNCIAS/CONTAS BENEFICIÁRIAS DO RATEIO";
+                case "90": return "90-NRO DA LINHA - COBRANÇA MENSAGEM - NÚMERO DA LINHA DA MENSAGEM INVÁLIDO OU QUANTIDADE DE LINHAS EXCEDIDAS";
+                case "97": return "97-SEM MENSAGEM - COBRANÇA MENSAGEM SEM MENSAGEM (SÓ DE CAMPOS FIXOS), PORÉM COM REGISTRO DO TIPO 7 OU 8";
+                case "98": return "98-FLASH INVÁLIDO - REGISTRO MENSAGEM SEM FLASH CADASTRADO OU FLASH INFORMADO DIFERENTE DO CADASTRADO";
+                case "99": return "99-FLASH INVÁLIDO - CONTA DE COBRANÇA COM FLASH CADASTRADO E SEM REGISTRO DE MENSAGEM CORRESPONDENTE";
+                default:
+                    return string.Empty;
+            }
+        }
+
         # endregion
 
         # region Métodos de geração do arquivo remessa
@@ -602,7 +670,7 @@ namespace BoletoNet
                 header += "0000000";
                 header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 5, true);
                 header += " ";
-                header += " ";
+                header += Utils.FormatCode(String.IsNullOrEmpty(cedente.ContaBancaria.DigitoConta) ? " " : cedente.ContaBancaria.DigitoConta, " ", 1, true);
                 header += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false);                
                 header += Utils.FormatCode("BANCO ITAU SA", " ", 30);
                 header += Utils.FormatCode("", " ", 10);
@@ -741,7 +809,7 @@ namespace BoletoNet
                 header += Utils.FormatCode("", "0", 7);
                 header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 5, true);
                 header += " ";
-                header += " ";
+                header += Utils.FormatCode(String.IsNullOrEmpty(cedente.ContaBancaria.DigitoConta) ? " " : cedente.ContaBancaria.DigitoConta, " ", 1, true);
                 header += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false);
                 header += Utils.FormatCode("", " ", 80);
                 header += Utils.FormatCode("", "0", 8, true);
@@ -754,6 +822,7 @@ namespace BoletoNet
             catch (Exception e)
             {
                 throw new Exception("Erro ao gerar HEADER DO LOTE do arquivo de remessa.", e);
+
             }
         }
 
@@ -766,7 +835,7 @@ namespace BoletoNet
         public override string GerarDetalheSegmentoPRemessa(Boleto boleto, int numeroRegistro, string numeroConvenio)
         {
             try
-            {
+            {                
                 string _segmentoP;
                 _segmentoP = "341";
                 _segmentoP += "0001";
@@ -774,17 +843,17 @@ namespace BoletoNet
                 _segmentoP += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);
                 _segmentoP += "P";
                 _segmentoP += " ";
-                _segmentoP += "01";
+                _segmentoP += ObterCodigoDaOcorrencia(boleto);
                 _segmentoP += "0";
                 _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true);
                 _segmentoP += " ";
                 _segmentoP += "0000000";
                 _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 5, 5, '0', 0, true, true, true);
                 _segmentoP += " ";
-                _segmentoP += " ";
+                _segmentoP += Utils.FormatCode(String.IsNullOrEmpty(boleto.Cedente.ContaBancaria.DigitoConta) ? " " : boleto.Cedente.ContaBancaria.DigitoConta, " ", 1, true);
                 _segmentoP += Utils.FitStringLength(boleto.Carteira, 3, 3, '0', 0, true, true, true);
                 _segmentoP += Utils.FitStringLength(boleto.NossoNumero, 8, 8, '0', 0, true, true, true);
-                _segmentoP += " ";
+                _segmentoP += Utils.FitStringLength(boleto.DigitoNossoNumero, 1, 1, '0', 1, true, true, true);
                 _segmentoP += "        ";
                 _segmentoP += "00000";
                 _segmentoP += Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, ' ', 0, true, true, false);
@@ -840,7 +909,7 @@ namespace BoletoNet
                 _segmentoQ += "Q";
                 _segmentoQ += " ";
 
-                _segmentoQ += "01";
+                _segmentoQ += ObterCodigoDaOcorrencia(boleto);
                 if (boleto.Sacado.CPFCNPJ.Length <= 11)
                     _segmentoQ += "1";
                 else
@@ -888,7 +957,8 @@ namespace BoletoNet
                 _segmentoR += "0001";
                 _segmentoR += "3";
                 _segmentoR += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);
-                _segmentoR += "R 01";
+                _segmentoR += "R ";
+                _segmentoR += ObterCodigoDaOcorrencia(boleto);
                 // Desconto 2
                 _segmentoR += "000000000000000000000000"; //24 zeros
                 // Desconto 3
@@ -1111,10 +1181,8 @@ namespace BoletoNet
                 if (boleto.Moeda == 9)
                     _detalhe += "I"; //O código da carteira só muda para dois tipos, quando a cobrança for em dólar
 
-                if (boleto.Remessa != null) // Identificação da ocorrência - 02 PEDIDO DE BAIXA
-                    _detalhe += boleto.Remessa.CodigoOcorrencia;
-                else
-                    _detalhe += "01"; // Identificação da ocorrência - 01 REMESSA
+                _detalhe += ObterCodigoDaOcorrencia(boleto);
+
                 _detalhe += Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, ' ', 0, true, true, false);
                 _detalhe += boleto.DataVencimento.ToString("ddMMyy");
                 _detalhe += Utils.FitStringLength(boleto.ValorBoleto.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
@@ -1122,7 +1190,7 @@ namespace BoletoNet
                 _detalhe += "00000"; // Agência onde o título será cobrado - no arquivo de remessa, preencher com ZEROS
 
                 _detalhe += Utils.FitStringLength(EspecieDocumento.ValidaCodigo(boleto.EspecieDocumento).ToString(), 2, 2, '0', 0, true, true, true);
-                _detalhe += "N"; // Identificação de título, Aceito ou Não aceito
+                _detalhe += "A"; // Identificação de título, Aceito ou Não aceito
 
                 //A data informada neste campo deve ser a mesma data de emissão do título de crédito 
                 //(Duplicata de Serviço / Duplicata Mercantil / Nota Fiscal, etc), que deu origem a esta Cobrança. 
@@ -1162,7 +1230,7 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.JurosMora.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
 
                 // Data limite para desconto
-                _detalhe += boleto.DataVencimento.ToString("ddMMyy");
+                _detalhe += boleto.DataDesconto > DateTime.MinValue ? boleto.DataDesconto.ToString("ddMMyy") : "000000";
                 _detalhe += Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
                 _detalhe += "0000000000000"; // Valor do IOF
                 _detalhe += "0000000000000"; // Valor do Abatimento
@@ -1189,7 +1257,7 @@ namespace BoletoNet
                 // b) Mensagens ao sacado: se utilizados as instruções 93 ou 94 (Nota 11), transcrever a mensagem desejada
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Nome, 30, 30, ' ', 0, true, true, false).ToUpper();
                 _detalhe += "    "; // Complemento do registro
-                _detalhe += boleto.DataVencimento.ToString("ddMMyy");
+                _detalhe += boleto.DataJurosMora > DateTime.MinValue ? boleto.DataJurosMora.ToString("ddMMyy") : "000000";
                 // PRAZO - Quantidade de DIAS - ver nota 11(A) - depende das instruções de cobrança 
 
                 if (boleto.Instrucoes.Count > 0)
@@ -1259,23 +1327,53 @@ namespace BoletoNet
         {
             try
             {
-                string trailer = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
-                trailer += Utils.FormatCode("", "0", 4, true);
-                trailer += "5";
-                trailer += Utils.FormatCode("", " ", 9);
-                trailer += Utils.FormatCode("", "0", 6, true);
-                trailer += Utils.FormatCode("", "0", 18, true);
-                trailer += Utils.FormatCode("", "0", 18, true);
-                trailer += Utils.FormatCode("", " ", 171);
-                trailer += Utils.FormatCode("", " ", 10);
-                trailer = Utils.SubstituiCaracteresEspeciais(trailer);
+                string header = Utils.FormatCode(Codigo.ToString(), "0", 3, true);                      // código do banco na compensação - 001-003 9(03) - 341
+                header += "0001";                                                                       // Lote de Serviço - 004-007 9(04) - Nota 1
+                header += "5";                                                                          // Tipo de Registro - 008-008 9(01) - 5
+                header += Utils.FormatCode("", " ", 9);                                                 // Complemento de Registro - 009-017 X(09) - Brancos
+                header += Utils.FormatCode(numeroRegistro.ToString(), "0", 6, true);                    // Quantidade de Registros do Lote - 018-023 9(06) - Nota 26
 
-                return trailer;
+                // Totalização da Cobrança Simples
+                header += Utils.FormatCode("", "0", 6);                                                 // Quantidade de Títulos em Cobrança Simples - 024-029 9(06) - Nota 24
+                header += Utils.FormatCode("", "0", 17);                                                // Valor Total dos Títulos em Carteiras - 030-046 9(15)V9(02) - Nota 24
+
+                //Totalização cobrança vinculada
+                header += Utils.FormatCode("", "0", 6);                                                 // Qtde de titulos em cobrança vinculada - 047-052 9(06) - Nota 24
+                header += Utils.FormatCode("", "0", 17);                                                // Valor total títulos em cobrança vinculada - 053-069 9(15)V9(02) - Nota 24
+
+                header += Utils.FormatCode("", "0", 46);                                                // Complemento de Registro - 070-115 X(08) - Zeros
+                header += Utils.FormatCode("", " ", 8);                                                 // Referência do Aviso bancário - 116-123 X(08) - Nota 25
+                header += Utils.FormatCode("", " ", 117);                                               // Complemento de Registro - 124-240 X(117) - Brancos
+
+                return header;
             }
             catch (Exception e)
             {
-                throw new Exception("Erro durante a geração do registro TRAILER do LOTE de REMESSA.", e);
+                throw new Exception("Erro ao gerar Trailer de Lote do arquivo de remessa.", e);
             }
+
+            #region Informações geradas de forma inconsistente
+            //suelton@gmail.com - 04/01/2017 - Gerando informações inconsistentes
+            //try
+            //{
+            //    string trailer = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
+            //    trailer += Utils.FormatCode("", "0", 4, true);
+            //    trailer += "5";
+            //    trailer += Utils.FormatCode("", " ", 9);
+            //    trailer += Utils.FormatCode("", "0", 6, true);
+            //    trailer += Utils.FormatCode("", "0", 18, true);
+            //    trailer += Utils.FormatCode("", "0", 18, true);
+            //    trailer += Utils.FormatCode("", " ", 171);
+            //    trailer += Utils.FormatCode("", " ", 10);
+            //    trailer = Utils.SubstituiCaracteresEspeciais(trailer);
+
+            //    return trailer;
+            //}
+            //catch (Exception e)
+            //{
+            //    throw new Exception("Erro durante a geração do registro TRAILER do LOTE de REMESSA.", e);
+            //} 
+            #endregion
         }
 
         /// <summary>
@@ -1294,21 +1392,21 @@ namespace BoletoNet
         {
             try
             {
-                string trailer = Utils.FormatCode(Codigo.ToString(), "0", 3, true);
-                trailer += "9999";
-                trailer += "9";
-                trailer += Utils.FormatCode("", " ", 9);
-                trailer += Utils.FormatCode("", "0", 6, true);
-                trailer += Utils.FormatCode("", "0", 6, true);
-                trailer += Utils.FormatCode("", " ", 211);
-                trailer = Utils.SubstituiCaracteresEspeciais(trailer);
+                string header = Utils.FormatCode(Codigo.ToString(), "0", 3, true);                      // código do banco na compensação - 001-003 (03) - 341
+                header += "9999";                                                                       // Lote de Serviço - 004-007 9(04) - '9999'
+                header += "9";                                                                          // Tipo de Registro - 008-008 9(1) - '9'
+                header += Utils.FormatCode("", " ", 9);                                                 // Complemento de Registro - 009-017 X(09) - Brancos
+                header += "000001";                                                                     // Quantidade de Lotes do Arquivo - 018-023 9(06) - Nota 26
+                header += Utils.FormatCode(numeroRegistro.ToString(), "0", 6, true);                    // Quantidade de Registros do Arquivo - 024-029 9(06) - Nota 26
+                header += Utils.FormatCode("", "0", 6);                                                 // Complemento de Registro - 030-035 9(06)
+                header += Utils.FormatCode("", " ", 205);                                               // Complemento de Registro - 036-240 X(205) - Brancos
 
-                return trailer;
+                return header;
             }
             catch (Exception e)
             {
-                throw new Exception("Erro durante a geração do registro TRAILER do ARQUIVO de REMESSA.", e);
-            }
+                throw new Exception("Erro ao gerar Trailer de arquivo de remessa.", e);
+            }           
         }
         #endregion
 
@@ -1375,6 +1473,93 @@ namespace BoletoNet
 
         # endregion
 
+        /// <summary>
+        /// DETALHE do arquivo CNAB
+        /// Gera o DETALHE do arquivo remessa de acordo com o lay-out informado
+        /// </summary>
+
+        public override string GerarMensagemVariavelRemessa(Boleto boleto, ref int numeroRegistro, TipoArquivo tipoArquivo)
+        {
+            try
+            {
+                string _detalhe = "";
+
+                switch (tipoArquivo)
+                {
+                    case TipoArquivo.CNAB240:
+                        throw new Exception("Mensagem Variavel nao existe para o tipo CNAB 240.");
+                    case TipoArquivo.CNAB400:
+                        _detalhe = GerarMensagemVariavelRemessaCNAB400(boleto, ref numeroRegistro, tipoArquivo);
+                        break;
+                    case TipoArquivo.Outro:
+                        throw new Exception("Tipo de arquivo inexistente.");
+                }
+
+                return _detalhe;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do DETALHE arquivo de REMESSA.", ex);
+            }
+        }
+
+        public string GerarMensagemVariavelRemessaCNAB400(Boleto boleto, ref int numeroRegistro, TipoArquivo tipoArquivo)
+        {
+            try
+            {
+                string _registroOpcional = "";
+                //detalhe                           (tamanho,tipo) A= Alfanumerico, N= Numerico
+                _registroOpcional = "2"; //Identificação do Registro         (1, N)
+
+                //Mensagem 1 (80, A)
+                if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 0)
+                    _registroOpcional += boleto.Instrucoes[0].Descricao.PadRight(80, ' ').Substring(0, 80);
+                else
+                    _registroOpcional += new string(' ', 80);
+
+                //Mensagem 2 (80, A)
+                if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 1)
+                    _registroOpcional += boleto.Instrucoes[1].Descricao.PadRight(80, ' ').Substring(0, 80);
+                else
+                    _registroOpcional += new string(' ', 80);
+
+                //Mensagem 3 (80, A)
+                if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 2)
+                    _registroOpcional += boleto.Instrucoes[2].Descricao.PadRight(80, ' ').Substring(0, 80);
+                else
+                    _registroOpcional += new string(' ', 80);
+
+                //Mensagem 4 (80, A)
+                if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 3)
+                    _registroOpcional += boleto.Instrucoes[3].Descricao.PadRight(80, ' ').Substring(0, 80);
+                else
+                    _registroOpcional += new string(' ', 80);
+
+                _registroOpcional += new string(' ', 6); //Data limite para concessão de Desconto 2 (6, N) DDMMAA
+                _registroOpcional += new string(' ', 13);//Valor do Desconto (13, N) 
+                _registroOpcional += new string(' ', 6);//Data limite para concessão de Desconto 3 (6, N) DDMMAA
+                _registroOpcional += new string(' ', 13);//Valor do Desconto (13, N)
+                _registroOpcional += new string(' ', 7);//Reserva (7, A)
+                _registroOpcional += Utils.FitStringLength(boleto.Carteira, 3, 3, '0', 0, true, true, true); //Carteira (3, N)
+                _registroOpcional += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true); //Agência (5, N) 
+                _registroOpcional += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 7, 7, '0', 0, true, true, true); //Conta Corrente (7, N)
+                _registroOpcional += Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoConta, 1, 1, '0', 0, true, true, true); //Dígito C/C (1, A)
+                _registroOpcional += Utils.FitStringLength(boleto.NossoNumero, 11, 11, '0', 0, true, true, true); //Nosso Número (11, N)
+                _registroOpcional += Utils.FitStringLength("0", 1, 1, '0', 0, true, true, true); //DAC Nosso Número (1, A)
+
+                //Nº Seqüencial do Registro (06, N)
+                _registroOpcional += Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true);
+
+                _registroOpcional = Utils.SubstituiCaracteresEspeciais(_registroOpcional);
+
+                return _registroOpcional;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao gerar REGISTRO OPCIONAL do arquivo CNAB400.", ex);
+            }
+        }
         #endregion
 
         #region Métodos de processamento do arquivo retorno CNAB400
@@ -1414,6 +1599,7 @@ namespace BoletoNet
                 decimal valorTitulo = Convert.ToInt64(registro.Substring(152, 13));
                 detalhe.ValorTitulo = valorTitulo / 100;
                 detalhe.CodigoBanco = Utils.ToInt32(registro.Substring(165, 3));
+                detalhe.BancoCobrador = Utils.ToInt32(registro.Substring(165, 3));
                 detalhe.AgenciaCobradora = Utils.ToInt32(registro.Substring(168, 4));
                 detalhe.Especie = Utils.ToInt32(registro.Substring(173, 2));
                 decimal tarifaCobranca = Convert.ToUInt64(registro.Substring(175, 13));
@@ -1440,6 +1626,27 @@ namespace BoletoNet
                 detalhe.NomeSacado = registro.Substring(324, 30);
                 // 354 - 23 brancos
                 detalhe.Erros = registro.Substring(377, 8);
+
+                if (!string.IsNullOrEmpty(detalhe.Erros))
+                {
+                    string detalheErro = detalhe.Erros;
+
+                    var motivo1 = MotivoRejeicao(detalhe.Erros.Substring(0, 2));
+                    var motivo2 = MotivoRejeicao(detalhe.Erros.Substring(2, 2));
+                    var motivo3 = MotivoRejeicao(detalhe.Erros.Substring(4, 2));
+
+                    if (!string.IsNullOrEmpty(motivo1))
+                        detalheErro += " - " + motivo1;
+
+                    if (!string.IsNullOrEmpty(motivo2))
+                        detalheErro += " / " + motivo2;
+
+                    if (!string.IsNullOrEmpty(motivo3))
+                        detalheErro += " / " + motivo3;
+
+                    detalhe.Erros = detalheErro;
+                }
+
                 // 377 - Registros rejeitados ou alegação do sacado
                 // 386 - 7 brancos
 
@@ -1472,6 +1679,38 @@ namespace BoletoNet
             }
         }
 
+        public override HeaderRetorno LerHeaderRetornoCNAB400(string registro)
+        {
+            try
+            {
+                HeaderRetorno header = new HeaderRetorno(registro);
+                header.TipoRegistro = Utils.ToInt32(registro.Substring(000, 1));
+                header.CodigoRetorno = Utils.ToInt32(registro.Substring(001, 1));
+                header.LiteralRetorno = registro.Substring(002, 7);
+                header.CodigoServico = Utils.ToInt32(registro.Substring(009, 2));
+                header.LiteralServico = registro.Substring(011, 15);
+                header.Agencia = Utils.ToInt32(registro.Substring(026, 4));
+                header.ComplementoRegistro1 = Utils.ToInt32(registro.Substring(030, 2));
+                header.Conta = Utils.ToInt32(registro.Substring(032, 5));
+                header.DACConta = Utils.ToInt32(registro.Substring(037, 1));
+                header.ComplementoRegistro2 = registro.Substring(038, 8);
+                header.NomeEmpresa = registro.Substring(046, 30);
+                header.CodigoBanco = Utils.ToInt32(registro.Substring(076, 3));
+                header.NomeBanco = registro.Substring(079, 15);
+                header.DataGeracao = Utils.ToDateTime(Utils.ToInt32(registro.Substring(094, 6)).ToString("##-##-##"));
+                header.Densidade = Utils.ToInt32(registro.Substring(100, 5));
+                header.UnidadeDensidade = registro.Substring(105, 3);
+                header.NumeroSequencialArquivoRetorno = Utils.ToInt32(registro.Substring(108, 5));
+                header.DataCredito = Utils.ToDateTime(Utils.ToInt32(registro.Substring(113, 6)).ToString("##-##-##"));
+                header.ComplementoRegistro3 = registro.Substring(119, 275);
+                header.NumeroSequencial = Utils.ToInt32(registro.Substring(394, 6));
+                return header;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao ler header do arquivo de RETORNO / CNAB 400.", ex);
+            }
+        }
         #endregion
 
 
@@ -1487,5 +1726,13 @@ namespace BoletoNet
             return vRetorno;
         }
 
+        public override long ObterNossoNumeroSemConvenioOuDigitoVerificador(long convenio, string nossoNumero)
+        {
+            //Itaú não utiliza DV ou convênio com o nosso número.
+            long numero;
+            if (long.TryParse(nossoNumero, out numero))
+                return numero;
+            throw new NossoNumeroInvalidoException();
+        }
     }
 }

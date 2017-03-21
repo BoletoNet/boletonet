@@ -143,6 +143,7 @@ namespace BoletoNet.Testes
             objBOLETO.Cedente = objCEDENTE;
             //O n� do documento deve ser de 10 posi��es
             objBOLETO.NumeroDocumento = "1234567890";
+            objBOLETO.NumeroControle = "100";
             //A data do documento � a data de emiss�o do boleto
             objBOLETO.DataDocumento = DateTime.Now;
             //A data de processamento � a data em que foi processado o documento, portanto � da data de emiss�o do boleto

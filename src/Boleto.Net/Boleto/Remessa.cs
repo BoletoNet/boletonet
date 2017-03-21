@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using BoletoNet.Enums;
 
 namespace BoletoNet
 {
@@ -26,7 +24,7 @@ namespace BoletoNet
             get { return _Ambiente; }
             set { _Ambiente = value; }
         }
-        
+
         private string _TipoDocumento;
         /// <summary>
         /// Tipo Documento Utilizado na geração da remessa. |Identificado no Banrisul by sidneiklein|
@@ -60,9 +58,14 @@ namespace BoletoNet
             get { return _NumeroLote; }
             set { _NumeroLote = value; }
         }
-
-
         #endregion
 
+        #region Constructors
+        public Remessa(){}
+        public Remessa(TipoOcorrenciaRemessa ocorrencia)
+        {
+            CodigoOcorrencia = ocorrencia.Format();
+        }
+        #endregion
     }
 }
