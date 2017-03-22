@@ -671,7 +671,7 @@ namespace BoletoNet
                 header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 5, true);
                 header += " ";
                 header += Utils.FormatCode(String.IsNullOrEmpty(cedente.ContaBancaria.DigitoConta) ? " " : cedente.ContaBancaria.DigitoConta, " ", 1, true);
-                header += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false);                
+                header += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false);
                 header += Utils.FormatCode("BANCO ITAU SA", " ", 30);
                 header += Utils.FormatCode("", " ", 10);
                 header += "1";
@@ -835,7 +835,7 @@ namespace BoletoNet
         public override string GerarDetalheSegmentoPRemessa(Boleto boleto, int numeroRegistro, string numeroConvenio)
         {
             try
-            {                
+            {
                 string _segmentoP;
                 _segmentoP = "341";
                 _segmentoP += "0001";
@@ -1264,15 +1264,15 @@ namespace BoletoNet
                 {
                     for (int i = 0; i < boleto.Instrucoes.Count; i++)
                     {
-                        if (boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.Protestar || 
+                        if (boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.Protestar ||
                             boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.ProtestarAposNDiasCorridos ||
                             boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.ProtestarAposNDiasUteis)
-                            {
-                                _detalhe += boleto.Instrucoes[i].QuantidadeDias.ToString("00");
-                                break;
-                            }
-                            else if (i == boleto.Instrucoes.Count - 1)
-                                _detalhe += "00";
+                        {
+                            _detalhe += boleto.Instrucoes[i].QuantidadeDias.ToString("00");
+                            break;
+                        }
+                        else if (i == boleto.Instrucoes.Count - 1)
+                            _detalhe += "00";
                     }
                 }
                 else
@@ -1294,10 +1294,11 @@ namespace BoletoNet
 
         public string GerarRegistroDetalhe5(Boleto boleto, int numeroRegistro)
         {
+            var dataMulta = boleto.DataMulta == DateTime.MinValue ? boleto.DataVencimento : boleto.DataMulta;
             StringBuilder detalhe = new StringBuilder();
             detalhe.Append("2");                                        // 001
             detalhe.Append("2");                                        // 002 VALOR EM PERCENTUAL
-            detalhe.Append(boleto.DataMulta.ToString("ddMMyyyy"));      // 003-010
+            detalhe.Append(dataMulta.ToString("ddMMyyyy"));             // 003-010
             detalhe.Append(Utils.FitStringLength(Convert.ToInt32(boleto.PercMulta * 100).ToString(), 13, 13, '0', 0, true, true, true)); // 011-023
             detalhe.Append(new string(' ', 371));                       // 024 a 394
             detalhe.Append(Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true)); // 395 a 400
@@ -1406,7 +1407,7 @@ namespace BoletoNet
             catch (Exception e)
             {
                 throw new Exception("Erro ao gerar Trailer de arquivo de remessa.", e);
-            }           
+            }
         }
         #endregion
 
