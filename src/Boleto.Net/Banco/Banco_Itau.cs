@@ -1294,7 +1294,7 @@ namespace BoletoNet
 
         public string GerarRegistroDetalhe5(Boleto boleto, int numeroRegistro)
         {
-            var dataMulta = boleto.DataMulta == DateTime.MinValue ? boleto.DataVencimento : boleto.DataMulta;
+            var dataMulta = boleto.DataMulta == DateTime.MinValue ? boleto.DataVencimento.AddDays(1) : boleto.DataMulta;
             StringBuilder detalhe = new StringBuilder();
             detalhe.Append("2");                                        // 001
             detalhe.Append("2");                                        // 002 VALOR EM PERCENTUAL
