@@ -1511,43 +1511,42 @@ namespace BoletoNet
             {
                 string _registroOpcional = "";
                 //detalhe                           (tamanho,tipo) A= Alfanumerico, N= Numerico
-                _registroOpcional = "2"; //Identificação do Registro         (1, N)
+                _registroOpcional = "6"; //Identificação do Registro         (1, N)
 
-                //Mensagem 1 (80, A)
+                _registroOpcional += "2"; // Identificação do layout para o registro    (1, N)
+
+                //Mensagem 1 (69, A)
                 if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 0)
-                    _registroOpcional += boleto.Instrucoes[0].Descricao.PadRight(80, ' ').Substring(0, 80);
+                    _registroOpcional += boleto.Instrucoes[0].Descricao.PadRight(69, ' ').Substring(0, 69);
                 else
-                    _registroOpcional += new string(' ', 80);
+                    _registroOpcional += new string(' ', 69);
 
-                //Mensagem 2 (80, A)
+                //Mensagem 2 (69, A)
                 if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 1)
-                    _registroOpcional += boleto.Instrucoes[1].Descricao.PadRight(80, ' ').Substring(0, 80);
+                    _registroOpcional += boleto.Instrucoes[1].Descricao.PadRight(69, ' ').Substring(0, 69);
                 else
-                    _registroOpcional += new string(' ', 80);
+                    _registroOpcional += new string(' ', 69);
 
-                //Mensagem 3 (80, A)
+                //Mensagem 3 (69, A)
                 if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 2)
-                    _registroOpcional += boleto.Instrucoes[2].Descricao.PadRight(80, ' ').Substring(0, 80);
+                    _registroOpcional += boleto.Instrucoes[2].Descricao.PadRight(69, ' ').Substring(0, 69);
                 else
-                    _registroOpcional += new string(' ', 80);
+                    _registroOpcional += new string(' ', 69);
 
-                //Mensagem 4 (80, A)
+                //Mensagem 4 (69, A)
                 if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 3)
-                    _registroOpcional += boleto.Instrucoes[3].Descricao.PadRight(80, ' ').Substring(0, 80);
+                    _registroOpcional += boleto.Instrucoes[3].Descricao.PadRight(69, ' ').Substring(0, 69);
                 else
-                    _registroOpcional += new string(' ', 80);
+                    _registroOpcional += new string(' ', 69);
 
-                _registroOpcional += new string(' ', 6); //Data limite para concessão de Desconto 2 (6, N) DDMMAA
-                _registroOpcional += new string(' ', 13);//Valor do Desconto (13, N) 
-                _registroOpcional += new string(' ', 6);//Data limite para concessão de Desconto 3 (6, N) DDMMAA
-                _registroOpcional += new string(' ', 13);//Valor do Desconto (13, N)
-                _registroOpcional += new string(' ', 7);//Reserva (7, A)
-                _registroOpcional += Utils.FitStringLength(boleto.Carteira, 3, 3, '0', 0, true, true, true); //Carteira (3, N)
-                _registroOpcional += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true); //Agência (5, N) 
-                _registroOpcional += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 7, 7, '0', 0, true, true, true); //Conta Corrente (7, N)
-                _registroOpcional += Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoConta, 1, 1, '0', 0, true, true, true); //Dígito C/C (1, A)
-                _registroOpcional += Utils.FitStringLength(boleto.NossoNumero, 11, 11, '0', 0, true, true, true); //Nosso Número (11, N)
-                _registroOpcional += Utils.FitStringLength("0", 1, 1, '0', 0, true, true, true); //DAC Nosso Número (1, A)
+                //Mensagem 5 (69, A)
+                if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 4)
+                    _registroOpcional += boleto.Instrucoes[4].Descricao.PadRight(69, ' ').Substring(0, 69);
+                else
+                    _registroOpcional += new string(' ', 69);
+
+                // Brancos
+                _registroOpcional += new string(' ', 47);
 
                 //Nº Seqüencial do Registro (06, N)
                 _registroOpcional += Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true);
