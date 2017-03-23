@@ -1,6 +1,7 @@
 using BoletoNet.Excecoes;
 using BoletoNet.Util;
 using System;
+using System.Linq;
 using System.Text;
 using System.Web.UI;
 
@@ -1509,51 +1510,26 @@ namespace BoletoNet
         {
             try
             {
-                string _registroOpcional = "";
                 //detalhe                           (tamanho,tipo) A= Alfanumerico, N= Numerico
-                _registroOpcional = "6"; //Identificação do Registro         (1, N)
+                var registroOpcional = "6"; //Identificação do Registro         (1, N)
 
-                _registroOpcional += "2"; // Identificação do layout para o registro    (1, N)
+                registroOpcional += "2"; // Identificação do layout para o registro    (1, N)
 
-                //Mensagem 1 (69, A)
-                if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 0)
-                    _registroOpcional += boleto.Instrucoes[0].Descricao.PadRight(69, ' ').Substring(0, 69);
-                else
-                    _registroOpcional += new string(' ', 69);
-
-                //Mensagem 2 (69, A)
-                if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 1)
-                    _registroOpcional += boleto.Instrucoes[1].Descricao.PadRight(69, ' ').Substring(0, 69);
-                else
-                    _registroOpcional += new string(' ', 69);
-
-                //Mensagem 3 (69, A)
-                if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 2)
-                    _registroOpcional += boleto.Instrucoes[2].Descricao.PadRight(69, ' ').Substring(0, 69);
-                else
-                    _registroOpcional += new string(' ', 69);
-
-                //Mensagem 4 (69, A)
-                if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 3)
-                    _registroOpcional += boleto.Instrucoes[3].Descricao.PadRight(69, ' ').Substring(0, 69);
-                else
-                    _registroOpcional += new string(' ', 69);
-
-                //Mensagem 5 (69, A)
-                if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 4)
-                    _registroOpcional += boleto.Instrucoes[4].Descricao.PadRight(69, ' ').Substring(0, 69);
-                else
-                    _registroOpcional += new string(' ', 69);
+                // Mensagens (69, A)
+                registroOpcional += string.Join("", boleto.Instrucoes
+                                                            .Concat(Enumerable.Repeat(new Instrucao_Itau(), 5))
+                                                            .Take(5)
+                                                            .Select(x => (x.Descricao ?? "").PadRight(69, ' ').Substring(0, 69)));
 
                 // Brancos
-                _registroOpcional += new string(' ', 47);
+                registroOpcional += new string(' ', 47);
 
                 //Nº Seqüencial do Registro (06, N)
-                _registroOpcional += Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true);
+                registroOpcional += Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true);
 
-                _registroOpcional = Utils.SubstituiCaracteresEspeciais(_registroOpcional);
+                registroOpcional = Utils.SubstituiCaracteresEspeciais(registroOpcional);
 
-                return _registroOpcional;
+                return registroOpcional;
             }
             catch (Exception ex)
             {
