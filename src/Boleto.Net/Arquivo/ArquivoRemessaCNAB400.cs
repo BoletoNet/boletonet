@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Text;
 
 namespace BoletoNet
@@ -69,8 +68,10 @@ namespace BoletoNet
                     numeroRegistro++;
 
                     // 85 - CECRED
-                    if (banco.Codigo == 85) {
-                        if (boleto.PercMulta > 0 || boleto.ValorMulta > 0) {
+                    if (banco.Codigo == 85)
+                    {
+                        if (boleto.PercMulta > 0 || boleto.ValorMulta > 0)
+                        {
                             Banco_Cecred _banco = new Banco_Cecred();
                             string linhaCECREDRegistroDetalhe5 = _banco.GerarRegistroDetalhe5(boleto, numeroRegistro, TipoArquivo.CNAB400);
                             incluiLinha.WriteLine(linhaCECREDRegistroDetalhe5);
@@ -89,11 +90,12 @@ namespace BoletoNet
                             numeroRegistro++;
                         }
                     }
+
                     if ((boleto.Instrucoes != null && boleto.Instrucoes.Count > 0) || (boleto.Sacado.Instrucoes != null && boleto.Sacado.Instrucoes.Count > 0))
                     {
                         strline = boleto.Banco.GerarMensagemVariavelRemessa(boleto, ref numeroRegistro, TipoArquivo.CNAB400);
                         if (!string.IsNullOrEmpty(strline) && !string.IsNullOrWhiteSpace(strline))
-                        { 
+                        {
                             incluiLinha.WriteLine(strline);
                             numeroRegistro++;
                         }
