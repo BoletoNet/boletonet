@@ -1,7 +1,6 @@
 using BoletoNet.Excecoes;
 using BoletoNet.Util;
 using System;
-using System.Linq;
 using System.Text;
 using System.Web.UI;
 
@@ -1267,12 +1266,14 @@ namespace BoletoNet
                     {
                         if (boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.Protestar ||
                             boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.ProtestarAposNDiasCorridos ||
-                            boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.ProtestarAposNDiasUteis)
+                            boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.ProtestarAposNDiasUteis ||
+                            boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.DevolverAposNDias)
                         {
                             _detalhe += boleto.Instrucoes[i].QuantidadeDias.ToString("00");
                             break;
                         }
-                        else if (i == boleto.Instrucoes.Count - 1)
+
+                        if (i == boleto.Instrucoes.Count - 1)
                             _detalhe += "00";
                     }
                 }
@@ -1508,33 +1509,8 @@ namespace BoletoNet
 
         public string GerarMensagemVariavelRemessaCNAB400(Boleto boleto, ref int numeroRegistro, TipoArquivo tipoArquivo)
         {
-            try
-            {
-                //detalhe                           (tamanho,tipo) A= Alfanumerico, N= Numerico
-                var registroOpcional = "6"; //Identificação do Registro         (1, N)
-
-                registroOpcional += "2"; // Identificação do layout para o registro    (1, N)
-
-                // Mensagens (69, A)
-                registroOpcional += string.Join("", boleto.Instrucoes
-                                                            .Concat(Enumerable.Repeat(new Instrucao_Itau(), 5))
-                                                            .Take(5)
-                                                            .Select(x => (x.Descricao ?? "").PadRight(69, ' ').Substring(0, 69)));
-
-                // Brancos
-                registroOpcional += new string(' ', 47);
-
-                //Nº Seqüencial do Registro (06, N)
-                registroOpcional += Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true);
-
-                registroOpcional = Utils.SubstituiCaracteresEspeciais(registroOpcional);
-
-                return registroOpcional;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Erro ao gerar REGISTRO OPCIONAL do arquivo CNAB400.", ex);
-            }
+            // Itaú não utiliza estes campos
+            return string.Empty;
         }
         #endregion
 
