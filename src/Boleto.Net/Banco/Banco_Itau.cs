@@ -1190,7 +1190,7 @@ namespace BoletoNet
                 _detalhe += "00000"; // Agência onde o título será cobrado - no arquivo de remessa, preencher com ZEROS
 
                 _detalhe += Utils.FitStringLength(EspecieDocumento.ValidaCodigo(boleto.EspecieDocumento).ToString(), 2, 2, '0', 0, true, true, true);
-                _detalhe += "A"; // Identificação de título, Aceito ou Não aceito
+                _detalhe += "N"; // Identificação de título, Aceito ou Não aceito
 
                 //A data informada neste campo deve ser a mesma data de emissão do título de crédito 
                 //(Duplicata de Serviço / Duplicata Mercantil / Nota Fiscal, etc), que deu origem a esta Cobrança. 
@@ -1200,7 +1200,7 @@ namespace BoletoNet
                 switch (boleto.Instrucoes.Count)
                 {
                     case 0:
-                        _detalhe += "0000"; // Jéferson (jefhtavares) o banco não estava aceitando esses campos em Branco
+                        _detalhe += "1000"; // Jéferson (jefhtavares) o banco não estava aceitando esses campos em Branco
                         break;
                     case 1:
                         _detalhe += Utils.FitStringLength(boleto.Instrucoes[0].Codigo.ToString(), 2, 2, '0', 0, true, true, true);
@@ -1233,7 +1233,7 @@ namespace BoletoNet
                 _detalhe += boleto.DataDesconto > DateTime.MinValue ? boleto.DataDesconto.ToString("ddMMyy") : "000000";
                 _detalhe += Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
                 _detalhe += "0000000000000"; // Valor do IOF
-                _detalhe += "0000000000000"; // Valor do Abatimento
+                _detalhe += Utils.FitStringLength(boleto.Abatimento.ApenasNumeros(), 13, 13, '0', 0, true, true, true); ; // Valor do Abatimento
 
                 if (boleto.Sacado.CPFCNPJ.Length <= 11)
                     _detalhe += "01";  // CPF
@@ -1255,7 +1255,7 @@ namespace BoletoNet
                 // a) 2o e 3o descontos: para de operar com mais de um desconto(depende de cadastramento prévio do 
                 // indicador 19.0 pelo Banco Itaú, conforme item 5)
                 // b) Mensagens ao sacado: se utilizados as instruções 93 ou 94 (Nota 11), transcrever a mensagem desejada
-                _detalhe += Utils.FitStringLength(boleto.Sacado.Nome, 30, 30, ' ', 0, true, true, false).ToUpper();
+                _detalhe += Utils.FitStringLength("", 30, 30, ' ', 0, true, true, false).ToUpper();
                 _detalhe += "    "; // Complemento do registro
                 _detalhe += boleto.DataJurosMora > DateTime.MinValue ? boleto.DataJurosMora.ToString("ddMMyy") : "000000";
                 // PRAZO - Quantidade de DIAS - ver nota 11(A) - depende das instruções de cobrança 
