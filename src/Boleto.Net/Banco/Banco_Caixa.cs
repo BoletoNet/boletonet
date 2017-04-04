@@ -1,7 +1,8 @@
+using BoletoNet.EDI.Banco;
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Web.UI;
-using BoletoNet.EDI.Banco;
 
 [assembly: WebResource("BoletoNet.Imagens.104.jpg", "image/jpg")]
 
@@ -19,6 +20,7 @@ namespace BoletoNet
 
         private const int EMISSAO_CEDENTE = 4;
         private const decimal DECIMAL_100 = 100;
+        private static readonly int[] CODIGOS_PROTESTO = { (int)EnumInstrucoes_Caixa.Protestar, (int)EnumInstrucoes_Caixa.ProtestarAposNDiasCorridos, (int)EnumInstrucoes_Caixa.ProtestarAposNDiasUteis, (int)EnumInstrucoes_Caixa.DevolverAposNDias };
 
         private string _dacBoleto = string.Empty;
 
@@ -1688,39 +1690,25 @@ namespace BoletoNet
                 string vInstrucao3 = "0";
                 int prazoProtesto_Devolucao = 0;
 
-                foreach (IInstrucao instrucao in boleto.Instrucoes)
+                var instrucao = boleto.Instrucoes.FirstOrDefault(x => CODIGOS_PROTESTO.Contains(x.Codigo));
+
+                if (instrucao != null)
                 {
                     switch ((EnumInstrucoes_Caixa)instrucao.Codigo)
                     {
                         case EnumInstrucoes_Caixa.Protestar:
+                        case EnumInstrucoes_Caixa.ProtestarAposNDiasCorridos:
+                        case EnumInstrucoes_Caixa.ProtestarAposNDiasUteis:
                             vInstrucao1 = "01";
-                            prazoProtesto_Devolucao = instrucao.QuantidadeDias;
                             break;
 
-                        default:
+                        case EnumInstrucoes_Caixa.DevolverAposNDias:
+                            vInstrucao1 = "02";
                             break;
                     }
+                    prazoProtesto_Devolucao = instrucao.QuantidadeDias;
                 }
-                #region OLD
-                //switch (boleto.Instrucoes.Count)
-                //{
-                //    case 1:
-                //        vInstrucao1 = boleto.Instrucoes[0].Codigo.ToString();
-                //        vInstrucao2 = "0";
-                //        vInstrucao3 = "0";
-                //        break;
-                //    case 2:
-                //        vInstrucao1 = boleto.Instrucoes[0].Codigo.ToString();
-                //        vInstrucao2 = boleto.Instrucoes[1].Codigo.ToString();
-                //        vInstrucao3 = "0";
-                //        break;
-                //    case 3:
-                //        vInstrucao1 = boleto.Instrucoes[0].Codigo.ToString();
-                //        vInstrucao2 = boleto.Instrucoes[1].Codigo.ToString();
-                //        vInstrucao3 = boleto.Instrucoes[2].Codigo.ToString();
-                //        break;
-                //}
-                #endregion OLD
+
                 #endregion Instruções
                 //
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0157, 002, 0, vInstrucao1, '0'));                               //157-158
@@ -1881,15 +1869,17 @@ namespace BoletoNet
         {
             int codigoMovimento = 0;
 
-            if (int.TryParse(codigo, out codigoMovimento)) { 
+            if (int.TryParse(codigo, out codigoMovimento))
+            {
                 CodigoMovimento_Caixa movimento = new CodigoMovimento_Caixa(codigoMovimento);
                 return movimento.Descricao;
-            } else
+            }
+            else
             {
                 return string.Format("Erro ao retornar descrição para a ocorrência {0}", codigo);
             }
 
-            
+
         }
 
         #endregion
