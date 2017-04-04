@@ -20,6 +20,7 @@ namespace BoletoNet
 
         private const int EMISSAO_CEDENTE = 4;
         private const decimal DECIMAL_100 = 100;
+        private static readonly int[] CODIGOS_PROTESTO = { (int)EnumInstrucoes_Caixa.Protestar, (int)EnumInstrucoes_Caixa.ProtestarAposNDiasCorridos, (int)EnumInstrucoes_Caixa.ProtestarAposNDiasUteis, (int)EnumInstrucoes_Caixa.DevolverAposNDias };
 
         private string _dacBoleto = string.Empty;
 
@@ -1689,11 +1690,7 @@ namespace BoletoNet
                 string vInstrucao3 = "0";
                 int prazoProtesto_Devolucao = 0;
 
-                var instrucao = boleto.Instrucoes.FirstOrDefault(
-                    x => x.Codigo == (int)EnumInstrucoes_Caixa.Protestar ||
-                         x.Codigo == (int)EnumInstrucoes_Caixa.ProtestarAposNDiasCorridos ||
-                         x.Codigo == (int)EnumInstrucoes_Caixa.ProtestarAposNDiasUteis ||
-                         x.Codigo == (int)EnumInstrucoes_Caixa.DevolverAposNDias);
+                var instrucao = boleto.Instrucoes.FirstOrDefault(x => CODIGOS_PROTESTO.Contains(x.Codigo));
 
                 if (instrucao != null)
                 {
