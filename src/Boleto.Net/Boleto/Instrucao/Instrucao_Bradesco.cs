@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Text;
 
 namespace BoletoNet
 {
@@ -8,13 +6,13 @@ namespace BoletoNet
 
     public enum EnumInstrucoes_Bradesco
     {
-        Protestar = 9,
+        Protestar = 6,
         NaoProtestar = 10,
         ProtestoFinsFalimentares = 42,
         ProtestarAposNDiasCorridos = 81,
         ProtestarAposNDiasUteis = 82,
         NaoReceberAposNDias = 91,
-        DevolverAposNDias = 92,
+        DevolverAposNDias = 18,
         ComDesconto = 93,
         BoletoOriginal = 94,
 
@@ -29,17 +27,17 @@ namespace BoletoNet
 
         #region Construtores 
 
-		public Instrucao_Bradesco()
-		{
-			try
-			{
+        public Instrucao_Bradesco()
+        {
+            try
+            {
                 this.Banco = new Banco(237);
-			}
-			catch (Exception ex)
-			{
+            }
+            catch (Exception ex)
+            {
                 throw new Exception("Erro ao carregar objeto", ex);
-			}
-		}
+            }
+        }
 
         public Instrucao_Bradesco(int codigo)
         {

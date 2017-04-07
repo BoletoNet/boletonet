@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Text;
 
 namespace BoletoNet
 {
@@ -8,7 +6,7 @@ namespace BoletoNet
 
     public enum EnumInstrucoes_BancoBrasil
     {
-        Protestar = 9,                      // Emite aviso ao sacado após N dias do vencto, e envia ao cartório após 5 dias úteis
+        Protestar = 6,
         NaoProtestar = 10,                  // Inibe protesto, quando houver instrução permanente na conta corrente
         ImportanciaporDiaDesconto = 30,
         Multa = 35,

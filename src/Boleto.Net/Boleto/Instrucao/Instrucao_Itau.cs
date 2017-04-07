@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Text;
 
 namespace BoletoNet
 {
@@ -23,22 +21,22 @@ namespace BoletoNet
 
     #endregion 
 
-    public class Instrucao_Itau: AbstractInstrucao, IInstrucao
+    public class Instrucao_Itau : AbstractInstrucao, IInstrucao
     {
 
         #region Construtores 
 
-		public Instrucao_Itau()
-		{
-			try
-			{
+        public Instrucao_Itau()
+        {
+            try
+            {
                 this.Banco = new Banco(341);
-			}
-			catch (Exception ex)
-			{
+            }
+            catch (Exception ex)
+            {
                 throw new Exception("Erro ao carregar objeto", ex);
-			}
-		}
+            }
+        }
 
         public Instrucao_Itau(int codigo, int nrDias)
         {
@@ -102,7 +100,7 @@ namespace BoletoNet
                     case EnumInstrucoes_Itau.DevolverAposNDias:
                         this.Codigo = (int)EnumInstrucoes_Itau.DevolverAposNDias;
                         this.Descricao = "Devolver após N dias do vencimento";
-                        break;                  
+                        break;
                     case EnumInstrucoes_Itau.DescontoporDia:
                         this.Codigo = (int)EnumInstrucoes_Itau.DescontoporDia;
                         this.Descricao = "Conceder desconto de R$ "; // por dia de antecipação
@@ -131,7 +129,7 @@ namespace BoletoNet
                 switch ((EnumInstrucoes_Itau)idInstrucao)
                 {
                     case EnumInstrucoes_Itau.JurosdeMora:
-                        this.Codigo = (int)EnumInstrucoes_Itau.JurosdeMora;   
+                        this.Codigo = (int)EnumInstrucoes_Itau.JurosdeMora;
                         this.Descricao = String.Format("Após vencimento cobrar juros de {0} {1} por dia de atraso",
                             (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("F2")),
                             (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
@@ -144,7 +142,7 @@ namespace BoletoNet
                         break;
                 }
             }
-             catch (Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception("Erro ao carregar objeto", ex);
             }
