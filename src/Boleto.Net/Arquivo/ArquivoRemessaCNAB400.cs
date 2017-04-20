@@ -84,11 +84,23 @@ namespace BoletoNet
                         if (boleto.PercMulta > 0 || boleto.ValorMulta > 0)
                         {
                             Banco_Itau _banco = new Banco_Itau();
-                            strline = _banco.GerarRegistroDetalhe5(boleto, numeroRegistro);
+                            strline = _banco.GerarRegistroDetalhe2(boleto, numeroRegistro);
                             incluiLinha.WriteLine(strline);
                             numeroRegistro++;
                         }
                     }
+                    // Banco Bradesco - 237
+                    if (banco.Codigo == 237)
+                    {
+                        if (boleto.OutrosDescontos > 0)
+                        {
+                            Banco_Bradesco _banco = new Banco_Bradesco();
+                            strline = _banco.GerarRegistroDetalhe2(boleto, numeroRegistro);
+                            incluiLinha.WriteLine(strline);
+                            numeroRegistro++;
+                        }
+                    }
+
                     if ((boleto.Instrucoes != null && boleto.Instrucoes.Count > 0) || (boleto.Sacado.Instrucoes != null && boleto.Sacado.Instrucoes.Count > 0))
                     {
                         strline = boleto.Banco.GerarMensagemVariavelRemessa(boleto, ref numeroRegistro, TipoArquivo.CNAB400);

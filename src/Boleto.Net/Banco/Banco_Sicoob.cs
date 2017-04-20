@@ -718,7 +718,7 @@ namespace BoletoNet
                 detalhe += "R"; //Posição 014 Cód. Segmento do Registro Detalhe: "R"
                 detalhe += " ";  //Posição 015 Uso Exclusivo FEBRABAN/CNAB: Brancos
                 detalhe += "01"; //Posição 016 a 017       '01'  =  Entrada de Títulos
-                detalhe += "1"; //Posição 118  - Código do desconto
+                detalhe += "1"; //Posição 18  - Código do desconto
                 detalhe += Utils.FormatCode(boleto.DataOutrosDescontos.ToString("ddMMyyyy"), 8); //Posição 19 a 26  - Data do Desconto 2
                 string valorDesconto2 = boleto.OutrosDescontos.ToString("f").Replace(",", "").Replace(".", "");
                 valorDesconto2 = Utils.FormatCode(valorDesconto2, 15);  // 

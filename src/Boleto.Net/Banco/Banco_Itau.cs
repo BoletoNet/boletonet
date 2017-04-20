@@ -1292,7 +1292,7 @@ namespace BoletoNet
             }
         }
 
-        public string GerarRegistroDetalhe5(Boleto boleto, int numeroRegistro)
+        public string GerarRegistroDetalhe2(Boleto boleto, int numeroRegistro)
         {
             var dataMulta = boleto.DataMulta == DateTime.MinValue ? boleto.DataVencimento : boleto.DataMulta;
             StringBuilder detalhe = new StringBuilder();
