@@ -72,7 +72,7 @@ namespace BoletoNet
                     if (banco.Codigo == 85) {
                         if (boleto.PercMulta > 0 || boleto.ValorMulta > 0) {
                             Banco_Cecred _banco = new Banco_Cecred();
-                            string linhaCECREDRegistroDetalhe5 = _banco.GerarRegistroDetalhe5(boleto, numeroRegistro, TipoArquivo.CNAB400);
+                            string linhaCECREDRegistroDetalhe5 = _banco.GerarRegistroDetalhe2(boleto, numeroRegistro, TipoArquivo.CNAB400);
                             incluiLinha.WriteLine(linhaCECREDRegistroDetalhe5);
                             numeroRegistro++;
                         }
@@ -89,6 +89,18 @@ namespace BoletoNet
                             numeroRegistro++;
                         }
                     }
+                    // Banco Bradesco - 237
+                    if (banco.Codigo == 237)
+                    {
+                        if (boleto.OutrosDescontos > 0)
+                        {
+                            Banco_Bradesco _banco = new Banco_Bradesco();
+                            strline = _banco.GerarRegistroDetalhe2(boleto, numeroRegistro);
+                            incluiLinha.WriteLine(strline);
+                            numeroRegistro++;
+                        }
+                    }
+
                     if ((boleto.Instrucoes != null && boleto.Instrucoes.Count > 0) || (boleto.Sacado.Instrucoes != null && boleto.Sacado.Instrucoes.Count > 0))
                     {
                         strline = boleto.Banco.GerarMensagemVariavelRemessa(boleto, ref numeroRegistro, TipoArquivo.CNAB400);

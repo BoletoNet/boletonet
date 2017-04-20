@@ -1292,7 +1292,7 @@ namespace BoletoNet
             }
         }
 
-        public string GerarRegistroDetalhe5(Boleto boleto, int numeroRegistro)
+        public string GerarRegistroDetalhe2(Boleto boleto, int numeroRegistro)
         {
             StringBuilder detalhe = new StringBuilder();
             detalhe.Append("2");                                        // 001
