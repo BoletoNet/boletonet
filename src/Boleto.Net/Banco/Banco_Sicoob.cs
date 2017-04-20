@@ -714,29 +714,52 @@ namespace BoletoNet
                 detalhe += Utils.FormatCode(numeroRegistro.ToString(), "0", 4, true); //Posição 004 a 007   Número Sequencial
                 detalhe += "3"; //Posição 008   Tipo de Registro: "3"
                 detalhe += Utils.FormatCode(numeroRegistro.ToString(), "0", 5, true); //Posição 009 a 013   Número Sequencial
-                detalhe += "P"; //Posição 014 Cód. Segmento do Registro Detalhe: "P"
+                detalhe += "R"; //Posição 014 Cód. Segmento do Registro Detalhe: "R"
                 detalhe += " ";  //Posição 015 Uso Exclusivo FEBRABAN/CNAB: Brancos
                 detalhe += "01"; //Posição 016 a 017       '01'  =  Entrada de Títulos
                 detalhe += "1"; //Posição 118  - Código do desconto
-                detalhe += Utils.FormatCode(boleto.DataDesconto.ToString("ddMMyyyy"), 8); //Posição 143 a 150  - Data do Desconto 1
-                string valorBoleto = boleto.ValorDesconto.ToString("f").Replace(",", "").Replace(".", "");
-                valorBoleto = Utils.FormatCode(valorBoleto, 15);  //Posição 151 a 165  - Valor/Percentual a ser Concedido
-                detalhe += valorBoleto; //Posição 86 a 100   Valor Nominal do Título
+                detalhe += Utils.FormatCode(boleto.DataOutrosDescontos.ToString("ddMMyyyy"), 8); //Posição 19 a 26  - Data do Desconto 2
+                string valorDesconto2 = boleto.OutrosDescontos.ToString("f").Replace(",", "").Replace(".", "");
+                valorDesconto2 = Utils.FormatCode(valorDesconto2, 15);  // 
+                detalhe += valorDesconto2; //Posição 27 a 41   Valor/Percentual a ser Concedido
                 detalhe += "1"; //Posição 118  - Código da desconto
                 detalhe += Utils.FormatCode(numeroRegistro.ToString(), "0", 8, true); //Posição 004 a 007   Número Sequencial
                 detalhe += Utils.FormatCode(numeroRegistro.ToString(), "0", 15, true); //Posição 004 a 007   Número Sequencial
-                detalhe += "2"; //Posição 118  - Posição 66  - Código da multa.
+                if (boleto.PercMulta > 0)
+                {
+                    // Código da multa 2 - percentual
+                    detalhe += "2";
+                }
+                else if (boleto.ValorMulta > 0)
+                {
+                    // Código da multa 1 - valor fixo
+                    detalhe += "1";
+                }
+                else
+                {
+                    // Código da multa 0 - sem multa
+                    detalhe += "0";
+                } 
                 detalhe += Utils.FormatCode(boleto.DataMulta.ToString("ddMMyyyy"), 8);  //Posição 119 a 126  - Data do Juros de Mora: preencher com a Data de Vencimento do Título
+                // Multa em Percentual (%), Valor (R$)
+                if (boleto.PercMulta > 0)
+                {
+                    detalhe += Utils.FitStringLength(boleto.PercMulta.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
+                }
+                else
+                {
+                    detalhe += Utils.FitStringLength(boleto.ValorMulta.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
+                }
                 detalhe += Utils.FormatCode(boleto.ValorMulta.ToString(), "0", 15, true); //Posição 004 a 007   Número Sequencial
                 detalhe += Utils.FormatCode("0", 10); //Posição 90 a 99 Informação ao Pagador: Brancos
                 detalhe += Utils.FormatCode("0", 40); //Posição 100 a 139 Informação ao Pagador: Brancos
                 detalhe += Utils.FormatCode("0", 40); //Posição 140 a 179 Informação ao Pagador: Brancos
                 detalhe += Utils.FormatCode("0", 20); //Posição 180 a 199 Uso Exclusivo FEBRABAN/CNAB: Brancos
-                detalhe += Utils.FormatCode(boleto.ValorMulta.ToString(), "0", 8, true);  //Posição 200 a 207  Cód. Ocor. do Pagador: "00000000"
-                detalhe += Utils.FormatCode(boleto.ValorMulta.ToString(), "0", 3, true);  //Posição 208 a 210  Cód. do Banco na Conta do Débito: "000"
-                detalhe += Utils.FormatCode(boleto.ValorMulta.ToString(), "0", 5, true);  //Posição 211 a 215  Código da Agência do Débito: "00000"
+                detalhe += Utils.FormatCode("", "0", 8, true);  //Posição 200 a 207  Cód. Ocor. do Pagador: "00000000"
+                detalhe += Utils.FormatCode("", "0", 3, true);  //Posição 208 a 210  Cód. do Banco na Conta do Débito: "000"
+                detalhe += Utils.FormatCode("", "0", 5, true);  //Posição 211 a 215  Código da Agência do Débito: "00000"
                 detalhe += " "; //Posição 216 Dígito Verificador da Agência: Brancos
-                detalhe += Utils.FormatCode(boleto.ValorMulta.ToString(), "0", 12, true);  //Posição 217 a 228  Conta Corrente para Débito: "000000000000"
+                detalhe += Utils.FormatCode("", "0", 12, true);  //Posição 217 a 228  Conta Corrente para Débito: "000000000000"
                 detalhe += " "; //Posição 229  Verificador da Conta: Brancos
                 detalhe += " "; //Posição 230  Verificador Ag/Conta: Brancos
                 detalhe += "0"; //Posição 231  Aviso para Débito Automático: "0"
