@@ -478,7 +478,7 @@ namespace BoletoNet
                 header += Utils.FormatCode(cedente.CPFCNPJ, "0", 15, true);
 
                 //Código de Transmissão ==> 033 – 047
-                header += Utils.FormatCode(cedente.CodigoTransmissao, "0", 15, true);
+                header += Utils.FormatCode(cedente.CodigoTransmissao ?? "", "0", 15, true);
 
                 //Reservado (uso Banco) ==> 048 - 072
                 header += Utils.FormatCode("", " ", 25);
@@ -541,7 +541,7 @@ namespace BoletoNet
                 _header += Utils.FitStringLength("COBRANCA", 15, 15, ' ', 0, true, true, false);
 
                 //Código de Transmissão ==> 027 - 046
-                _header += Utils.FitStringLength(cedente.CodigoTransmissao, 20, 20, '0', 0, true, true, true);
+                _header += Utils.FitStringLength(cedente.CodigoTransmissao ?? "", 20, 20, '0', 0, true, true, true);
 
                 //Nome do cedente  ==> 047 - 076
                 _header += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false);
@@ -667,7 +667,7 @@ namespace BoletoNet
                 header += Utils.FormatCode("", " ", 20);
 
                 //Código de Transmissão ==> 054 - 068
-                header += Utils.FormatCode(cedente.CodigoTransmissao, "0", 15, true);
+                header += Utils.FormatCode(cedente.CodigoTransmissao ?? "", "0", 15, true);
 
                 //Reservado uso Banco ==> 069 – 073
                 header += Utils.FormatCode("", " ", 5);
