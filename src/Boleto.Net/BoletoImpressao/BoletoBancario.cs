@@ -722,16 +722,22 @@ namespace BoletoNet
                 .Replace("@QUANTIDADE", (Boleto.QuantidadeMoeda == 0 ? "" : Boleto.QuantidadeMoeda.ToString()))
                 .Replace("@VALORDOCUMENTO", Boleto.ValorMoeda)
                 .Replace("@=VALORDOCUMENTO", valorBoleto)
-                .Replace("@VALORCOBRADO", "")
+                .Replace(
+                    "@VALORCOBRADO",
+                    Boleto.ValorCobrado == 0 ? "" : Boleto.ValorCobrado.ToString("C", CultureInfo.GetCultureInfo("PT-BR")))
                 .Replace("@OUTROSACRESCIMOS", "")
                 .Replace("@OUTRASDEDUCOES", "")
-                .Replace("@DESCONTOS", "")
+                .Replace(
+                    "@DESCONTOS",
+                    Boleto.ValorDesconto == 0 ? "" : Boleto.ValorDesconto.ToString("C", CultureInfo.GetCultureInfo("PT-BR")))
                 .Replace("@AGENCIACONTA", agenciaCodigoCedente)
                 .Replace("@SACADO", sacado)
                 .Replace("@INFOSACADO", infoSacado)
                 .Replace("@AGENCIACODIGOCEDENTE", agenciaCodigoCedente)
                 .Replace("@CPFCNPJ", Cedente.CPFCNPJ)
-                .Replace("@MORAMULTA", "")
+                .Replace(
+                    "@MORAMULTA",
+                    Boleto.ValorMulta == 0 ? "" : Boleto.ValorMulta.ToString("C", CultureInfo.GetCultureInfo("PT-BR")))
                 .Replace("@AUTENTICACAOMECANICA", "")
                 .Replace("@USODOBANCO", Boleto.UsoBanco)
                 .Replace("@IMAGEMCODIGOBARRA", imagemCodigoBarras)
