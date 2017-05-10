@@ -31,11 +31,19 @@ namespace BoletoNet
         private int diasDevolucao;
         private int diasDesconto;
 
+        public override string LabelDesconto { get; set; } = "Desconto";
+        public override string LabelOutrasDeducoes { get; set; } = "Outras Deduções / Abatimento";
+        public override string LabelMora { get; set; } = "Mora / Multa / Juros";
+        public override string LabelSAC { get; set; } = @"SAC CAIXA: 0800 726 0101 (informações, reclamações, sugestões e elogios)<br/>
+        Para pessoas com deficiência auditiva ou de fala: 0800 726 2492<br/>
+        Ouvidoria: 0800 725 7474<br/>
+        caixa.gov.br";
+
         internal Banco_Caixa()
         {
-            this.Codigo = 104;
-            this.Digito = "0";
-            this.Nome = "Caixa Econômica Federal";
+            Codigo = 104;
+            Digito = "0";
+            Nome = "Caixa Econômica Federal";
         }
 
         public override void FormataCodigoBarra(Boleto boleto)

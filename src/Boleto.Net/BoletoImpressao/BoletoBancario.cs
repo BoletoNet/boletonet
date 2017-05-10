@@ -726,7 +726,9 @@ namespace BoletoNet
                     "@VALORCOBRADO",
                     Boleto.ValorCobrado == 0 ? "" : Boleto.ValorCobrado.ToString("C", CultureInfo.GetCultureInfo("PT-BR")))
                 .Replace("@OUTROSACRESCIMOS", "")
+                .Replace("@LABELOUTRASDEDUCOES", _ibanco.LabelOutrasDeducoes)
                 .Replace("@OUTRASDEDUCOES", "")
+                .Replace("@LABELDESCONTO", _ibanco.LabelDesconto)
                 .Replace(
                     "@DESCONTOS",
                     Boleto.ValorDesconto == 0 ? "" : Boleto.ValorDesconto.ToString("C", CultureInfo.GetCultureInfo("PT-BR")))
@@ -735,6 +737,7 @@ namespace BoletoNet
                 .Replace("@INFOSACADO", infoSacado)
                 .Replace("@AGENCIACODIGOCEDENTE", agenciaCodigoCedente)
                 .Replace("@CPFCNPJ", Cedente.CPFCNPJ)
+                .Replace("@LABELMORA", _ibanco.LabelMora)
                 .Replace(
                     "@MORAMULTA",
                     Boleto.ValorMulta == 0 ? "" : Boleto.ValorMulta.ToString("C", CultureInfo.GetCultureInfo("PT-BR")))
@@ -742,6 +745,7 @@ namespace BoletoNet
                 .Replace("@USODOBANCO", Boleto.UsoBanco)
                 .Replace("@IMAGEMCODIGOBARRA", imagemCodigoBarras)
                 .Replace("@ACEITE", Boleto.Aceite)
+                .Replace("@LABELSAC", _ibanco.LabelSAC)
                 .ToString()
                 .Replace("@ENDERECOCEDENTE", MostrarEnderecoCedente ? enderecoCedente : "")
                 .Replace(
