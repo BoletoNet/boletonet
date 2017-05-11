@@ -336,7 +336,7 @@
   <data name="ReciboCedenteParte1" xml:space="preserve">
     <value>&lt;table class="w666"&gt;
 				&lt;tr class="BHead"&gt;
-						&lt;td class="imgLogo Al"&gt;&lt;img src="@URLIMAGEMLOGO" /&gt;&lt;/td&gt;
+						&lt;td class="imgLogo Al"&gt;&lt;img src="@URLIMAGEMLOGO" style="height: @ALTURALOGOEMMILIMETROSmm!important;width:auto!important;"  /&gt;&lt;/td&gt;
 						&lt;td class="barra"&gt;&lt;img src="@URLIMAGEMBARRA" /&gt;&lt;/td&gt;
 						&lt;td class="w65 Ab bc Ac"&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
 						&lt;td class="barra"&gt;&lt;img src="@URLIMAGEMBARRA" /&gt;&lt;/td&gt;
@@ -499,7 +499,7 @@
   <data name="ReciboSacadoParte2" xml:space="preserve">
     <value>&lt;table class="w666"&gt;
 				&lt;tr class="BHead"&gt;
-						&lt;td class="imgLogo Al"&gt;&lt;img src="@URLIMGCEDENTE" /&gt;&lt;/td&gt;
+						&lt;td class="imgLogo Al"&gt;&lt;img src="@URLIMGCEDENTE" style="height: @ALTURALOGOEMMILIMETROSmm!important;width:auto!important;" /&gt;&lt;/td&gt;
 						&lt;td class="barra"&gt;&lt;img src="@URLIMAGEMBARRA" /&gt;&lt;/td&gt;
 						&lt;td class="w65 Ab bc Ac"&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
 						&lt;td class="barra"&gt;&lt;img src="@URLIMAGEMBARRA" /&gt;&lt;/td&gt;

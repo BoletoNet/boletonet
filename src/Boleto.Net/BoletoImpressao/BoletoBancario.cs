@@ -748,6 +748,7 @@ namespace BoletoNet
                 .Replace("@LABELSAC", _ibanco.LabelSAC)
                 .ToString()
                 .Replace("@ENDERECOCEDENTE", MostrarEnderecoCedente ? enderecoCedente : "")
+                .Replace("@ALTURALOGOEMMILIMETROS", _ibanco.AlturaLogoEmMilimetros.ToString())
                 .Replace(
                     "@AVALISTA",
                     string.Format(
@@ -1250,6 +1251,8 @@ namespace BoletoNet
             {
                 converter.PdfToolPath = this.PdfToolPath;
             }
+
+            converter.Zoom = 1.25F;
             return converter.GeneratePdf(this.MontaHtmlEmbedded(convertLinhaDigitavelToImage, true));
         }
 
@@ -1288,7 +1291,8 @@ namespace BoletoNet
             var converter = new NReco.PdfGenerator.HtmlToPdfConverter()
             {
                 CustomWkHtmlArgs = CustomSwitches,
-                Grayscale = PretoBranco
+                Grayscale = PretoBranco,
+                Zoom = 1.25F
             };
             if (!string.IsNullOrEmpty(this.PdfToolPath))
             {

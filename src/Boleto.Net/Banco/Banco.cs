@@ -54,6 +54,7 @@ namespace BoletoNet
         public override string LabelMora => _IBanco.LabelMora;
         public override string LabelOutrasDeducoes => _IBanco.LabelOutrasDeducoes;
         public override string LabelSAC => _IBanco.LabelSAC;
+        public override double AlturaLogoEmMilimetros => _IBanco.AlturaLogoEmMilimetros;
 
         #endregion
 

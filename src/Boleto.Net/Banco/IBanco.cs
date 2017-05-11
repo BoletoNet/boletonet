@@ -134,6 +134,7 @@ namespace BoletoNet
         string LabelOutrasDeducoes { get; set; }
         string LabelMora { get; set; }
         string LabelSAC { get; set; }
+        double AlturaLogoEmMilimetros { get; set; }
 
         bool ValidarRemessa(TipoArquivo tipoArquivo, string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, int numeroArquivoRemessa, out string mensagem);
 

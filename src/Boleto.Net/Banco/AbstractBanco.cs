@@ -66,6 +66,7 @@ namespace BoletoNet
         public virtual string LabelOutrasDeducoes { get; set; } = "Outras deduções";
         public virtual string LabelMora { get; set; } = "Mora / Multa";
         public virtual string LabelSAC { get; set; } = "";
+        public virtual double AlturaLogoEmMilimetros { get; set; } = 10;
 
         #endregion Propriedades
 

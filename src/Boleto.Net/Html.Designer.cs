@@ -373,7 +373,7 @@ namespace BoletoNet {
         /// <summary>
         ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
         ///				&lt;tr class=&quot;BHead&quot;&gt;
-        ///						&lt;td class=&quot;imgLogo Al&quot;&gt;&lt;img src=&quot;@URLIMAGEMLOGO&quot; /&gt;&lt;/td&gt;
+        ///						&lt;td class=&quot;imgLogo Al&quot;&gt;&lt;img src=&quot;@URLIMAGEMLOGO&quot; style=&quot;height: @ALTURALOGOEMMILIMETROSmm!important;width:auto!important;&quot;  /&gt;&lt;/td&gt;
         ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
         ///						&lt;td class=&quot;w65 Ab bc Ac&quot;&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
         ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
@@ -640,7 +640,7 @@ namespace BoletoNet {
         /// <summary>
         ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
         ///				&lt;tr class=&quot;BHead&quot;&gt;
-        ///						&lt;td class=&quot;imgLogo Al&quot;&gt;&lt;img src=&quot;@URLIMGCEDENTE&quot; /&gt;&lt;/td&gt;
+        ///						&lt;td class=&quot;imgLogo Al&quot;&gt;&lt;img src=&quot;@URLIMGCEDENTE&quot; style=&quot;height: @ALTURALOGOEMMILIMETROSmm!important;width:auto!important;&quot; /&gt;&lt;/td&gt;
         ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
         ///						&lt;td class=&quot;w65 Ab bc Ac&quot;&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
         ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
