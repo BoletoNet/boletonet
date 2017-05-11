@@ -1,4 +1,5 @@
 using System;
+using System.Reflection.Emit;
 using System.Threading;
 using BoletoNet.Util;
 using BoletoNet.Enums;
@@ -60,6 +61,13 @@ namespace BoletoNet
         /// Permitir a comunicação entre bancos comerciais estaduais agindo como chave comum na troca de informações entre eles
         /// </summary>
         public string ChaveASBACE { get; set; }
+
+        public virtual string LabelDesconto { get; set; } = "Desconto / Abatimentos";
+        public virtual string LabelOutrasDeducoes { get; set; } = "Outras deduções";
+        public virtual string LabelMora { get; set; } = "Mora / Multa";
+        public virtual string LabelSAC { get; set; } = "";
+        public virtual double AlturaLogoEmMilimetros { get; set; } = 10;
+
         #endregion Propriedades
 
         # region Métodos
@@ -72,12 +80,12 @@ namespace BoletoNet
         {
             throw new NotImplementedException("Função não implementada");
         }
-        
+
         public virtual bool ValidarRemessa(TipoArquivo tipoArquivo, string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, int numeroArquivoRemessa, out string mensagem)
         {
             throw new NotImplementedException("Função não implementada na classe filha. Implemente na classe que está sendo criada.");
         }
-        
+
         /// <summary>
         /// Gera os registros de header do aquivo de remessa
         /// </summary>
@@ -602,7 +610,7 @@ namespace BoletoNet
 
             for (int i = seq.Length; i > 0; i--)
             {
-                s = s + (Convert.ToInt32(seq.Mid( i, 1)) * p);
+                s = s + (Convert.ToInt32(seq.Mid(i, 1)) * p);
                 if (p == b)
                     p = 2;
                 else
@@ -675,7 +683,7 @@ namespace BoletoNet
 
             while (pos <= seq.Length)
             {
-                num = seq.Mid( pos, 1);
+                num = seq.Mid(pos, 1);
                 total += Convert.ToInt32(num) * mult;
 
                 mult -= 1;
@@ -714,7 +722,7 @@ namespace BoletoNet
 
             while (pos <= seq.Length)
             {
-                num = seq.Mid( pos, 1);
+                num = seq.Mid(pos, 1);
                 total += Convert.ToInt32(num) * mult;
 
                 mult -= 1;

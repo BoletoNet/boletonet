@@ -373,7 +373,7 @@ namespace BoletoNet {
         /// <summary>
         ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
         ///				&lt;tr class=&quot;BHead&quot;&gt;
-        ///						&lt;td class=&quot;imgLogo Al&quot;&gt;&lt;img src=&quot;@URLIMAGEMLOGO&quot; /&gt;&lt;/td&gt;
+        ///						&lt;td class=&quot;imgLogo Al&quot;&gt;&lt;img src=&quot;@URLIMAGEMLOGO&quot; style=&quot;height: @ALTURALOGOEMMILIMETROSmm!important;width:auto!important;&quot;  /&gt;&lt;/td&gt;
         ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
         ///						&lt;td class=&quot;w65 Ab bc Ac&quot;&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
         ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
@@ -527,10 +527,11 @@ namespace BoletoNet {
         ///                &lt;div class=&quot;cpN pL10 it&quot; style=&quot;height:105px; overflow:hidden&quot;&gt;@INSTRUCOES&lt;/div&gt;                
         ///						&lt;/td&gt;
         ///						&lt;td class=&quot;w186&quot;&gt;
-        ///								&lt;div class=&quot;t&quot;&gt;(-) Desconto / Abatimentos&lt;/div&gt;
+        ///								&lt;div class=&quot;t&quot;&gt;(-) @LABELDESCONTO&lt;/div&gt;
         ///								&lt;div class=&quot;c BB&quot;&gt;@DESCONTOS&lt;/div&gt;
-        ///								&lt;div class=&quot;t&quot;&gt;(-) Outras deduções&lt;/div&gt;
-        ///								&lt;div class=&quot;c BB&quot;&gt;@OUTRASDEDUCOES&lt;/div&gt;        /// [rest of string was truncated]&quot;;.
+        ///								&lt;div class=&quot;t&quot;&gt;(-) @LABELOUTRASDEDUCOES&lt;/div&gt;
+        ///								&lt;div class=&quot;c BB&quot;&gt;@OUTRASDEDUCOES&lt;/div&gt;
+        ///		 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReciboCedenteParte6 {
             get {
@@ -639,7 +640,7 @@ namespace BoletoNet {
         /// <summary>
         ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
         ///				&lt;tr class=&quot;BHead&quot;&gt;
-        ///						&lt;td class=&quot;imgLogo Al&quot;&gt;&lt;img src=&quot;@URLIMGCEDENTE&quot; /&gt;&lt;/td&gt;
+        ///						&lt;td class=&quot;imgLogo Al&quot;&gt;&lt;img src=&quot;@URLIMGCEDENTE&quot; style=&quot;height: @ALTURALOGOEMMILIMETROSmm!important;width:auto!important;&quot; /&gt;&lt;/td&gt;
         ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
         ///						&lt;td class=&quot;w65 Ab bc Ac&quot;&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
         ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
@@ -702,9 +703,9 @@ namespace BoletoNet {
         /// <summary>
         ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
         ///				&lt;tr class=&quot;ct h13&quot;&gt;
-        ///						&lt;td class=&quot;w113&quot;&gt;(-) Desconto / Abatimentos&lt;/td&gt;
-        ///						&lt;td class=&quot;w112&quot;&gt;(-) Outras deduções&lt;/td&gt;
-        ///						&lt;td class=&quot;w113&quot;&gt;(+) Mora / Multa&lt;/td&gt;
+        ///						&lt;td class=&quot;w113&quot;&gt;(-) @LABELDESCONTO&lt;/td&gt;
+        ///						&lt;td class=&quot;w112&quot;&gt;(-) @LABELOUTRASDEDUCOES&lt;/td&gt;
+        ///						&lt;td class=&quot;w113&quot;&gt;(+) @LABELMORA&lt;/td&gt;
         ///						&lt;td class=&quot;w113&quot;&gt;(+) Outros acréscimos&lt;/td&gt;
         ///						&lt;td class=&quot;w180&quot;&gt;(=) Valor cobrado&lt;/td&gt;
         ///				&lt;/tr&gt;
@@ -714,7 +715,8 @@ namespace BoletoNet {
         ///						&lt;td&gt;@MORAMULTA&lt;/td&gt;
         ///						&lt;td&gt;@OUTROSACRESCIMOS&lt;/td&gt;
         ///						&lt;td class=&quot;Ar&quot;&gt;&amp;nbsp;@VALORCOBRADO&lt;/td&gt;
-        ///				&lt;/ [rest of string was truncated]&quot;;.
+        ///				&lt;/tr&gt;
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReciboSacadoParte5 {
             get {
@@ -748,7 +750,7 @@ namespace BoletoNet {
         ///						&lt;td class=&quot;w180 Ar&quot;&gt;Autenticação mecânica&lt;/td&gt;
         ///				&lt;/tr&gt;
         ///				&lt;tr class=&quot;cpN h12&quot;&gt;
-        ///						&lt;td class=&quot;pL6 it&quot;&gt;@INSTRUCOES&lt;/td&gt;
+        ///						&lt;td class=&quot;pL6 it&quot;&gt;@INSTRUCOES&lt;br/&gt;&lt;br/&gt;@LABELSAC&lt;/td&gt;
         ///						&lt;td class=&quot;pL6 Ar&quot;&gt;@AUTENTICACAOMECANICA&lt;/td&gt;
         ///				&lt;/tr&gt;
         ///		&lt;/table&gt;.

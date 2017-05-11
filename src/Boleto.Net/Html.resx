@@ -336,7 +336,7 @@
   <data name="ReciboCedenteParte1" xml:space="preserve">
     <value>&lt;table class="w666"&gt;
 				&lt;tr class="BHead"&gt;
-						&lt;td class="imgLogo Al"&gt;&lt;img src="@URLIMAGEMLOGO" /&gt;&lt;/td&gt;
+						&lt;td class="imgLogo Al"&gt;&lt;img src="@URLIMAGEMLOGO" style="height: @ALTURALOGOEMMILIMETROSmm!important;width:auto!important;"  /&gt;&lt;/td&gt;
 						&lt;td class="barra"&gt;&lt;img src="@URLIMAGEMBARRA" /&gt;&lt;/td&gt;
 						&lt;td class="w65 Ab bc Ac"&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
 						&lt;td class="barra"&gt;&lt;img src="@URLIMAGEMBARRA" /&gt;&lt;/td&gt;
@@ -447,11 +447,11 @@
                 &lt;div class="cpN pL10 it" style="height:105px; overflow:hidden"&gt;@INSTRUCOES&lt;/div&gt;                
 						&lt;/td&gt;
 						&lt;td class="w186"&gt;
-								&lt;div class="t"&gt;(-) Desconto / Abatimentos&lt;/div&gt;
+								&lt;div class="t"&gt;(-) @LABELDESCONTO&lt;/div&gt;
 								&lt;div class="c BB"&gt;@DESCONTOS&lt;/div&gt;
-								&lt;div class="t"&gt;(-) Outras deduções&lt;/div&gt;
+								&lt;div class="t"&gt;(-) @LABELOUTRASDEDUCOES&lt;/div&gt;
 								&lt;div class="c BB"&gt;@OUTRASDEDUCOES&lt;/div&gt;
-								&lt;div class="t"&gt;(+) Mora / Multa&lt;/div&gt;
+								&lt;div class="t"&gt;(+) @LABELMORA&lt;/div&gt;
 								&lt;div class="c BB"&gt;@MORAMULTA&lt;/div&gt;
 								&lt;div class="t"&gt;(+) Outros acréscimos&lt;/div&gt;
 								&lt;div class="c BB"&gt;@OUTROSACRESCIMOS&lt;/div&gt;
@@ -499,7 +499,7 @@
   <data name="ReciboSacadoParte2" xml:space="preserve">
     <value>&lt;table class="w666"&gt;
 				&lt;tr class="BHead"&gt;
-						&lt;td class="imgLogo Al"&gt;&lt;img src="@URLIMGCEDENTE" /&gt;&lt;/td&gt;
+						&lt;td class="imgLogo Al"&gt;&lt;img src="@URLIMGCEDENTE" style="height: @ALTURALOGOEMMILIMETROSmm!important;width:auto!important;" /&gt;&lt;/td&gt;
 						&lt;td class="barra"&gt;&lt;img src="@URLIMAGEMBARRA" /&gt;&lt;/td&gt;
 						&lt;td class="w65 Ab bc Ac"&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
 						&lt;td class="barra"&gt;&lt;img src="@URLIMAGEMBARRA" /&gt;&lt;/td&gt;
@@ -544,9 +544,9 @@
   <data name="ReciboSacadoParte5" xml:space="preserve">
     <value>&lt;table class="w666"&gt;
 				&lt;tr class="ct h13"&gt;
-						&lt;td class="w113"&gt;(-) Desconto / Abatimentos&lt;/td&gt;
-						&lt;td class="w112"&gt;(-) Outras deduções&lt;/td&gt;
-						&lt;td class="w113"&gt;(+) Mora / Multa&lt;/td&gt;
+						&lt;td class="w113"&gt;(-) @LABELDESCONTO&lt;/td&gt;
+						&lt;td class="w112"&gt;(-) @LABELOUTRASDEDUCOES&lt;/td&gt;
+						&lt;td class="w113"&gt;(+) @LABELMORA&lt;/td&gt;
 						&lt;td class="w113"&gt;(+) Outros acréscimos&lt;/td&gt;
 						&lt;td class="w180"&gt;(=) Valor cobrado&lt;/td&gt;
 				&lt;/tr&gt;
@@ -579,7 +579,7 @@
 						&lt;td class="w180 Ar"&gt;Autenticação mecânica&lt;/td&gt;
 				&lt;/tr&gt;
 				&lt;tr class="cpN h12"&gt;
-						&lt;td class="pL6 it"&gt;@INSTRUCOES&lt;/td&gt;
+						&lt;td class="pL6 it"&gt;@INSTRUCOES&lt;br/&gt;&lt;br/&gt;@LABELSAC&lt;/td&gt;
 						&lt;td class="pL6 Ar"&gt;@AUTENTICACAOMECANICA&lt;/td&gt;
 				&lt;/tr&gt;
 		&lt;/table&gt;</value>

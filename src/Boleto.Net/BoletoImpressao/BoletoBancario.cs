@@ -726,7 +726,9 @@ namespace BoletoNet
                     "@VALORCOBRADO",
                     Boleto.ValorCobrado == 0 ? "" : Boleto.ValorCobrado.ToString("C", CultureInfo.GetCultureInfo("PT-BR")))
                 .Replace("@OUTROSACRESCIMOS", "")
+                .Replace("@LABELOUTRASDEDUCOES", _ibanco.LabelOutrasDeducoes)
                 .Replace("@OUTRASDEDUCOES", "")
+                .Replace("@LABELDESCONTO", _ibanco.LabelDesconto)
                 .Replace(
                     "@DESCONTOS",
                     Boleto.ValorDesconto == 0 ? "" : Boleto.ValorDesconto.ToString("C", CultureInfo.GetCultureInfo("PT-BR")))
@@ -735,6 +737,7 @@ namespace BoletoNet
                 .Replace("@INFOSACADO", infoSacado)
                 .Replace("@AGENCIACODIGOCEDENTE", agenciaCodigoCedente)
                 .Replace("@CPFCNPJ", Cedente.CPFCNPJ)
+                .Replace("@LABELMORA", _ibanco.LabelMora)
                 .Replace(
                     "@MORAMULTA",
                     Boleto.ValorMulta == 0 ? "" : Boleto.ValorMulta.ToString("C", CultureInfo.GetCultureInfo("PT-BR")))
@@ -742,8 +745,10 @@ namespace BoletoNet
                 .Replace("@USODOBANCO", Boleto.UsoBanco)
                 .Replace("@IMAGEMCODIGOBARRA", imagemCodigoBarras)
                 .Replace("@ACEITE", Boleto.Aceite)
+                .Replace("@LABELSAC", _ibanco.LabelSAC)
                 .ToString()
                 .Replace("@ENDERECOCEDENTE", MostrarEnderecoCedente ? enderecoCedente : "")
+                .Replace("@ALTURALOGOEMMILIMETROS", _ibanco.AlturaLogoEmMilimetros.ToString())
                 .Replace(
                     "@AVALISTA",
                     string.Format(
@@ -1246,6 +1251,8 @@ namespace BoletoNet
             {
                 converter.PdfToolPath = this.PdfToolPath;
             }
+
+            converter.Zoom = 1.25F;
             return converter.GeneratePdf(this.MontaHtmlEmbedded(convertLinhaDigitavelToImage, true));
         }
 
@@ -1284,7 +1291,8 @@ namespace BoletoNet
             var converter = new NReco.PdfGenerator.HtmlToPdfConverter()
             {
                 CustomWkHtmlArgs = CustomSwitches,
-                Grayscale = PretoBranco
+                Grayscale = PretoBranco,
+                Zoom = 1.25F
             };
             if (!string.IsNullOrEmpty(this.PdfToolPath))
             {
