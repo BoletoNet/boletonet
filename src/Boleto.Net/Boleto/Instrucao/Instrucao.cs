@@ -104,6 +104,10 @@ namespace BoletoNet
                     case 748:
                         _IInstrucao = new Instrucao_Sicredi();
                         break;
+                    //4 - Banco do Nordeste
+                    case 4:
+                        _IInstrucao = new Instrucao_BancoNordeste();
+                        break;
                     default:
                         throw new Exception("Código do banco não implementando: " + codigoBanco);
                 }
