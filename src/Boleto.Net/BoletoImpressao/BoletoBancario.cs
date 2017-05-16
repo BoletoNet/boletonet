@@ -1196,41 +1196,52 @@ namespace BoletoNet
         public string MontaHtmlEmbedded(bool convertLinhaDigitavelToImage = false, bool usaCSSPDF = false)
         {
             OnLoad(EventArgs.Empty);
-
-            var assembly = Assembly.GetExecutingAssembly();
-
-            string base64Logo = Convert.ToBase64String(ObterLogoDoBanco(CodigoBanco));
-            string fnLogo = string.Format("data:image/gif;base64,{0}", base64Logo);
-
-            var streamBarra = assembly.GetManifestResourceStream("BoletoNet.Imagens.barra.gif");
-            string base64Barra = Convert.ToBase64String(new BinaryReader(streamBarra).ReadBytes((int)streamBarra.Length));
-            string fnBarra = string.Format("data:image/gif;base64,{0}", base64Barra);
-
-            var cb = new C2of5i(Boleto.CodigoBarra.Codigo, 1, 50, Boleto.CodigoBarra.Codigo.Length);
-            string base64CodigoBarras = Convert.ToBase64String(cb.ToByte());
-            string fnCodigoBarras = string.Format("data:image/gif;base64,{0}", base64CodigoBarras);
-
-            if (convertLinhaDigitavelToImage)
+            Stream streamBarra = null;
+            try
             {
+                var assembly = Assembly.GetExecutingAssembly();
 
-                string linhaDigitavel = Boleto.CodigoBarra.LinhaDigitavel.Replace("  ", " ").Trim();
+                string base64Logo = Convert.ToBase64String(ObterLogoDoBanco(CodigoBanco));
+                string fnLogo = string.Format("data:image/gif;base64,{0}", base64Logo);
 
-                var imagemLinha = Utils.DrawText(linhaDigitavel, new Font("Arial", 30, FontStyle.Bold), Color.Black, Color.White);
-                string base64Linha = Convert.ToBase64String(Utils.ConvertImageToByte(imagemLinha));
+                streamBarra = assembly.GetManifestResourceStream("BoletoNet.Imagens.barra.gif");
+                string base64Barra = Convert.ToBase64String(new BinaryReader(streamBarra).ReadBytes((int)streamBarra.Length));
+                string fnBarra = string.Format("data:image/gif;base64,{0}", base64Barra);
 
-                string fnLinha = string.Format("data:image/gif;base64,{0}", base64Linha);
+                var cb = new C2of5i(Boleto.CodigoBarra.Codigo, 1, 50, Boleto.CodigoBarra.Codigo.Length);
+                string base64CodigoBarras = Convert.ToBase64String(cb.ToByte());
+                string fnCodigoBarras = string.Format("data:image/gif;base64,{0}", base64CodigoBarras);
 
-                Boleto.CodigoBarra.LinhaDigitavel = @"<img style=""max-width:420px; margin-bottom: 2px"" src=" + fnLinha + " />";
+                if (convertLinhaDigitavelToImage)
+                {
+
+                    string linhaDigitavel = Boleto.CodigoBarra.LinhaDigitavel.Replace("  ", " ").Trim();
+
+                    var imagemLinha = Utils.DrawText(linhaDigitavel, new Font("Arial", 30, FontStyle.Bold), Color.Black, Color.White);
+                    string base64Linha = Convert.ToBase64String(Utils.ConvertImageToByte(imagemLinha));
+
+                    string fnLinha = string.Format("data:image/gif;base64,{0}", base64Linha);
+
+                    Boleto.CodigoBarra.LinhaDigitavel = @"<img style=""max-width:420px; margin-bottom: 2px"" src=" + fnLinha + " />";
+                }
+
+                string s = HtmlOffLine(null, fnLogo, fnBarra, fnCodigoBarras, usaCSSPDF).ToString();
+
+                if (convertLinhaDigitavelToImage)
+                {
+                    s = s.Replace(".w500", "");
+                }
+
+                return s;
+
             }
-
-            string s = HtmlOffLine(null, fnLogo, fnBarra, fnCodigoBarras, usaCSSPDF).ToString();
-
-            if (convertLinhaDigitavelToImage)
+            finally
             {
-                s = s.Replace(".w500", "");
+                if (streamBarra != null)
+                {
+                    streamBarra.Close();
+                }
             }
-
-            return s;
         }
 
         public byte[] MontaBytesPDF(bool convertLinhaDigitavelToImage = false)
@@ -1312,9 +1323,21 @@ namespace BoletoNet
         /// <returns>bytes da logo</returns>
         public static byte[] ObterLogoDoBanco(short codigoBanco)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var streamLogo = assembly.GetManifestResourceStream(string.Format("BoletoNet.Imagens.{0}.jpg", codigoBanco.ToString("000")));
-            return new BinaryReader(streamLogo).ReadBytes((int)streamLogo.Length);
+            Stream streamLogo = null;
+            try
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                streamLogo = assembly.GetManifestResourceStream(string.Format("BoletoNet.Imagens.{0}.jpg", codigoBanco.ToString("000")));
+                return new BinaryReader(streamLogo).ReadBytes((int)streamLogo.Length);
+            }
+            finally
+            {
+                if (streamLogo != null)
+                {
+                    streamLogo.Close();
+                } 
+            }
+
         }
 
         private void CopiarStream(Stream entrada, Stream saida)
