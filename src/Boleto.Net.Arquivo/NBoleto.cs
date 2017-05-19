@@ -466,6 +466,7 @@ namespace BoletoNet.Arquivo
 
                 bb = new BoletoBancario();
                 bb.CodigoBanco = _codigoBanco;
+                bb.Cedente.MostrarCNPJnoBoleto = true;
 
                 DateTime vencimento = DateTime.Now.AddDays(10);
                 Instrucao_Bradesco item = new Instrucao_Bradesco(9, 5);

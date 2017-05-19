@@ -542,8 +542,8 @@ namespace BoletoNet
                     html.Append(GeraHtmlReciboSacado());
 
                     //Caso mostre o Endereço do Cedente
-                    if (MostrarEnderecoCedente)
-                    {
+                    //if (MostrarEnderecoCedente)
+                    //{
                         if (Cedente.Endereco == null)
                             throw new ArgumentNullException("Endereço do Cedente");
 
@@ -562,7 +562,7 @@ namespace BoletoNet
                                                              Utils.FormataCEP(Cedente.Endereco.CEP));
                         }
 
-                    }
+                    //}
                 }
             }
 
@@ -596,12 +596,12 @@ namespace BoletoNet
 
                 if (Sacado.Endereco.End != string.Empty && enderecoSacado != string.Empty)
                 {
-                    string Numero = !String.IsNullOrEmpty(Sacado.Endereco.Numero) ? ", " + Sacado.Endereco.Numero : "";
+                    string NumeroSacado = !String.IsNullOrEmpty(Sacado.Endereco.Numero) ? ", " + Sacado.Endereco.Numero : "";
 
                     if (infoSacado == string.Empty)
-                        infoSacado += InfoSacado.Render(Sacado.Endereco.End + Numero, enderecoSacado, false);
+                        infoSacado += InfoSacado.Render(Sacado.Endereco.End + NumeroSacado, enderecoSacado, false);
                     else
-                        infoSacado += InfoSacado.Render(Sacado.Endereco.End + Numero, enderecoSacado, true);
+                        infoSacado += InfoSacado.Render(Sacado.Endereco.End + NumeroSacado, enderecoSacado, true);
                 }
                 //"Informações do Sacado" foi introduzido para possibilitar que o boleto na informe somente o endereço do sacado
                 //como em outras situaçoes onde se imprime matriculas, codigos e etc, sobre o sacado.
@@ -679,6 +679,9 @@ namespace BoletoNet
             if (String.IsNullOrEmpty(vLocalLogoCedente))
                 vLocalLogoCedente = urlImagemLogo;
 
+            if (Boleto.Banco.Codigo == 237) //GAMBI FEITO POR GABRIEL, PARA BRADESCO EXCLUSIVAMENTE, TO DO
+                Cedente.MostrarCNPJnoBoleto = true;
+
             var valorBoleto = (Boleto.ValorBoleto == 0 ? "" : Boleto.ValorBoleto.ToString("C", CultureInfo.GetCultureInfo("PT-BR")));
 
 	        return html.Replace("@CODIGOBANCO", Utils.FormatCode(_ibanco.Codigo.ToString(), 3))
@@ -694,10 +697,13 @@ namespace BoletoNet
 		        .Replace("@DATAVENCIMENTO", dataVencimento)
 		        .Replace(
 			        "@CEDENTE_BOLETO",
-			        !Cedente.MostrarCNPJnoBoleto
-						? Cedente.Nome
-						: string.Format("{0}&nbsp;&nbsp;&nbsp;CNPJ: {1}", Cedente.Nome, Cedente.CPFCNPJcomMascara))
-		        .Replace("@CEDENTE", Cedente.Nome)
+			        (!Cedente.MostrarCNPJnoBoleto
+                        ? Cedente.Nome
+                        : string.Format("{0}&nbsp;&nbsp;&nbsp;CNPJ: {1}", Cedente.Nome, Cedente.CPFCNPJcomMascara) + " | " + enderecoCedente))
+		        .Replace("@CEDENTE",
+			        (!Cedente.MostrarCNPJnoBoleto
+                        ? Cedente.Nome
+						: string.Format("{0}&nbsp;&nbsp;&nbsp;CNPJ: {1}", Cedente.Nome, Cedente.CPFCNPJcomMascara) + " | " + enderecoCedente))
 		        .Replace("@DATADOCUMENTO", Boleto.DataDocumento.ToString("dd/MM/yyyy"))
 		        .Replace("@NUMERODOCUMENTO", Boleto.NumeroDocumento)
 		        .Replace("@ESPECIEDOCUMENTO", EspecieDocumento.ValidaSigla(Boleto.EspecieDocumento))
