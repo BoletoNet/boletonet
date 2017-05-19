@@ -1207,7 +1207,6 @@ namespace BoletoNet
             return vRetorno;
         }
 
-
         public string GerarMensagemVariavelRemessaCNAB400(Boleto boleto, ref int numeroRegistro, TipoArquivo tipoArquivo)
         {
             try
@@ -1273,6 +1272,39 @@ namespace BoletoNet
             {
                 throw new Exception("Erro ao gerar DETALHE do arquivo CNAB400.", ex);
             }
+        }
+
+        public string GerarRegistroDetalhe2(Boleto boleto, int numeroRegistro)
+        {
+            string _detalhe = "";
+            _detalhe += "2";                                        // 001 a 001 Tipo Registro
+            _detalhe += new string(' ', 320);                       // 002 a 321 Mensagens 1,2,3,4
+            if (boleto.DataOutrosDescontos == DateTime.MinValue)    // 322 a 327 Data limite para concessão de Desconto 2
+            {
+                _detalhe += "000000"; //Caso nao tenha data de vencimento
+            }
+            else
+            {
+                _detalhe += boleto.DataOutrosDescontos.ToString("ddMMyy");
+            }
+
+            // 328 a 340 Valor do Desconto 2
+            _detalhe += Utils.FitStringLength(boleto.OutrosDescontos.ToString("0.00").Replace(",", ""), 13, 13, '0', 0, true, true, true);
+            _detalhe += "000000"; // 341 a 346 ata limite para concessão de Desconto 3
+            // 347 a 359 Valor do Desconto 3
+            _detalhe += Utils.FitStringLength("", 13, 13, '0', 0, true, true, true);
+            _detalhe += new string(' ', 7);          // 360 a 366 Filler 
+            _detalhe += Utils.FitStringLength(boleto.Carteira, 3, 3, '0', 0, true, true, true);  // 367 a 369  Nº da Carteira 
+            _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true); // 370 a 374 N da agencia(5)
+            _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 7, 7, '0', 0, true, true, true); // 375 a 381 Conta Corrente(7)
+            _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoConta, 1, 1, '0', 0, true, true, true);// 382 a 382 D da conta(1)
+            _detalhe += Utils.FitStringLength(boleto.NossoNumero, 11, 11, '0', 0, true, true, true); // 383 a 393 Nosso Número (11)
+            // Força o NossoNumero a ter 11 dígitos. Alterado por Luiz Ponce 07/07/2012
+            _detalhe += Mod11Bradesco(boleto.Carteira + Utils.FitStringLength(boleto.NossoNumero, 11, 11, '0', 0, true, true, true), 7); // 394 a 394 Digito de Auto Conferencia do Nosso Número (01)
+            //Desconto Bonificação por dia (10, N)
+            _detalhe += Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true); // 395 a 400
+            //Retorno
+            return Utils.SubstituiCaracteresEspeciais(_detalhe);
         }
 
     }

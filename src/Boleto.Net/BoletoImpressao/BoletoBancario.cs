@@ -1,18 +1,16 @@
+using BoletoNet.Util;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Text;
-using System.Web.UI;
-using BoletoNet.Util;
+using System.Globalization;
 //Envio por email
 using System.IO;
 using System.Net.Mail;
 using System.Net.Mime;
 using System.Reflection;
-using System.Drawing.Imaging;
-using System.Web;
-using System.Globalization;
+using System.Text;
+using System.Web.UI;
 
 [assembly: WebResource("BoletoNet.BoletoImpressao.BoletoNet.css", "text/css", PerformSubstitution = true)]
 [assembly: WebResource("BoletoNet.Imagens.barra.gif", "image/gif")]
@@ -563,8 +561,8 @@ namespace BoletoNet
                         }
 
                     //}
+                    }
                 }
-            }
 
             string sacado = "";
             //Flavio(fhlviana@hotmail.com) - adicionei a possibilidade de o boleto não ter, necessáriamente, que informar o CPF ou CNPJ do sacado.
@@ -630,7 +628,7 @@ namespace BoletoNet
                 switch (Boleto.Banco.Codigo)
                 {
                     case 748:
-                        agenciaCodigoCedente = string.Format("{0}.{1}.{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.OperacaConta, Cedente.Codigo);
+                        agenciaCodigoCedente = string.Format("{0}.{1}.{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.OperacaConta, Utils.FormatCode(Cedente.ContaBancaria.Conta, 5));
                         break;
                     case 41:
                         agenciaCodigoCedente = string.Format("{0}.{1}/{2}.{3}.{4}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Cedente.Codigo.Substring(4, 6), Cedente.Codigo.Substring(10, 1), Cedente.DigitoCedente);
@@ -659,7 +657,7 @@ namespace BoletoNet
                     //agenciaCodigoCedente = Utils.FormatCode(Cedente.Codigo.ToString(), 7); -> para Banco HSBC mostra apenas código Cedente - por Ponce em 08/06/2012
                     agenciaCodigoCedente = String.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo.ToString(), 7)); //Solicitação do HSBC que mostrasse agencia/Conta - por Transis em 24/02/15
                 else if (Boleto.Banco.Codigo == 748)
-                    agenciaCodigoCedente = string.Format("{0}.{1}.{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.OperacaConta, Cedente.Codigo);
+                    agenciaCodigoCedente = string.Format("{0}.{1}.{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.OperacaConta, Utils.FormatCode(Cedente.ContaBancaria.Conta, 5));
                 else
                     agenciaCodigoCedente = agenciaConta;
             }
@@ -702,7 +700,7 @@ namespace BoletoNet
                         : string.Format("{0}&nbsp;&nbsp;&nbsp;CNPJ: {1}", Cedente.Nome, Cedente.CPFCNPJcomMascara) + " | " + enderecoCedente))
 		        .Replace("@CEDENTE",
 			        (!Cedente.MostrarCNPJnoBoleto
-                        ? Cedente.Nome
+						? Cedente.Nome
 						: string.Format("{0}&nbsp;&nbsp;&nbsp;CNPJ: {1}", Cedente.Nome, Cedente.CPFCNPJcomMascara) + " | " + enderecoCedente))
 		        .Replace("@DATADOCUMENTO", Boleto.DataDocumento.ToString("dd/MM/yyyy"))
 		        .Replace("@NUMERODOCUMENTO", Boleto.NumeroDocumento)
@@ -1249,7 +1247,8 @@ namespace BoletoNet
                 converter.TempFilesPath = this.TempFilesPath;
             }
 
-            if (!string.IsNullOrEmpty(this.PdfToolPath)) {
+            if (!string.IsNullOrEmpty(this.PdfToolPath))
+            {
                 converter.PdfToolPath = this.PdfToolPath;
             }
             return converter.GeneratePdf(this.MontaHtmlEmbedded(convertLinhaDigitavelToImage, true));
@@ -1292,10 +1291,12 @@ namespace BoletoNet
               CustomWkHtmlArgs = CustomSwitches,
               Grayscale = PretoBranco
             };
-            if (!string.IsNullOrEmpty(this.PdfToolPath)) {
+            if (!string.IsNullOrEmpty(this.PdfToolPath))
+            {
                 converter.PdfToolPath = this.PdfToolPath;
             }
-            if (!string.IsNullOrEmpty(this.TempFilesPath)) {
+            if (!string.IsNullOrEmpty(this.TempFilesPath))
+            {
                 converter.TempFilesPath = this.TempFilesPath;
             }
 
