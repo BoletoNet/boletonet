@@ -1230,7 +1230,7 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.JurosMora.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
 
                 // Data limite para desconto
-                _detalhe += boleto.DataVencimento.ToString("ddMMyy");
+                _detalhe += boleto.DataDesconto == DateTime.MinValue ? boleto.DataVencimento.ToString("ddMMyy") : boleto.DataDesconto.ToString("ddMMyy");
                 _detalhe += Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
                 _detalhe += "0000000000000"; // Valor do IOF
                 _detalhe += "0000000000000"; // Valor do Abatimento
