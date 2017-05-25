@@ -2248,22 +2248,26 @@ namespace BoletoNet
                 #region Instruções
                 string vInstrucao1 = "0";
                 string vInstrucao2 = "0";
+                string diasProtesto = String.Empty;
                 //string vInstrucao3 = "0";
                 switch (boleto.Instrucoes.Count)
                 {
                     case 1:
                         vInstrucao1 = boleto.Instrucoes[0].Codigo.ToString();
                         vInstrucao2 = "0";
+                        diasProtesto = boleto.Instrucoes[0].QuantidadeDias.ToString().PadLeft(2, '0') ?? String.Empty;
                         //vInstrucao3 = "0";
                         break;
                     case 2:
                         vInstrucao1 = boleto.Instrucoes[0].Codigo.ToString();
                         vInstrucao2 = boleto.Instrucoes[1].Codigo.ToString();
+                        diasProtesto = boleto.Instrucoes[0].QuantidadeDias.ToString().PadLeft(2, '0') ?? String.Empty;
                         //vInstrucao3 = "0";
                         break;
                     case 3:
                         vInstrucao1 = boleto.Instrucoes[0].Codigo.ToString();
                         vInstrucao2 = boleto.Instrucoes[1].Codigo.ToString();
+                        diasProtesto = boleto.Instrucoes[0].QuantidadeDias.ToString().PadLeft(2, '0') ?? String.Empty;
                         //vInstrucao3 = boleto.Instrucoes[2].Codigo.ToString();
                         break;
                 }
@@ -2338,7 +2342,7 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0335, 015, 0, boleto.Sacado.Endereco.Cidade.ToUpper(), ' '));   //335-349
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0350, 002, 0, boleto.Sacado.Endereco.UF.ToUpper(), ' '));       //350-351
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0352, 040, 0, string.Empty, ' '));                              //352-391
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0392, 002, 0, string.Empty, ' '));                              //392-393
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0392, 002, 0, diasProtesto, ' '));                              //392-393
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0394, 001, 0, string.Empty, ' '));                              //394-394                
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0395, 006, 0, numeroRegistro, '0'));                            //395-400
                 //
