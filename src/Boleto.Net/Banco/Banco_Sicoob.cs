@@ -495,7 +495,7 @@ namespace BoletoNet
                 string _detalhe = " ";
 
                 //Se o nosso número ainda não foi formatado então formata
-                if (!string.IsNullOrWhiteSpace(boleto.NossoNumero)  && boleto.NossoNumero.Length <= 7)
+                if (!string.IsNullOrEmpty(boleto.NossoNumero)  && boleto.NossoNumero.Length <= 7)
                 {
                     FormataNossoNumero(boleto);
                 }
