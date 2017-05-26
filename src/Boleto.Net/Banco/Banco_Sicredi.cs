@@ -92,7 +92,7 @@ namespace BoletoNet
                 throw new BoletoNetException("Código de barras é inválido");
 
             FormataLinhaDigitavel(boleto);
-            //FormataNossoNumero(boleto);
+            FormataNossoNumero(boleto);
         }
 
         private string ObterInformacoesCarteirasDisponiveis()
@@ -809,11 +809,12 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0019, 001, 0, CodJuros, ' '));                                  //019-019  Tipo de juros: 'A' - VALOR / 'B' PERCENTUAL
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0020, 028, 0, string.Empty, ' '));                              //020-047
                 #region Nosso Número + DV
-                string vAuxNossoNumeroComDV = boleto.NossoNumero;
-                if (string.IsNullOrEmpty(boleto.DigitoNossoNumero) || boleto.NossoNumero.Length < 9)
+                string NossoNumero = boleto.NossoNumero.Replace("/", "").Replace("-", ""); // AA/BXXXXX-D
+                string vAuxNossoNumeroComDV = NossoNumero;
+                if (string.IsNullOrEmpty(boleto.DigitoNossoNumero) || NossoNumero.Length < 9)
                 {
                     boleto.DigitoNossoNumero = DigNossoNumeroSicredi(boleto); 
-                    vAuxNossoNumeroComDV = boleto.NossoNumero + boleto.DigitoNossoNumero;
+                    vAuxNossoNumeroComDV = NossoNumero + boleto.DigitoNossoNumero;
                 }
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0048, 009, 0, vAuxNossoNumeroComDV, '0'));                      //048-056
                 #endregion
