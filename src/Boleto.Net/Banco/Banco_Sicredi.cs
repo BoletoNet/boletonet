@@ -112,8 +112,17 @@ namespace BoletoNet
 
         public override void FormataNossoNumero(Boleto boleto)
         {
-            string nossoNumero = boleto.NossoNumero;            
-            boleto.NossoNumero = string.Format("{0}/{1}-{2}", nossoNumero.Substring(0, 2), nossoNumero.Substring(2, 6), nossoNumero.Substring(8));
+            string nossoNumero = boleto.NossoNumero;
+
+            if (nossoNumero == null || nossoNumero.Length != 9) {
+                throw new Exception("Erro ao tentar formatar nosso número, verifique o tamanho do campo");
+            }
+
+            try {
+                boleto.NossoNumero = string.Format("{0}/{1}-{2}", nossoNumero.Substring(0, 2), nossoNumero.Substring(2, 6), nossoNumero.Substring(8));
+            } catch (Exception ex) {
+                throw new Exception("Erro ao formatar nosso número", ex);
+            }
         }
 
         public override void FormataNumeroDocumento(Boleto boleto)
