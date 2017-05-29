@@ -488,7 +488,7 @@ namespace BoletoNet
                 else especieDocumento = boleto.EspecieDocumento.Codigo;
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0148, 002, 0, especieDocumento, '0'));                          //148-149
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0150, 001, 0, boleto.Aceite, ' '));                             //150-150
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAA___________, 0151, 006, 0, boleto.DataProcessamento, ' '));                  //151-156
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAA___________, 0151, 006, 0, boleto.DataDocumento, ' '));                      //151-156
                 string vInstrucao = "00";
                 if (!(boleto.Instrucoes == null || boleto.Instrucoes.Count == 0))
                     vInstrucao = boleto.Instrucoes[0].Codigo.ToString();
@@ -573,7 +573,7 @@ namespace BoletoNet
                 //detalhe. = reg.NumeroConvenioCobranca;
                 //detalhe. = reg.NumeroControleParticipante;
                 //
-                detalhe.NossoNumeroComDV = reg.NossoNumero+reg.NossoNumeroDV;
+                detalhe.NossoNumeroComDV = reg.NossoNumero + reg.NossoNumeroDV;
                 detalhe.NossoNumero = reg.NossoNumero; //Nosso Número sem o DV!
                 detalhe.DACNossoNumero = reg.NossoNumeroDV;
                 //
@@ -615,7 +615,7 @@ namespace BoletoNet
                 detalhe.JurosMora = (Convert.ToDecimal(reg.JurosMora) / 100);
                 //detalhe.OutrosCreditos = (Convert.ToInt64(reg.OutrosRecebimentos) / 100);
                 //detalhe. = reg.AbatimentoNaoAproveitado;
-                detalhe.ValorPago = (Convert.ToDecimal(reg.ValorRecebido) / 100);                
+                detalhe.ValorPago = (Convert.ToDecimal(reg.ValorRecebido) / 100);
                 //detalhe. = reg.IndicativoDebitoCredito;
                 //detalhe. = reg.IndicadorValor;
                 //detalhe. = reg.ValorAjuste;
