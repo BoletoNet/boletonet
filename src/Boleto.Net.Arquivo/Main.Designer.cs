@@ -48,6 +48,7 @@ namespace BoletoNet.Arquivo
             this.gerarToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.impressãoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBoxBancos = new System.Windows.Forms.GroupBox();
+            this.radioButtonMercantilBR = new System.Windows.Forms.RadioButton();
             this.radioButtonBNB = new System.Windows.Forms.RadioButton();
             this.radioButtonBanrisul = new System.Windows.Forms.RadioButton();
             this.radioButtonSicredi = new System.Windows.Forms.RadioButton();
@@ -96,7 +97,7 @@ namespace BoletoNet.Arquivo
             this.lstReturnFields.Location = new System.Drawing.Point(165, 32);
             this.lstReturnFields.MultiSelect = false;
             this.lstReturnFields.Name = "lstReturnFields";
-            this.lstReturnFields.Size = new System.Drawing.Size(834, 402);
+            this.lstReturnFields.Size = new System.Drawing.Size(834, 443);
             this.lstReturnFields.TabIndex = 2;
             this.lstReturnFields.UseCompatibleStateImageBehavior = false;
             this.lstReturnFields.View = System.Windows.Forms.View.Details;
@@ -217,6 +218,7 @@ namespace BoletoNet.Arquivo
             // 
             this.groupBoxBancos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBoxBancos.Controls.Add(this.radioButtonMercantilBR);
             this.groupBoxBancos.Controls.Add(this.radioButtonBNB);
             this.groupBoxBancos.Controls.Add(this.radioButtonBanrisul);
             this.groupBoxBancos.Controls.Add(this.radioButtonSicredi);
@@ -233,10 +235,21 @@ namespace BoletoNet.Arquivo
             this.groupBoxBancos.Location = new System.Drawing.Point(12, 110);
             this.groupBoxBancos.Name = "groupBoxBancos";
             this.groupBoxBancos.Padding = new System.Windows.Forms.Padding(10, 5, 10, 10);
-            this.groupBoxBancos.Size = new System.Drawing.Size(147, 324);
+            this.groupBoxBancos.Size = new System.Drawing.Size(147, 365);
             this.groupBoxBancos.TabIndex = 5;
             this.groupBoxBancos.TabStop = false;
             this.groupBoxBancos.Text = "Bancos";
+            // 
+            // radioButtonMercantilBR
+            // 
+            this.radioButtonMercantilBR.AutoSize = true;
+            this.radioButtonMercantilBR.Location = new System.Drawing.Point(13, 317);
+            this.radioButtonMercantilBR.Name = "radioButtonMercantilBR";
+            this.radioButtonMercantilBR.Size = new System.Drawing.Size(111, 17);
+            this.radioButtonMercantilBR.TabIndex = 33;
+            this.radioButtonMercantilBR.Tag = "389";
+            this.radioButtonMercantilBR.Text = "Mercantil do Brasil";
+            this.radioButtonMercantilBR.UseVisualStyleBackColor = true;
             // 
             // radioButtonBNB
             // 
@@ -427,7 +440,7 @@ namespace BoletoNet.Arquivo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1011, 446);
+            this.ClientSize = new System.Drawing.Size(1011, 487);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBoxBancos);
             this.Controls.Add(this.lstReturnFields);
@@ -487,6 +500,7 @@ namespace BoletoNet.Arquivo
         private System.Windows.Forms.RadioButton radioButtonBanrisul;
         private System.Windows.Forms.ColumnHeader columnHeader9;
         private System.Windows.Forms.RadioButton radioButtonBNB;
+        private System.Windows.Forms.RadioButton radioButtonMercantilBR;
     }
 }
 

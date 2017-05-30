@@ -112,11 +112,6 @@ namespace BoletoNet
 			}
 		}
 
-        public override IEspecieDocumento DuplicataMercantil()
-        {
-            return new EspecieDocumento_Daycoval(RetornaCodigoEspecie(EnumEspecieDocumento_Daycoval.DuplicataMercantil));
-        }
-
         #endregion
     }
 }

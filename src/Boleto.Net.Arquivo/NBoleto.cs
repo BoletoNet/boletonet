@@ -555,7 +555,66 @@ namespace BoletoNet.Arquivo
 
 
         }
-        #endregion 
+        #endregion
+
+        #region BOLETO MERCANTIL DO BRASIL
+
+        private void GeraBoletoMercantil(int qtde)
+        {
+            // Cria o boleto, e passa os parâmetros usuais
+            BoletoBancario bb;
+
+            List<BoletoBancario> boletos = new List<BoletoBancario>();
+            for (int i = 0; i < qtde; i++) {
+
+                bb = new BoletoBancario();
+                bb.CodigoBanco = _codigoBanco;
+
+                var vencimento = DateTime.Now.AddMonths(1);
+
+                var endCed = new Endereco();
+
+                endCed.End = "RUA TESTANDO";
+                endCed.Bairro = "CENTRO";
+                endCed.Cidade = "BEBEDOURO";
+                endCed.CEP = "14700-000";
+                endCed.UF = "SP";
+                endCed.Numero = "999";
+
+                // A gerente me pedio para sair todas as informações de endereço/cnpj/cpf no campo beneficiario
+                var beneficiario = "EMPRESA DE ATACADO - CNPJ: 00.000.000/0000-00";
+                beneficiario += Environment.NewLine + $"{endCed.End}, {endCed.Numero}  {endCed.Bairro}";
+                beneficiario += Environment.NewLine + $" {endCed.Cidade} {endCed.UF} {endCed.CEP}";
+
+                var c = new Cedente("00.000.000/0000-00", beneficiario, "0265", "", "00123456", "1");
+
+                var b = new Boleto(vencimento, 100, "01", "1", c, new EspecieDocumento(389, "1"));
+                b.TipoModalidade = "23"; // Faixa N. Número (230) (Obrigatório) - utilizo na geração do nosso numero                
+                b.NumeroDocumento = Convert.ToString(1000 + i);
+              
+                b.Sacado = new Sacado("87085423378", "Joao Roberto Pirea");
+                b.Sacado.Endereco.End = "Rua XI de Agosto";
+                b.Sacado.Endereco.Bairro = "Centro";
+                b.Sacado.Endereco.Cidade = "Tatui";
+                b.Sacado.Endereco.CEP = "18270-000";
+                b.Sacado.Endereco.UF = "SP";
+                b.Sacado.Endereco.Email = "joao@gmail.com";
+                b.Sacado.Endereco.Numero = "1000";
+
+                var item1 = new Instrucao_MercantilDoBrasil();
+                item1.Descricao += ("Não receber após o vencimento.");
+                b.Instrucoes.Add(item1);
+                
+                bb.Boleto = b;
+                bb.Boleto.Valida();
+
+                boletos.Add(bb);
+            }
+
+            GeraLayout(boletos);
+        }
+
+        #endregion
 
         #region Eventos do BackgroundWorker
         private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -600,6 +659,10 @@ namespace BoletoNet.Arquivo
                     break;
                 case 4: //BNB
                     GeraBoletoBNB((int)numericUpDown.Value);
+                    break;
+                case 389: // Mercantil
+                    GeraBoletoMercantil((int)numericUpDown.Value);
+
                     break;
             }
 

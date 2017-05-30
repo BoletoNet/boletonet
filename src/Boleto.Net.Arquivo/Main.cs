@@ -254,6 +254,7 @@ namespace BoletoNet.Arquivo
 
             Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "2269", "130000946");
             c.Codigo = "1795082";
+            c.CodigoTransmissao = "";
 
             Boleto b = new Boleto(vencimento, 0.20m, "101", "566612457800", c);
 
@@ -384,6 +385,49 @@ namespace BoletoNet.Arquivo
 
             GeraArquivoCNAB400(b.Banco, c, boletos);
         }
+
+        public void GeraDadosMercantil()
+        {
+            var vencimento = DateTime.Now.AddMonths(1);
+
+            var endCed = new Endereco();
+
+            endCed.End = "RUA TESTANDO";
+            endCed.Bairro = "CENTRO";
+            endCed.Cidade = "BEBEDOURO";
+            endCed.CEP = "14700-000";
+            endCed.UF = "SP";
+            endCed.Numero = "999";
+
+																						 
+            var c = new Cedente("00.000.000/0000-00", "EMPRESA DE ATACADO", "0265", "", "00123456", "1");
+
+            var b = new Boleto(vencimento, 100, "01", "1", c, new EspecieDocumento(389, "1"));
+            b.Banco = new Banco(389);
+            b.TipoModalidade = "23"; // Faixa N. Número (230) (Obrigatório) - utilizo na geração do nosso numero                
+            b.NumeroDocumento = "1001-1";
+
+            b.Sacado = new Sacado("87085423378", "Joao Roberto Pirea");
+            b.Sacado.Endereco.End = "Rua XI de Agosto";
+            b.Sacado.Endereco.Bairro = "Centro";
+            b.Sacado.Endereco.Cidade = "Tatui";
+            b.Sacado.Endereco.CEP = "18270-000";
+            b.Sacado.Endereco.UF = "SP";
+            b.Sacado.Endereco.Email = "joao@gmail.com";
+            b.Sacado.Endereco.Numero = "1000";
+
+            b.PercMulta = 5;
+            b.JurosMora = (decimal)5;
+            b.DataDesconto = b.DataVencimento.AddDays(-1);
+
+            b.Valida();
+
+            Boletos boletos = new Boletos();
+            boletos.Add(b);
+
+            GeraArquivoCNAB400(b.Banco, c, boletos);
+        }
+
         #endregion Remessa
 
         #region Retorno
@@ -594,6 +638,8 @@ namespace BoletoNet.Arquivo
                 form.CodigoBanco = Convert.ToInt16(radioButtonCaixa.Tag);
             else if (radioButtonBNB.Checked)
                 form.CodigoBanco = Convert.ToInt16(radioButtonBNB.Tag);
+            else if (radioButtonMercantilBR.Checked)
+                form.CodigoBanco = Convert.ToInt16(radioButtonMercantilBR.Tag);
 
 
             form.ShowDialog();
@@ -613,6 +659,8 @@ namespace BoletoNet.Arquivo
                     GeraDadosSicredi();
                 else if (radioButtonBNB.Checked)
                     GeraDadosBancoDoNordeste();
+                else if (radioButtonMercantilBR.Checked)
+                    GeraDadosMercantil();
             }
             else if (radioButtonCNAB240.Checked)
             {

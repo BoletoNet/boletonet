@@ -259,9 +259,9 @@ namespace BoletoNet
 		/// </summary>
 		public IEspecieDocumento EspecieDocumento
 		{
-			get { return this._especieDocumento ?? (this._especieDocumento = new EspecieDocumento().DuplicataMercantil(Banco)); }
-			set { this._especieDocumento = value; }
-		}
+            get { return this._especieDocumento ?? (this._especieDocumento = new EspecieDocumento()); }
+            set { this._especieDocumento = value; }
+        }
 
 		/// <summary> 
 		/// Retorna a data do documento.

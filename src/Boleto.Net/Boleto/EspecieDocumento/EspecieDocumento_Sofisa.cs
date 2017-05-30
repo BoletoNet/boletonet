@@ -143,11 +143,6 @@ namespace BoletoNet
 			}
 		}
 
-        public override IEspecieDocumento DuplicataMercantil()
-        {
-            return new EspecieDocumento_Sofisa(RetornaCodigoEspecie(EnumEspecieDocumento_Sofisa.DuplicataMercantil));
-        }
-
         #endregion
     }
 }
