@@ -217,7 +217,7 @@ namespace BoletoNet
             int temp = 0;
 
             //Formatando o campo 1
-            campo1 = boleto.Banco.Codigo.ToString() + boleto.Moeda.ToString() + boleto.Carteira + boleto.Cedente.ContaBancaria.Agencia;
+            campo1 = boleto.Banco.Codigo.ToString() + boleto.Moeda.ToString() + boleto.Cedente.Carteira + boleto.Cedente.ContaBancaria.Agencia;
             //Calculando CAMPO 1
             for (int i = 0; i < campo1.Length; i++)
             {
@@ -724,8 +724,10 @@ namespace BoletoNet
                 valorDesconto2 = Utils.FormatCode(valorDesconto2, 15);  // 
                 detalhe += valorDesconto2; //Posição 27 a 41   Valor/Percentual a ser Concedido
                 detalhe += "1"; //Posição 118  - Código da desconto
-                detalhe += Utils.FormatCode(numeroRegistro.ToString(), "0", 8, true); //Posição 004 a 007   Número Sequencial
-                detalhe += Utils.FormatCode(numeroRegistro.ToString(), "0", 15, true); //Posição 004 a 007   Número Sequencial
+                detalhe += Utils.FormatCode("", "0", 8, true);
+                detalhe += Utils.FormatCode("", "0", 15, true);
+                //detalhe += Utils.FormatCode(numeroRegistro.ToString(), "0", 8, true); //Posição 004 a 007   Número Sequencial
+                //detalhe += Utils.FormatCode(numeroRegistro.ToString(), "0", 15, true); //Posição 004 a 007   Número Sequencial
                 if (boleto.PercMulta > 0)
                 {
                     // Código da multa 2 - percentual
@@ -751,11 +753,11 @@ namespace BoletoNet
                 {
                     detalhe += Utils.FitStringLength(boleto.ValorMulta.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 }
-                detalhe += Utils.FormatCode(boleto.ValorMulta.ToString(), "0", 15, true); //Posição 004 a 007   Número Sequencial
-                detalhe += Utils.FormatCode("0", 10); //Posição 90 a 99 Informação ao Pagador: Brancos
-                detalhe += Utils.FormatCode("0", 40); //Posição 100 a 139 Informação ao Pagador: Brancos
-                detalhe += Utils.FormatCode("0", 40); //Posição 140 a 179 Informação ao Pagador: Brancos
-                detalhe += Utils.FormatCode("0", 20); //Posição 180 a 199 Uso Exclusivo FEBRABAN/CNAB: Brancos
+                //detalhe += Utils.FormatCode(boleto.ValorMulta.ToString(), "0", 15, true); //Posição 004 a 007   Número Sequencial
+                detalhe += Utils.FormatCode(""," ", 10); //Posição 90 a 99 Informação ao Pagador: Brancos
+                detalhe += Utils.FormatCode(""," ", 40); //Posição 100 a 139 Informação ao Pagador: Brancos
+                detalhe += Utils.FormatCode(""," ", 40); //Posição 140 a 179 Informação ao Pagador: Brancos
+                detalhe += Utils.FormatCode(""," ", 20); //Posição 180 a 199 Uso Exclusivo FEBRABAN/CNAB: Brancos
                 detalhe += Utils.FormatCode("", "0", 8, true);  //Posição 200 a 207  Cód. Ocor. do Pagador: "00000000"
                 detalhe += Utils.FormatCode("", "0", 3, true);  //Posição 208 a 210  Cód. do Banco na Conta do Débito: "000"
                 detalhe += Utils.FormatCode("", "0", 5, true);  //Posição 211 a 215  Código da Agência do Débito: "00000"
@@ -764,7 +766,7 @@ namespace BoletoNet
                 detalhe += " "; //Posição 229  Verificador da Conta: Brancos
                 detalhe += " "; //Posição 230  Verificador Ag/Conta: Brancos
                 detalhe += "0"; //Posição 231  Aviso para Débito Automático: "0"
-                detalhe += Utils.FormatCode("", 8); //Posição Uso Exclusivo FEBRABAN/CNAB: Brancos
+                detalhe += Utils.FormatCode(""," ", 9); //Posição Uso Exclusivo FEBRABAN/CNAB: Brancos
                 detalhe = Utils.SubstituiCaracteresEspeciais(detalhe);
                 return detalhe;
             }
@@ -1063,9 +1065,9 @@ namespace BoletoNet
 
                 detalhe.CodigoOcorrenciaSacado = registro.Substring(15, 2);
                 int DataCredito = Convert.ToInt32(registro.Substring(145, 8));
-                detalhe.DataCredito = Convert.ToDateTime(DataCredito.ToString("##-##-####"));
+                detalhe.DataCredito = (DataCredito > 0) ? Convert.ToDateTime(DataCredito.ToString("##-##-####")) : new DateTime();
                 int DataOcorrencia = Convert.ToInt32(registro.Substring(137, 8));
-                detalhe.DataOcorrencia = Convert.ToDateTime(DataOcorrencia.ToString("##-##-####"));
+                detalhe.DataOcorrencia = (DataOcorrencia > 0) ? Convert.ToDateTime(DataOcorrencia.ToString("##-##-####")) : new DateTime();
                 int DataOcorrenciaSacado = Convert.ToInt32(registro.Substring(157, 8));
                 if (DataOcorrenciaSacado > 0)
                     detalhe.DataOcorrenciaSacado = Convert.ToDateTime(DataOcorrenciaSacado.ToString("##-##-####"));

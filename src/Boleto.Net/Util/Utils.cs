@@ -97,6 +97,10 @@ namespace BoletoNet
         /// <returns></returns>
         internal static string FormatCode(string text, string with, int length, bool left)
         {
+			// caso tamanho da string maior que desejado , corta a mesma , evitando estouro no tamanho 
+			if (text.Length > length)
+                text = text.Substring(0, length);
+		
             //Esse método já existe, é PadLeft e PadRight da string
             length -= text.Length;
             if (left)
