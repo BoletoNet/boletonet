@@ -1,14 +1,6 @@
 using System;
 using System.IO;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using System.Threading;
-
-using BoletoNet;
 
 namespace BoletoNet.Arquivo
 {
@@ -137,11 +129,11 @@ namespace BoletoNet.Arquivo
                     break;
                 case TipoArquivo.CNAB400:
                     GeraArquivoCNAB400(b2.Banco, c, boletos);
-                    break;             
+                    break;
                 default:
                     break;
-            }            
-                
+            }
+
         }
         public void GeraDadosBanrisul()
         {
@@ -671,6 +663,40 @@ namespace BoletoNet.Arquivo
                 }
 
                 MessageBox.Show("Arquivo gerado com sucesso!", "Teste", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void pDFToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (radioButtonCaixa.Checked)
+            {
+                SalvarBoleto(ExemploBoletoCaixa.BoletoBancario);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private void SalvarBoleto(BoletoBancario boletoBancario)
+        {
+            try
+            {
+                saveFileDialog.Filter = "PDF (*.pdf)|*.pdf|Todos Arquivos (*.*)|*.*";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    var bytes = boletoBancario.MontaBytesPDF();
+                    var stream = saveFileDialog.OpenFile();
+                    stream.Write(bytes, 0, bytes.Length);
+                    stream.Close();
+                    MessageBox.Show("Arquivo gerado com sucesso!", "Teste",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }

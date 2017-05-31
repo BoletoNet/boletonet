@@ -65,6 +65,7 @@ namespace BoletoNet.Arquivo
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.radioButtonCNAB240 = new System.Windows.Forms.RadioButton();
             this.radioButtonCNAB400 = new System.Windows.Forms.RadioButton();
+            this.pDFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.groupBoxBancos.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -159,7 +160,8 @@ namespace BoletoNet.Arquivo
             // 
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.arquivoToolStripMenuItem,
-            this.impressãoToolStripMenuItem});
+            this.impressãoToolStripMenuItem,
+            this.pDFToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Margin = new System.Windows.Forms.Padding(0, 0, 0, 5);
             this.menuStrip.Name = "menuStrip";
@@ -423,6 +425,13 @@ namespace BoletoNet.Arquivo
             this.radioButtonCNAB400.Text = "CNAB 400";
             this.radioButtonCNAB400.UseVisualStyleBackColor = true;
             // 
+            // pDFToolStripMenuItem
+            // 
+            this.pDFToolStripMenuItem.Name = "pDFToolStripMenuItem";
+            this.pDFToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
+            this.pDFToolStripMenuItem.Text = "PDF";
+            this.pDFToolStripMenuItem.Click += new System.EventHandler(this.pDFToolStripMenuItem_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -487,6 +496,7 @@ namespace BoletoNet.Arquivo
         private System.Windows.Forms.RadioButton radioButtonBanrisul;
         private System.Windows.Forms.ColumnHeader columnHeader9;
         private System.Windows.Forms.RadioButton radioButtonBNB;
+        private System.Windows.Forms.ToolStripMenuItem pDFToolStripMenuItem;
     }
 }
 

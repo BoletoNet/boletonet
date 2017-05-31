@@ -58,6 +58,7 @@
     <Compile Include="EnviarEmail.Designer.cs">
       <DependentUpon>EnviarEmail.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExemploBoleto\ExemploBoletoCaixa.cs" />
     <Compile Include="FormVisualizarImagem.cs">
       <SubType>Form</SubType>
     </Compile>

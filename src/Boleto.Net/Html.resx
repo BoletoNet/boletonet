@@ -340,7 +340,7 @@
 						&lt;td class="barra"&gt;&lt;img src="@URLIMAGEMBARRA" /&gt;&lt;/td&gt;
 						&lt;td class="w65 Ab bc Ac"&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
 						&lt;td class="barra"&gt;&lt;img src="@URLIMAGEMBARRA" /&gt;&lt;/td&gt;
-						&lt;td class="w500 Ar ld" valign="bottom"&gt;@LINHADIGITAVEL&lt;/td&gt;
+						&lt;td class="Ar ld" style="width: 600px" valign="bottom"&gt;@LINHADIGITAVEL&lt;/td&gt;
 				&lt;/tr&gt;
 		&lt;/table&gt;</value>
   </data>
@@ -350,7 +350,6 @@
 						&lt;td class="pL6  w409"&gt;Sacador / Avalista: @AVALISTA&lt;/td&gt;
 						&lt;td class="w250 Ar"&gt;Autenticação mecânica - &lt;b class="cpN"&gt;Ficha de Compensação&lt;/b&gt;&lt;/td&gt;
 				&lt;/tr&gt;
-				&lt;tr class="h13"&gt;&lt;td colspan="3" /&gt;&lt;/tr&gt;
 		&lt;/table&gt;</value>
   </data>
   <data name="ReciboCedenteParte11" xml:space="preserve">
@@ -498,7 +497,7 @@
 						&lt;td class="barra"&gt;&lt;img src="@URLIMAGEMBARRA" /&gt;&lt;/td&gt;
 						&lt;td class="w65 Ab bc Ac"&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
 						&lt;td class="barra"&gt;&lt;img src="@URLIMAGEMBARRA" /&gt;&lt;/td&gt;
-						&lt;td class="w500 Ar Ab ld"&gt;@LINHADIGITAVEL&lt;/td&gt;
+						&lt;td class="Ar Ab ld" style="width: 600px"&gt;@LINHADIGITAVEL&lt;/td&gt;
 				&lt;/tr&gt;
 		&lt;/table&gt;</value>
   </data>

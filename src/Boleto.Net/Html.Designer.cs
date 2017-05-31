@@ -377,7 +377,7 @@ namespace BoletoNet {
         ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
         ///						&lt;td class=&quot;w65 Ab bc Ac&quot;&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
         ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
-        ///						&lt;td class=&quot;w500 Ar ld&quot; valign=&quot;bottom&quot;&gt;@LINHADIGITAVEL&lt;/td&gt;
+        ///						&lt;td class=&quot;Ar ld&quot; style=&quot;width: 600px&quot; valign=&quot;bottom&quot;&gt;@LINHADIGITAVEL&lt;/td&gt;
         ///				&lt;/tr&gt;
         ///		&lt;/table&gt;.
         /// </summary>
@@ -393,7 +393,6 @@ namespace BoletoNet {
         ///						&lt;td class=&quot;pL6  w409&quot;&gt;Sacador / Avalista: @AVALISTA&lt;/td&gt;
         ///						&lt;td class=&quot;w250 Ar&quot;&gt;Autenticação mecânica - &lt;b class=&quot;cpN&quot;&gt;Ficha de Compensação&lt;/b&gt;&lt;/td&gt;
         ///				&lt;/tr&gt;
-        ///				&lt;tr class=&quot;h13&quot;&gt;&lt;td colspan=&quot;3&quot; /&gt;&lt;/tr&gt;
         ///		&lt;/table&gt;.
         /// </summary>
         internal static string ReciboCedenteParte10 {
@@ -639,7 +638,7 @@ namespace BoletoNet {
         ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
         ///						&lt;td class=&quot;w65 Ab bc Ac&quot;&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
         ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
-        ///						&lt;td class=&quot;w500 Ar Ab ld&quot;&gt;@LINHADIGITAVEL&lt;/td&gt;
+        ///						&lt;td class=&quot;Ar Ab ld&quot; style=&quot;width: 600px&quot;&gt;@LINHADIGITAVEL&lt;/td&gt;
         ///				&lt;/tr&gt;
         ///		&lt;/table&gt;.
         /// </summary>
