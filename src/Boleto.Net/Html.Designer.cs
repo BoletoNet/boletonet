@@ -351,7 +351,8 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;ctN w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;ficha-compensacao&quot;&gt;&lt;tr&gt;&lt;td&gt;
+        ///        &lt;table class=&quot;ctN w666&quot;&gt;
         ///				&lt;tr&gt;
         ///						&lt;td class=&quot;w666&quot; /&gt;
         ///				&lt;/tr&gt;
@@ -361,8 +362,7 @@ namespace BoletoNet {
         ///				&lt;tr&gt;
         ///						&lt;td class=&quot;cut&quot; /&gt;
         ///				&lt;/tr&gt;
-        ///		&lt;/table&gt;
-        ///		&lt;br /&gt;.
+        ///		&lt;/table&gt;.
         /// </summary>
         internal static string ReciboCedenteParte0 {
             get {
@@ -423,12 +423,7 @@ namespace BoletoNet {
         ///		&lt;/table&gt;
         ///		&lt;table class=&quot;ctN w666&quot;&gt;
         ///				&lt;tr class=&quot;h13&quot;&gt;&lt;td /&gt;&lt;/tr&gt;
-        ///				&lt;tr class=&quot;h13&quot;&gt;&lt;td /&gt;&lt;/tr&gt;
-        ///				&lt;tr class=&quot;h13&quot;&gt;&lt;td /&gt;&lt;/tr&gt;
-        ///				&lt;tr class=&quot;h13&quot;&gt;&lt;td /&gt;&lt;/tr&gt;
-        ///				&lt;tr class=&quot;h13&quot;&gt;&lt;td /&gt;&lt;/tr&gt;
-        ///				&lt;tr class=&quot;h13&quot;&gt;&lt;td /&gt;&lt;/tr&gt;
-        ///		&lt;/table&gt;.
+        ///		&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;.
         /// </summary>
         internal static string ReciboCedenteParte12 {
             get {
@@ -767,8 +762,6 @@ namespace BoletoNet {
         ///				&lt;tr class=&quot;h13&quot;&gt;&lt;td /&gt;&lt;/tr&gt;
         ///				&lt;tr&gt;&lt;td class=&quot;Ar&quot;&gt;Corte na linha pontilhada&lt;/td&gt;&lt;/tr&gt;
         ///				&lt;tr&gt;&lt;td class=&quot;cut&quot; /&gt;&lt;/tr&gt;
-        ///				&lt;tr class=&quot;h13&quot;&gt;&lt;td /&gt;&lt;/tr&gt;
-        ///				&lt;tr class=&quot;h13&quot;&gt;&lt;td /&gt;&lt;/tr&gt;
         ///		&lt;/table&gt;.
         /// </summary>
         internal static string ReciboSacadoParte8 {

@@ -248,7 +248,8 @@
     <value>imagens\ponto.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ReciboCedenteParte0" xml:space="preserve">
-    <value>&lt;table class="ctN w666"&gt;
+    <value>&lt;table class="ficha-compensacao"&gt;&lt;tr&gt;&lt;td&gt;
+        &lt;table class="ctN w666"&gt;
 				&lt;tr&gt;
 						&lt;td class="w666" /&gt;
 				&lt;/tr&gt;
@@ -258,8 +259,7 @@
 				&lt;tr&gt;
 						&lt;td class="cut" /&gt;
 				&lt;/tr&gt;
-		&lt;/table&gt;
-		&lt;br /&gt;</value>
+		&lt;/table&gt;</value>
   </data>
   <data name="ReciboCedenteRelatorioValores" xml:space="preserve">
     <value>
@@ -368,12 +368,7 @@
 		&lt;/table&gt;
 		&lt;table class="ctN w666"&gt;
 				&lt;tr class="h13"&gt;&lt;td /&gt;&lt;/tr&gt;
-				&lt;tr class="h13"&gt;&lt;td /&gt;&lt;/tr&gt;
-				&lt;tr class="h13"&gt;&lt;td /&gt;&lt;/tr&gt;
-				&lt;tr class="h13"&gt;&lt;td /&gt;&lt;/tr&gt;
-				&lt;tr class="h13"&gt;&lt;td /&gt;&lt;/tr&gt;
-				&lt;tr class="h13"&gt;&lt;td /&gt;&lt;/tr&gt;
-		&lt;/table&gt;</value>
+		&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</value>
   </data>
   <data name="ReciboCedenteParte2" xml:space="preserve">
     <value>&lt;table class="w666"&gt;
@@ -590,8 +585,6 @@
 				&lt;tr class="h13"&gt;&lt;td /&gt;&lt;/tr&gt;
 				&lt;tr&gt;&lt;td class="Ar"&gt;Corte na linha pontilhada&lt;/td&gt;&lt;/tr&gt;
 				&lt;tr&gt;&lt;td class="cut" /&gt;&lt;/tr&gt;
-				&lt;tr class="h13"&gt;&lt;td /&gt;&lt;/tr&gt;
-				&lt;tr class="h13"&gt;&lt;td /&gt;&lt;/tr&gt;
 		&lt;/table&gt;</value>
   </data>
   <data name="ComprovanteEntrega71" xml:space="preserve">

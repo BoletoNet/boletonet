@@ -32,6 +32,7 @@ img {
 .ld {
 	font: bold 15px arial;
 	color: #000000;
+    font-size: 3.5mm;
 }
 
 .ct {
@@ -362,4 +363,9 @@ img {
 	height: 440px;
 	border-right: dotted 1px #000000;
 	margin-right: 4px;
+}
+
+.ficha-compensacao {
+    position: absolute;
+    bottom: 0;
 }
