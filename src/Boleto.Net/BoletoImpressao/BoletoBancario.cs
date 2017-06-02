@@ -348,9 +348,6 @@ namespace BoletoNet
                 html.Append(Html.ReciboSacadoParte6);
                 html.Append(Html.ReciboSacadoParte7);
 
-                //if (Instrucoes.Count == 0)
-                html.Append(Html.ReciboSacadoParte8);
-
                 //Limpa as intruções para o Sacado
                 _instrucoesHtml = "";
 
@@ -372,7 +369,7 @@ namespace BoletoNet
             try
             {
                 var html = new StringBuilder();
-
+                html.Append(Html.ReciboCedenteParte0);
                 html.Append(Html.ReciboCedenteParte1);
                 html.Append(Html.ReciboCedenteParte2);
                 html.Append(Html.ReciboCedenteParte3);
