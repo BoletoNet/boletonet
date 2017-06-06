@@ -601,7 +601,24 @@ namespace BoletoNet
         {
             throw new NotImplementedException("Função não implementada.");
         }
+		
+		/// <summary>
+        /// Função que gera nosso numero a ser colocado na remessa sicoob CNAB240, segundo layout para troca de informações
+        /// </summary>
+        /// <param name="boleto"></param>
+        /// <returns></returns>
+        private string NossoNumeroFormatado( Boleto boleto )
+        {
+            FormataNossoNumero(boleto);
 
+            string retorno = Utils.FormatCode(boleto.NossoNumero.Replace("-",""), "0", 10, true); // nosso numero+dg - 10 posicoes
+            retorno = retorno + Utils.FormatCode(boleto.NumeroParcela.ToString(), "0", 2, true); // numero parcela - 2 posicoes
+            retorno = retorno + Utils.FormatCode(boleto.ModalidadeCobranca.ToString(), "0", 2, true); // modalidade - 2 posicoes
+            retorno = retorno + "4"; // tipo formulario (A4 sem envelopamento) - 1 posicoes;
+            retorno = retorno + Utils.FormatCode("", " ", 5); // brancos - 5 posicoes ;
+            return retorno;
+        }
+		
         public override string GerarDetalheSegmentoPRemessa(Boleto boleto, int numeroRegistro, string numeroConvenio)
         {
             try
@@ -618,7 +635,7 @@ namespace BoletoNet
                 detalhe += Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 12); //Posição 024 a 035 Conta Corrente: vide planilha "Capa" deste arquivo
                 detalhe += Utils.FormatCode(boleto.Cedente.ContaBancaria.DigitoConta, 1);  //Posição 036  Dígito Verificador da Conta: vide planilha "Capa" deste arquivo
                 detalhe += " ";  //Posição 037 Dígito Verificador da Ag/Conta: Brancos
-                detalhe += Utils.FormatCode(boleto.NossoNumero, 20);  //Posição 038 a 057 Nosso Número
+                detalhe += Utils.FormatCode(NossoNumeroFormatado(boleto), 20);  //Posição 038 a 057 Nosso Número
                 detalhe += (Convert.ToInt16(boleto.Carteira) == 1 ? "1" : "2");  //Posição 058 Código da Carteira: vide planilha "Capa" deste arquivo
                 detalhe += "0";  //Posição 059 Forma de Cadastr. do Título no Banco: "0"
                 detalhe += " ";  //Posição 060 Tipo de Documento: Brancos
