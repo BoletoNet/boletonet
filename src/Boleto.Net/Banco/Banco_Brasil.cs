@@ -1882,7 +1882,7 @@ namespace BoletoNet
                 _header += Utils.FitStringLength(cedente.Convenio.ToString(), 9, 9, '0', 0, true, true, true);
                 _header += "0014";
                 _header += Utils.FitStringLength(cedente.Carteira, 2, 2, '0', 0, true, true, true);
-                _header += "019";
+                _header += Utils.FitStringLength(cedente.Carteira, 3, 3, '0', 3, true, true, true);
                 _header += "  ";
                 _header += Utils.FitStringLength(cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true);
                 _header += Utils.FitStringLength(cedente.ContaBancaria.DigitoAgencia, 1, 1, ' ', 0, true, true, false);
