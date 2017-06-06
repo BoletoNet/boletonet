@@ -1,8 +1,8 @@
-using BoletoNet.Excecoes;
-using BoletoNet.Util;
 using System;
 using System.Text;
 using System.Web.UI;
+using BoletoNet.Excecoes;
+using BoletoNet.Util;
 
 [assembly: WebResource("BoletoNet.Imagens.341.jpg", "image/jpg")]
 namespace BoletoNet
@@ -671,7 +671,7 @@ namespace BoletoNet
                 header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 5, true);
                 header += " ";
                 header += Utils.FormatCode(String.IsNullOrEmpty(cedente.ContaBancaria.DigitoConta) ? " " : cedente.ContaBancaria.DigitoConta, " ", 1, true);
-                header += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false);                
+                header += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false);
                 header += Utils.FormatCode("BANCO ITAU SA", " ", 30);
                 header += Utils.FormatCode("", " ", 10);
                 header += "1";
@@ -835,7 +835,7 @@ namespace BoletoNet
         public override string GerarDetalheSegmentoPRemessa(Boleto boleto, int numeroRegistro, string numeroConvenio)
         {
             try
-            {                
+            {
                 string _segmentoP;
                 _segmentoP = "341";
                 _segmentoP += "0001";
@@ -1264,15 +1264,17 @@ namespace BoletoNet
                 {
                     for (int i = 0; i < boleto.Instrucoes.Count; i++)
                     {
-                        if (boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.Protestar || 
+                        if (boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.Protestar ||
                             boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.ProtestarAposNDiasCorridos ||
-                            boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.ProtestarAposNDiasUteis)
-                            {
-                                _detalhe += boleto.Instrucoes[i].QuantidadeDias.ToString("00");
-                                break;
-                            }
-                            else if (i == boleto.Instrucoes.Count - 1)
-                                _detalhe += "00";
+                            boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.ProtestarAposNDiasUteis ||
+                            boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.DevolverAposNDias)
+                        {
+                            _detalhe += boleto.Instrucoes[i].QuantidadeDias.ToString("00");
+                            break;
+                        }
+
+                        if (i == boleto.Instrucoes.Count - 1)
+                            _detalhe += "00";
                     }
                 }
                 else
@@ -1407,7 +1409,7 @@ namespace BoletoNet
             catch (Exception e)
             {
                 throw new Exception("Erro ao gerar Trailer de arquivo de remessa.", e);
-            }           
+            }
         }
         #endregion
 
@@ -1507,59 +1509,8 @@ namespace BoletoNet
 
         public string GerarMensagemVariavelRemessaCNAB400(Boleto boleto, ref int numeroRegistro, TipoArquivo tipoArquivo)
         {
-            try
-            {
-                string _registroOpcional = "";
-                //detalhe                           (tamanho,tipo) A= Alfanumerico, N= Numerico
-                _registroOpcional = "2"; //Identificação do Registro         (1, N)
-
-                //Mensagem 1 (80, A)
-                if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 0)
-                    _registroOpcional += boleto.Instrucoes[0].Descricao.PadRight(80, ' ').Substring(0, 80);
-                else
-                    _registroOpcional += new string(' ', 80);
-
-                //Mensagem 2 (80, A)
-                if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 1)
-                    _registroOpcional += boleto.Instrucoes[1].Descricao.PadRight(80, ' ').Substring(0, 80);
-                else
-                    _registroOpcional += new string(' ', 80);
-
-                //Mensagem 3 (80, A)
-                if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 2)
-                    _registroOpcional += boleto.Instrucoes[2].Descricao.PadRight(80, ' ').Substring(0, 80);
-                else
-                    _registroOpcional += new string(' ', 80);
-
-                //Mensagem 4 (80, A)
-                if (boleto.Instrucoes != null && boleto.Instrucoes.Count > 3)
-                    _registroOpcional += boleto.Instrucoes[3].Descricao.PadRight(80, ' ').Substring(0, 80);
-                else
-                    _registroOpcional += new string(' ', 80);
-
-                _registroOpcional += new string(' ', 6); //Data limite para concessão de Desconto 2 (6, N) DDMMAA
-                _registroOpcional += new string(' ', 13);//Valor do Desconto (13, N) 
-                _registroOpcional += new string(' ', 6);//Data limite para concessão de Desconto 3 (6, N) DDMMAA
-                _registroOpcional += new string(' ', 13);//Valor do Desconto (13, N)
-                _registroOpcional += new string(' ', 7);//Reserva (7, A)
-                _registroOpcional += Utils.FitStringLength(boleto.Carteira, 3, 3, '0', 0, true, true, true); //Carteira (3, N)
-                _registroOpcional += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true); //Agência (5, N) 
-                _registroOpcional += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 7, 7, '0', 0, true, true, true); //Conta Corrente (7, N)
-                _registroOpcional += Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoConta, 1, 1, '0', 0, true, true, true); //Dígito C/C (1, A)
-                _registroOpcional += Utils.FitStringLength(boleto.NossoNumero, 11, 11, '0', 0, true, true, true); //Nosso Número (11, N)
-                _registroOpcional += Utils.FitStringLength("0", 1, 1, '0', 0, true, true, true); //DAC Nosso Número (1, A)
-
-                //Nº Seqüencial do Registro (06, N)
-                _registroOpcional += Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true);
-
-                _registroOpcional = Utils.SubstituiCaracteresEspeciais(_registroOpcional);
-
-                return _registroOpcional;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Erro ao gerar REGISTRO OPCIONAL do arquivo CNAB400.", ex);
-            }
+            // Itaú não utiliza estes campos
+            return string.Empty;
         }
         #endregion
 

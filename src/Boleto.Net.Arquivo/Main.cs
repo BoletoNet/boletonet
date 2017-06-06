@@ -100,6 +100,8 @@ namespace BoletoNet.Arquivo
             b.Instrucoes.Add(item2);
             b.Cedente.ContaBancaria.DigitoAgencia = "1";
             b.Cedente.ContaBancaria.DigitoAgencia = "2";
+            b.ValorDesconto = 1;
+            b.DataDesconto = b.DataVencimento.AddDays(-1);
 
             b.Banco = new Banco(341);
 
