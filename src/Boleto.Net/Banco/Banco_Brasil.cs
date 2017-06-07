@@ -1750,7 +1750,9 @@ namespace BoletoNet
                 trailer += Utils.FormatCode("", " ", 9);
 
                 #region Pega o Numero de Registros + 1(HeaderLote) + 1(TrailerLote)
-                int vQtdeRegLote = numeroRegistro; // (numeroRegistro + 2);
+                // Alterado por Heric Souza em 02/06/2017
+                int vQtdeRegLote = (numeroRegistro + 1); // (numeroRegistro + 2);
+                //int vQtdeRegLote = numeroRegistro; // (numeroRegistro + 2);
                 trailer += Utils.FitStringLength(vQtdeRegLote.ToString(), 6, 6, '0', 0, true, true, true);  //posição 18 até 23   (6) - Quantidade de Registros no Lote
                 //deve considerar 1 registro a mais - Header
                 #endregion
@@ -1881,8 +1883,13 @@ namespace BoletoNet
                 _header += Utils.FitStringLength(cedente.CPFCNPJ, 14, 14, '0', 0, true, true, true);
                 _header += Utils.FitStringLength(cedente.Convenio.ToString(), 9, 9, '0', 0, true, true, true);
                 _header += "0014";
-                _header += Utils.FitStringLength(cedente.Carteira, 2, 2, '0', 0, true, true, true);
-                _header += "019";
+                // adicionado por Heric Souza em 02/06/2017
+                if (cedente.Carteira.Length == 2)
+                    _header += cedente.Carteira.ToString() + "019  ";
+                else
+                    _header += cedente.Carteira.Replace("-", "") + "  ";
+                //_header += Utils.FitStringLength(cedente.Carteira, 2, 2, '0', 0, true, true, true);
+                //_header += "019";
                 _header += "  ";
                 _header += Utils.FitStringLength(cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true);
                 _header += Utils.FitStringLength(cedente.ContaBancaria.DigitoAgencia, 1, 1, ' ', 0, true, true, false);
