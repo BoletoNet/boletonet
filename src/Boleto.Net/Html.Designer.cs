@@ -744,7 +744,7 @@ namespace BoletoNet {
         /// <summary>
         ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
         ///				&lt;tr class=&quot;ctN h13&quot;&gt;
-        ///						&lt;td class=&quot;pL6&quot;&gt;Instruções&lt;/td&gt;
+        ///						&lt;td class=&quot;pL6&quot;&gt;Instruções (Texto de responsabilidade do beneficiário)&lt;/td&gt;
         ///						&lt;td class=&quot;w180 Ar&quot;&gt;Autenticação mecânica&lt;/td&gt;
         ///				&lt;/tr&gt;
         ///				&lt;tr class=&quot;cpN h12&quot;&gt;
