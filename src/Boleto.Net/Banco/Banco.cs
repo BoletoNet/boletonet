@@ -147,6 +147,10 @@ namespace BoletoNet
 					case 637:
 						_IBanco = new Banco_Sofisa();
 						break;
+                    case 389:
+                        _IBanco = new Banco_MercantilDoBrasil();
+
+                        break;
 					default:
 						throw new Exception("Código do banco não implementando: " + codigoBanco);
 				}
