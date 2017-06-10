@@ -1270,8 +1270,10 @@ namespace BoletoNet
         /// <param name="tituloPDF">Título No Início do PDF</param>
         /// <param name="PretoBranco">Preto e Branco = true</param>
         /// <param name="convertLinhaDigitavelToImage">bool Converter a Linha Digitavel Em Imagem</param>
+        /// <param name="BoletosPorPagina">Quantidade de Boletos até o próximo LineBreak. Lembre de Utilizar o Zoom para ajustar a página</param>
+        /// <param name="ZoomPercent">Percentual da Scala do PDF. Para 3 Boletos na mesma Página com Carnê utilize 80%</param>				
         /// <returns>byte[], Vetor de bytes do PDF</returns>
-        public byte[] MontaBytesListaBoletosPDF(List<BoletoBancario> boletos, string tituloNaView = "", string CustomSwitches = "", string tituloPDF = "", bool PretoBranco = false, bool convertLinhaDigitavelToImage = false)
+        public byte[] MontaBytesListaBoletosPDF(List<BoletoBancario> boletos, string tituloNaView = "", string CustomSwitches = "", string tituloPDF = "", bool PretoBranco = false, bool convertLinhaDigitavelToImage = false, int BoletosPorPagina = 1, float ZoomPercent = 100)
         {
             StringBuilder htmlBoletos = new StringBuilder();
             htmlBoletos.Append("<html><head><title>");
@@ -1285,9 +1287,20 @@ namespace BoletoNet
                 htmlBoletos.Append(tituloPDF);
                 htmlBoletos.Append("</h1></center><br/>");
             }
+            int qtdeBoletosPagina = 0;
             foreach (BoletoBancario boleto in boletos)
             {
-                htmlBoletos.Append("<div class='break'>");
+                qtdeBoletosPagina++;
+
+                if (qtdeBoletosPagina % BoletosPorPagina == 0)
+                {
+                    htmlBoletos.Append("<div class='break'>");
+                    qtdeBoletosPagina = 0;
+                }
+                else
+                {
+                    htmlBoletos.Append("<div>");
+                }
                 htmlBoletos.Append(boleto.MontaHtmlEmbedded(convertLinhaDigitavelToImage, true));
                 htmlBoletos.Append("</div>");
             }
@@ -1295,7 +1308,8 @@ namespace BoletoNet
             var converter = new NReco.PdfGenerator.HtmlToPdfConverter()
             {
                 CustomWkHtmlArgs = CustomSwitches,
-                Grayscale = PretoBranco
+                Grayscale = PretoBranco,
+				Zoom = ZoomPercent / 100
             };
             if (!string.IsNullOrEmpty(this.PdfToolPath))
             {
