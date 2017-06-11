@@ -810,19 +810,19 @@ namespace BoletoNet
         /// <param name="srcBarra">Local apontado pela imagem de barra.</param>
         /// <param name="srcCodigoBarra">Local apontado pela imagem do código de barras.</param>
         /// <returns>StringBuilder conténdo o código html do boleto bancário.</returns>
-        protected StringBuilder HtmlOffLine(string textoNoComecoDoEmail, string srcLogo, string srcBarra, string srcCodigoBarra, bool usaCSSPDF = false, bool somenteHtmlBoleto = false)
+        protected StringBuilder HtmlOffLine(string textoNoComecoDoEmail, string srcLogo, string srcBarra, string srcCodigoBarra, bool usaCSSPDF = false, bool imprimeHeader = true, bool imprimeFooter = true)
         {//protected StringBuilder HtmlOffLine(string srcCorte, string srcLogo, string srcBarra, string srcPonto, string srcBarraInterna, string srcCodigoBarra)
             this.OnLoad(EventArgs.Empty);
 
             StringBuilder html = new StringBuilder();
-            if (!somenteHtmlBoleto)
+            if (imprimeHeader)
                 HtmlOfflineHeader(html, usaCSSPDF);
             if (textoNoComecoDoEmail != null && textoNoComecoDoEmail != "")
             {
                 html.Append(textoNoComecoDoEmail);
             }
             html.Append(MontaHtml(srcLogo, srcBarra, "<img src=\"" + srcCodigoBarra + "\" alt=\"Código de Barras\" />"));
-            if (!somenteHtmlBoleto)
+            if (imprimeFooter)
                 HtmlOfflineFooter(html);
             return html;
         }
@@ -1196,7 +1196,7 @@ namespace BoletoNet
         /// <criacao>23/01/2014</criacao>
         /// <alteracao>08/08/2014</alteracao>
 
-        public string MontaHtmlEmbedded(bool convertLinhaDigitavelToImage = false, bool usaCSSPDF = false, bool somenteHtmlBoleto = false)
+        public string MontaHtmlEmbedded(bool convertLinhaDigitavelToImage = false, bool usaCSSPDF = false, bool imprimeHeader = true,  bool imprimeFooter = true)
         {
             OnLoad(EventArgs.Empty);
             Stream streamBarra = null;
@@ -1228,7 +1228,7 @@ namespace BoletoNet
                     Boleto.CodigoBarra.LinhaDigitavel = @"<img style=""max-width:420px; margin-bottom: 2px"" src=" + fnLinha + " />";
                 }
 
-                string s = HtmlOffLine(null, fnLogo, fnBarra, fnCodigoBarras, usaCSSPDF, somenteHtmlBoleto).ToString();
+                string s = HtmlOffLine(null, fnLogo, fnBarra, fnCodigoBarras, usaCSSPDF, imprimeHeader, imprimeFooter).ToString();
 
                 if (convertLinhaDigitavelToImage)
                 {
@@ -1301,7 +1301,7 @@ namespace BoletoNet
                 {
                     htmlBoletos.Append("<div>");
                 }
-                htmlBoletos.Append(boleto.MontaHtmlEmbedded(convertLinhaDigitavelToImage, true, true));
+                htmlBoletos.Append(boleto.MontaHtmlEmbedded(convertLinhaDigitavelToImage, true, false, false));
                 htmlBoletos.Append("</div>");
             }
             HtmlOfflineFooter(htmlBoletos);
