@@ -24,9 +24,11 @@ namespace BoletoNet
             {
                 bool vRetorno = true;
                 string vMsg = string.Empty;
-                //
-                foreach (Boleto boleto in boletos)
+
+                if (boletos != null && boletos.Count > 0)
                 {
+                    Boleto boleto = boletos[0];
+
                     string vMsgBol = string.Empty;
                     bool vRetBol = boleto.Banco.ValidarRemessa(this.TipoArquivo, numeroConvenio, banco, cedente, boletos, numeroArquivoRemessa, out vMsgBol);
                     if (!vRetBol && !String.IsNullOrEmpty(vMsgBol))
@@ -82,19 +84,42 @@ namespace BoletoNet
                     foreach (Boleto boleto in boletos)
                     {
                         boleto.Banco = banco;
-                        strline = boleto.Banco.GerarDetalheRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
+
+                        //suelton@gmail.com - 03 / 01 / 2017
+                        //strline = boleto.Banco.GerarDetalheRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
+
+                        //Segmento P - Obrigatório - suelton@gmail.com - 03/01/2017
+                        strline = boleto.Banco.GerarDetalheSegmentoPRemessa(boleto, numeroRegistroDetalhe, numeroConvenio);
                         incluiLinha.WriteLine(strline);
                         OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoP);
                         numeroRegistro++;
                         numeroRegistroDetalhe++;
+
+                        //Seqgmento Q - Obrigatório - suelton@gmail.com - 03/01/2017
+                        strline = boleto.Banco.GerarDetalheSegmentoQRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
+                        incluiLinha.WriteLine(strline);
+                        OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoQ);
+                        numeroRegistro++;
+                        numeroRegistroDetalhe++;
+
+                        //Segmento R - Opcional - suelton@gmail.com - 03/01/2017
+                        if (boleto.ValorMulta > 0 || boleto.PercMulta > 0)
+                        {
+                            strline = boleto.Banco.GerarDetalheSegmentoRRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
+                            incluiLinha.WriteLine(strline);
+                            OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoR);
+                            numeroRegistro++;
+                            numeroRegistroDetalhe++;
+                        }
                     }
 
-                    numeroRegistro--;
+                    //numeroRegistro--;
                     strline = banco.GerarTrailerLoteRemessa(numeroRegistro);
                     incluiLinha.WriteLine(strline);
                     OnLinhaGerada(null, strline, EnumTipodeLinha.TraillerDeLote);
 
-                    numeroRegistro++;
+                    ++numeroRegistro;
+                    ++numeroRegistro; //Iniciou do 0 então tem que somar +1 para totoalizar a quantidade de linhas
 
                     strline = banco.GerarTrailerArquivoRemessa(numeroRegistro);
                     incluiLinha.WriteLine(strline);
@@ -122,18 +147,18 @@ namespace BoletoNet
                             OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoQ);
                             numeroRegistro++;
                             numeroRegistroDetalhe++;
-                            //segmento R não implementado...
-                            //if (boleto.ValorMulta > 0)
-                            //{
-                            //    strline = boleto.Banco.GerarDetalheSegmentoRRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
-                            //    incluiLinha.WriteLine(strline);
-                            //    OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoR);
-                            //    numeroRegistro++;
-                            //    numeroRegistroDetalhe++;
-                            //}
+
+                            if (boleto.ValorMulta > 0 || boleto.PercMulta > 0)
+                            {
+                                strline = boleto.Banco.GerarDetalheSegmentoRRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
+                                incluiLinha.WriteLine(strline);
+                                OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoR);
+                                numeroRegistro++;
+                                numeroRegistroDetalhe++;
+                            }
                         }
 
-                        numeroRegistro--;
+                        //numeroRegistro--;
                         strline = banco.GerarTrailerLoteRemessa(numeroRegistro, boletos[0]);
                         incluiLinha.WriteLine(strline);
                         OnLinhaGerada(null, strline, EnumTipodeLinha.TraillerDeLote);
@@ -164,30 +189,31 @@ namespace BoletoNet
                         numeroRegistro++;
                         numeroRegistroDetalhe++;
 
-                        strline = boleto.Banco.GerarDetalheSegmentoQRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
-                        incluiLinha.WriteLine(strline);
-                        OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoQ);
-                        numeroRegistro++;
-                        numeroRegistroDetalhe++;
-
-                        if (boleto.ValorMulta > 0 || boleto.OutrosDescontos > 0 || boleto.PercMulta > 0)
+                        if (boletos[0].Remessa.CodigoOcorrencia == "01")
                         {
-                            strline = boleto.Banco.GerarDetalheSegmentoRRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
+                            strline = boleto.Banco.GerarDetalheSegmentoQRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
                             incluiLinha.WriteLine(strline);
-                            OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoR);
+                            OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoQ);
+                            numeroRegistro++;
+                            numeroRegistroDetalhe++;
+
+                            if (boleto.ValorMulta > 0 || boleto.OutrosDescontos > 0 || boleto.PercMulta > 0)
+                            {
+                                strline = boleto.Banco.GerarDetalheSegmentoRRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
+                                incluiLinha.WriteLine(strline);
+                                OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoR);
+                                numeroRegistro++;
+                                numeroRegistroDetalhe++;
+                            }
+
+                            strline = boleto.Banco.GerarDetalheSegmentoSRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
+                            incluiLinha.WriteLine(strline);
+                            OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoS);
                             numeroRegistro++;
                             numeroRegistroDetalhe++;
                         }
-
-                        strline = boleto.Banco.GerarDetalheSegmentoSRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
-                        incluiLinha.WriteLine(strline);
-                        OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoS);
-                        numeroRegistro++;
-                        numeroRegistroDetalhe++;
                     }
 
-
-                    numeroRegistro--;
                     strline = banco.GerarTrailerLoteRemessa(numeroRegistro);
                     incluiLinha.WriteLine(strline);
                     OnLinhaGerada(null, strline, EnumTipodeLinha.TraillerDeLote);

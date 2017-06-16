@@ -1,3 +1,4 @@
+using BoletoNet.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,5 +10,7 @@ namespace BoletoNet
         IBanco Banco { get; }
         int Codigo { get; set;}
         string Descricao { get; }
+
+        TipoOcorrenciaRetorno ObterCorrespondenteFebraban();
     }
 }

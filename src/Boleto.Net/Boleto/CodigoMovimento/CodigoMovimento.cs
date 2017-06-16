@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BoletoNet
 {
@@ -67,8 +65,8 @@ namespace BoletoNet
                         break;
                     //341 - Itaú
                     case 341:
-                        //_ICodigoMovimento = new CodigoMovimento_Itau();
-                        throw new Exception("Código do banco não implementando: " + codigoBanco);
+                        _ICodigoMovimento = new CodigoMovimento_Itau(codigoMovimento);
+                        break;
                     //1 - Banco do Brasil
                     case 1:
                         _ICodigoMovimento = new CodigoMovimento_BancoBrasil(codigoMovimento);
@@ -105,6 +103,9 @@ namespace BoletoNet
                     case 85:
                         _ICodigoMovimento = new CodigoMovimento_Cecred(codigoMovimento);
                         break;
+                    case 748:
+                        _ICodigoMovimento = new CodigoMovimento_Sicredi(codigoMovimento);
+                        break;
                     default:
                         throw new Exception("Código do banco não implementando: " + codigoBanco);
                 }
@@ -115,7 +116,12 @@ namespace BoletoNet
             }
         }
 
-        # endregion
+        public override TipoOcorrenciaRetorno ObterCorrespondenteFebraban()
+        {
+            return _ICodigoMovimento.ObterCorrespondenteFebraban();
+        }
+
+        #endregion
 
     }
 }

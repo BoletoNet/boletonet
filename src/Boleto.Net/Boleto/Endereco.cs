@@ -94,5 +94,14 @@ namespace BoletoNet
         /// </remarks>
         /// </summary>
         public string Email { get; set; }
+
+        public string EndComNumero {
+            get {
+                if (!string.IsNullOrEmpty(End) && !string.IsNullOrEmpty(Numero))
+                    return string.Format("{0} {1}", End, Numero);
+
+                return End;
+            }
+        }
     }
 }

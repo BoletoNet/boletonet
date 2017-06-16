@@ -27,9 +27,10 @@ namespace BoletoNet
             {
                 bool vRetorno = true;
                 string vMsg = string.Empty;
-                //
-                foreach (Boleto boleto in boletos)
+                if (boletos != null && boletos.Count > 0)
                 {
+                    Boleto boleto = boletos[0];
+
                     string vMsgBol = string.Empty;
                     bool vRetBol = boleto.Banco.ValidarRemessa(this.TipoArquivo, numeroConvenio, banco, cedente, boletos, numeroArquivoRemessa, out vMsgBol);
                     if (!vRetBol && !String.IsNullOrEmpty(vMsgBol))
@@ -38,7 +39,6 @@ namespace BoletoNet
                         vRetorno = vRetBol;
                     }
                 }
-                //
                 mensagem = vMsg;
                 return vRetorno;
             }
@@ -84,16 +84,31 @@ namespace BoletoNet
                         if (boleto.PercMulta > 0 || boleto.ValorMulta > 0)
                         {
                             Banco_Itau _banco = new Banco_Itau();
-                            strline = _banco.GerarRegistroDetalhe5(boleto, numeroRegistro);
+                            strline = _banco.GerarRegistroDetalhe2(boleto, numeroRegistro);
                             incluiLinha.WriteLine(strline);
                             numeroRegistro++;
                         }
                     }
+                    // Banco Bradesco - 237
+                    if (banco.Codigo == 237)
+                    {
+                        if (boleto.OutrosDescontos > 0)
+                        {
+                            Banco_Bradesco _banco = new Banco_Bradesco();
+                            strline = _banco.GerarRegistroDetalhe2(boleto, numeroRegistro);
+                            incluiLinha.WriteLine(strline);
+                            numeroRegistro++;
+                        }
+                    }
+
                     if ((boleto.Instrucoes != null && boleto.Instrucoes.Count > 0) || (boleto.Sacado.Instrucoes != null && boleto.Sacado.Instrucoes.Count > 0))
                     {
                         strline = boleto.Banco.GerarMensagemVariavelRemessa(boleto, ref numeroRegistro, TipoArquivo.CNAB400);
                         if (!string.IsNullOrEmpty(strline) && !string.IsNullOrWhiteSpace(strline))
+                        { 
                             incluiLinha.WriteLine(strline);
+                            numeroRegistro++;
+                        }
                     }
                 }
 

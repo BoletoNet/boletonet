@@ -124,6 +124,7 @@ namespace BoletoNet
         DetalheSegmentoWRetornoCNAB240 LerDetalheSegmentoWRetornoCNAB240(string registro);
 
         DetalheRetorno LerDetalheRetornoCNAB400(string registro);
+        HeaderRetorno LerHeaderRetornoCNAB400(string registro);
 
         Cedente Cedente { get; }
         int Codigo { get; set;}
@@ -133,5 +134,11 @@ namespace BoletoNet
         bool ValidarRemessa(TipoArquivo tipoArquivo, string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, int numeroArquivoRemessa, out string mensagem);
 
         string ChaveASBACE { get; set; }
+
+        /// <summary>
+        /// Obtém nosso número sem DV e sem código do Convênio.
+        /// </summary>
+        /// <returns></returns>
+        long ObterNossoNumeroSemConvenioOuDigitoVerificador(long convenio, string nossoNumero);
     }
 }

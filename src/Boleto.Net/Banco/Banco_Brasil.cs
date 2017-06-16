@@ -1,10 +1,9 @@
-
 using System;
-using System.Data;
 using System.Globalization;
 using System.Web.UI;
 using BoletoNet.Util;
 using BoletoNet.EDI.Banco;
+using BoletoNet.Excecoes;
 
 [assembly: WebResource("BoletoNet.Imagens.001.jpg", "image/jpg")]
 namespace BoletoNet
@@ -1421,7 +1420,8 @@ namespace BoletoNet
 
                 _segmentoP = "00100013";
                 _segmentoP += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);
-                _segmentoP += "P 01";
+                _segmentoP += "P ";
+                _segmentoP += ObterCodigoDaOcorrencia(boleto);
                 _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true);
                 _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoAgencia, 1, 1, '0', 0, true, true, true);
                 _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 12, 12, '0', 0, true, true, true);
@@ -1605,6 +1605,7 @@ namespace BoletoNet
                 throw new Exception("Erro durante a geração do SEGMENTO P DO DETALHE do arquivo de REMESSA.", ex);
             }
         }
+
         public override string GerarDetalheSegmentoQRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
         {
             try
@@ -1617,7 +1618,8 @@ namespace BoletoNet
 
                 _segmentoQ = "00100013";
                 _segmentoQ += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);
-                _segmentoQ += "Q 01";
+                _segmentoQ += "Q ";
+                _segmentoQ += ObterCodigoDaOcorrencia(boleto);
 
                 if (boleto.Sacado.CPFCNPJ.Length <= 11)
                     _segmentoQ += "1";
@@ -1657,7 +1659,8 @@ namespace BoletoNet
 
                 _segmentoR = "00100013";
                 _segmentoR += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);
-                _segmentoR += "R 01";
+                _segmentoR += "R ";
+                _segmentoR += ObterCodigoDaOcorrencia(boleto);
                 // Desconto 2
                 _segmentoR += "000000000000000000000000"; //24 zeros
                 // Desconto 3
@@ -1747,7 +1750,9 @@ namespace BoletoNet
                 trailer += Utils.FormatCode("", " ", 9);
 
                 #region Pega o Numero de Registros + 1(HeaderLote) + 1(TrailerLote)
-                int vQtdeRegLote = numeroRegistro; // (numeroRegistro + 2);
+                // Alterado por Heric Souza em 02/06/2017
+                int vQtdeRegLote = (numeroRegistro + 1); // (numeroRegistro + 2);
+                //int vQtdeRegLote = numeroRegistro; // (numeroRegistro + 2);
                 trailer += Utils.FitStringLength(vQtdeRegLote.ToString(), 6, 6, '0', 0, true, true, true);  //posição 18 até 23   (6) - Quantidade de Registros no Lote
                 //deve considerar 1 registro a mais - Header
                 #endregion
@@ -1878,8 +1883,13 @@ namespace BoletoNet
                 _header += Utils.FitStringLength(cedente.CPFCNPJ, 14, 14, '0', 0, true, true, true);
                 _header += Utils.FitStringLength(cedente.Convenio.ToString(), 9, 9, '0', 0, true, true, true);
                 _header += "0014";
-                _header += Utils.FitStringLength(cedente.Carteira, 2, 2, '0', 0, true, true, true);
-                _header += "019";
+                // adicionado por Heric Souza em 02/06/2017
+                if (cedente.Carteira.Length == 2)
+                    _header += cedente.Carteira.ToString() + "019  ";
+                else
+                    _header += cedente.Carteira.Replace("-", "") + "  ";
+                //_header += Utils.FitStringLength(cedente.Carteira, 2, 2, '0', 0, true, true, true);
+                //_header += "019";
                 _header += "  ";
                 _header += Utils.FitStringLength(cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true);
                 _header += Utils.FitStringLength(cedente.ContaBancaria.DigitoAgencia, 1, 1, ' ', 0, true, true, false);
@@ -2197,9 +2207,6 @@ namespace BoletoNet
         {
             try
             {
-                //Variáveis Locais a serem Implementadas em nível de Config do Boleto...
-                boleto.Remessa.CodigoOcorrencia = "01"; //remessa p/ BANCO DO BRASIL
-                //
                 base.GerarDetalheRemessa(boleto, numeroRegistro, tipoArquivo);
                 //
                 TRegistroEDI reg = new TRegistroEDI();
@@ -2228,7 +2235,7 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0096, 006, 0, "0", '0'));                                       //096-101
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0102, 005, 0, string.Empty, ' '));                              //102-106
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0107, 002, 0, boleto.Cedente.Carteira, '0'));                   //107-108
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0109, 002, 0, boleto.Remessa.CodigoOcorrencia, ' '));           //109-110
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0109, 002, 0, ObterCodigoDaOcorrencia(boleto), ' '));           //109-110
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0111, 010, 0, boleto.NumeroDocumento, '0'));                    //111-120
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAA___________, 0121, 006, 0, boleto.DataVencimento, ' '));                     //121-126
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0127, 013, 2, boleto.ValorBoleto, '0'));                        //127-139
@@ -2248,22 +2255,26 @@ namespace BoletoNet
                 #region Instruções
                 string vInstrucao1 = "0";
                 string vInstrucao2 = "0";
+                string diasProtesto = String.Empty;
                 //string vInstrucao3 = "0";
                 switch (boleto.Instrucoes.Count)
                 {
                     case 1:
                         vInstrucao1 = boleto.Instrucoes[0].Codigo.ToString();
                         vInstrucao2 = "0";
+                        diasProtesto = boleto.Instrucoes[0].QuantidadeDias.ToString().PadLeft(2, '0') ?? String.Empty;
                         //vInstrucao3 = "0";
                         break;
                     case 2:
                         vInstrucao1 = boleto.Instrucoes[0].Codigo.ToString();
                         vInstrucao2 = boleto.Instrucoes[1].Codigo.ToString();
+                        diasProtesto = boleto.Instrucoes[0].QuantidadeDias.ToString().PadLeft(2, '0') ?? String.Empty;
                         //vInstrucao3 = "0";
                         break;
                     case 3:
                         vInstrucao1 = boleto.Instrucoes[0].Codigo.ToString();
                         vInstrucao2 = boleto.Instrucoes[1].Codigo.ToString();
+                        diasProtesto = boleto.Instrucoes[0].QuantidadeDias.ToString().PadLeft(2, '0') ?? String.Empty;
                         //vInstrucao3 = boleto.Instrucoes[2].Codigo.ToString();
                         break;
                 }
@@ -2326,13 +2337,19 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0221, 014, 0, boleto.Sacado.CPFCNPJ, '0'));                     //221-234
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0235, 037, 0, boleto.Sacado.Nome.ToUpper(), ' '));              //235-271
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0272, 003, 0, string.Empty, ' '));                              //272-274
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0275, 040, 0, boleto.Sacado.Endereco.End.ToUpper(), ' '));      //275-314
+
+                var enderecoSacadoComNumero = boleto.Sacado.Endereco.End;
+                if (!string.IsNullOrEmpty(boleto.Sacado.Endereco.Numero))
+                {
+                    enderecoSacadoComNumero += " " + boleto.Sacado.Endereco.Numero;
+                }
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0275, 040, 0, enderecoSacadoComNumero.ToUpper(), ' '));         //275-314
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0315, 012, 0, boleto.Sacado.Endereco.Bairro.ToUpper(), ' '));   //315-326
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0327, 008, 0, boleto.Sacado.Endereco.CEP, '0'));                //327-334
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0335, 015, 0, boleto.Sacado.Endereco.Cidade.ToUpper(), ' '));   //335-349
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0350, 002, 0, boleto.Sacado.Endereco.UF.ToUpper(), ' '));       //350-351
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0352, 040, 0, string.Empty, ' '));                              //352-391
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0392, 002, 0, string.Empty, ' '));                              //392-393
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0392, 002, 0, diasProtesto, ' '));                              //392-393
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0394, 001, 0, string.Empty, ' '));                              //394-394                
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0395, 006, 0, numeroRegistro, '0'));                            //395-400
                 //
@@ -2466,7 +2483,54 @@ namespace BoletoNet
                 throw new Exception("Erro ao ler detalhe do arquivo de RETORNO / CNAB 400.", ex);
             }
         }
-
         #endregion
+
+        public override long ObterNossoNumeroSemConvenioOuDigitoVerificador(long convenio, string nossoNumero)
+        {
+            if (string.IsNullOrEmpty(nossoNumero))
+                throw new NossoNumeroInvalidoException();
+
+            nossoNumero = nossoNumero.Trim();
+
+            int tamanhoConvenio = convenio.ToString().Length;
+            long result;
+            switch (tamanhoConvenio)
+            {
+                case 4:
+                    // Se convênio de 4 posições - normalmente carteira 17 - (0001 à 9999), informar NossoNumero com 11 caracteres, com DV, sendo:
+                    // 4 posições do nº do convênio e 7 posições do nº de controle (nº do documento) e DV.
+                    {
+                        if (nossoNumero.Length != 12)
+                            throw new TamanhoNossoNumeroInvalidoException();
+                        var numeroSemConvenio = nossoNumero.Substring(4);
+                        nossoNumero = numeroSemConvenio.Substring(0, 7);
+                    }
+                    break;
+                case 6:
+                    // Se convênio de 6 posições (acima de 10.000 à 999.999), informar NossoNumero com 11 caracteres + DV, sendo:
+                    // 6 posições do nº do convênio e 5 posições do nº de controle (nº do documento) e DV do nosso numero.
+                    {
+                        if (nossoNumero.Length != 12)
+                            throw new TamanhoNossoNumeroInvalidoException();
+                        var numeroSemConvenio = nossoNumero.Substring(6);
+                        nossoNumero = numeroSemConvenio.Substring(0, 5);
+                    }
+                    break;
+                case 7:
+                    // Se convênio de 7 posições (acima de 1.000.000 à 9.999.999), informar NossoNumero com 17 caracteres, sem DV, sendo:
+                    // 7 posições do nº do convênio e 10 posições do nº de controle (nº do documento)
+                    {
+                        if (nossoNumero.Length != 17)
+                            throw new TamanhoNossoNumeroInvalidoException();
+                        nossoNumero = nossoNumero.Substring(7);                        
+                    }
+                    break;
+                default:
+                    throw new Exception("Posições do nº de convênio deve ser 4, 6 ou 7.");
+            }
+            if (long.TryParse(nossoNumero, out result))
+                return result;
+            throw new NossoNumeroInvalidoException();
+        }
     }
 }
