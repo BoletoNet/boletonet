@@ -969,7 +969,7 @@ namespace BoletoNet
                 detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
 
                 //Descrição da ocorrência
-                detalhe.DescricaoOcorrencia = this.Ocorrencia(reg.Ocorrencia);
+                detalhe.DescricaoOcorrencia = new CodigoMovimento(748, detalhe.CodigoOcorrencia).Descricao;
 
                 detalhe.NumeroDocumento = reg.SeuNumero;
                 //Filler4
@@ -1083,58 +1083,6 @@ namespace BoletoNet
         }
 
         #endregion
-
-        /// <summary>
-        /// Descrição da ocorrência
-        /// </summary>
-        public string Ocorrencia(string codigo) {
-            switch (codigo) {
-                case "02":
-                    return "02-Confirmação de entrada de título";
-                case "03":
-                    return "03-Entrada rejeitada";
-                case "06":
-                    return "06-Liquidação Normal";
-                case "09":
-                    return "09-Baixado automaticamente via arquivo";
-                case "10":
-                    return "10-Baixado conforme instruções da cooperativa de crédito ";
-                case "12":
-                    return "12-Abatimento Concedido";
-                case "13":
-                    return "13-Abatimento Cancelado";
-                case "14":
-                    return "14-Alteração de Vencimento do título";
-                case "15":
-                    return "15-Liquidação em Cartório";
-                case "17":
-                    return "17-Liquidação após baixa ou Título não registrado";
-                case "19":
-                    return "19-Confirmação de recebimento de instruções para protesto";
-                case "23":
-                    return "23-Indicação de encaminhamento a cartório";
-                case "24":
-                    return "24-Entrada rejeitada por CEP irregular";
-                case "27":
-                    return "27-Baixa rejeitada";
-                case "28":
-                    return "28-Tarifa";
-                case "29":
-                    return "29-Rejeição do pagador";
-                case "30":
-                    return "30-Alteração rejeitada";
-                case "32":
-                    return "32-Instrução rejeitada";
-                case "33":
-                    return "33-Confirmação de pedido de alteração de outros dados";
-                case "34":
-                    return "34-Retirado de cartório e manutenção em carteira";
-                case "35":
-                    return "35-Aceite do pagador";
-                default:
-                    return "";
-            }
-        }
 
         public override long ObterNossoNumeroSemConvenioOuDigitoVerificador(long convenio, string nossoNumero)
         {
