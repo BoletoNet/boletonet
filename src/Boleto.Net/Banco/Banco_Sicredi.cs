@@ -21,6 +21,8 @@ namespace BoletoNet
             { 3, "Sem Registro" }
         };
 
+        private HeaderRetorno header;
+
         /// <author>
         /// Classe responsavel em criar os campos do Banco Sicredi.
         /// </author>
@@ -965,6 +967,10 @@ namespace BoletoNet
                 detalhe.CodigoOcorrencia = Utils.ToInt32(reg.Ocorrencia);                
                 int dataOcorrencia = Utils.ToInt32(reg.DataOcorrencia);
                 detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
+
+                //Descrição da ocorrência
+                detalhe.DescricaoOcorrencia = this.Ocorrencia(reg.Ocorrencia);
+
                 detalhe.NumeroDocumento = reg.SeuNumero;
                 //Filler4
                 if (!String.IsNullOrEmpty(reg.DataVencimento))
@@ -1026,8 +1032,8 @@ namespace BoletoNet
                 detalhe.CodigoInscricao = 0;
                 detalhe.NumeroInscricao = string.Empty;
                 detalhe.Agencia = 0;
-                detalhe.Conta = 0;
-                detalhe.DACConta = 0;
+                detalhe.Conta = header.Conta;
+                detalhe.DACConta = header.DACConta;
 
                 detalhe.NumeroControle = string.Empty;
                 detalhe.IdentificacaoTitulo = string.Empty;
@@ -1049,13 +1055,15 @@ namespace BoletoNet
         {
             try
             {
-                HeaderRetorno header = new HeaderRetorno(registro);
+                header = new HeaderRetorno(registro);
                 header.TipoRegistro = Utils.ToInt32(registro.Substring(000, 1));
                 header.CodigoRetorno = Utils.ToInt32(registro.Substring(001, 1));
                 header.LiteralRetorno = registro.Substring(002, 7);
                 header.CodigoServico = Utils.ToInt32(registro.Substring(009, 2));
                 header.LiteralServico = registro.Substring(011, 15);
-                header.Agencia = Utils.ToInt32(registro.Substring(026, 5));
+                string _conta = registro.Substring(026, 5);
+                header.Conta = Utils.ToInt32(_conta.Substring(0, _conta.Length - 1));
+                header.DACConta = Utils.ToInt32(_conta.Substring(_conta.Length - 1));
                 header.ComplementoRegistro2 = registro.Substring(031, 14);
                 header.CodigoBanco = Utils.ToInt32(registro.Substring(076, 3));
                 header.NomeBanco = registro.Substring(079, 15);
@@ -1063,6 +1071,8 @@ namespace BoletoNet
                 header.NumeroSequencialArquivoRetorno = Utils.ToInt32(registro.Substring(110, 7));
                 header.Versao = registro.Substring(390, 5);
                 header.NumeroSequencial = Utils.ToInt32(registro.Substring(394, 6));
+
+
 
                 return header;
             }
@@ -1073,6 +1083,58 @@ namespace BoletoNet
         }
 
         #endregion
+
+        /// <summary>
+        /// Descrição da ocorrência
+        /// </summary>
+        public string Ocorrencia(string codigo) {
+            switch (codigo) {
+                case "02":
+                    return "02-Confirmação de entrada de título";
+                case "03":
+                    return "03-Entrada rejeitada";
+                case "06":
+                    return "06-Liquidação Normal";
+                case "09":
+                    return "09-Baixado automaticamente via arquivo";
+                case "10":
+                    return "10-Baixado conforme instruções da cooperativa de crédito ";
+                case "12":
+                    return "12-Abatimento Concedido";
+                case "13":
+                    return "13-Abatimento Cancelado";
+                case "14":
+                    return "14-Alteração de Vencimento do título";
+                case "15":
+                    return "15-Liquidação em Cartório";
+                case "17":
+                    return "17-Liquidação após baixa ou Título não registrado";
+                case "19":
+                    return "19-Confirmação de recebimento de instruções para protesto";
+                case "23":
+                    return "23-Indicação de encaminhamento a cartório";
+                case "24":
+                    return "24-Entrada rejeitada por CEP irregular";
+                case "27":
+                    return "27-Baixa rejeitada";
+                case "28":
+                    return "28-Tarifa";
+                case "29":
+                    return "29-Rejeição do pagador";
+                case "30":
+                    return "30-Alteração rejeitada";
+                case "32":
+                    return "32-Instrução rejeitada";
+                case "33":
+                    return "33-Confirmação de pedido de alteração de outros dados";
+                case "34":
+                    return "34-Retirado de cartório e manutenção em carteira";
+                case "35":
+                    return "35-Aceite do pagador";
+                default:
+                    return "";
+            }
+        }
 
         public override long ObterNossoNumeroSemConvenioOuDigitoVerificador(long convenio, string nossoNumero)
         {
