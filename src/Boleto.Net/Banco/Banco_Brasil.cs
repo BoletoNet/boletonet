@@ -1878,7 +1878,7 @@ namespace BoletoNet
                 if (cedente.Carteira.Length == 2)
                     _header += cedente.Carteira.ToString() + "019  ";
                 else
-                    _header += cedente.Carteira.Replace("-", "") + "  ";
+                    _header += Utils.FitStringLength(cedente.Carteira.Replace("-", ""), 5, 5, ' ', 0, true, true, false);
                 //_header += Utils.FitStringLength(cedente.Carteira, 2, 2, '0', 0, true, true, true);
                 //_header += "019";
                 _header += "  ";
