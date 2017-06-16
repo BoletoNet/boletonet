@@ -721,11 +721,9 @@ namespace BoletoNet {
 
                 _trailer += Utils.FormatCode("", " ", 9);                               // Uso Exclusivo FEBRABAN/CNAB
 
-                var _numReg = numeroRegistro + 1;
-
                 // Totais
                 _trailer += "000001";                                                   // 018-023 Quantidade de Lotes do Arquivo
-                _trailer += Utils.FormatCode(_numReg.ToString(), "0", 6, true);  // 024-029 Quantidade de Registros do Arquivo
+                _trailer += Utils.FormatCode(numeroRegistro.ToString(), "0", 6, true);  // 024-029 Quantidade de Registros do Arquivo
                 _trailer += "000000";                                                   // 030-035 Qtde de Contas p/ Conc. (Lotes)
                 _trailer += Utils.FormatCode("", " ", 205);                             // 036-240 Uso Exclusivo FEBRABAN/CNAB
 
