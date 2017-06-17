@@ -1748,16 +1748,7 @@ namespace BoletoNet
                 trailer += Utils.FitStringLength("1", 4, 4, '0', 0, true, true, true);
                 trailer += "5";
                 trailer += Utils.FormatCode("", " ", 9);
-
-                #region Pega o Numero de Registros + 1(HeaderLote) + 1(TrailerLote)
-                // Alterado por Heric Souza em 02/06/2017
-                int vQtdeRegLote = (numeroRegistro + 1); // (numeroRegistro + 2);
-                //int vQtdeRegLote = numeroRegistro; // (numeroRegistro + 2);
-                trailer += Utils.FitStringLength(vQtdeRegLote.ToString(), 6, 6, '0', 0, true, true, true);  //posição 18 até 23   (6) - Quantidade de Registros no Lote
-                //deve considerar 1 registro a mais - Header
-                #endregion
-
-
+                trailer += Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true);  //posição 18 até 23   (6) - Quantidade de Registros no Lote
                 trailer += Utils.FormatCode("", "0", 92, true);
                 trailer += Utils.FormatCode("", " ", 125);
                 trailer = Utils.SubstituiCaracteresEspeciais(trailer);
@@ -1778,7 +1769,7 @@ namespace BoletoNet
                 string _trailerArquivo;
 
                 _trailerArquivo = "00199999         000001";
-                _trailerArquivo += Utils.FitStringLength((numeroRegistro + 1).ToString(), 6, 6, '0', 0, true, true, true); //deve considerar 1 registro a mais - Header
+                _trailerArquivo += Utils.FitStringLength((numeroRegistro).ToString(), 6, 6, '0', 0, true, true, true);
                 _trailerArquivo += "000000";
                 _trailerArquivo += _brancos205;
 
@@ -1887,7 +1878,7 @@ namespace BoletoNet
                 if (cedente.Carteira.Length == 2)
                     _header += cedente.Carteira.ToString() + "019  ";
                 else
-                    _header += cedente.Carteira.Replace("-", "") + "  ";
+                    _header += Utils.FitStringLength(cedente.Carteira.Replace("-", ""), 5, 5, ' ', 0, true, true, false);
                 //_header += Utils.FitStringLength(cedente.Carteira, 2, 2, '0', 0, true, true, true);
                 //_header += "019";
                 _header += "  ";
