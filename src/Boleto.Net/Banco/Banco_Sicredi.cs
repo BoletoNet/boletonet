@@ -21,6 +21,8 @@ namespace BoletoNet
             { 3, "Sem Registro" }
         };
 
+        private HeaderRetorno header;
+
         /// <author>
         /// Classe responsavel em criar os campos do Banco Sicredi.
         /// </author>
@@ -965,6 +967,10 @@ namespace BoletoNet
                 detalhe.CodigoOcorrencia = Utils.ToInt32(reg.Ocorrencia);                
                 int dataOcorrencia = Utils.ToInt32(reg.DataOcorrencia);
                 detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
+
+                //Descrição da ocorrência
+                detalhe.DescricaoOcorrencia = new CodigoMovimento(748, detalhe.CodigoOcorrencia).Descricao;
+
                 detalhe.NumeroDocumento = reg.SeuNumero;
                 //Filler4
                 if (!String.IsNullOrEmpty(reg.DataVencimento))
@@ -1026,8 +1032,8 @@ namespace BoletoNet
                 detalhe.CodigoInscricao = 0;
                 detalhe.NumeroInscricao = string.Empty;
                 detalhe.Agencia = 0;
-                detalhe.Conta = 0;
-                detalhe.DACConta = 0;
+                detalhe.Conta = header.Conta;
+                detalhe.DACConta = header.DACConta;
 
                 detalhe.NumeroControle = string.Empty;
                 detalhe.IdentificacaoTitulo = string.Empty;
@@ -1049,13 +1055,15 @@ namespace BoletoNet
         {
             try
             {
-                HeaderRetorno header = new HeaderRetorno(registro);
+                header = new HeaderRetorno(registro);
                 header.TipoRegistro = Utils.ToInt32(registro.Substring(000, 1));
                 header.CodigoRetorno = Utils.ToInt32(registro.Substring(001, 1));
                 header.LiteralRetorno = registro.Substring(002, 7);
                 header.CodigoServico = Utils.ToInt32(registro.Substring(009, 2));
                 header.LiteralServico = registro.Substring(011, 15);
-                header.Agencia = Utils.ToInt32(registro.Substring(026, 5));
+                string _conta = registro.Substring(026, 5);
+                header.Conta = Utils.ToInt32(_conta.Substring(0, _conta.Length - 1));
+                header.DACConta = Utils.ToInt32(_conta.Substring(_conta.Length - 1));
                 header.ComplementoRegistro2 = registro.Substring(031, 14);
                 header.CodigoBanco = Utils.ToInt32(registro.Substring(076, 3));
                 header.NomeBanco = registro.Substring(079, 15);
@@ -1063,6 +1071,8 @@ namespace BoletoNet
                 header.NumeroSequencialArquivoRetorno = Utils.ToInt32(registro.Substring(110, 7));
                 header.Versao = registro.Substring(390, 5);
                 header.NumeroSequencial = Utils.ToInt32(registro.Substring(394, 6));
+
+
 
                 return header;
             }

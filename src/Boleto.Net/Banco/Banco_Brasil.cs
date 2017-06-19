@@ -1876,7 +1876,7 @@ namespace BoletoNet
                 _header += "0014";
                 // adicionado por Heric Souza em 02/06/2017
                 if (cedente.Carteira.Length == 2)
-                    _header += cedente.Carteira.ToString() + "019  ";
+                    _header += cedente.Carteira.ToString() + "019";
                 else
                     _header += Utils.FitStringLength(cedente.Carteira.Replace("-", ""), 5, 5, ' ', 0, true, true, false);
                 //_header += Utils.FitStringLength(cedente.Carteira, 2, 2, '0', 0, true, true, true);
