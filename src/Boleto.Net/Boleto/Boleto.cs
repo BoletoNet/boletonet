@@ -78,7 +78,7 @@ namespace BoletoNet
 		{
 		}
 
-		public Boleto(DateTime dataVencimento, decimal valorBoleto, string carteira, string nossoNumero, Cedente cedente, EspecieDocumento especieDocumento)
+		public Boleto(DateTime dataVencimento, decimal valorBoleto, string carteira, string nossoNumero, Cedente cedente, IEspecieDocumento especieDocumento)
 		{
 			this._carteira = carteira;
 			this._nossoNumero = nossoNumero;
