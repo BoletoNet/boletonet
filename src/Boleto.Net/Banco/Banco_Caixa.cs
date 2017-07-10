@@ -1696,6 +1696,10 @@ namespace BoletoNet
                             vInstrucao1 = "01";
                             prazoProtesto_Devolucao = instrucao.QuantidadeDias;
                             break;
+                        case EnumInstrucoes_Caixa.DevolverAposNDias:
+                            vInstrucao1 = "02";
+                            prazoProtesto_Devolucao = instrucao.QuantidadeDias;
+                            break;
 
                         default:
                             break;
