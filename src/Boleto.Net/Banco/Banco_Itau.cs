@@ -1168,7 +1168,7 @@ namespace BoletoNet
                 // para títulos que já estão no banco, portanto o campo será preenchido com zeros.
                 _detalhe += "0000";
 
-                _detalhe += Utils.FitStringLength(boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, false); //Identificação do título na empresa
+                _detalhe += Utils.FitStringLength(boleto.NumeroControle ?? boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, false); //Identificação do título na empresa
                 _detalhe += Utils.FitStringLength(boleto.NossoNumero, 8, 8, '0', 0, true, true, true);
                 // Quantidade de moeda variável - Preencher com zeros se a moeda for REAL
                 // O manual do Banco ITAÚ não diz como preencher caso a moeda não seja o REAL
