@@ -7,6 +7,15 @@ namespace BoletoNet
 {
     internal class ArquivoRemessaCNAB400 : AbstractArquivoRemessa, IArquivoRemessa
     {
+		#region Propriedades - Específico Banco do Brasil
+
+		/// <summary>
+		/// Para Banco do Brasil especifica se o arquivo será gerado no modelo antigo, com convênio de 6 posições, ou no modelo novo com 7 posições.
+		/// Se for nulo, o tipo será escolhido automaticamente dependendo do número do convênio
+		/// </summary>
+		public bool? BancoBrasil_ModeloAntigo { get; set; }     //Especifica se modelo antigo, de 6 posições
+
+		#endregion
 
         #region Construtores
 
