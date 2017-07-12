@@ -158,8 +158,8 @@ namespace BoletoNet
 			detalheRetorno.NumeroInscricao = registro.Substring(3, 14);
 			detalheRetorno.UsoEmpresa = registro.Substring(37, 25);
 			detalheRetorno.Carteira = registro.Substring(82, 3);
-			detalheRetorno.NossoNumero = registro.Substring(94, 12);
-			detalheRetorno.NossoNumeroComDV = registro.Substring(94, 13);
+			detalheRetorno.NossoNumero = registro.Substring(94, 11);
+			detalheRetorno.NossoNumeroComDV = registro.Substring(94, 12);
 			detalheRetorno.Carteira = registro.Substring(107, 1);
 			detalheRetorno.CodigoOcorrencia = int.Parse(registro.Substring(108, 2));
 
@@ -167,6 +167,8 @@ namespace BoletoNet
 			detalheRetorno.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
 
 			detalheRetorno.SeuNumero = registro.Substring(116, 10);
+
+			detalheRetorno.NumeroDocumento = detalheRetorno.SeuNumero;
 
 			var dataVencimento = Utils.ToInt32(registro.Substring(146, 6));
 			detalheRetorno.DataVencimento = Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
@@ -195,6 +197,10 @@ namespace BoletoNet
 
 			decimal jurosMora = Convert.ToUInt64(registro.Substring(266, 13));
 			detalheRetorno.JurosMora = jurosMora / 100;
+
+			var dataCredito = Convert.ToUInt64(registro.Substring(385, 6));
+
+			detalheRetorno.DataCredito = Utils.ToDateTime(dataCredito.ToString("##-##-##"));
 
 			return detalheRetorno;
 		}
@@ -238,10 +244,10 @@ namespace BoletoNet
 
 			// Código da empresea, fornecido pelo banco
 			detalhe.Append(Utils.FitStringLength(this._convenio, 20, 20, ' ', 0, true, true, false));
-			
+
 			// Número do documento interno
 			detalhe.Append(Utils.FitStringLength(boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, false));
-			
+
 			// Nosso número, sempre 0
 			detalhe.Append(Utils.FitStringLength(string.Empty, 8, 8, '0', 0, true, true, true));
 
@@ -259,11 +265,11 @@ namespace BoletoNet
 			detalhe.Append(boleto.DigitoNossoNumero);
 
 			// Uso do banco
-			detalhe.Append(Utils.FitStringLength(string.Empty, 24, 24, ' ', 0, true, true, false)); 
+			detalhe.Append(Utils.FitStringLength(string.Empty, 24, 24, ' ', 0, true, true, false));
 			detalhe.Append("4"); // TODO: Código de remessa
 			detalhe.Append("01"); // TODO: Código de ocorrência
 			// Seu número
-			detalhe.Append(Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, ' ', 0, true, true, false)); 
+			detalhe.Append(Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, ' ', 0, true, true, false));
 			detalhe.Append(boleto.DataVencimento.ToString("ddMMyy"));
 			detalhe.Append(Utils.FitStringLength(boleto.ValorBoleto.ApenasNumeros(), 13, 13, '0', 0, true, true, true));
 			detalhe.Append("237"); // Código do banco
@@ -319,7 +325,7 @@ namespace BoletoNet
 			header.Append("1"); // Código da remessa, sempre 1
 			header.Append("REMESSA"); // Literal de remessa
 			header.Append("01"); // Código do serviço, sempre 01
-			
+
 			// Identificação por extenso do tipo de serviço
 			header.Append(Utils.FitStringLength("COBRANCA", 15, 15, ' ', 0, true, true, false));
 
