@@ -48,13 +48,13 @@ namespace BoletoNet
 			base.FormataNossoNumero(boleto);
 		}
 
-		public override string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+		public override string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, IArquivoRemessa arquivo)
 		{
 			try
 			{
 				var detalhe = string.Empty;
 
-				switch (tipoArquivo)
+				switch (arquivo.TipoArquivo)
 				{
 					case TipoArquivo.CNAB240:
 						break;
@@ -66,7 +66,7 @@ namespace BoletoNet
 					case TipoArquivo.Outro:
 						break;
 					default:
-						throw new ArgumentOutOfRangeException("tipoArquivo", tipoArquivo, null);
+						throw new ArgumentOutOfRangeException("tipoArquivo", arquivo.TipoArquivo, null);
 				}
 
 				return detalhe;
@@ -80,7 +80,7 @@ namespace BoletoNet
 		public override string GerarHeaderRemessa(
 			string numeroConvenio,
 			Cedente cedente,
-			TipoArquivo tipoArquivo,
+			IArquivoRemessa arquivo,
 			int numeroArquivoRemessa)
 		{
 			try
@@ -91,9 +91,9 @@ namespace BoletoNet
 
 				var header = string.Empty;
 
-				base.GerarHeaderRemessa(numeroConvenio, cedente, tipoArquivo, numeroArquivoRemessa);
+				base.GerarHeaderRemessa(numeroConvenio, cedente, arquivo, numeroArquivoRemessa);
 
-				switch (tipoArquivo)
+				switch (arquivo.TipoArquivo)
 				{
 					case TipoArquivo.CNAB240:
 						break;
@@ -105,7 +105,7 @@ namespace BoletoNet
 					case TipoArquivo.Outro:
 						break;
 					default:
-						throw new ArgumentOutOfRangeException("tipoArquivo", tipoArquivo, null);
+						throw new ArgumentOutOfRangeException("tipoArquivo", arquivo.TipoArquivo, null);
 				}
 
 				return header;

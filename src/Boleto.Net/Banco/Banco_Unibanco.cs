@@ -176,7 +176,7 @@ namespace BoletoNet
             boleto.NossoNumero = string.Format("{0}-{1}", boleto.NossoNumero, Banco_Unibanco.Mod11(boleto.NossoNumero,true));
         }
 
-        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos)
+        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, IArquivoRemessa arquivo, int numeroArquivoRemessa, Boleto boletos)
         {
             throw new NotImplementedException("Função não implementada.");
         }

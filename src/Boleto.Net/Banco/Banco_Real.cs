@@ -223,17 +223,17 @@ namespace BoletoNet
 
         }
 
-        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos)
+        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, IArquivoRemessa arquivo, int numeroArquivoRemessa, Boleto boletos)
         {
             throw new NotImplementedException("Função não implementada.");
         }
 
-        public override string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+        public override string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, IArquivoRemessa arquivo)
         {
             throw new NotImplementedException("Função não implementada.");
         }
 
-        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
+        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, IArquivoRemessa arquivo, int numeroArquivoRemessa)
         {
             throw new NotImplementedException("Função não implementada.");
         }

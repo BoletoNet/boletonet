@@ -81,12 +81,12 @@ namespace BoletoNet
         /// <summary>
         /// Gera os registros de header do aquivo de remessa
         /// </summary>
-        public virtual string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
+        public virtual string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, IArquivoRemessa arquivo, int numeroArquivoRemessa)
         {
             string _header = "";
             return _header;
         }
-        public virtual string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos)
+        public virtual string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, IArquivoRemessa arquivo, int numeroArquivoRemessa, Boleto boletos)
         {
             string _header = "";
             return _header;
@@ -94,7 +94,7 @@ namespace BoletoNet
         /// <summary>
         /// Gera registros de detalhe do arquivo remessa
         /// </summary>
-        public virtual string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+        public virtual string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, IArquivoRemessa arquivo)
         {
             string _remessa = "";
             return _remessa;
@@ -130,7 +130,7 @@ namespace BoletoNet
         /// <summary>
         /// Gera os registros de header de aquivo do arquivo de remessa
         /// </summary>
-        public virtual string GerarHeaderRemessa(Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
+        public virtual string GerarHeaderRemessa(Cedente cedente, IArquivoRemessa arquivo, int numeroArquivoRemessa)
         {
             string _headerArquivo = "";
             return _headerArquivo;

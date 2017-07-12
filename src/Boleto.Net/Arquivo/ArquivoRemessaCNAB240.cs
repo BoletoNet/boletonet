@@ -56,9 +56,9 @@ namespace BoletoNet
                 string strline;
                 StreamWriter incluiLinha = new StreamWriter(arquivo);
                 if (banco.Codigo == 104)//quando é caixa verifica o modelo de leiatue que é está em boletos.remssa.tipodocumento
-                    strline = banco.GerarHeaderRemessa(numeroConvenio, cedente, TipoArquivo.CNAB240, numeroArquivoRemessa, boletos[0]);
+                    strline = banco.GerarHeaderRemessa(numeroConvenio, cedente, this, numeroArquivoRemessa, boletos[0]);
                 else
-                    strline = banco.GerarHeaderRemessa(numeroConvenio, cedente, TipoArquivo.CNAB240, numeroArquivoRemessa);
+                    strline = banco.GerarHeaderRemessa(numeroConvenio, cedente, this, numeroArquivoRemessa);
 
                 numeroRegistro++;
 

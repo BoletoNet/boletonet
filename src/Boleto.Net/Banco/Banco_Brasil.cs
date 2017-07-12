@@ -1328,15 +1328,15 @@ namespace BoletoNet
         /// HEADER do arquivo CNAB
         /// Gera o HEADER do arquivo remessa de acordo com o lay-out informado
         /// </summary>
-        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
+        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, IArquivoRemessa arquivo, int numeroArquivoRemessa)
         {
             try
             {
                 string _header = " ";
 
-                base.GerarHeaderRemessa(numeroConvenio, cedente, tipoArquivo, numeroArquivoRemessa);
+                base.GerarHeaderRemessa(numeroConvenio, cedente, arquivo, numeroArquivoRemessa);
 
-                switch (tipoArquivo)
+                switch (arquivo.TipoArquivo)
                 {
                     case TipoArquivo.CNAB240:
                         _header = GerarHeaderRemessaCNAB240(cedente, numeroArquivoRemessa);
@@ -1383,21 +1383,21 @@ namespace BoletoNet
         /// DETALHE do arquivo CNAB
         /// Gera o DETALHE do arquivo remessa de acordo com o lay-out informado
         /// </summary>
-        public override string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+        public override string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, IArquivoRemessa arquivo)
         {
             try
             {
                 string _detalhe = " ";
 
-                base.GerarDetalheRemessa(boleto, numeroRegistro, tipoArquivo);
+                base.GerarDetalheRemessa(boleto, numeroRegistro, arquivo);
 
-                switch (tipoArquivo)
+                switch (arquivo.TipoArquivo)
                 {
                     case TipoArquivo.CNAB240:
-                        _detalhe = GerarDetalheRemessaCNAB240(boleto, numeroRegistro, tipoArquivo);
+                        _detalhe = GerarDetalheRemessaCNAB240(boleto, numeroRegistro, arquivo.TipoArquivo);
                         break;
                     case TipoArquivo.CNAB400:
-                        _detalhe = GerarDetalheRemessaCNAB400(boleto, numeroRegistro, tipoArquivo);
+                        _detalhe = GerarDetalheRemessaCNAB400(boleto, numeroRegistro, arquivo.TipoArquivo);
                         break;
                     case TipoArquivo.Outro:
                         throw new Exception("Tipo de arquivo inexistente.");
@@ -1783,7 +1783,7 @@ namespace BoletoNet
             }
         }
 
-        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos)
+        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, IArquivoRemessa arquivo, int numeroArquivoRemessa, Boleto boletos)
         {
             throw new NotImplementedException("Função não implementada.");
         }
@@ -2198,8 +2198,6 @@ namespace BoletoNet
         {
             try
             {
-                base.GerarDetalheRemessa(boleto, numeroRegistro, tipoArquivo);
-                //
                 TRegistroEDI reg = new TRegistroEDI();
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0001, 001, 0, "7", '0'));                                       //001-001
                 #region Regra Tipo de Inscrição Cedente
