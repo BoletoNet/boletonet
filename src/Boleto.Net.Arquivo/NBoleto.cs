@@ -205,7 +205,6 @@ namespace BoletoNet.Arquivo
                 b.Sacado.Endereco.Cidade = "Niterói";
                 b.Sacado.Endereco.CEP = "24360080";
                 b.Sacado.Endereco.UF = "RJ";
-                b.Sacado.Endereco.Logradouro = "Rua Dr. Henrique Portugal";
                 b.Sacado.Endereco.Numero = "XX";
                 b.Sacado.Endereco.Complemento = "Casa";
 
@@ -479,7 +478,6 @@ namespace BoletoNet.Arquivo
                 end.Cidade = "Brasília- DF";
                 end.Complemento = "Quadra XX Conjunto XX Casa XX";
                 end.End = "Condominio de Brasilia - Quadra XX Conjunto XX Casa XX";
-                end.Logradouro = "Cond. Brasilia";
                 end.Numero = "55";
                 end.UF = "DF";
 
