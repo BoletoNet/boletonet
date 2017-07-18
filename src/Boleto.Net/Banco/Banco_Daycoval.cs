@@ -240,19 +240,16 @@ namespace BoletoNet
 				// Código da empresea, fornecido pelo banco
 			detalhe.Append(Utils.FitStringLength(boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, true));
 
-				// Número do documento interno
-			detalhe.Append(Utils.FitStringLength("0", 8, 8, '0', 0, true, true, true)); // Nosso número
-			detalhe.Append(Utils.FitStringLength(boleto.NossoNumero, 12, 12, '0', 0, true, true, true));
+            detalhe.Append(Utils.FitStringLength(boleto.NossoNumero, 8, 8, '0', 0, true, true, true)); // Nosso número
+            detalhe.Append(Utils.FitStringLength(boleto.NossoNumero, 13, 13, '0', 0, true, true, true)); 
 
-				// Nosso número do correspondente, mesmo do boleto
-			if (this._banco == null)
+            // Nosso número do correspondente, mesmo do boleto
+            if (this._banco == null)
 			{
 				this._banco = boleto.Banco;
 			}
 
 			this._banco.ValidaBoleto(boleto);
-
-			detalhe.Append(boleto.DigitoNossoNumero);
 
 			detalhe.Append(Utils.FitStringLength(string.Empty, 24, 24, ' ', 0, true, true, false)); // Uso do banco
 			detalhe.Append("4"); // TODO: Código de remessa
@@ -267,8 +264,9 @@ namespace BoletoNet
 			detalhe.Append("N"); // Indicação de aceite do título, sempre N
 			detalhe.Append(boleto.DataDocumento.ToString("ddMMyy"));
 			detalhe.Append(Utils.FitStringLength(string.Empty, 4, 4, '0', 0, true, true, true)); // Zeros
-			detalhe.Append(Utils.FitStringLength(boleto.JurosMora.ApenasNumeros(), 13, 13, '0', 0, true, true, true));
-			detalhe.Append(boleto.DataDesconto == DateTime.MinValue ? "000000" : boleto.DataDesconto.ToString("ddMMyy"));
+            // detalhe.Append(Utils.FitStringLength(boleto.JurosMora.ApenasNumeros(), 13, 13, '0', 0, true, true, true));
+            detalhe.Append(Utils.FitStringLength("0", 13, 13, '0', 0, true, true, true));
+            detalhe.Append(boleto.DataDesconto == DateTime.MinValue ? "000000" : boleto.DataDesconto.ToString("ddMMyy"));
 			detalhe.Append(Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 13, 13, '0', 0, true, true, true));
 			detalhe.Append(Utils.FitStringLength(boleto.IOF.ApenasNumeros(), 26, 26, '0', 0, true, true, true));
 			detalhe.Append(boleto.Sacado.CPFCNPJ.Length == 11 ? "01" : "02");
