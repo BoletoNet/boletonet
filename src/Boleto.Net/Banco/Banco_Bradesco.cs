@@ -481,9 +481,11 @@ namespace BoletoNet
                 //Nº Inscrição da Empresa ==> 004 a 017
                 detalhe.NumeroInscricao = registro.Substring(3, 14);
 
-                //Identificação da Empresa Cedente no Banco ==> 021 a 037
-                detalhe.Agencia = Utils.ToInt32(registro.Substring(24, 6));
-                detalhe.Conta = Utils.ToInt32(registro.Substring(30, 7));
+                //Identificação da Empresa Cedente no Banco ==> 021 a 037 = 17 (Igual remessa)
+                // 0 + Carteira 3 + Agência 5 + Conta 7 + Digito 1 = 17
+                // ex: 00090750315206870
+                detalhe.Agencia = Utils.ToInt32(registro.Substring(24, 5));
+                detalhe.Conta = Utils.ToInt32(registro.Substring(29, 7));
                 detalhe.DACConta = Utils.ToInt32(registro.Substring(36, 1));
 
                 //Nº Controle do Participante ==> 038 a 062
