@@ -1103,7 +1103,7 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Nome.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
 
                 //Endereço Completo (40, A)
-                _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.End.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
+                _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.EndComNumero.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
 
                 //1ª Mensagem (12, A)
                 /*Campo livre para uso da Empresa. A mensagem enviada nesse campo será impressa
