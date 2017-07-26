@@ -66,7 +66,9 @@ namespace BoletoNet
                         _IInstrucao = new Instrucao_Safra();
                         break;
                     //237 - Bradesco
+                    //707 - Daycoval
                     case 237:
+                    case 707:
                         _IInstrucao = new Instrucao_Bradesco();
                         break;
                     //347 - Sudameris
