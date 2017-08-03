@@ -2305,6 +2305,8 @@ namespace BoletoNet
                     string vDataVencimento = "000000";
                     if (!boleto.DataVencimento.Equals(DateTime.MinValue))
                         vDataVencimento = boleto.DataVencimento.ToString("dd/MM/yy");
+                    else
+                        throw new Exception("Data de inicio para Cobrança da Multa inválida.");
                     #endregion
 
                     reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0174, 001, 0, vCodigoMulta, '0'));                          //174 a 174      Código da Multa 1=Valor 
