@@ -941,7 +941,7 @@ namespace BoletoNet
 
         private string LerMotivoRejeicao(string codigorejeicao)
         {
-            var rejeicao = codigorejeicao;
+            var rejeicao = String.Empty;
 
             if (codigorejeicao.Length >= 2)
             {
