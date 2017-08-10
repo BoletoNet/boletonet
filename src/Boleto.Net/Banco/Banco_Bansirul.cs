@@ -92,7 +92,7 @@ namespace BoletoNet
 
         public override void FormataNumeroDocumento(Boleto boleto)
         {
-            throw new NotImplementedException("Função do fomata número do documento não implementada.");
+            throw new NotImplementedException("Função do formata número do documento não implementada.");
         }
 
         public override void FormataLinhaDigitavel(Boleto boleto)
@@ -117,9 +117,9 @@ namespace BoletoNet
                 ///   Autor.: Felipe Silveira - Transis Software
                 ///   Data..: 06/07/2017
                 /// </summary>
-                
-                //041M2.1AAAd1 CCCCC.CCNNNd2 NNNNN.041XXd3 V FFFF9999999999
- 
+
+                //041M2.1AAAd1 ACCCCC.CCNNd2 NNNNN.N40XXd3 V FFFF9999999999
+
                 #region Campo 1
 
                 //Campo 1
@@ -189,7 +189,7 @@ namespace BoletoNet
             }
             else
             {
-                //041M2.1AAAd1 ACCCCC.CCNNd2 NNNNN.N40XXd3 V FFFF9999999999
+                //041M2.1AAAd1 CCCCC.CCNNNd2 NNNNN.041XXd3 V FFFF9999999999
 
                 #region Campo 1
 
@@ -279,7 +279,7 @@ namespace BoletoNet
                 string nossoNumero = boleto.NossoNumero.Replace(".", "").Replace("-", "");
                 nossoNumero = nossoNumero.Substring(0, 8);
                 string codCedente = boleto.Cedente.Codigo.Substring(4, 7);// Os quatro primeiros digitos do código do cedente é sempre a agência
-                campoLivre = "21" + boleto.Cedente.ContaBancaria.Agencia.Substring(0, 3) + codCedente + nossoNumero + "40";
+                campoLivre = "21" + boleto.Cedente.ContaBancaria.Agencia + codCedente + nossoNumero + "40";
                 string ncCodBarra = CalcularNCCodBarras(campoLivre);
                 Int32.TryParse(ncCodBarra.Substring(0, 1), out _primDigito);
                 Int32.TryParse(ncCodBarra.Substring(1, 1), out _segDigito);
