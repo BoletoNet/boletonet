@@ -240,7 +240,7 @@ namespace BoletoNet
 				// Código da empresea, fornecido pelo banco
 			detalhe.Append(Utils.FitStringLength(boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, true));
 
-            detalhe.Append(Utils.FitStringLength(boleto.NossoNumero, 8, 8, '0', 0, true, true, true)); // Nosso número
+            detalhe.Append(Utils.FitStringLength("0", 8, 8, '0', 0, true, true, true)); // Nosso número
             detalhe.Append(Utils.FitStringLength(boleto.NossoNumero, 13, 13, '0', 0, true, true, true)); 
 
             // Nosso número do correspondente, mesmo do boleto
