@@ -359,7 +359,12 @@ img {
 
 .ebc {
 	width: 4px;
-	height: 440px;
+	height: 400px;
 	border-right: dotted 1px #000000;
 	margin-right: 4px;
+}
+.break {
+    display: block;
+    clear: both;
+    page-break-after: always;
 }

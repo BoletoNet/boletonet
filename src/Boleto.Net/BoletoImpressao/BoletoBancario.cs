@@ -816,18 +816,20 @@ namespace BoletoNet
         /// <param name="srcBarra">Local apontado pela imagem de barra.</param>
         /// <param name="srcCodigoBarra">Local apontado pela imagem do código de barras.</param>
         /// <returns>StringBuilder conténdo o código html do boleto bancário.</returns>
-        protected StringBuilder HtmlOffLine(string textoNoComecoDoEmail, string srcLogo, string srcBarra, string srcCodigoBarra, bool usaCSSPDF = false)
+        protected StringBuilder HtmlOffLine(string textoNoComecoDoEmail, string srcLogo, string srcBarra, string srcCodigoBarra, bool usaCSSPDF = false, bool imprimeHeader = true, bool imprimeFooter = true)
         {//protected StringBuilder HtmlOffLine(string srcCorte, string srcLogo, string srcBarra, string srcPonto, string srcBarraInterna, string srcCodigoBarra)
             this.OnLoad(EventArgs.Empty);
 
             StringBuilder html = new StringBuilder();
-            HtmlOfflineHeader(html, usaCSSPDF);
+            if (imprimeHeader)
+                HtmlOfflineHeader(html, usaCSSPDF);
             if (textoNoComecoDoEmail != null && textoNoComecoDoEmail != "")
             {
                 html.Append(textoNoComecoDoEmail);
             }
             html.Append(MontaHtml(srcLogo, srcBarra, "<img src=\"" + srcCodigoBarra + "\" alt=\"Código de Barras\" />"));
-            HtmlOfflineFooter(html);
+            if (imprimeFooter)
+                HtmlOfflineFooter(html);
             return html;
         }
 
@@ -838,14 +840,14 @@ namespace BoletoNet
         /// Monta o Header de um email com pelo menos um boleto dentro.
         /// </summary>
         /// <param name="saida">StringBuilder onde o conteudo sera salvo.</param>
-        protected static void HtmlOfflineHeader(StringBuilder html, bool usaCSSPDF = false)
+        protected static void HtmlOfflineHeader(StringBuilder html, bool usaCSSPDF = false, string titulo = "Boleto.Net")
         {
             html.Append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n");
             html.Append("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
             html.Append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n");
             html.Append("<meta charset=\"utf-8\"/>\n");
             html.Append("<head>");
-            html.Append("    <title>Boleto.Net</title>\n");
+            html.Append("    <title>" + titulo + "</title>\n");
 
             #region Css
             {
@@ -1194,49 +1196,61 @@ namespace BoletoNet
         /// de acordo com o padrão http://en.wikipedia.org/wiki/Data_URI_scheme
         /// </summary>
         /// <param name="convertLinhaDigitavelToImage">Converte a Linha Digitável para imagem, com o objetivo de evitar malwares.</param>
+        /// <param name="somenteHtmlBoleto">Quando true imprime apenas a table do boleto ignorando o CSS e o html/head/body. Utilizado para dimunir o tamanho do html quando imprimir mais de um boleto</param>
         /// <returns>Html do boleto gerado</returns>
         /// <desenvolvedor>Iuri André Stona</desenvolvedor>
         /// <criacao>23/01/2014</criacao>
         /// <alteracao>08/08/2014</alteracao>
 
-        public string MontaHtmlEmbedded(bool convertLinhaDigitavelToImage = false, bool usaCSSPDF = false)
+        public string MontaHtmlEmbedded(bool convertLinhaDigitavelToImage = false, bool usaCSSPDF = false, bool imprimeHeader = true,  bool imprimeFooter = true)
         {
             OnLoad(EventArgs.Empty);
-
-            var assembly = Assembly.GetExecutingAssembly();
-
-            string base64Logo = Convert.ToBase64String(ObterLogoDoBanco(CodigoBanco));
-            string fnLogo = string.Format("data:image/gif;base64,{0}", base64Logo);
-
-            var streamBarra = assembly.GetManifestResourceStream("BoletoNet.Imagens.barra.gif");
-            string base64Barra = Convert.ToBase64String(new BinaryReader(streamBarra).ReadBytes((int)streamBarra.Length));
-            string fnBarra = string.Format("data:image/gif;base64,{0}", base64Barra);
-
-            var cb = new C2of5i(Boleto.CodigoBarra.Codigo, 1, 50, Boleto.CodigoBarra.Codigo.Length);
-            string base64CodigoBarras = Convert.ToBase64String(cb.ToByte());
-            string fnCodigoBarras = string.Format("data:image/gif;base64,{0}", base64CodigoBarras);
-
-            if (convertLinhaDigitavelToImage)
+            Stream streamBarra = null;
+            try
             {
+                var assembly = Assembly.GetExecutingAssembly();
 
-                string linhaDigitavel = Boleto.CodigoBarra.LinhaDigitavel.Replace("  ", " ").Trim();
+                string base64Logo = Convert.ToBase64String(ObterLogoDoBanco(CodigoBanco));
+                string fnLogo = string.Format("data:image/gif;base64,{0}", base64Logo);
 
-                var imagemLinha = Utils.DrawText(linhaDigitavel, new Font("Arial", 30, FontStyle.Bold), Color.Black, Color.White);
-                string base64Linha = Convert.ToBase64String(Utils.ConvertImageToByte(imagemLinha));
+                streamBarra = assembly.GetManifestResourceStream("BoletoNet.Imagens.barra.gif");
+                string base64Barra = Convert.ToBase64String(new BinaryReader(streamBarra).ReadBytes((int)streamBarra.Length));
+                string fnBarra = string.Format("data:image/gif;base64,{0}", base64Barra);
 
-                string fnLinha = string.Format("data:image/gif;base64,{0}", base64Linha);
+                var cb = new C2of5i(Boleto.CodigoBarra.Codigo, 1, 50, Boleto.CodigoBarra.Codigo.Length);
+                string base64CodigoBarras = Convert.ToBase64String(cb.ToByte());
+                string fnCodigoBarras = string.Format("data:image/gif;base64,{0}", base64CodigoBarras);
 
-                Boleto.CodigoBarra.LinhaDigitavel = @"<img style=""max-width:420px; margin-bottom: 2px"" src=" + fnLinha + " />";
+                if (convertLinhaDigitavelToImage)
+                {
+
+                    string linhaDigitavel = Boleto.CodigoBarra.LinhaDigitavel.Replace("  ", " ").Trim();
+
+                    var imagemLinha = Utils.DrawText(linhaDigitavel, new Font("Arial", 30, FontStyle.Bold), Color.Black, Color.White);
+                    string base64Linha = Convert.ToBase64String(Utils.ConvertImageToByte(imagemLinha));
+
+                    string fnLinha = string.Format("data:image/gif;base64,{0}", base64Linha);
+
+                    Boleto.CodigoBarra.LinhaDigitavel = @"<img style=""max-width:420px; margin-bottom: 2px"" src=" + fnLinha + " />";
+                }
+
+                string s = HtmlOffLine(null, fnLogo, fnBarra, fnCodigoBarras, usaCSSPDF, imprimeHeader, imprimeFooter).ToString();
+
+                if (convertLinhaDigitavelToImage)
+                {
+                    s = s.Replace(".w500", "");
+                }
+
+                return s;
+
             }
-
-            string s = HtmlOffLine(null, fnLogo, fnBarra, fnCodigoBarras, usaCSSPDF).ToString();
-
-            if (convertLinhaDigitavelToImage)
+            finally
             {
-                s = s.Replace(".w500", "");
+                if (streamBarra != null)
+                {
+                    streamBarra.Close();
+                }
             }
-
-            return s;
         }
 
         public byte[] MontaBytesPDF(bool convertLinhaDigitavelToImage = false)
@@ -1264,32 +1278,44 @@ namespace BoletoNet
         /// <param name="tituloPDF">Título No Início do PDF</param>
         /// <param name="PretoBranco">Preto e Branco = true</param>
         /// <param name="convertLinhaDigitavelToImage">bool Converter a Linha Digitavel Em Imagem</param>
+        /// <param name="BoletosPorPagina">Quantidade de Boletos até o próximo LineBreak. Lembre de Utilizar o Zoom para ajustar a página</param>
+        /// <param name="ZoomPercent">Percentual da Scala do PDF. Para 3 Boletos na mesma Página com Carnê utilize 80%</param>				
         /// <returns>byte[], Vetor de bytes do PDF</returns>
-        public byte[] MontaBytesListaBoletosPDF(List<BoletoBancario> boletos, string tituloNaView = "", string CustomSwitches = "", string tituloPDF = "", bool PretoBranco = false, bool convertLinhaDigitavelToImage = false)
+        public byte[] MontaBytesListaBoletosPDF(List<BoletoBancario> boletos, string tituloNaView = "", string CustomSwitches = "", string tituloPDF = "", bool PretoBranco = false, bool convertLinhaDigitavelToImage = false, int BoletosPorPagina = 1, float ZoomPercent = 100)
         {
             StringBuilder htmlBoletos = new StringBuilder();
-            htmlBoletos.Append("<html><head><title>");
-            htmlBoletos.Append(tituloNaView);
-            htmlBoletos.Append("</title><style type='text/css' media='screen,print'>");
-            htmlBoletos.Append(".break{ display: block; clear: both; page-break-after: always;}");
-            htmlBoletos.Append("</style></head><body>");
+            HtmlOfflineHeader(htmlBoletos, true, tituloNaView);
+
             if (!string.IsNullOrEmpty(tituloPDF))
             {
                 htmlBoletos.Append("<br/><center><h1>");
                 htmlBoletos.Append(tituloPDF);
                 htmlBoletos.Append("</h1></center><br/>");
             }
+            int qtdeBoletosPagina = 0;
             foreach (BoletoBancario boleto in boletos)
             {
-                htmlBoletos.Append("<div class='break'>");
-                htmlBoletos.Append(boleto.MontaHtmlEmbedded(convertLinhaDigitavelToImage, true));
+                qtdeBoletosPagina++;
+
+                if (qtdeBoletosPagina % BoletosPorPagina == 0)
+                {
+                    htmlBoletos.Append("<div class='break'>");
+                    qtdeBoletosPagina = 0;
+                }
+                else
+                {
+                    htmlBoletos.Append("<div>");
+                }
+                htmlBoletos.Append(boleto.MontaHtmlEmbedded(convertLinhaDigitavelToImage, true, false, false));
                 htmlBoletos.Append("</div>");
             }
-            htmlBoletos.Append("</body></html>");
+            HtmlOfflineFooter(htmlBoletos);
+
             var converter = new NReco.PdfGenerator.HtmlToPdfConverter()
             {
-              CustomWkHtmlArgs = CustomSwitches,
-              Grayscale = PretoBranco
+                CustomWkHtmlArgs = CustomSwitches,
+                Grayscale = PretoBranco,
+                Zoom = ZoomPercent / 100
             };
             if (!string.IsNullOrEmpty(this.PdfToolPath))
             {
@@ -1317,9 +1343,21 @@ namespace BoletoNet
         /// <returns>bytes da logo</returns>
         public static byte[] ObterLogoDoBanco(short codigoBanco)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var streamLogo = assembly.GetManifestResourceStream(string.Format("BoletoNet.Imagens.{0}.jpg", codigoBanco.ToString("000")));
-            return new BinaryReader(streamLogo).ReadBytes((int)streamLogo.Length);
+            Stream streamLogo = null;
+            try
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                streamLogo = assembly.GetManifestResourceStream(string.Format("BoletoNet.Imagens.{0}.jpg", codigoBanco.ToString("000")));
+                return new BinaryReader(streamLogo).ReadBytes((int)streamLogo.Length);
+            }
+            finally
+            {
+                if (streamLogo != null)
+                {
+                    streamLogo.Close();
+                }
+            }
+
         }
 
         private void CopiarStream(Stream entrada, Stream saida)

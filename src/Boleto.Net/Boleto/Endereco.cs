@@ -13,7 +13,13 @@ namespace BoletoNet
         /// Exemplo: Rua, Av., Travessa...
         /// </remarks>
         /// </summary>        
-        public string Logradouro { get; set; }
+        public string Logradouro
+        {
+            get
+            {
+                return End;
+            }
+        }
 
         /// <summary>
         /// Define o endereço completo

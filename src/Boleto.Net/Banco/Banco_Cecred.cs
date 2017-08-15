@@ -721,11 +721,9 @@ namespace BoletoNet {
 
                 _trailer += Utils.FormatCode("", " ", 9);                               // Uso Exclusivo FEBRABAN/CNAB
 
-                var _numReg = numeroRegistro + 1;
-
                 // Totais
                 _trailer += "000001";                                                   // 018-023 Quantidade de Lotes do Arquivo
-                _trailer += Utils.FormatCode(_numReg.ToString(), "0", 6, true);  // 024-029 Quantidade de Registros do Arquivo
+                _trailer += Utils.FormatCode(numeroRegistro.ToString(), "0", 6, true);  // 024-029 Quantidade de Registros do Arquivo
                 _trailer += "000000";                                                   // 030-035 Qtde de Contas p/ Conc. (Lotes)
                 _trailer += Utils.FormatCode("", " ", 205);                             // 036-240 Uso Exclusivo FEBRABAN/CNAB
 
@@ -1139,68 +1137,6 @@ namespace BoletoNet {
         #endregion
 
         #region Arquivo Retorno 400
-        /// <summary>
-        /// Verifica o tipo de ocorrência para o arquivo remessa
-        /// </summary>
-        public string Ocorrencia(string codigo) {
-            switch (codigo) {
-                case "02":
-                    return "02-Confirmação de entrada de título";
-                case "03":
-                    return "03-Comando recusado (Motivo indicado na  posição 087/088)";
-                case "06":
-                    return "06-Liquidação Normal";
-                case "07":
-                    return "07-Liquidação por Conta";
-                case "08":
-                    return "08-Liquidação por Saldo";
-                case "09":
-                    return "09-Baixa de Titulo";
-                case "10":
-                    return "10-Baixa Solicitada";
-                case "11":
-                    return "11-Títulos em Ser";
-                case "12":
-                    return "12-Abatimento Concedido";
-                case "13":
-                    return "13-Abatimento Cancelado";
-                case "14":
-                    return "14-Alteração de Vencimento do título";
-                case "15":
-                    return "15-Liquidação em Cartório";
-                case "16":
-                    return "16-Confirmação de alteração de juros de mora";
-                case "17":
-                    return "17-Liquidação após baixa ou Título não registrado";
-                case "19":
-                    return "19-Confirmação de recebimento de instruções para protesto";
-                case "21":
-                    return "21-Alteração do Nome do Sacado";
-                case "22":
-                    return "22-Alteração do Endereço do Sacado";
-                case "23":
-                    return "23-Indicação de encaminhamento a cartório";
-                case "24":
-                    return "24-Sustar Protesto";
-                case "25":
-                    return "25-Dispensar Juros de mora";
-                case "26":
-                    return "26-Alteração do número do título dado pelo Cedente";
-                case "28":
-                    return "28-Manutenção de titulo vencido";
-                case "31":
-                    return "31-Conceder desconto";
-                case "96":
-                    return "96-Despesas de Protesto";
-                case "97":
-                    return "97-Despesas de Sustação de Protesto";
-                case "98":
-                    return "98-Débito de custas antecipadas";
-                default:
-                    return "";
-            }
-        }
-
         DetalheRetorno IBanco.LerDetalheRetornoCNAB400(string registro) {
             try {
 
@@ -1239,7 +1175,7 @@ namespace BoletoNet {
                 detalhe.CodigoOcorrencia = Utils.ToInt32(reg.Comando);
 
                 //Descrição da ocorrência
-                detalhe.DescricaoOcorrencia = this.Ocorrencia(reg.Comando);
+                detalhe.DescricaoOcorrencia = new CodigoMovimento(85, detalhe.CodigoOcorrencia).Descricao;
 
                 //
                 int dataLiquidacao = Utils.ToInt32(reg.DataLiquidacao);

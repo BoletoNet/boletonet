@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BoletoNet
 {
-    public class Instrucao : AbstractInstrucao, IInstrucao
+    public class Instrucao : IInstrucao
     {
 
         #region Variaveis
@@ -66,7 +66,9 @@ namespace BoletoNet
                         _IInstrucao = new Instrucao_Safra();
                         break;
                     //237 - Bradesco
+                    //707 - Daycoval
                     case 237:
+                    case 707:
                         _IInstrucao = new Instrucao_Bradesco();
                         break;
                     //347 - Sudameris
@@ -118,25 +120,25 @@ namespace BoletoNet
 
         #region Propriedades da interface
 
-        public override IBanco Banco
+        public IBanco Banco
         {
             get { return _IInstrucao.Banco; }
             set { _IInstrucao.Banco = value; }
         }
 
-        public override int Codigo
+        public int Codigo
         {
             get { return _IInstrucao.Codigo; }
             set { _IInstrucao.Codigo = value; }
         }
 
-        public override string Descricao
+        public string Descricao
         {
             get { return _IInstrucao.Descricao; }
             set { _IInstrucao.Descricao = value; }
         }
 
-        public override int QuantidadeDias
+        public int QuantidadeDias
         {
             get { return _IInstrucao.QuantidadeDias; }
             set { _IInstrucao.QuantidadeDias = value; }
@@ -146,7 +148,7 @@ namespace BoletoNet
 
         #region Métodos de interface
 
-        public override void Valida()
+        public void Valida()
         {
             try
             {

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BoletoNet
 {
-    public class CodigoTarifas : AbstractCodigoTarifas, ICodigoTarifas
+    public class CodigoTarifas : ICodigoTarifas
     {
 
         #region Variaveis
@@ -15,17 +15,18 @@ namespace BoletoNet
 
         #region Propriedades da interface
 
-        public override IBanco Banco
+        public IBanco Banco
         {
             get { return _ICodigoTarifas.Banco; }
         }
 
-        public override int Codigo
+        public int Codigo
         {
             get { return _ICodigoTarifas.Codigo; }
+            set { _ICodigoTarifas.Codigo = value; }
         }
 
-        public override string Descricao
+        public string Descricao
         {
             get { return _ICodigoTarifas.Descricao; }
         }

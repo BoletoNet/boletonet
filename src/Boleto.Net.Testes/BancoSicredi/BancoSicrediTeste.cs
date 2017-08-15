@@ -102,10 +102,14 @@ namespace Boleto.Net.Testes.BancoSicredi
 
         private static string GerarNossoNumero()
         {
-            var prefix = DateTime.Now.Year.ToString().Substring(2) + "20";
-
+            
+            var prefix = DateTime.Now.Year.ToString().Substring(2) + "2";
             var rnd = new Random(DateTime.Now.Millisecond);
-            return prefix + rnd.Next(0, 999).ToString();
+
+            // 17/200004-1
+            string nr = prefix + rnd.Next(0, 999).ToString().PadLeft(5, '0'); // Tamanho 8 - Digito é gerado ao validar o boleto
+
+            return nr;
         }
         #endregion
         

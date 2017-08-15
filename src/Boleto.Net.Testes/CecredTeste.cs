@@ -19,7 +19,6 @@ namespace Boleto.Net.Testes {
                 Complemento = "CASA",
                 Email = "cedente@teste.com.br",
                 End = "Teste CEDENTE",
-                Logradouro = "Rua",
                 Numero = "999",
                 UF = "SC"
             };
@@ -36,7 +35,6 @@ namespace Boleto.Net.Testes {
                 Complemento = "CASA",
                 Email = "sacado@teste.com.br",
                 End = "Teste SACADO",
-                Logradouro = "Rua",
                 Numero = "999",
                 UF = "SC"
             };
