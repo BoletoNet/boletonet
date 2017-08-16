@@ -519,13 +519,13 @@ namespace BoletoNet {
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0058, 001, 0, "1", '0'));                                           // posição 058-058 (001) - Código Carteira '1'  =  Cobrança Simples
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0059, 001, 0, "1", '0'));                                           // posição 059-059 (001) - Forma de Cadastr. do Título no Banco '1'  =  Com Cadastramento (Cobrança Registrada)
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0060, 001, 0, "1", '0'));                                           // posição 060-060 (001) - Tipo de Documento
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0061, 001, 0, "2", '0'));                                           // posição 061-061 (001) - Identificação da Emissão do Bloqueto (1=Banco Emite, 2=Cliente Emite)
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0062, 001, 0, "2", '0'));                                           // posição 062-062 (001) - Identificação da Distribuição (1=Banco Distribui, '2' = Cliente Distribui, 3=Banco envia e-mail, 4=Banco envia SMS)
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0061, 001, 0, boleto.Emissor, '0'));                                // posição 061-061 (001) - Identificação da Emissão do Bloqueto (1=Banco Emite, 2=Cliente Emite)
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0062, 001, 0, boleto.Expedidor, '0'));                              // posição 062-062 (001) - Identificação da Distribuição (1=Banco Distribui, '2' = Cliente Distribui, 3=Banco envia e-mail, 4=Banco envia SMS)
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0063, 015, 0, boleto.NumeroDocumento, ' '));                        // posição 063-073 (015) - Número do Documento de Cobrança
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAAAA_________, 0078, 008, 0, boleto.DataVencimento, ' '));                         // posição 078-085 (008) - Data de Vencimento do Título
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0086, 015, 2, boleto.ValorBoleto, '0'));                            // posição 086-100 (015)- Valor Nominal do Título
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0101, 005, 0, boleto.Cedente.ContaBancaria.Agencia, '0'));          // posição 101-105 (005) - AEC = Agência Encarregada da Cobrança
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0106, 001, 0, boleto.Cedente.ContaBancaria.DigitoAgencia.ToUpper(), ' ')); // posição 106-106 (001) - Dígito Verificador da Agência
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0101, 005, 0, "0", '0'));                                           // posição 101-105 (005) - AEC = Agência Encarregada da Cobrança - Deixar campo zerado, pois será preenchido no retorno bancário.
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0106, 001, 0, "0", ' '));                                           // posição 106-106 (001) - Dígito Verificador da Agência
                 string EspDoc = boleto.EspecieDocumento.Sigla.Equals("DM") ? "02" : boleto.EspecieDocumento.Codigo;
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0107, 002, 0, EspDoc, '0'));                                        // posição 107-108 (002) - Espécie do Título
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0109, 001, 0, boleto.Aceite, ' '));                                 // posição 109-109 (001) - Identific. de Título Aceito/Não Aceito
@@ -547,9 +547,28 @@ namespace BoletoNet {
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0151, 015, 2, boleto.ValorDesconto, '0'));                          // posição 151-165 (015)- Valor/Percentual a ser Concedido
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0166, 015, 2, boleto.IOF, '0'));                                    // posição 166-180 (015)- Valor do IOF a ser concedido
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0181, 015, 2, boleto.Abatimento, '0'));                             // posição 181-195 (015)- Valor do Abatimento
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0196, 025, 0, boleto.NumeroDocumento, ' '));                        // posição 196-220 (025)- Identificação do Título na Empresa. Informar o Número do Documento - Seu Número (mesmo das posições 63-73 do Segmento P)                
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0221, 001, 0, "3", '0'));                                           // posição 221-221 (001) -  Código para protesto  - ‘1’ = Protestar. "3" = Não Protestar. "9" = Cancelamento Protesto Automático
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0222, 002, 0, "00", '0'));                                          // posição 222-223 (002) -  Número de Dias para Protesto                
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0196, 025, 0, Utils.ToInt32(boleto.NossoNumero), ' '));             // posição 196-220 (025)- Identificação do Título na Empresa. Informar o Número do Documento - Seu Número (mesmo das posições 63-73 do Segmento P)                
+
+                #region PROTESTO
+                // '1' = Protestar Dias Corridos (No Sistema Cecred o prazo para protesto é de 05 a 15).
+                // '2' = Negativação de boletos via Serasa(No Sistema Cecred o prazo para protesto é de 05 a 15).
+                // '3' = Não Protestar
+
+                //3 = Não Protestar
+                string vInstrucaoProtesto = "3";
+                int vDiasProtesto = 0;
+
+                foreach (Instrucao_Cecred instrucao in boleto.Instrucoes)
+                {
+                    vInstrucaoProtesto = instrucao.Codigo.ToString();
+                    vDiasProtesto = instrucao.QuantidadeDias;
+                    break;
+                }
+
+                #endregion
+
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0221, 001, 0, vInstrucaoProtesto, '0'));                            // posição 221-221 (001) -  Código para protesto  - ‘1’ = Protestar. "3" = Não Protestar. "9" = Cancelamento Protesto Automático
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0222, 002, 0, vDiasProtesto, '0'));                                 // posição 222-223 (002) -  Número de Dias para Protesto                
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0224, 001, 0, "2", '0'));                                           // posição 224-224 (001) -  Código para Baixa/Devolução ‘1’ = Baixar / Devolver. "2" = Não Baixar / Não Devolver
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0225, 003, 0, "   ", ' '));                                         // posição 225-227 (003) - Número de Dias para Baixa/Devolução
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0228, 002, 0, "09", '0'));                                          // posição 228-229 (002) - Código da Moeda. Informar fixo: ‘09’ = REAL
