@@ -65,6 +65,8 @@ namespace BoletoNet
         private short _modalidadeCobranca = 0;
         private short _numeroDiasBaixa = 0;
 		private string _numeroControle;
+        private int _emissor = 2;
+        private int _expedidor = 2;
 
 		private string _tipoModalidade = string.Empty;
 		private Remessa _remessa;
@@ -581,6 +583,24 @@ namespace BoletoNet
         {
             get { return _numeroControle; }
             set { _numeroControle = value; }
+        }
+
+        /// <summary> 
+        /// Responsavel pela emissao do boleto. 1-Banco / 2-Empresa.
+        /// </summary>        
+        public int Emissor
+        {
+            get { return _emissor; }
+            set { _emissor = value; }
+        }
+
+        /// <summary> 
+        /// Responsavel pela distribuição do boleto.  1-Banco / 2-Empresa.
+        /// </summary>        
+        public int Expedidor
+        {
+            get { return _expedidor; }
+            set { _expedidor = value; }
         }
 
         public IBancoCarteira BancoCarteira { get; set; }
