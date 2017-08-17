@@ -1540,7 +1540,13 @@ namespace BoletoNet
                 if (boleto.ValorDesconto > 0)
                 {
                     _segmentoP += "1";
-                    _segmentoP += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
+                    //Alterado por Suélton - 14/07/2017 
+                    //Implementação da data limite para o desconto por antecipação
+                    _segmentoP +=
+                        Utils.FitStringLength(
+                            boleto.DataDesconto == DateTime.MinValue
+                                ? boleto.DataVencimento.ToString("ddMMyy")
+                                : boleto.DataDesconto.ToString("ddMMyy"), 8, 8, '0', 0, true, true, false);
                     _segmentoP += Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 }
                 else
