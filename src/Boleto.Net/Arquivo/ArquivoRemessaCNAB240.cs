@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace BoletoNet
 {
@@ -148,7 +149,7 @@ namespace BoletoNet
                             numeroRegistro++;
                             numeroRegistroDetalhe++;
 
-                            if (boleto.ValorMulta > 0 || boleto.PercMulta > 0)
+                            if (boleto.ValorMulta > 0 || boleto.PercMulta > 0 || boleto.Instrucoes.Where(o => o.Codigo.Equals(200)).Count() > 0)
                             {
                                 strline = boleto.Banco.GerarDetalheSegmentoRRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
                                 incluiLinha.WriteLine(strline);
