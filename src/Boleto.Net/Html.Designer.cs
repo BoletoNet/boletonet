@@ -375,9 +375,9 @@ namespace BoletoNet {
         ///				&lt;tr class=&quot;BHead&quot;&gt;
         ///						&lt;td class=&quot;imgLogo Al&quot;&gt;&lt;img src=&quot;@URLIMAGEMLOGO&quot; style=&quot;height: @ALTURALOGOEMMILIMETROSmm!important;width:auto!important;&quot;  /&gt;&lt;/td&gt;
         ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
-        ///						&lt;td class=&quot;w65 Ab bc Ac&quot;&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
+        ///						&lt;td class=&quot;w65 Ab bc Ac &quot;&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
         ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
-        ///						&lt;td class=&quot;Ar ld&quot; style=&quot;width: 600px&quot; valign=&quot;bottom&quot;&gt;@LINHADIGITAVEL&lt;/td&gt;
+        ///						&lt;td class=&quot;Ar ld @CODBARRABANCO104&quot; style=&quot;width: 600px&quot; valign=&quot;bottom&quot;&gt;@LINHADIGITAVEL&lt;/td&gt;
         ///				&lt;/tr&gt;
         ///		&lt;/table&gt;.
         /// </summary>
@@ -636,9 +636,9 @@ namespace BoletoNet {
         ///				&lt;tr class=&quot;BHead&quot;&gt;
         ///						&lt;td class=&quot;imgLogo Al&quot;&gt;&lt;img src=&quot;@URLIMGCEDENTE&quot; style=&quot;height: @ALTURALOGOEMMILIMETROSmm!important;width:auto!important;&quot; /&gt;&lt;/td&gt;
         ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
-        ///						&lt;td class=&quot;w65 Ab bc Ac&quot;&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
+        ///						&lt;td class=&quot;w65 Ab bc Ac &quot;&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
         ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
-        ///						&lt;td class=&quot;Ar Ab ld&quot; style=&quot;width: 600px&quot;&gt;@LINHADIGITAVEL&lt;/td&gt;
+        ///						&lt;td class=&quot;Ar Ab ld @CODBARRABANCO104&quot; style=&quot;width: 600px&quot;&gt;@LINHADIGITAVEL&lt;/td&gt;
         ///				&lt;/tr&gt;
         ///		&lt;/table&gt;.
         /// </summary>

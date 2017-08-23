@@ -741,6 +741,7 @@ namespace BoletoNet
                 .Replace("@AUTENTICACAOMECANICA", "")
                 .Replace("@USODOBANCO", Boleto.UsoBanco)
                 .Replace("@IMAGEMCODIGOBARRA", imagemCodigoBarras)
+                .Replace("@CODBARRABANCO104", Boleto.Banco.Codigo == 104 ? "cod-barra-banco-104" : "") // Banco Caixa
                 .Replace("@ACEITE", Boleto.Aceite)
                 .Replace("@LABELSAC", _ibanco.LabelSAC)
                 .ToString()
