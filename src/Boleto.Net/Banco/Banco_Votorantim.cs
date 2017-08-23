@@ -93,6 +93,21 @@ namespace BoletoNet
             string valorBoleto = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
             valorBoleto = Utils.FormatCode(valorBoleto, 10);
 
+
+            /*
+Posição|Tamanho|Picture|Conteúdo
+----------------------------------
+01-03|03|9 (03)|Identificação do Banco = 655
+04-04|01|9 (01)|Código da moeda = 9 (real)
+05-05|01|9 (01)|DV do código de barras (cálculo abaixo)
+06-09|04|9 (04)|Fator de vencimento
+10-19|10|9 (08)V99|Valor nominal
+20-29|10|9 (10)|Código do Convênio padrão Votorantim
+30-32|03|9 (03)|Carteira|
+33-42|13|9 (10)|Nosso Número com DV
+43-44|01|9 (02)|Fixo “00”
+             */
+
             boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}{5}{6}{7}",
                 Utils.FormatCode(Codigo.ToString(), 3),
                 boleto.Moeda,
