@@ -439,7 +439,7 @@ namespace BoletoNet
                 _header.Append(Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false)); //Posição 047 a 076
                 _header.Append(Utils.FitStringLength("756BANCOOBCED", 18, 18, ' ', 0, true, true, false)); //Posição 077 a 094
                 _header.Append(DateTime.Now.ToString("ddMMyy")); //Posição 095 a 100
-                _header.Append(Utils.FitStringLength(Convert.ToString(cedente.NumeroSequencial), 7, 7, '0', 0, true, true, true)); //Posição 101 a 107
+                _header.Append(Utils.FitStringLength(Convert.ToString(numeroArquivoRemessa), 7, 7, '0', 0, true, true, true)); //Posição 101 a 107
                 _header.Append(new string(' ', 287)); //Posição 108 a 394
                 _header.Append("000001"); //Posição 395 a 400
 
@@ -553,7 +553,15 @@ namespace BoletoNet
                 _detalhe.Append("00000"); //Posição 090 a 094
                 _detalhe.Append("0"); //Posição 095
                 _detalhe.Append(Utils.FitStringLength(boleto.Cedente.NumeroBordero.ToString(), 6, 6, '0', 0, true, true, true)); //Posição 096 a 101
-                _detalhe.Append(new string(' ', 5)); //Posição 102 a 106
+                _detalhe.Append(new string(' ', 4)); //Posição 102 a 105
+
+                // Tipo de emissão"Tipo de Emissão: 1 - Cooperativa 2 - Cliente"
+                var tipoDeEmissao = "1";
+                if (boleto.ApenasRegistrar)
+                    tipoDeEmissao = "2";
+
+                _detalhe.Append(Utils.FitStringLength(tipoDeEmissao, 1, 1, '0', 0, true, true, true)); // Posição 106 a 106
+
                 _detalhe.Append(Utils.FitStringLength(boleto.TipoModalidade, 2, 2, '0', 0, true, true, true));  //Posição 107 a 108
                 _detalhe.Append(Utils.FitStringLength(boleto.Remessa.CodigoOcorrencia, 2, 2, '0', 0, true, true, true)); //Posição 109 a 110 - (1)REGISTRO DE TITULOS (2)Solicitação de Baixa
                 _detalhe.Append(Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, '0', 0, true, true, true)); //Posição 111 a 120
