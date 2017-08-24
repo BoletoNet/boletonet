@@ -1545,8 +1545,8 @@ namespace BoletoNet
                     _segmentoP +=
                         Utils.FitStringLength(
                             boleto.DataDesconto == DateTime.MinValue
-                                ? boleto.DataVencimento.ToString("ddMMyy")
-                                : boleto.DataDesconto.ToString("ddMMyy"), 8, 8, '0', 0, true, true, false);
+                                ? boleto.DataVencimento.ToString("ddMMyyyy")
+                                : boleto.DataDesconto.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
                     _segmentoP += Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 }
                 else
