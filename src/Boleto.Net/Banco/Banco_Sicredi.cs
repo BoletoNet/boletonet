@@ -939,6 +939,177 @@ namespace BoletoNet
             }
         }
 
+        private string LerMotivoRejeicao(string codigorejeicao)
+        {
+            var rejeicao = String.Empty;
+
+            if (codigorejeicao.Length >= 2)
+            {
+                #region LISTA DE MOTIVOS
+                List<String> ocorrencias = new List<string>();
+
+                ocorrencias.Add("01-Código do banco inválido");
+                ocorrencias.Add("02-Código do registro detalhe inválido");
+                ocorrencias.Add("03-Código da ocorrência inválido");
+                ocorrencias.Add("04-Código de ocorrência não permitida para a carteira");
+                ocorrencias.Add("05-Código de ocorrência não numérico");
+                ocorrencias.Add("07-Cooperativa/agência/conta/dígito inválidos");
+                ocorrencias.Add("08-Nosso número inválido");
+                ocorrencias.Add("09-Nosso número duplicado");
+                ocorrencias.Add("10-Carteira inválida");
+                ocorrencias.Add("14-Título protestado");
+                ocorrencias.Add("15-Cooperativa/carteira/agência/conta/nosso número inválidos");
+                ocorrencias.Add("16-Data de vencimento inválida");
+                ocorrencias.Add("17-Data de vencimento anterior à data de emissão");
+                ocorrencias.Add("18-Vencimento fora do prazo de operação");
+                ocorrencias.Add("20-Valor do título inválido");
+                ocorrencias.Add("21-Espécie do título inválida");
+                ocorrencias.Add("22-Espécie não permitida para a carteira");
+                ocorrencias.Add("24-Data de emissão inválida");
+                ocorrencias.Add("29-Valor do desconto maior/igual ao valor do título");
+                ocorrencias.Add("31-Concessão de desconto - existe desconto anterior");
+                ocorrencias.Add("33-Valor do abatimento inválido");
+                ocorrencias.Add("34-Valor do abatimento maior/igual ao valor do título");
+                ocorrencias.Add("36-Concessão de abatimento - existe abatimento anterior");
+                ocorrencias.Add("38-Prazo para protesto inválido");
+                ocorrencias.Add("39-Pedido para protesto não permitido para o título");
+                ocorrencias.Add("40-Título com ordem de protesto emitida");
+                ocorrencias.Add("41-Pedido cancelamento/sustação sem instrução de protesto");
+                ocorrencias.Add("44-Cooperativa de crédito/agência beneficiária não prevista");
+                ocorrencias.Add("45-Nome do pagador inválido");
+                ocorrencias.Add("46-Tipo/número de inscrição do pagador inválidos");
+                ocorrencias.Add("47-Endereço do pagador não informado");
+                ocorrencias.Add("48-CEP irregular");
+                ocorrencias.Add("49-Número de Inscrição do pagador/avalista inválido");
+                ocorrencias.Add("50-Pagador/avalista não informado");
+                ocorrencias.Add("60-Movimento para título não cadastrado");
+                ocorrencias.Add("63-Entrada para título já cadastrado");
+                ocorrencias.Add("A -Aceito");
+                ocorrencias.Add("A1-Praça do pagador não cadastrada.");
+                ocorrencias.Add("A2-Tipo de cobrança do título divergente com a praça do pagador.");
+                ocorrencias.Add("A3-Cooperativa/agência depositária divergente: atualiza o cadastro de praças da Coop./agência beneficiária");
+                ocorrencias.Add("A4-Beneficiário não cadastrado ou possui CGC/CIC inválido");
+                ocorrencias.Add("A5-Pagador não cadastrado");
+                ocorrencias.Add("A6-Data da instrução/ocorrência inválida");
+                ocorrencias.Add("A7-Ocorrência não pode ser comandada");
+                ocorrencias.Add("A8-Recebimento da liquidação fora da rede Sicredi - via compensação eletrônica");
+                ocorrencias.Add("B4-Tipo de moeda inválido");
+                ocorrencias.Add("B5-Tipo de desconto/juros inválido");
+                ocorrencias.Add("B6-Mensagem padrão não cadastrada");
+                ocorrencias.Add("B7-Seu número inválido");
+                ocorrencias.Add("B8-Percentual de multa inválido");
+                ocorrencias.Add("B9-Valor ou percentual de juros inválido");
+                ocorrencias.Add("C1-Data limite para concessão de desconto inválida");
+                ocorrencias.Add("C2-Aceite do título inválido");
+                ocorrencias.Add("C3-Campo alterado na instrução “31 – alteração de outros dados” inválido");
+                ocorrencias.Add("C4-Título ainda não foi confirmado pela centralizadora");
+                ocorrencias.Add("C5-Título rejeitado pela centralizadora");
+                ocorrencias.Add("C6-Título já liquidado");
+                ocorrencias.Add("C7-Título já baixado");
+                ocorrencias.Add("C8-Existe mesma instrução pendente de confirmação para este título");
+                ocorrencias.Add("C9-Instrução prévia de concessão de abatimento não existe ou não confirmada");
+                ocorrencias.Add("D -Desprezado");
+                ocorrencias.Add("D1-Título dentro do prazo de vencimento (em dia);");
+                ocorrencias.Add("D2-Espécie de documento não permite protesto de título");
+                ocorrencias.Add("D3-Título possui instrução de baixa pendente de confirmação");
+                ocorrencias.Add("D4-Quantidade de mensagens padrão excede o limite permitido");
+                ocorrencias.Add("D5-Quantidade inválida no pedido de boletos pré-impressos da cobrança sem registro");
+                ocorrencias.Add("D6-Tipo de impressão inválida para cobrança sem registro");
+                ocorrencias.Add("D7-Cidade ou Estado do pagador não informado");
+                ocorrencias.Add("D8-Seqüência para composição do nosso número do ano atual esgotada");
+                ocorrencias.Add("D9-Registro mensagem para título não cadastrado");
+                ocorrencias.Add("E2-Registro complementar ao cadastro do título da cobrança com e sem registro não cadastrado");
+                ocorrencias.Add("E3-Tipo de postagem inválido, diferente de S, N e branco");
+                ocorrencias.Add("E4-Pedido de boletos pré-impressos");
+                ocorrencias.Add("E5-Confirmação/rejeição para pedidos de boletos não cadastrado");
+                ocorrencias.Add("E6-Pagador/avalista não cadastrado");
+                ocorrencias.Add("E7-Informação para atualização do valor do título para protesto inválido");
+                ocorrencias.Add("E8-Tipo de impressão inválido, diferente de A, B e branco");
+                ocorrencias.Add("E9-Código do pagador do título divergente com o código da cooperativa de crédito");
+                ocorrencias.Add("F1-Liquidado no sistema do cliente");
+                ocorrencias.Add("F2-Baixado no sistema do cliente");
+                ocorrencias.Add("F3-Instrução inválida, este título está caucionado/descontado");
+                ocorrencias.Add("F4-Instrução fixa com caracteres inválidos");
+                ocorrencias.Add("F6-Nosso número / número da parcela fora de seqüência – total de parcelas inválido");
+                ocorrencias.Add("F7-Falta de comprovante de prestação de serviço");
+                ocorrencias.Add("F8-Nome do beneficiário incompleto / incorreto.");
+                ocorrencias.Add("F9-CNPJ / CPF incompatível com o nome do pagador / Sacador Avalista");
+                ocorrencias.Add("G1-CNPJ / CPF do pagador Incompatível com a espécie");
+                ocorrencias.Add("G2-Título aceito: sem a assinatura do pagador");
+                ocorrencias.Add("G3-Título aceito: rasurado ou rasgado");
+                ocorrencias.Add("G4-Título aceito: falta título (cooperativa/ag. beneficiária deverá enviá-lo);");
+                ocorrencias.Add("G5-Praça de pagamento incompatível com o endereço");
+                ocorrencias.Add("G6-Título aceito: sem endosso ou beneficiário irregular");
+                ocorrencias.Add("G7-Título aceito: valor por extenso diferente do valor numérico");
+                ocorrencias.Add("G8-Saldo maior que o valor do título");
+                ocorrencias.Add("G9-Tipo de endosso inválido");
+                ocorrencias.Add("H1-Nome do pagador incompleto / Incorreto");
+                ocorrencias.Add("H2-Sustação judicial");
+                ocorrencias.Add("H3-Pagador não encontrado");
+                ocorrencias.Add("H4-Alteração de carteira");
+                ocorrencias.Add("H5-Recebimento de liquidação fora da rede Sicredi – VLB Inferior – Via Compensação");
+                ocorrencias.Add("H6-Recebimento de liquidação fora da rede Sicredi – VLB Superior – Via Compensação");
+                ocorrencias.Add("H7-Espécie de documento necessita beneficiário ou avalista PJ");
+                ocorrencias.Add("H8-Recebimento de liquidação fora da rede Sicredi – Contingência Via Compe");
+                ocorrencias.Add("H9-Dados do título não conferem com disquete");
+                ocorrencias.Add("I1-Pagador e Sacador Avalista são a mesma pessoa");
+                ocorrencias.Add("I2-Aguardar um dia útil após o vencimento para protestar");
+                ocorrencias.Add("I3-Data do vencimento rasurada");
+                ocorrencias.Add("I4-Vencimento – extenso não confere com número");
+                ocorrencias.Add("I5-Falta data de vencimento no título");
+                ocorrencias.Add("I6-DM/DMI sem comprovante autenticado ou declaração");
+                ocorrencias.Add("I7-Comprovante ilegível para conferência e microfilmagem");
+                ocorrencias.Add("I8-Nome solicitado não confere com emitente ou pagador");
+                ocorrencias.Add("I9-Confirmar se são 2 emitentes. Se sim, indicar os dados dos 2");
+                ocorrencias.Add("J1-Endereço do pagador igual ao do pagador ou do portador");
+                ocorrencias.Add("J2-Endereço do apresentante incompleto ou não informado");
+                ocorrencias.Add("J3-Rua/número inexistente no endereço");
+                ocorrencias.Add("J4-Falta endosso do favorecido para o apresentante");
+                ocorrencias.Add("J5-Data da emissão rasurada");
+                ocorrencias.Add("J6-Falta assinatura do pagador no título");
+                ocorrencias.Add("J7-Nome do apresentante não informado/incompleto/incorreto");
+                ocorrencias.Add("J8-Erro de preenchimento do titulo");
+                ocorrencias.Add("J9-Titulo com direito de regresso vencido");
+                ocorrencias.Add("K1-Titulo apresentado em duplicidade");
+                ocorrencias.Add("K2-Titulo já protestado");
+                ocorrencias.Add("K3-Letra de cambio vencida – falta aceite do pagador");
+                ocorrencias.Add("K4-Falta declaração de saldo assinada no título");
+                ocorrencias.Add("K5-Contrato de cambio – Falta conta gráfica");
+                ocorrencias.Add("K6-Ausência do documento físico");
+                ocorrencias.Add("K7-Pagador falecido");
+                ocorrencias.Add("K8-Pagador apresentou quitação do título");
+                ocorrencias.Add("K9-Título de outra jurisdição territorial");
+                ocorrencias.Add("L1-Título com emissão anterior a concordata do pagador");
+                ocorrencias.Add("L2-Pagador consta na lista de falência");
+                ocorrencias.Add("L3-Apresentante não aceita publicação de edital");
+                ocorrencias.Add("L4-Dados do Pagador em Branco ou inválido");
+                ocorrencias.Add("L5-Código do Pagador na agência beneficiária está duplicado");
+                ocorrencias.Add("M1-Reconhecimento da dívida pelo pagador");
+                ocorrencias.Add("M2-Não reconhecimento da dívida pelo pagador");
+                ocorrencias.Add("M3-Inclusão de desconto 2 e desconto 3 inválida");
+                ocorrencias.Add("X0-Pago com cheque");
+                ocorrencias.Add("X1-Regularização centralizadora – Rede Sicredi");
+                ocorrencias.Add("X2-Regularização centralizadora – Compensação");
+                ocorrencias.Add("X3-Regularização centralizadora – Banco correspondente");
+                ocorrencias.Add("X4-Regularização centralizadora - VLB Inferior - via compensação");
+                ocorrencias.Add("X5-Regularização centralizadora - VLB Superior - via compensação");
+                ocorrencias.Add("X6-Pago com cheque – bloqueado 24 horas");
+                ocorrencias.Add("X7-Pago com cheque – bloqueado 48 horas");
+                ocorrencias.Add("X8-Pago com cheque – bloqueado 72 horas");
+                ocorrencias.Add("X9-Pago com cheque – bloqueado 96 horas");
+                ocorrencias.Add("XA-Pago com cheque – bloqueado 120 horas");
+                ocorrencias.Add("XB-Pago com cheque – bloqueado 144 horas");
+                #endregion
+
+                var ocorrencia = (from s in ocorrencias where s.Substring(0, 2) == codigorejeicao.Substring(0, 2) select s).FirstOrDefault();
+
+                if (ocorrencia != null)
+                    rejeicao = ocorrencia;
+            }
+
+            return rejeicao;
+        }
+
         public override DetalheRetorno LerDetalheRetornoCNAB400(string registro)
         {
             try
@@ -1023,7 +1194,7 @@ namespace BoletoNet
                 //
                 detalhe.IOF = 0;
                 //Motivos das Rejeições para os Códigos de Ocorrência
-                detalhe.MotivosRejeicao = string.Empty;
+                detalhe.MotivosRejeicao = LerMotivoRejeicao(detalhe.MotivoCodigoOcorrencia);
                 //Número do Cartório
                 detalhe.NumeroCartorio = 0;
                 //Número do Protocolo

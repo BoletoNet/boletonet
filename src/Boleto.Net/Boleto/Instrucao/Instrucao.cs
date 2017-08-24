@@ -66,7 +66,9 @@ namespace BoletoNet
                         _IInstrucao = new Instrucao_Safra();
                         break;
                     //237 - Bradesco
+                    //707 - Daycoval
                     case 237:
+                    case 707:
                         _IInstrucao = new Instrucao_Bradesco();
                         break;
                     //347 - Sudameris
@@ -103,6 +105,10 @@ namespace BoletoNet
                     //748 - Sicredi
                     case 748:
                         _IInstrucao = new Instrucao_Sicredi();
+                        break;
+                    //655 - Votorantim
+                    case 655:
+                        _IInstrucao = new Instrucao_Votorantim();
                         break;
                     default:
                         throw new Exception("Código do banco não implementando: " + codigoBanco);

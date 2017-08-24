@@ -145,6 +145,10 @@ namespace BoletoNet
                     case 4:
                         _IEspecieDocumento = new EspecieDocumento_Nordeste(codigoEspecie);
                         break;
+                    //655 - Votorantim
+                    case 655:
+                        _IEspecieDocumento = new EspecieDocumento_Votorantim(codigoEspecie);
+                        break;
                     case 707:
                         this._IEspecieDocumento = new EspecieDocumento_Daycoval(codigoEspecie);
                         break;
