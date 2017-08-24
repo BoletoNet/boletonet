@@ -106,6 +106,10 @@ namespace BoletoNet
                     case 748:
                         _IInstrucao = new Instrucao_Sicredi();
                         break;
+                    //655 - Votorantim
+                    case 655:
+                        _IInstrucao = new Instrucao_Votorantim();
+                        break;
                     default:
                         throw new Exception("Código do banco não implementando: " + codigoBanco);
                 }
