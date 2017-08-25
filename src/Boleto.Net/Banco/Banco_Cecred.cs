@@ -547,9 +547,9 @@ namespace BoletoNet {
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0151, 015, 2, boleto.ValorDesconto, '0'));                          // posição 151-165 (015)- Valor/Percentual a ser Concedido
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0166, 015, 2, boleto.IOF, '0'));                                    // posição 166-180 (015)- Valor do IOF a ser concedido
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0181, 015, 2, boleto.Abatimento, '0'));                             // posição 181-195 (015)- Valor do Abatimento
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0196, 025, 0, boleto.NumeroDocumento, ' '));                        // posição 196-220 (025)- Identificação do Título na Empresa. Informar o Número do Documento - Seu Número (mesmo das posições 63-73 do Segmento P)                
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0196, 025, 0, Utils.ToInt32(boleto.NossoNumero), ' '));             // posição 196-220 (025)- Identificação do Título na Empresa. Informar o Número do Documento - Seu Número (mesmo das posições 63-73 do Segmento P)                
 
-                #region PROTESTO
+                #region PROTESTO e BAIXA/DEVOLUÇÃO
                 // '1' = Protestar Dias Corridos (No Sistema Cecred o prazo para protesto é de 05 a 15).
                 // '2' = Negativação de boletos via Serasa(No Sistema Cecred o prazo para protesto é de 05 a 15).
                 // '3' = Não Protestar
@@ -557,20 +557,31 @@ namespace BoletoNet {
                 //3 = Não Protestar
                 string vInstrucaoProtesto = "3";
                 int vDiasProtesto = 0;
+                string vDiasBaixa = "   ";
 
                 foreach (Instrucao_Cecred instrucao in boleto.Instrucoes)
                 {
-                    vInstrucaoProtesto = instrucao.Codigo.ToString();
-                    vDiasProtesto = instrucao.QuantidadeDias;
-                    break;
+                    if (instrucao.Codigo.Equals(1))
+                    {
+                        vInstrucaoProtesto = instrucao.Codigo.ToString();
+                        vDiasProtesto = instrucao.QuantidadeDias;
+                    }
+                    else if (instrucao.Codigo.Equals(91) || instrucao.Codigo.Equals(92))
+                    {
+                        vDiasBaixa = instrucao.QuantidadeDias.ToString();
+                    }
                 }
+
+                // Caso tenha instrução de protesto, não deve haver baixa
+                if (vDiasProtesto > 0)
+                    vDiasBaixa = "   ";
 
                 #endregion
 
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0221, 001, 0, vInstrucaoProtesto, '0'));                            // posição 221-221 (001) -  Código para protesto  - ‘1’ = Protestar. "3" = Não Protestar. "9" = Cancelamento Protesto Automático
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0222, 002, 0, vDiasProtesto, '0'));                                 // posição 222-223 (002) -  Número de Dias para Protesto                
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0224, 001, 0, "2", '0'));                                           // posição 224-224 (001) -  Código para Baixa/Devolução ‘1’ = Baixar / Devolver. "2" = Não Baixar / Não Devolver
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0225, 003, 0, "   ", ' '));                                         // posição 225-227 (003) - Número de Dias para Baixa/Devolução
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0224, 001, 0, String.IsNullOrEmpty(vDiasBaixa.Trim()) ? "2" : "1", '0')); // posição 224-224 (001) -  Código para Baixa/Devolução ‘1’ = Baixar / Devolver. "2" = Não Baixar / Não Devolver
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0225, 003, 0, vDiasBaixa, ' '));                                    // posição 225-227 (003) - Número de Dias para Baixa/Devolução
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0228, 002, 0, "09", '0'));                                          // posição 228-229 (002) - Código da Moeda. Informar fixo: ‘09’ = REAL
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0230, 010, 0, "0", '0'));                                           // posição 230-239 (010)- Nº do Contrato da Operação de Créd.
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0240, 001, 0, string.Empty, ' '));                                  // posição 240-240 (001) - Uso Exclusivo FEBRABAN/CNAB
