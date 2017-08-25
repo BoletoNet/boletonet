@@ -251,6 +251,11 @@ namespace BoletoNet
             string _trailerArquivo = "";
             return _trailerArquivo;
         }
+        public virtual string GerarTrailerLoteRemessa(int numeroRegistro, Boleto boletos, decimal quantidadeRegistrosSimples, decimal valorRegistrosSimples)
+        {
+            string _trailerArquivo = "";
+            return _trailerArquivo;
+        }
         /// <summary>
         /// Gera os registros de Trailer de lote do arquivo de remessa
         /// </summary>

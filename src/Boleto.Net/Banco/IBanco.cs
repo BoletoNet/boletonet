@@ -103,6 +103,10 @@ namespace BoletoNet
         /// </summary>
         string GerarTrailerArquivoRemessa(int numeroRegistro, Boleto boletos);
         /// <summary>
+        /// Gera o Trailer de arquivo do arquivo de remessa
+        /// </summary>
+        string GerarTrailerLoteRemessa(int numeroRegistro, Boleto boletos, decimal quantidadeRegistrosSimples, decimal valorRegistrosSimples);
+        /// <summary>
         /// Gera o Trailer de lote do arquivo de remessa
         /// </summary>
         string GerarTrailerLoteRemessa(int numeroRegistro);

@@ -54,6 +54,8 @@ namespace BoletoNet
             {
                 int numeroRegistro = 0;
                 int numeroRegistroDetalhe = 1;
+                decimal quantidadeTitulosSimples = 0;
+                decimal valorTitulosSimples = 0;
                 string strline;
                 StreamWriter incluiLinha = new StreamWriter(arquivo);
                 if (banco.Codigo == 104)//quando é caixa verifica o modelo de leiatue que é está em boletos.remssa.tipodocumento
@@ -142,6 +144,8 @@ namespace BoletoNet
                             OnLinhaGerada(boleto, strline, EnumTipodeLinha.DetalheSegmentoP);
                             numeroRegistro++;
                             numeroRegistroDetalhe++;
+                            quantidadeTitulosSimples++;
+                            valorTitulosSimples += boleto.ValorBoleto;
 
                             strline = boleto.Banco.GerarDetalheSegmentoQRemessa(boleto, numeroRegistroDetalhe, boleto.Sacado);
                             incluiLinha.WriteLine(strline);
@@ -160,7 +164,7 @@ namespace BoletoNet
                         }
 
                         //numeroRegistro--;
-                        strline = banco.GerarTrailerLoteRemessa(numeroRegistro, boletos[0]);
+                        strline = banco.GerarTrailerLoteRemessa(numeroRegistro, boletos[0], quantidadeTitulosSimples, valorTitulosSimples);
                         incluiLinha.WriteLine(strline);
                         OnLinhaGerada(null, strline, EnumTipodeLinha.TraillerDeLote);
 

@@ -490,7 +490,19 @@ namespace BoletoNet
 			}
 		}
 
-		public string GerarTrailerLoteRemessa(int numeroRegistro)
+        public string GerarTrailerLoteRemessa(int numeroRegistro, Boleto boletos, decimal quantidadeRegistrosSimples, decimal valorRegistrosSimples)
+        {
+            try
+            {
+                return _IBanco.GerarTrailerLoteRemessa(numeroRegistro, boletos, quantidadeRegistrosSimples, valorRegistrosSimples);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do registro TRAILER do arquivo de REMESSA.", ex);
+            }
+        }
+
+        public string GerarTrailerLoteRemessa(int numeroRegistro)
 		{
 			try
 			{
