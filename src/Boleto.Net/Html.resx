@@ -338,9 +338,9 @@
 				&lt;tr class="BHead"&gt;
 						&lt;td class="imgLogo Al"&gt;&lt;img src="@URLIMAGEMLOGO" style="height: @ALTURALOGOEMMILIMETROSmm!important;width:auto!important;"  /&gt;&lt;/td&gt;
 						&lt;td class="barra"&gt;&lt;img src="@URLIMAGEMBARRA" /&gt;&lt;/td&gt;
-						&lt;td class="w65 Ab bc Ac"&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
+						&lt;td class="w65 Ab bc Ac "&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
 						&lt;td class="barra"&gt;&lt;img src="@URLIMAGEMBARRA" /&gt;&lt;/td&gt;
-						&lt;td class="Ar ld" style="width: 600px" valign="bottom"&gt;@LINHADIGITAVEL&lt;/td&gt;
+						&lt;td class="Ar ld @CODBARRABANCO104" style="width: 600px" valign="bottom"&gt;@LINHADIGITAVEL&lt;/td&gt;
 				&lt;/tr&gt;
 		&lt;/table&gt;</value>
   </data>
@@ -495,9 +495,9 @@
 				&lt;tr class="BHead"&gt;
 						&lt;td class="imgLogo Al"&gt;&lt;img src="@URLIMGCEDENTE" style="height: @ALTURALOGOEMMILIMETROSmm!important;width:auto!important;" /&gt;&lt;/td&gt;
 						&lt;td class="barra"&gt;&lt;img src="@URLIMAGEMBARRA" /&gt;&lt;/td&gt;
-						&lt;td class="w65 Ab bc Ac"&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
+						&lt;td class="w65 Ab bc Ac "&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
 						&lt;td class="barra"&gt;&lt;img src="@URLIMAGEMBARRA" /&gt;&lt;/td&gt;
-						&lt;td class="Ar Ab ld" style="width: 600px"&gt;@LINHADIGITAVEL&lt;/td&gt;
+						&lt;td class="Ar Ab ld @CODBARRABANCO104" style="width: 600px"&gt;@LINHADIGITAVEL&lt;/td&gt;
 				&lt;/tr&gt;
 		&lt;/table&gt;</value>
   </data>

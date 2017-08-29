@@ -34,7 +34,7 @@ img {
 .ld {
 	font: bold 5mm arial;
 	color: #000000;
-    font-size: 5mm!important;
+    font-size: 4.2mm!important;
 }
 
 .ct {
@@ -48,7 +48,7 @@ img {
 }
 
 .bc {
-	font: bold 20px arial;
+	font: bold 5mm arial;
 	color: #000000;
 }
 
@@ -369,4 +369,8 @@ img {
 .ficha-compensacao {
     position: absolute;
     bottom: 0;
+}
+
+.cod-barra-banco-104 {
+    font-size: 5mm !important;
 }

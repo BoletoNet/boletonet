@@ -2215,7 +2215,7 @@ namespace BoletoNet
                 #endregion
 
                 var nossoNumero = boleto.NossoNumero;
-                if (boleto.Carteira.Equals("17-027"))
+                if (boleto.Carteira.Equals("17-027") || boleto.Carteira.Equals("17-019"))
                     nossoNumero = boleto.NossoNumero.Substring(3);
 
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0002, 002, 0, vCpfCnpjEmi, '0'));                               //002-003
@@ -2236,7 +2236,7 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0095, 001, 0, "0", '0'));                                       //095-095
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0096, 006, 0, "0", '0'));                                       //096-101
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0102, 005, 0, string.Empty, ' '));                              //102-106
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0107, 002, 0, boleto.Cedente.Carteira.Left(2), '0'));           //107-108
+                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0107, 002, 0, boleto.Cedente.Carteira.Left(2), '0'));           //107-108
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0109, 002, 0, ObterCodigoDaOcorrencia(boleto), ' '));           //109-110
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0111, 010, 0, boleto.NumeroDocumento, '0'));                    //111-120
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAA___________, 0121, 006, 0, boleto.DataVencimento, ' '));                     //121-126
@@ -2309,7 +2309,7 @@ namespace BoletoNet
                 {
                     #region DataDesconto
                     string vDataDesconto = "000000";
-                    if (!boleto.DataDesconto.Equals(DateTime.MinValue))
+                    if (!boleto.DataDesconto.Equals(DateTime.MinValue) && boleto.ValorDesconto != 0)
                         vDataDesconto = boleto.DataDesconto.ToString("ddMMyy");
                     #endregion
                     reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0174, 006, 0, vDataDesconto, '0'));                             //174-179                
