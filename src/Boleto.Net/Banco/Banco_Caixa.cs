@@ -806,7 +806,7 @@ namespace BoletoNet
                 header += Utils.FormatCode(cedente.ContaBancaria.DigitoAgencia, "0", 5);                // Dígito Verificador da Agência 
                 header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 12);                       // Código do Cedente (sem operação)  
                 header += cedente.ContaBancaria.DigitoConta;                                            // Díg. Verif. Cedente (sem operação) 
-                header += Banco.Mod11(cedente.ContaBancaria.Agencia + cedente.ContaBancaria.Conta).ToString();// Dígito Verif. Ag./Ced  (sem operação)
+                header += Mod11(cedente.ContaBancaria.Agencia + cedente.ContaBancaria.Conta).ToString();// Dígito Verif. Ag./Ced  (sem operação)
                 header += Utils.FormatCode(cedente.Nome, " ", 30);                                      // Nome do cedente
                 header += Utils.FormatCode("CAIXA ECONOMICA FEDERAL", " ", 30);                         // Nome do Banco
                 header += Utils.FormatCode("", " ", 10);                                                // Uso Exclusivo FEBRABAN/CNAB
@@ -850,7 +850,7 @@ namespace BoletoNet
                 header += Utils.FormatCode(cedente.ContaBancaria.DigitoAgencia, "0", 5);                // Dígito Verificador da Agência 
                 header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 12);                       // Número da Conta Corrente 
                 header += cedente.ContaBancaria.DigitoConta;                                            // Digito Verificador da Conta Corrente 
-                header += Banco.Mod11(cedente.ContaBancaria.Agencia + cedente.ContaBancaria.Conta).ToString();// Dígito Verif. Ag./Ced  (sem operação)
+                header += Mod11(cedente.ContaBancaria.Agencia + cedente.ContaBancaria.Conta).ToString();// Dígito Verif. Ag./Ced  (sem operação)
                 header += Utils.FormatCode(cedente.Nome, " ", 30);                                      // Nome do cedente
                 header += Utils.FormatCode("", " ", 40);                                                // Mensagem 1
                 header += Utils.FormatCode("", " ", 40);                                                // Mensagem 2
@@ -883,7 +883,7 @@ namespace BoletoNet
                 header += cedente.ContaBancaria.DigitoAgencia;                                          // Dígito Verificador da Agência 
                 header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 12);                       // Número da Conta Corrente 
                 header += cedente.ContaBancaria.DigitoConta;                                            // Digito Verificador da Conta Corrente 
-                header += Banco.Mod11(cedente.ContaBancaria.Agencia + cedente.ContaBancaria.Conta).ToString(); // Dígito Verif. Ag./Ced  (sem operação)
+                header += Mod11(cedente.ContaBancaria.Agencia + cedente.ContaBancaria.Conta).ToString(); // Dígito Verif. Ag./Ced  (sem operação)
                 header += Utils.FormatCode("", "0", 9);                                                 // Uso Exclusivo CAIXA
                 header += Utils.FormatCode(boleto.NossoNumero, "0", 11);                                // Identificação do Título no Banco 
                 header += "01";                                                                         // Código da Carteira 
@@ -1694,6 +1694,10 @@ namespace BoletoNet
                     {
                         case EnumInstrucoes_Caixa.Protestar:
                             vInstrucao1 = "01";
+                            prazoProtesto_Devolucao = instrucao.QuantidadeDias;
+                            break;
+                        case EnumInstrucoes_Caixa.DevolverAposNDias:
+                            vInstrucao1 = "02";
                             prazoProtesto_Devolucao = instrucao.QuantidadeDias;
                             break;
 

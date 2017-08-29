@@ -9,7 +9,7 @@ using BoletoNet.EDI.Banco;
 namespace BoletoNet
 {
     /// <Author>
-    /// Felipe Silveira - Transis Informática
+    /// Felipe Silveira - Transis Software
     /// </Author>
     internal class Banco_Banrisul : AbstractBanco, IBanco
     {
@@ -92,61 +92,164 @@ namespace BoletoNet
 
         public override void FormataNumeroDocumento(Boleto boleto)
         {
-            throw new NotImplementedException("Função do fomata número do documento não implementada.");
+            throw new NotImplementedException("Função do formata número do documento não implementada.");
         }
 
         public override void FormataLinhaDigitavel(Boleto boleto)
         {
-            //041M2.1AAAd1 CCCCC.CCNNNd2 NNNNN.041XXd3 V FFFF9999999999
-            //OU 
-            //041M2.1AAAd1 ACCCCC.CCNNd2 NNNNN.N40XXd3 V FFFF9999999999
-            //(Isso depende da constante que usar) no caso de cima "041" no de baixo "40" antes do "XX"
-
             string Campo1 = string.Empty;
             string Campo2 = string.Empty;
             string Campo3 = string.Empty;
             string Campo4 = string.Empty;
             string Campo5 = string.Empty;
 
+            string Metade1;
+            string Metade2;
+
             string Cedente = boleto.Cedente.Codigo.Substring(4); //Os quatro primeiros digitos do código do cedente é sempre a agência
             string NossoNumero = boleto.NossoNumero.Substring(0, 8);
 
-            //Campo 1
-            string M = boleto.Moeda.ToString();
-            string AAA = boleto.Cedente.ContaBancaria.Agencia.Substring(1, 3);
-            string Metade1 = "041" + M + "2";
-            string Metade2 = "1" + AAA;
-            string d1 = Mod10Banri(Metade1 + Metade2).ToString();
-            Campo1 = Metade1 + "." + Metade2 + d1;
+            //(Isso depende da constante que usar) no caso de cima "041" no de baixo "40" antes do "XX"
+            if (boleto.TipoModalidade == "40")
+            {
+                /// <summary>
+                ///   IMPLEMENTAÇÃO PARA CONSTANTE 40 - INDICAM USO DA AGENCIA COM 4 DIGITOS
+                ///   Autor.: Felipe Silveira - Transis Software
+                ///   Data..: 06/07/2017
+                /// </summary>
 
-            //Campo 2
-            Metade1 = string.Empty;
-            Metade2 = string.Empty;
-            Metade1 = Cedente.Substring(0, 5);
-            //Metade2 = Cedente.Substring(5, 2) + NossoNumero.Substring(0, 2);
-            Metade2 = Cedente.Substring(5, 2) + NossoNumero.Substring(0, 3);
-            string d2 = Mod10Banri(Metade1 + Metade2).ToString();
-            Campo2 = Metade1 + "." + Metade2 + d2;
+                //041M2.1AAAd1 ACCCCC.CCNNd2 NNNNN.N40XXd3 V FFFF9999999999
 
-            //Campo 3
-            Metade1 = string.Empty;
-            Metade2 = string.Empty;
-            string XX = _primDigito.ToString() + _segDigito.ToString();
-            //Metade1 = NossoNumero.Substring(2, 5);
-            Metade1 = NossoNumero.Substring(3, 5);
-            //Metade2 = NossoNumero.Substring(7, 1) + "041" + XX;
-            Metade2 = "041" + XX;
-            string d3 = Mod10Banri(Metade1 + Metade2).ToString();
-            Campo3 = Metade1 + "." + Metade2 + d3;
+                #region Campo 1
 
-            //Campo 4
-            Campo4 = boleto.CodigoBarra.Codigo.Substring(4, 1);
+                //Campo 1
+                Metade1 = string.Empty;
+                string M = boleto.Moeda.ToString();
+                string AAA = boleto.Cedente.ContaBancaria.Agencia.Substring(0, 3);
+                Metade1 = "041" + M + "2";
 
-            //Campo 5
-            string fatorVenc = FatorVencimento(boleto).ToString("0000");
-            string valor = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
-            valor = Utils.FormatCode(valor, 10);
-            Campo5 = fatorVenc + valor;
+                Metade2 = string.Empty;
+                Metade2 = "1" + AAA;
+                string d1 = Mod10Banri(Metade1 + Metade2).ToString();
+                Campo1 = Metade1 + "." + Metade2 + d1;
+
+                #endregion Campo 1
+
+                #region Campo 2
+
+                //Campo 2
+                Metade1 = string.Empty;
+                //Metade1 = Cedente.Substring(0, 5);
+                string A = boleto.Cedente.ContaBancaria.Agencia.Substring(3, 1);
+                string CCCC = Cedente.Substring(0, 4);
+                Metade1 = A + CCCC;
+
+                Metade2 = string.Empty;
+                //Metade2 = Cedente.Substring(5, 2) + NossoNumero.Substring(0, 3);
+                string CCC = Cedente.Substring(4, 3);
+                string NN = NossoNumero.Substring(0, 2);
+                Metade2 = CCC + NN;
+                string d2 = Mod10Banri(Metade1 + Metade2).ToString();
+                Campo2 = Metade1 + "." + Metade2 + d2;
+
+                #endregion Campo 2
+
+                #region Campo 3
+
+                //Campo 3
+                Metade1 = string.Empty;
+                string NNNNN = NossoNumero.Substring(2, 5);
+                Metade1 = NNNNN;
+
+                Metade2 = string.Empty;
+                string XX = _primDigito.ToString() + _segDigito.ToString();
+                string N = NossoNumero.Substring(7, 1);
+                Metade2 = N + "40" + XX;
+                string d3 = Mod10Banri(Metade1 + Metade2).ToString();
+                Campo3 = Metade1 + "." + Metade2 + d3;
+
+                #endregion Campo 3
+
+                #region Campo 4
+
+                //Campo 4
+                Campo4 = boleto.CodigoBarra.Codigo.Substring(4, 1);
+
+                #endregion Campo 4
+
+                #region Campo 5
+
+                //Campo 5
+                string fatorVenc = FatorVencimento(boleto).ToString("0000");
+                string valor = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
+                valor = Utils.FormatCode(valor, 10);
+                Campo5 = fatorVenc + valor;
+
+                #endregion Campo 5
+            }
+            else
+            {
+                //041M2.1AAAd1 CCCCC.CCNNNd2 NNNNN.041XXd3 V FFFF9999999999
+
+                #region Campo 1
+
+                //Campo 1
+                Metade1 = string.Empty;
+                Metade2 = string.Empty;
+                string M = boleto.Moeda.ToString();
+                string AAA = boleto.Cedente.ContaBancaria.Agencia.Substring(1, 3);
+                Metade1 = "041" + M + "2";
+                Metade2 = "1" + AAA;
+                string d1 = Mod10Banri(Metade1 + Metade2).ToString();
+                Campo1 = Metade1 + "." + Metade2 + d1;
+
+                #endregion Campo 1
+
+                #region Campo 2
+
+                //Campo 2
+                Metade1 = string.Empty;
+                Metade2 = string.Empty;
+                Metade1 = Cedente.Substring(0, 5);
+                //Metade2 = Cedente.Substring(5, 2) + NossoNumero.Substring(0, 2);
+                Metade2 = Cedente.Substring(5, 2) + NossoNumero.Substring(0, 3);
+                string d2 = Mod10Banri(Metade1 + Metade2).ToString();
+                Campo2 = Metade1 + "." + Metade2 + d2;
+
+                #endregion Campo 2
+
+                #region Campo 3
+
+                //Campo 3
+                Metade1 = string.Empty;
+                Metade2 = string.Empty;
+                string XX = _primDigito.ToString() + _segDigito.ToString();
+                //Metade1 = NossoNumero.Substring(2, 5);
+                Metade1 = NossoNumero.Substring(3, 5);
+                //Metade2 = NossoNumero.Substring(7, 1) + "041" + XX;
+                Metade2 = "041" + XX;
+                string d3 = Mod10Banri(Metade1 + Metade2).ToString();
+                Campo3 = Metade1 + "." + Metade2 + d3;
+
+                #endregion Campo 3
+
+                #region Campo 4
+
+                //Campo 4
+                Campo4 = boleto.CodigoBarra.Codigo.Substring(4, 1);
+
+                #endregion Campo 4
+
+                #region Campo 5
+
+                //Campo 5
+                string fatorVenc = FatorVencimento(boleto).ToString("0000");
+                string valor = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
+                valor = Utils.FormatCode(valor, 10);
+                Campo5 = fatorVenc + valor;
+
+                #endregion Campo 5
+            }
 
             boleto.CodigoBarra.LinhaDigitavel = Campo1 + "  " + Campo2 + "  " + Campo3 + "  " + Campo4 + "  " + Campo5;
         }
@@ -156,24 +259,56 @@ namespace BoletoNet
             string campo1 = string.Empty;
             string campo2 = string.Empty;
             string campoLivre = string.Empty;
-            campo1 = "041" + boleto.Moeda.ToString();
             int dacCodBarras;
-            string fatorVenc = FatorVencimento(boleto).ToString("0000");
-            string valor = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
-            valor = Utils.FormatCode(valor, 10);
-            campo2 = fatorVenc + valor;
 
-            string nossoNumero = boleto.NossoNumero.Replace(".", "").Replace("-", "");
-            nossoNumero = nossoNumero.Substring(0, 8);
-            //campoLivre = "21" + boleto.Cedente.ContaBancaria.Agencia.Substring(1, 3) + boleto.Cedente.ContaBancaria.Conta + nossoNumero + "041";
-            string codCedente = boleto.Cedente.Codigo.Substring(4, 7);// Os quatro primeiros digitos do código do cedente é sempre a agência
-            campoLivre = "21" + boleto.Cedente.ContaBancaria.Agencia.Substring(1, 3) + codCedente + nossoNumero + "041";
-            string ncCodBarra = CalcularNCCodBarras(campoLivre);
-            Int32.TryParse(ncCodBarra.Substring(0, 1), out _primDigito);
-            Int32.TryParse(ncCodBarra.Substring(1, 1), out _segDigito);
-            campoLivre = campoLivre + ncCodBarra;
+            if (boleto.TipoModalidade == "40")
+            {
+                /// <summary>
+                ///   IMPLEMENTAÇÃO PARA CONSTANTE 40 - INDICAM USO DA AGENCIA COM 4 DIGITOS
+                ///   Autor.: Felipe Silveira - Transis Software
+                ///   Data..: 06/07/2017
+                /// </summary>
+                //0419dFFFF999999999921AAAACCCCCCCNNNNNNNN40XX
 
-            dacCodBarras = Mod11Peso2a9Banri(campo1 + campo2 + campoLivre);
+                campo1 = "041" + boleto.Moeda.ToString();
+                string fatorVenc = FatorVencimento(boleto).ToString("0000");
+                string valor = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
+                valor = Utils.FormatCode(valor, 10);
+                campo2 = fatorVenc + valor;
+
+                string nossoNumero = boleto.NossoNumero.Replace(".", "").Replace("-", "");
+                nossoNumero = nossoNumero.Substring(0, 8);
+                string codCedente = boleto.Cedente.Codigo.Substring(4, 7);// Os quatro primeiros digitos do código do cedente é sempre a agência
+                campoLivre = "21" + boleto.Cedente.ContaBancaria.Agencia + codCedente + nossoNumero + "40";
+                string ncCodBarra = CalcularNCCodBarras(campoLivre);
+                Int32.TryParse(ncCodBarra.Substring(0, 1), out _primDigito);
+                Int32.TryParse(ncCodBarra.Substring(1, 1), out _segDigito);
+                campoLivre = campoLivre + ncCodBarra;
+
+                dacCodBarras = Mod11Peso2a9Banri(campo1 + campo2 + campoLivre);
+            }
+            else
+            {
+                //0419dFFFF999999999921AAACCCCCCCNNNNNNNN041XX
+
+                campo1 = "041" + boleto.Moeda.ToString();
+                string fatorVenc = FatorVencimento(boleto).ToString("0000");
+                string valor = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
+                valor = Utils.FormatCode(valor, 10);
+                campo2 = fatorVenc + valor;
+
+                string nossoNumero = boleto.NossoNumero.Replace(".", "").Replace("-", "");
+                nossoNumero = nossoNumero.Substring(0, 8);
+                //campoLivre = "21" + boleto.Cedente.ContaBancaria.Agencia.Substring(1, 3) + boleto.Cedente.ContaBancaria.Conta + nossoNumero + "041";
+                string codCedente = boleto.Cedente.Codigo.Substring(4, 7);// Os quatro primeiros digitos do código do cedente é sempre a agência
+                campoLivre = "21" + boleto.Cedente.ContaBancaria.Agencia.Substring(1, 3) + codCedente + nossoNumero + "041";
+                string ncCodBarra = CalcularNCCodBarras(campoLivre);
+                Int32.TryParse(ncCodBarra.Substring(0, 1), out _primDigito);
+                Int32.TryParse(ncCodBarra.Substring(1, 1), out _segDigito);
+                campoLivre = campoLivre + ncCodBarra;
+
+                dacCodBarras = Mod11Peso2a9Banri(campo1 + campo2 + campoLivre);
+            }
 
             boleto.CodigoBarra.Codigo = campo1 + dacCodBarras.ToString() + campo2 + campoLivre;
         }
