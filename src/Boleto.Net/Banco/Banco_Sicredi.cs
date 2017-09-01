@@ -743,7 +743,7 @@ namespace BoletoNet
                         vMsg += String.Concat("Boleto: ", boleto.NumeroDocumento, "; Remessa: O Nosso Número diferente de 8 caracteres!", Environment.NewLine);
                         vRetorno = false;
                     }
-                    else if (!boleto.TipoImpressao.Equals("A") || !boleto.TipoImpressao.Equals("B"))
+                    else if (!boleto.TipoImpressao.Equals("A") && !boleto.TipoImpressao.Equals("B"))
                     {
                         vMsg += String.Concat("Boleto: ", boleto.NumeroDocumento, "; Tipo de Impressão deve conter A - Normal ou B - Carnê", Environment.NewLine);
                         vRetorno = false;
