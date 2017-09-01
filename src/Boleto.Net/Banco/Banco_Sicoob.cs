@@ -49,27 +49,9 @@ namespace BoletoNet
             String nossoNumero = boleto.NossoNumero;
             StringBuilder seqValidacao = new StringBuilder();
 
-            /*
-             * Preenchendo com zero a esquerda
-             */
-            //Tratando cooperativa
-            for (int i = 0; i < 4 - cooperativa.Length; i++)
-            {
-                seqValidacao.Append("0");
-            }
-            seqValidacao.Append(cooperativa);
-            //Tratando cliente
-            for (int i = 0; i < 10 - codigo.Length; i++)
-            {
-                seqValidacao.Append("0");
-            }
-            seqValidacao.Append(codigo);
-            //Tratando nosso número
-            for (int i = 0; i < 7 - nossoNumero.Length; i++)
-            {
-                seqValidacao.Append("0");
-            }
-            seqValidacao.Append(nossoNumero);
+            seqValidacao.Append(cooperativa.PadLeft(4, '0'));
+            seqValidacao.Append(codigo.PadLeft(10, '0'));
+            seqValidacao.Append(nossoNumero.PadLeft(7, '0'));
 
             /*
              * Multiplicando cada posição por sua respectiva posição na constante.
