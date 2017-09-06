@@ -317,14 +317,13 @@ namespace BoletoNet
             }
         }
 
-        private string GeraHtmlCarne(string telefone, string htmlBoleto)
+        private string GeraHtmlCarne(string htmlBoleto)
         {
             var html = new StringBuilder();
 
             html.Append(Html.Carne);
 
-            return html.ToString()
-                .Replace("@TELEFONE", telefone)
+            return html.ToString()                
                 .Replace("#BOLETO#", htmlBoleto);
         }
         public string GeraHtmlReciboSacado()
@@ -666,7 +665,7 @@ namespace BoletoNet
                 html.Append(GeraHtmlReciboCedente());
             else
             {
-                html.Append(GeraHtmlCarne("", GeraHtmlReciboCedente()));
+                html.Append(GeraHtmlCarne(GeraHtmlReciboCedente()));
             }
 
             string dataVencimento = Boleto.DataVencimento.ToString("dd/MM/yyyy");
@@ -750,7 +749,9 @@ namespace BoletoNet
                         "{0} - {1}",
                         Boleto.Avalista != null ? Boleto.Avalista.Nome : string.Empty,
                         Boleto.Avalista != null ? Boleto.Avalista.CPFCNPJ : string.Empty))
-                .Replace("Ar\">R$", RemoveSimboloMoedaValorDocumento ? "Ar\">" : "Ar\">R$");
+                .Replace("Ar\">R$", RemoveSimboloMoedaValorDocumento ? "Ar\">" : "Ar\">R$")
+                .Replace("@PARCELATOTAL",Boleto.NumeroParcela != 0 && Boleto.TotalParcela != 0 ? Boleto.NumeroParcela + " / " + Boleto.TotalParcela : string.Empty);
+                
 
         }
 
