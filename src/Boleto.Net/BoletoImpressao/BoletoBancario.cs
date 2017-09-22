@@ -394,7 +394,7 @@ namespace BoletoNet
 
                 //Para carteiras "17-019" e "18-019" do Banco do Brasil, a ficha de compensação não possui código da carteira
                 //na formatação do campo.
-                if (Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("17-027") | Boleto.Carteira.Equals("18-019") | Boleto.Carteira.Equals("17-159") | Boleto.Carteira.Equals("17-140") | Boleto.Carteira.Equals("17-067")))
+                if (Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("17-027") | Boleto.Carteira.Equals("17-051") | Boleto.Carteira.Equals("18-019") | Boleto.Carteira.Equals("17-159") | Boleto.Carteira.Equals("17-140") | Boleto.Carteira.Equals("17-067")))
                 {
                     html.Replace("Carteira /", "");
                     html.Replace("@NOSSONUMERO", "@NOSSONUMEROBB");
@@ -702,13 +702,13 @@ namespace BoletoNet
 
             #region Implementação para o Banco do Brasil
 
-                //Variável inserida para atender às especificações das carteiras "17-019", "17-027" e "18-019" do Banco do Brasil
+                //Variável inserida para atender às especificações das carteiras "17-019", "17-027", "17-051" e "18-019" do Banco do Brasil
                 //apenas para a ficha de compensação.
-                //Como a variável não existirá se não forem as carteiras "17-019", "17-027", "17-019", "17-035", "17-140", "17-159", "17-067", "17-167" e "18-019", não foi colocado o [if].
+                //Como a variável não existirá se não forem as carteiras "17-019", "17-027", "17-051", "17-019", "17-035", "17-140", "17-159", "17-067", "17-167" e "18-019", não foi colocado o [if].
                 .Replace(
                     "@NOSSONUMEROBB",
                     Boleto.Banco.Codigo == 1
-                    & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("17-027") | Boleto.Carteira.Equals("17-035")
+                    & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("17-027") | Boleto.Carteira.Equals("17-051") | Boleto.Carteira.Equals("17-035")
                         | Boleto.Carteira.Equals("18-019") | Boleto.Carteira.Equals("17-140") | Boleto.Carteira.Equals("17-159")
                         | Boleto.Carteira.Equals("17-067") | Boleto.Carteira.Equals("17-167"))
                         ? Boleto.NossoNumero.Substring(3)
