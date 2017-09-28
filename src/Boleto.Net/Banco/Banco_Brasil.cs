@@ -1545,8 +1545,8 @@ namespace BoletoNet
                     _segmentoP +=
                         Utils.FitStringLength(
                             boleto.DataDesconto == DateTime.MinValue
-                                ? boleto.DataVencimento.ToString("ddMMyy")
-                                : boleto.DataDesconto.ToString("ddMMyy"), 8, 8, '0', 0, true, true, false);
+                                ? boleto.DataVencimento.ToString("ddMMyyyy")
+                                : boleto.DataDesconto.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
                     _segmentoP += Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 }
                 else
@@ -2304,11 +2304,13 @@ namespace BoletoNet
                     #region DataVencimento
                     string vDataVencimento = "000000";
                     if (!boleto.DataVencimento.Equals(DateTime.MinValue))
-                        vDataVencimento = boleto.DataVencimento.ToString("ddMMyy");
+                        vDataVencimento = boleto.DataVencimento.ToString("dd/MM/yy");
+                    else
+                        throw new Exception("Data de inicio para Cobrança da Multa inválida.");
                     #endregion
 
                     reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0174, 001, 0, vCodigoMulta, '0'));                          //174 a 174      Código da Multa 1=Valor 
-                    reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAA___________, 0175, 006, 0, vDataVencimento, ' '));                       //175 a 180      Data de inicio para Cobrança da Multa 
+                    reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAA___________, 0175, 006, 0, DateTime.Parse(vDataVencimento), ' '));       //175 a 180      Data de inicio para Cobrança da Multa 
                     reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0180, 013, 2, vMulta, '0'));                                //181 a 192      Valor de Multa 
                 }
                 else

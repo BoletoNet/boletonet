@@ -615,10 +615,10 @@
     <value>&lt;table cellpadding="0" cellspacing="0"&gt;
 						&lt;tr&gt;
 								&lt;td valign="top"&gt;
-										&lt;table class="w150 mt23"&gt;
-												&lt;tr class="ct cpN BHead"&gt;
-														&lt;td class="ld"&gt;
-																Recibo do Pagador
+										&lt;table class="150"&gt;
+												&lt;tr class="BHead"&gt;
+														&lt;td class="imgLogo Al"&gt;
+															&lt;img src="@URLIMAGEMLOGO" /&gt;
 														&lt;/td&gt;
 												&lt;/tr&gt;
 										&lt;/table&gt;
@@ -633,26 +633,20 @@
 																@CEDENTE
 														&lt;/td&gt;
 												&lt;/tr&gt;
-										&lt;/table&gt;
-										&lt;table class="w150"&gt;
-												&lt;tr class="ct h13 At"&gt;
-														&lt;td class="w298"&gt;
-																Telefone
-														&lt;/td&gt;
-												&lt;/tr&gt;
-												&lt;tr class="cp h12 At rBb"&gt;
-														&lt;td&gt;
-																@TELEFONE
-														&lt;/td&gt;
-												&lt;/tr&gt;
-										&lt;/table&gt;
+										&lt;/table&gt;										
 										&lt;table class="w150"&gt;
 												&lt;tr class="ct h13"&gt;
+														&lt;td class="w192"&gt;
+																Parcela/Total
+														&lt;/td&gt;
 														&lt;td class="w192"&gt;
 																Vencimento
 														&lt;/td&gt;
 												&lt;/tr&gt;
 												&lt;tr class="cp h12 rBb"&gt;
+														&lt;td&gt;
+																@PARCELATOTAL
+														&lt;/td&gt;
 														&lt;td&gt;
 																@DATAVENCIMENTO
 														&lt;/td&gt;
@@ -672,18 +666,6 @@
 										&lt;/table&gt;
 										&lt;table class="w150"&gt;
 												&lt;tr class="ct h13"&gt;
-														&lt;td class="w192"&gt;
-																Número do documento
-														&lt;/td&gt;
-												&lt;/tr&gt;
-												&lt;tr class="cp h12 rBb"&gt;
-														&lt;td&gt;
-																@NUMERODOCUMENTO
-														&lt;/td&gt;
-												&lt;/tr&gt;
-										&lt;/table&gt;
-										&lt;table class="w150"&gt;
-												&lt;tr class="ct h13"&gt;
 														&lt;td class="w113"&gt;
 																(=) Valor do Documento
 														&lt;/td&gt;
@@ -691,6 +673,54 @@
 												&lt;tr class="cp h12 rBb Ab"&gt;
 														&lt;td&gt;
 																@=VALORDOCUMENTO
+														&lt;/td&gt;
+												&lt;/tr&gt;
+										&lt;/table&gt;
+										&lt;table class="w150"&gt;
+												&lt;tr class="ct h13"&gt;
+														&lt;td class="w113"&gt;
+																(-) Desconto / Abatimentos
+														&lt;/td&gt;
+												&lt;/tr&gt;
+												&lt;tr class="cp h12 rBb Ab"&gt;
+														&lt;td&gt;
+																@DESCONTOS
+														&lt;/td&gt;
+												&lt;/tr&gt;
+										&lt;/table&gt;
+										&lt;table class="w150"&gt;
+												&lt;tr class="ct h13"&gt;
+														&lt;td class="w113"&gt;
+																(-) Outras deduções
+														&lt;/td&gt;
+												&lt;/tr&gt;
+												&lt;tr class="cp h12 rBb Ab"&gt;
+														&lt;td&gt;
+																@OUTRASDEDUCOES
+														&lt;/td&gt;
+												&lt;/tr&gt;
+										&lt;/table&gt;
+										&lt;table class="w150"&gt;
+												&lt;tr class="ct h13"&gt;
+														&lt;td class="w113"&gt;
+																(+) Mora / Multa
+														&lt;/td&gt;
+												&lt;/tr&gt;
+												&lt;tr class="cp h12 rBb Ab"&gt;
+														&lt;td&gt;
+																@MORAMULTA
+														&lt;/td&gt;
+												&lt;/tr&gt;
+										&lt;/table&gt;
+										&lt;table class="w150"&gt;
+												&lt;tr class="ct h13"&gt;
+														&lt;td class="w113"&gt;
+																(+) Outros acréscimos
+														&lt;/td&gt;
+												&lt;/tr&gt;
+												&lt;tr class="cp h12 rBb Ab"&gt;
+														&lt;td&gt;
+																@OUTROSACRESCIMOS
 														&lt;/td&gt;
 												&lt;/tr&gt;
 										&lt;/table&gt;
@@ -706,6 +736,30 @@
 														&lt;/td&gt;
 												&lt;/tr&gt;
 										&lt;/table&gt;
+										&lt;table class="w150"&gt;
+												&lt;tr class="ct h13 At"&gt;
+														&lt;td class="w298"&gt;
+																Nosso Número
+														&lt;/td&gt;
+												&lt;/tr&gt;
+												&lt;tr class="cp h12 At rBb"&gt;
+														&lt;td&gt;
+																@NOSSONUMERO
+														&lt;/td&gt;
+												&lt;/tr&gt;
+										&lt;/table&gt;
+										&lt;table class="w150"&gt;
+												&lt;tr class="ct h13"&gt;
+														&lt;td class="w192"&gt;
+																Número do documento
+														&lt;/td&gt;
+												&lt;/tr&gt;
+												&lt;tr class="cp h12 rBb"&gt;
+														&lt;td&gt;
+																@NUMERODOCUMENTO
+														&lt;/td&gt;
+												&lt;/tr&gt;
+										&lt;/table&gt;										
 										&lt;table class="w150"&gt;
 												&lt;tr class="ct h13"&gt;
 														&lt;td class="w113"&gt;

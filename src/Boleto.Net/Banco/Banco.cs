@@ -152,7 +152,11 @@ namespace BoletoNet
 					case 85:
 						_IBanco = new Banco_Cecred();
 						break;
-					case 707:
+                    //655 - Votorantim
+                    case 655:
+                        _IBanco = new Banco_Votorantim();
+                        break;
+                    case 707:
 						_IBanco = new Banco_Daycoval();
 						break;
 					case 637:

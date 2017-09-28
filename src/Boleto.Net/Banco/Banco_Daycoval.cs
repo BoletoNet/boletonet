@@ -157,8 +157,10 @@ namespace BoletoNet
 			detalheRetorno.CodigoInscricao = Utils.ToInt32(registro.Substring(1, 2));
 			detalheRetorno.NumeroInscricao = registro.Substring(3, 14);
 			detalheRetorno.UsoEmpresa = registro.Substring(37, 25);
-			detalheRetorno.NossoNumero = registro.Substring(94, 12);
-			detalheRetorno.NossoNumeroComDV = registro.Substring(94, 13);
+
+            var nossoNumeroLido = registro.Substring(94, 13).Trim();
+            detalheRetorno.NossoNumero = nossoNumeroLido.Substring(0, nossoNumeroLido.Length - 1);
+			detalheRetorno.NossoNumeroComDV = detalheRetorno.NossoNumero + nossoNumeroLido.Substring(nossoNumeroLido.Length -1, 1);
 			detalheRetorno.Carteira = registro.Substring(107, 1);
 			detalheRetorno.CodigoOcorrencia = int.Parse(registro.Substring(108, 2));
 

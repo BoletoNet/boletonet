@@ -279,6 +279,7 @@ namespace BoletoNet
 			//Verifica se data do documento é valida
 			//if (boleto.DataDocumento.ToString("dd/MM/yyyy") == "01/01/0001")
 			if (boleto.DataDocumento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
+<<<<<<< HEAD
 				boleto.DataDocumento = DateTime.Now;
 
 			boleto.QuantidadeMoeda = 0;
@@ -652,6 +653,321 @@ namespace BoletoNet
 
 		#endregion
 
+=======
+                boleto.DataDocumento = DateTime.Now;
+
+            boleto.QuantidadeMoeda = 0;
+
+            //Atribui o nome do banco ao local de pagamento
+            boleto.LocalPagamento = "PAGÁVEL EM QUALQUER CORRESPONDENTE BANCÁRIO PERTO DE VOCÊ!";
+
+            //Aplicando formatações
+            this.FormataCodigoCliente(boleto);
+            this.FormataNossoNumero(boleto);
+            this.FormataCodigoBarra(boleto);
+            this.FormataLinhaDigitavel(boleto);
+        }
+
+        #endregion VALIDAÇÕES
+
+        #region ARQUIVO DE REMESSA
+
+        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos)
+        {
+            throw new NotImplementedException("Função não implementada.");
+        }
+        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
+        {
+            try
+            {
+                string _header = " ";
+
+                this.FormataCodigoCliente(cedente);
+
+                base.GerarHeaderRemessa(numeroConvenio, cedente, tipoArquivo, numeroArquivoRemessa);
+
+                switch (tipoArquivo)
+                {
+
+                    case TipoArquivo.CNAB240:
+                        _header = GerarHeaderRemessaCNAB240(int.Parse(numeroConvenio), cedente, numeroArquivoRemessa);
+                        break;
+                    case TipoArquivo.CNAB400:
+                        _header = GerarHeaderRemessaCNAB400(int.Parse(numeroConvenio), cedente, numeroArquivoRemessa);
+                        break;
+                    case TipoArquivo.Outro:
+                        throw new Exception("Tipo de arquivo inexistente.");
+                }
+
+                return _header;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do HEADER do arquivo de REMESSA.", ex);
+            }
+        }
+
+        public override string GerarHeaderLoteRemessa(string numeroConvenio, Cedente cedente, int numeroArquivoRemessa, TipoArquivo tipoArquivo)
+        {
+            try
+            {
+                string header = " ";
+
+                switch (tipoArquivo)
+                {
+
+                    case TipoArquivo.CNAB240:
+                        header = GerarHeaderLoteRemessaCNAB240(cedente, numeroArquivoRemessa);
+                        break;
+                    case TipoArquivo.CNAB400:
+                        // não tem no CNAB 400 header = GerarHeaderLoteRemessaCNAB400(0, cedente, numeroArquivoRemessa);
+                        break;
+                    case TipoArquivo.Outro:
+                        throw new Exception("Tipo de arquivo inexistente.");
+                }
+
+                return header;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do HEADER DO LOTE do arquivo de REMESSA.", ex);
+            }
+        }
+
+        private string GerarHeaderRemessaCNAB240(int numeroConvenio, Cedente cedente, int numeroArquivoRemessa)
+        {
+            //Variaveis
+            try
+            {
+                //Montagem do header
+                string header = "756"; //Posição 001 a 003   Código do Sicoob na Compensação: "756"
+                header += "0000"; //Posição 004 a 007  Lote de Serviço: "0000"
+                header += "0"; //Posição 008           Tipo de Registro: "0"
+                header += new string(' ', 9); //); //Posição 09 a 017     Uso Exclusivo FEBRABAN / CNAB: Brancos
+                header += cedente.CPFCNPJ.Length == 11 ? "1" : "2"; //Posição 018  1=CPF    2=CGC/CNPJ
+                header += Utils.FormatCode(cedente.CPFCNPJ, "0", 14, true); //Posição 019 a 032   Número de Inscrição da Empresa
+                header += Utils.FormatCode(cedente.Convenio.ToString(), "0", 20, true); //Posição 033 a 052     Código do Convênio no Sicoob: Brancos
+                header += Utils.FormatCode(cedente.ContaBancaria.Agencia, 5);//Posição 053 a 057     Prefixo da Cooperativa: vide planilha "Capa" deste arquivo
+                header += Utils.FormatCode(cedente.ContaBancaria.DigitoAgencia, "0", 1);  //Posição 058 a 058 Digito Agência
+                header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 12, true);   //Posição 059 a 070
+                header += cedente.ContaBancaria.DigitoConta;  //Posição 071 a 71
+                header += new string(' ', 1); //Posição 072 a 72     Dígito Verificador da Ag/Conta: Brancos
+                header += Utils.FormatCode(cedente.Nome, " ", 30);  //Posição 073 a 102      Nome do Banco: SICOOB
+                header += Utils.FormatCode("SICOOB", " ", 30);     //Posição 103 a 132       Nome da Empresa
+                header += Utils.FormatCode("", " ", 10);     //Posição 133 a 142  Uso Exclusivo FEBRABAN / CNAB: Brancos
+                header += "1";        //Posição 103 a 142   Código Remessa / Retorno: "1"
+                header += DateTime.Now.ToString("ddMMyyyy");       //Posição 144 a 151       Data de Geração do Arquivo
+                header += Utils.FormatCode("", "0", 6);            //Posição 152 a 157       Hora de Geração do Arquivo
+                header += "000001";         //Posição 158 a 163     Seqüência
+                header += "081";            //Posição 164 a 166    No da Versão do Layout do Arquivo: "081"
+                header += "00000";          //Posição 167 a 171    Densidade de Gravação do Arquivo: "00000"
+                header += Utils.FormatCode("", " ", 69);
+                header = Utils.SubstituiCaracteresEspeciais(header);
+                //Retorno
+                return header;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao gerar HEADER do arquivo de remessa do CNAB400.", ex);
+            }
+        }
+
+        private string GerarHeaderRemessaCNAB400(int numeroConvenio, Cedente cedente, int numeroArquivoRemessa)
+        {
+            //Variaveis
+            StringBuilder _header = new StringBuilder();
+            //Tratamento de erros
+            try
+            {
+                //Montagem do header
+                _header.Append("0"); //Posição 001
+                _header.Append("1"); //Posição 002
+                _header.Append("REMESSA"); //Posição 003 a 009
+                _header.Append("01"); //Posição 010 a 011
+                _header.Append("COBRANÇA"); //Posição 012 a 019
+                _header.Append(new string(' ', 7)); //Posição 020 a 026
+                _header.Append(Utils.FitStringLength(cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true)); //Posição 027 a 030
+                _header.Append(Utils.FitStringLength(cedente.ContaBancaria.DigitoAgencia, 1, 1, '0', 0, true, true, true)); //Posição 031
+                _header.Append(Utils.FitStringLength(cedente.Codigo, 8, 8, '0', 0, true, true, true)); //Posição 032 a 039
+                _header.Append(Utils.FitStringLength(Convert.ToString(cedente.DigitoCedente), 1, 1, '0', 0, true, true, true)); //Posição 40
+                _header.Append(new string(' ', 6)); //Posição 041 a 046
+                _header.Append(Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false)); //Posição 047 a 076
+                _header.Append(Utils.FitStringLength("756BANCOOBCED", 18, 18, ' ', 0, true, true, false)); //Posição 077 a 094
+                _header.Append(DateTime.Now.ToString("ddMMyy")); //Posição 095 a 100
+                _header.Append(Utils.FitStringLength(Convert.ToString(numeroArquivoRemessa), 7, 7, '0', 0, true, true, true)); //Posição 101 a 107
+                _header.Append(new string(' ', 287)); //Posição 108 a 394
+                _header.Append("000001"); //Posição 395 a 400
+
+                //Retorno
+                return _header.ToString();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao gerar HEADER do arquivo de remessa do CNAB400.", ex);
+            }
+        }
+
+        private string GerarHeaderLoteRemessaCNAB240(Cedente cedente, int numeroArquivoRemessa)
+        {
+            try
+            {
+                string header = "756"; //Posição 001 a 003   Código do Sicoob na Compensação: "756"
+                header += "0001"; //Posição 004 a 007  Tipo de Registro: "1"
+                header += "1";    //Posição 008        Tipo de Operação: "R"
+                header += "R";    //Posição 009        Tipo de Serviço: "01"
+                header += "01";   //Posição 010 a 011  Uso Exclusivo FEBRABAN/CNAB: Brancos
+                header += new string(' ', 2);   //Posição 012 a 013  Nº da Versão do Layout do Lote: "040"
+                header += "040";  //Posição 014 a 016     Uso Exclusivo FEBRABAN/CNAB: Brancos
+                header += new string(' ', 1);    //Posição 017           Uso Exclusivo FEBRABAN/CNAB: Brancos
+                header += (cedente.CPFCNPJ.Length == 11 ? "1" : "2");  //Posição 018        1=CPF    2=CGC/CNPJ
+                header += Utils.FormatCode(cedente.CPFCNPJ, "0", 15, true); //Posição 019 a 033   Número de Inscrição da Empresa
+                header += Utils.FormatCode(cedente.Convenio.ToString(), "0", 20, true); //Posição 034 a 053     Código do Convênio no Sicoob: Brancos
+                header += Utils.FormatCode(cedente.ContaBancaria.Agencia, "0", 5, true);//Posição 054 a 058     Prefixo da Cooperativa: vide planilha "Capa" deste arquivo
+                header += Utils.FormatCode(cedente.ContaBancaria.DigitoAgencia, "0", 1, true);//Posição 059 a 059
+                header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 12, true);   //Posição 060 a 071
+                header += Utils.FormatCode(cedente.ContaBancaria.DigitoConta, "0", 1, true);  //Posição 072 a 72
+                header += new string(' ', 1); //Posição 073     Dígito Verificador da Ag/Conta: Brancos
+                header += Utils.FormatCode(cedente.Nome, " ", 30);  //Posição 074 a 103      Nome do Banco: SICOOB
+                header += Utils.FormatCode("", " ", 40);   // Posição 104 a 143 Informação 1			
+                header += Utils.FormatCode("", " ", 40);   // Posição 144 a 183 Informação 2
+                header += Utils.FormatCode(numeroArquivoRemessa.ToString(), "0", 8, true);    // Número da remessa
+                header += DateTime.Now.ToString("ddMMyyyy");       //Posição 192 a 199       Data de Gravação Remessa/Retorno
+                header += Utils.FormatCode("", "0", 8, true);       //Posição 200 a 207      Data do Crédito: "00000000"
+                header += new string(' ', 33);   // Uso Exclusivo FEBRABAN/CNAB: Brancos
+                header = Utils.SubstituiCaracteresEspeciais(header);
+                return header;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Erro ao gerar HEADER DO LOTE do arquivo de remessa.", e);
+            }
+        }
+
+        public override string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+        {
+            try
+            {
+                string _detalhe = " ";
+
+                //Se o nosso número ainda não foi formatado então formata
+                if (!string.IsNullOrWhiteSpace(boleto.NossoNumero)  && boleto.NossoNumero.Length <= 7)
+                {
+                    FormataNossoNumero(boleto);
+                }
+
+                base.GerarDetalheRemessa(boleto, numeroRegistro, tipoArquivo);
+
+                switch (tipoArquivo)
+                {
+
+                    case TipoArquivo.CNAB240:
+                        _detalhe = GerarDetalheRemessaCNAB240(boleto, numeroRegistro, tipoArquivo);
+                        break;
+                    case TipoArquivo.CNAB400:
+                        _detalhe = GerarDetalheRemessaCNAB400(boleto, numeroRegistro, tipoArquivo);
+                        break;
+                    case TipoArquivo.Outro:
+                        throw new Exception("Tipo de arquivo inexistente.");
+                }
+
+                return _detalhe;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do DETALHE do arquivo de REMESSA.", ex);
+            }
+        }
+
+        private string GerarDetalheRemessaCNAB400(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+        {
+            //Variaveis
+            var _detalhe = new StringBuilder();
+
+            //Tratamento de erros
+            try
+            {
+                //Montagem do Detalhe
+                _detalhe.Append("1"); //Posição 001
+                _detalhe.Append(Utils.IdentificaTipoInscricaoSacado(boleto.Cedente.CPFCNPJ)); //Posição 002 a 003
+                _detalhe.Append(Utils.FitStringLength(boleto.Cedente.CPFCNPJ.Replace(".", "").Replace("-", "").Replace("/", ""), 14, 14, '0', 0, true, true, true)); //Posição 004 a 017
+                _detalhe.Append(Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true)); //Posição 018 a 021
+                _detalhe.Append(Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoAgencia, 1, 1, '0', 0, true, true, true)); //Posição 022
+                _detalhe.Append(Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 8, 8, '0', 0, true, true, true)); //Posição 023 a 030
+                _detalhe.Append(Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoConta, 1, 1, '0', 0, true, true, true)); //Posição 031
+                _detalhe.Append(new string('0', 6)); //Posição 032 a 037
+                _detalhe.Append(Utils.FitStringLength(boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, false)); //Posição 038 a 62
+                _detalhe.Append(Utils.FitStringLength(FormataNumeroTitulo(boleto), 12, 12, '0', 0, true, true, true)); //Posição 063 a 074
+                _detalhe.Append(Utils.FitStringLength(boleto.NumeroParcela.ToString(), 2, 2, '0', 0, true, true, true)); //Posição 075 a 076
+                _detalhe.Append("00"); //Posição 077 a 078
+                _detalhe.Append("   "); //Posição 079 a 081
+                _detalhe.Append(" "); //Posição 082
+                _detalhe.Append("   "); //Posição 083 a 085
+                _detalhe.Append("000"); //Posição 086 a 088
+                _detalhe.Append("0"); //Posição 089
+                _detalhe.Append("00000"); //Posição 090 a 094
+                _detalhe.Append("0"); //Posição 095
+                _detalhe.Append(Utils.FitStringLength(boleto.Cedente.NumeroBordero.ToString(), 6, 6, '0', 0, true, true, true)); //Posição 096 a 101
+                _detalhe.Append(new string(' ', 4)); //Posição 102 a 105
+
+                // Tipo de emissão"Tipo de Emissão: 1 - Cooperativa 2 - Cliente"
+                var tipoDeEmissao = "1";
+                if (boleto.ApenasRegistrar)
+                    tipoDeEmissao = "2";
+
+                _detalhe.Append(Utils.FitStringLength(tipoDeEmissao, 1, 1, '0', 0, true, true, true)); // Posição 106 a 106
+
+                _detalhe.Append(Utils.FitStringLength(boleto.TipoModalidade, 2, 2, '0', 0, true, true, true));  //Posição 107 a 108
+                _detalhe.Append(Utils.FitStringLength(boleto.Remessa.CodigoOcorrencia, 2, 2, '0', 0, true, true, true)); //Posição 109 a 110 - (1)REGISTRO DE TITULOS (2)Solicitação de Baixa
+                _detalhe.Append(Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, '0', 0, true, true, true)); //Posição 111 a 120
+                _detalhe.Append(boleto.DataVencimento.ToString("ddMMyy")); //Posição 121 a 126
+                _detalhe.Append(Utils.FitStringLength(boleto.ValorBoleto.ApenasNumeros(), 13, 13, '0', 0, true, true, true)); //Posição 127 a 139 
+                _detalhe.Append(boleto.Banco.Codigo); //Posição 140 a 142
+                _detalhe.Append(Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true)); //Posição 143 a 146
+                _detalhe.Append(Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoAgencia, 1, 1, '0', 0, true, true, true)); //Posição 147
+                _detalhe.Append(Utils.FitStringLength(boleto.EspecieDocumento.Codigo.ToString(), 2, 2, '0', 0, true, true, true)); //Posição 148 a 149
+
+                _detalhe.Append(boleto.Aceite == "N" ? "0" : "1"); //Posição 150
+                _detalhe.Append(boleto.DataProcessamento.ToString("ddMMyy")); //Posição 151 a 156
+                _detalhe.Append("07"); //Posição 157 a 158 - NÂO PROTESTAR
+                _detalhe.Append("22"); //Posição 159 a 160 - PERMITIR DESCONTO SOMENTE ATE DATA ESTIPULADA
+                _detalhe.Append(Utils.FitStringLength(Convert.ToInt32(boleto.PercJurosMora * 10000).ToString(), 6, 6, '0', 1, true, true, true)); //Posição 161 a 166
+                _detalhe.Append(Utils.FitStringLength(Convert.ToInt32(boleto.PercMulta * 10000).ToString(), 6, 6, '0', 1, true, true, true)); //Posição 167 a 172
+                _detalhe.Append(" "); //Posição 173
+                _detalhe.Append(Utils.FitStringLength((boleto.DataDesconto == DateTime.MinValue ? "0" : boleto.DataDesconto.ToString("ddMMyy")), 6, 6, '0', 0, true, true, true)); //Posição 174 a 179
+                _detalhe.Append(Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 13, 13, '0', 0, true, true, true)); //Posição 180 a 192
+                _detalhe.Append("9" + Utils.FitStringLength(boleto.IOF.ApenasNumeros(), 12, 12, '0', 0, true, true, true)); //Posição 193 a 205
+                _detalhe.Append(Utils.FitStringLength(boleto.Abatimento.ApenasNumeros(), 13, 13, '0', 0, true, true, true)); //Posição 206 a 218
+                _detalhe.Append(Utils.IdentificaTipoInscricaoSacado(boleto.Sacado.CPFCNPJ)); //Posição 219 a 220
+                _detalhe.Append(Utils.FitStringLength(boleto.Sacado.CPFCNPJ.Replace(".", "").Replace("-", "").Replace("/", ""), 14, 14, '0', 0, true, true, true)); //Posição 221 a 234
+                _detalhe.Append(Utils.FitStringLength(boleto.Sacado.Nome, 40, 40, ' ', 0, true, true, false)); //Posição 235 a 274
+                _detalhe.Append(Utils.FitStringLength(boleto.Sacado.Endereco.End, 37, 37, ' ', 0, true, true, false)); //Posição 275 a 311
+                _detalhe.Append(Utils.FitStringLength(boleto.Sacado.Endereco.Bairro, 15, 15, ' ', 0, true, true, false)); //Posição 312 a 326
+                _detalhe.Append(Utils.FitStringLength(boleto.Sacado.Endereco.CEP, 8, 8, '0', 0, true, true, true)); //Posição 327 a 334
+                _detalhe.Append(Utils.FitStringLength(boleto.Sacado.Endereco.Cidade, 15, 15, ' ', 0, true, true, false)); //Posição 335 a 349
+                _detalhe.Append(boleto.Sacado.Endereco.UF); //Posição 350 a 351
+                _detalhe.Append(new string(' ', 40)); //Posição 352 a 391 - OBSERVACOES
+                _detalhe.Append("00"); //Posição 392 a 393 - DIAS PARA PROTESTO
+                _detalhe.Append(" "); //Posição 394
+                _detalhe.Append(Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true)); //Posição 394 a 400
+
+                //Retorno
+                return Utils.SubstituiCaracteresEspeciais(_detalhe.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao gerar DETALHE do arquivo de remessa do CNAB400.", ex);
+            }
+        }
+
+        public string GerarDetalheRemessaCNAB240(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+        {
+            throw new NotImplementedException("Função não implementada.");
+        }
+		
+>>>>>>> upstream/master
 		/// <summary>
 		/// Efetua as Validações dentro da classe Boleto, para garantir a geração da remessa
 		/// </summary>
