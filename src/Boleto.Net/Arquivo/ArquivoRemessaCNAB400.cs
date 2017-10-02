@@ -7,6 +7,15 @@ namespace BoletoNet
 {
     internal class ArquivoRemessaCNAB400 : AbstractArquivoRemessa, IArquivoRemessa
     {
+		#region Propriedades - Específico Banco do Brasil
+
+		/// <summary>
+		/// Para Banco do Brasil especifica se o arquivo será gerado no modelo antigo, com convênio de 6 posições, ou no modelo novo com 7 posições.
+		/// Se for nulo, o tipo será escolhido automaticamente dependendo do número do convênio
+		/// </summary>
+		public bool? BancoBrasil_ModeloAntigo { get; set; }     //Especifica se modelo antigo, de 6 posições
+
+		#endregion
 
         #region Construtores
 
@@ -57,13 +66,13 @@ namespace BoletoNet
 
                 StreamWriter incluiLinha = new StreamWriter(arquivo, Encoding.GetEncoding("ISO-8859-1"));
                 cedente.Carteira = boletos[0].Carteira;
-                strline = banco.GerarHeaderRemessa(numeroConvenio, cedente, TipoArquivo.CNAB400, numeroArquivoRemessa);
+                strline = banco.GerarHeaderRemessa(numeroConvenio, cedente, this, numeroArquivoRemessa);
                 incluiLinha.WriteLine(strline);
 
                 foreach (Boleto boleto in boletos)
                 {
                     boleto.Banco = banco;
-                    strline = boleto.Banco.GerarDetalheRemessa(boleto, numeroRegistro, TipoArquivo.CNAB400);
+                    strline = boleto.Banco.GerarDetalheRemessa(boleto, numeroRegistro, this);
                     incluiLinha.WriteLine(strline);
                     vltitulostotal += boleto.ValorBoleto;   //Uso apenas no registro TRAILER do banco Santander - jsoda em 09/05/2012 - Add no registro TRAILER do banco Banrisul - sidneiklein em 08/08/2013
                     numeroRegistro++;

@@ -254,11 +254,11 @@ namespace BoletoNet
 
 		#region Métodos de geração de arquivo
 
-		public string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
+		public string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, IArquivoRemessa arquivo, int numeroArquivoRemessa)
 		{
 			try
 			{
-				return _IBanco.GerarHeaderRemessa(numeroConvenio, cedente, tipoArquivo, numeroArquivoRemessa);
+				return _IBanco.GerarHeaderRemessa(numeroConvenio, cedente, arquivo, numeroArquivoRemessa);
 			}
 			catch (Exception ex)
 			{
@@ -266,11 +266,11 @@ namespace BoletoNet
 			}
 		}
 
-		public string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos)
+		public string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, IArquivoRemessa arquivo, int numeroArquivoRemessa, Boleto boletos)
 		{
 			try
 			{
-				return _IBanco.GerarHeaderRemessa(numeroConvenio, cedente, tipoArquivo, numeroArquivoRemessa, boletos);
+				return _IBanco.GerarHeaderRemessa(numeroConvenio, cedente, arquivo, numeroArquivoRemessa, boletos);
 			}
 			catch (Exception ex)
 			{
@@ -278,11 +278,11 @@ namespace BoletoNet
 			}
 		}
 
-		public string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+		public string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, IArquivoRemessa arquivo)
 		{
 			try
 			{
-				return _IBanco.GerarDetalheRemessa(boleto, numeroRegistro, tipoArquivo);
+				return _IBanco.GerarDetalheRemessa(boleto, numeroRegistro, arquivo);
 			}
 			catch (Exception ex)
 			{
@@ -314,11 +314,11 @@ namespace BoletoNet
 			}
 		}
 
-		public string GerarHeaderRemessa(Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
+		public string GerarHeaderRemessa(Cedente cedente, IArquivoRemessa arquivo, int numeroArquivoRemessa)
 		{
 			try
 			{
-				return _IBanco.GerarHeaderRemessa(cedente, tipoArquivo, numeroArquivoRemessa);
+				return _IBanco.GerarHeaderRemessa(cedente, arquivo, numeroArquivoRemessa);
 			}
 			catch (Exception ex)
 			{

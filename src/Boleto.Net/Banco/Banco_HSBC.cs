@@ -403,20 +403,20 @@ namespace BoletoNet
         /// HEADER do arquivo CNAB
         /// Gera o HEADER do arquivo remessa de acordo com o lay-out informado
         /// </summary>
-        public override string GerarHeaderRemessa(Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
+        public override string GerarHeaderRemessa(Cedente cedente, IArquivoRemessa arquivo, int numeroArquivoRemessa)
         {
-            return GerarHeaderRemessa("0", cedente, tipoArquivo, numeroArquivoRemessa);
+            return GerarHeaderRemessa("0", cedente, arquivo, numeroArquivoRemessa);
         }
 
-        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
+        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, IArquivoRemessa arquivo, int numeroArquivoRemessa)
         {
             try
             {
                 string _header = " ";
 
-                base.GerarHeaderRemessa(numeroConvenio, cedente, tipoArquivo, numeroArquivoRemessa);
+                base.GerarHeaderRemessa(numeroConvenio, cedente, arquivo, numeroArquivoRemessa);
 
-                switch (tipoArquivo)
+                switch (arquivo.TipoArquivo)
                 {
 
                     case TipoArquivo.CNAB400:
@@ -621,7 +621,7 @@ namespace BoletoNet
             }
         }
 
-        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos)
+        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, IArquivoRemessa arquivo, int numeroArquivoRemessa, Boleto boletos)
         {
             throw new NotImplementedException("Função não implementada.");
         }
@@ -633,22 +633,23 @@ namespace BoletoNet
         /// DETALHE do arquivo CNAB
         /// Gera o DETALHE do arquivo remessa de acordo com o lay-out informado
         /// </summary>
-        public override string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+        public override string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, IArquivoRemessa arquivo)
         {
             try
             {
                 string _detalhe = "";
+				base.GerarDetalheRemessa(boleto, numeroRegistro, arquivo);
 
-                switch (tipoArquivo)
+				switch (arquivo.TipoArquivo)
                 {
                     case TipoArquivo.CNAB240:
                         _detalhe = GerarDetalheRemessaCNAB240();
                         break;
                     case TipoArquivo.CNAB400:
                         if (boleto.Carteira == "1" || boleto.Carteira == "3" || boleto.Carteira == "4")
-                            _detalhe = GerarDetalheRemessaCNAB400CSB(boleto, numeroRegistro, tipoArquivo);
+                            _detalhe = GerarDetalheRemessaCNAB400CSB(boleto, numeroRegistro, arquivo.TipoArquivo);
                         else
-                            _detalhe = GerarDetalheRemessaCNAB400CNR(boleto, numeroRegistro, tipoArquivo);
+                            _detalhe = GerarDetalheRemessaCNAB400CNR(boleto, numeroRegistro, arquivo.TipoArquivo);
                         break;
                     case TipoArquivo.Outro:
                         throw new Exception("Tipo de arquivo inexistente.");
@@ -672,8 +673,6 @@ namespace BoletoNet
         {
             try
             {
-                base.GerarDetalheRemessa(boleto, numeroRegistro, tipoArquivo);
-
                 string _detalhe;
 
                 //Código do registro ==> 001 - 001
@@ -798,8 +797,6 @@ namespace BoletoNet
         {
             try
             {
-                base.GerarDetalheRemessa(boleto, numeroRegistro, tipoArquivo);
-
                 string _detalhe;
 
                 //Código do registro ==> 001 - 001

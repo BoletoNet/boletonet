@@ -458,23 +458,23 @@ namespace BoletoNet
             return vRetorno;
         }
 
-        public override string GerarHeaderRemessa(Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
+        public override string GerarHeaderRemessa(Cedente cedente, IArquivoRemessa arquivo, int numeroArquivoRemessa)
         {
-            return GerarHeaderRemessa("0", cedente, tipoArquivo, numeroArquivoRemessa);
+            return GerarHeaderRemessa("0", cedente, arquivo, numeroArquivoRemessa);
         }
         /// <summary>
         /// HEADER do arquivo CNAB
         /// Gera o HEADER do arquivo remessa de acordo com o lay-out informado
         /// </summary>
-        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
+        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, IArquivoRemessa arquivo, int numeroArquivoRemessa)
         {
             try
             {
                 string _header = " ";
 
-                base.GerarHeaderRemessa("0", cedente, tipoArquivo, numeroArquivoRemessa);
+                base.GerarHeaderRemessa("0", cedente, arquivo, numeroArquivoRemessa);
 
-                switch (tipoArquivo)
+                switch (arquivo.TipoArquivo)
                 {
 
                     case TipoArquivo.CNAB240:
@@ -495,15 +495,15 @@ namespace BoletoNet
                 throw new Exception("Erro durante a geração do HEADER do arquivo de REMESSA.", ex);
             }
         }
-        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos)
+        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, IArquivoRemessa arquivo, int numeroArquivoRemessa, Boleto boletos)
         {
             try
             {
                 string _header = " ";
 
-                base.GerarHeaderRemessa("0", cedente, tipoArquivo, numeroArquivoRemessa);
+                base.GerarHeaderRemessa("0", cedente, arquivo, numeroArquivoRemessa);
 
-                switch (tipoArquivo)
+                switch (arquivo.TipoArquivo)
                 {
                     case TipoArquivo.CNAB240:
                         if (boletos.Remessa.TipoDocumento.Equals("2") || boletos.Remessa.TipoDocumento.Equals("1"))
@@ -535,21 +535,21 @@ namespace BoletoNet
         /// <param name="tipoArquivo"><see cref="TipoArquivo"/> do qual as linhas serão geradas.</param>
         /// <returns>Linha gerada</returns>
         /// <remarks>Esta função não existia, mas as funções que ela chama já haviam sido implementadas. Só criei esta função pois a original estava chamando o método abstrato em IBanco.</remarks>
-        public new string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+        public new string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, IArquivoRemessa arquivo)
         {
             try
             {
                 string _detalhe = " ";
 
-                base.GerarDetalheRemessa(boleto, numeroRegistro, tipoArquivo);
+                base.GerarDetalheRemessa(boleto, numeroRegistro, arquivo);
 
-                switch (tipoArquivo)
+                switch (arquivo.TipoArquivo)
                 {
                     case TipoArquivo.CNAB240:
                         _detalhe = this.GerarDetalheSegmentoPRemessaCNAB240SIGCB(this.Cedente, boleto, numeroRegistro);
                         break;
                     case TipoArquivo.CNAB400:
-                        _detalhe = GerarDetalheRemessaCNAB400(boleto, numeroRegistro, tipoArquivo);
+                        _detalhe = GerarDetalheRemessaCNAB400(boleto, numeroRegistro, arquivo.TipoArquivo);
                         break;
                     case TipoArquivo.Outro:
                         throw new Exception("Tipo de arquivo inexistente.");
@@ -1649,8 +1649,6 @@ namespace BoletoNet
             {
                 //Variáveis Locais a serem Implementadas em nível de Config do Boleto...
                 boleto.Remessa.CodigoOcorrencia = "01"; //remessa p/ CAIXA ECONOMICA FEDERAL
-                //
-                base.GerarDetalheRemessa(boleto, numeroRegistro, tipoArquivo);
                 //
                 TRegistroEDI reg = new TRegistroEDI();
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0001, 001, 0, "1", '0'));                                       //001-001

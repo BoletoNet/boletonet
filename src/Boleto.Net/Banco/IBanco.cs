@@ -29,19 +29,19 @@ namespace BoletoNet
         /// <summary>
         /// Gera o header do arquivo de remessa
         /// </summary>
-        string GerarHeaderRemessa(string numeroConvenio, Cedente cendente, TipoArquivo tipoArquivo, int numeroArquivoRemessa);
+        string GerarHeaderRemessa(string numeroConvenio, Cedente cendente, IArquivoRemessa arquivo, int numeroArquivoRemessa);
         /// <summary>
         /// Gera o header do arquivo de remessa
         /// </summary>
-        string GerarHeaderRemessa(string numeroConvenio, Cedente cendente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos);
+        string GerarHeaderRemessa(string numeroConvenio, Cedente cendente, IArquivoRemessa arquivo, int numeroArquivoRemessa, Boleto boletos);
         /// <summary>
         /// Gera os registros de detalhe do arquivo de remessa
         /// </summary>
-        string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo);
+        string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, IArquivoRemessa arquivo);
         /// <summary>
         /// Gera o header de arquivo do arquivo de remessa
         /// </summary>
-        string GerarHeaderRemessa(Cedente cendente, TipoArquivo tipoArquivo, int numeroArquivoRemessa);
+        string GerarHeaderRemessa(Cedente cendente, IArquivoRemessa arquivo, int numeroArquivoRemessa);
         /// <summary>
         /// Gera o Trailer do arquivo de remessa
         /// </summary>
