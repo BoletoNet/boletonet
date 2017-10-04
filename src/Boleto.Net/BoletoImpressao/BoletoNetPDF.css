@@ -109,6 +109,7 @@ img {
 	.imgLogo img {
 		width: 150px;
 		height: 40px;
+        margin-bottom: 1px;
 	}
 
 .barra {
@@ -195,7 +196,7 @@ img {
 }
 
 .w72 {
-	width: 72px;
+	width: 74px;
 }
 
 .w83 {
@@ -347,6 +348,7 @@ img {
 	font: bold 10px arial;
 	color: black;
 	height: 12px;
+    text-align: right;
 }
 
 .mt23 {
