@@ -26,6 +26,7 @@ namespace Boleto.Net.MVC.Models
         Sudameris = 347,
         Unibanco = 409
     }
+
     /// <Author>
     /// Sandro Ribeiro - CODTEC SISTEMAS
     /// </Author>
@@ -37,7 +38,8 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.CodigoBanco = (short)Banco;
         }
         public BoletoBancario boletoBancario { get; set; }
-        public string BancodoBrasil()
+
+        public BoletoBancario BancodoBrasil()
         {
             DateTime vencimento = DateTime.Now.AddDays(10);
 
@@ -121,10 +123,10 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.RemoveSimboloMoedaValorDocumento = true;
             boletoBancario.AjustaTamanhoFonte(12, 10, 14, 14);
 
-            return boletoBancario.MontaHtmlEmbedded();
+            return boletoBancario;
         }
 
-        public string Banrisul()
+        public BoletoBancario Banrisul()
         {
             DateTime vencimento = DateTime.Now.AddDays(10);
 
@@ -154,10 +156,10 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtmlEmbedded();
+            return boletoBancario;
         }
 
-        public string Basa()
+        public BoletoBancario Basa()
         {
             DateTime vencimento = DateTime.Now.AddDays(10);
 
@@ -195,10 +197,10 @@ namespace Boleto.Net.MVC.Models
             //boletoBancario.AjustaTamanhoFonte(12, tamanhoFonteInstrucaoImpressao: 14);
             boletoBancario.RemoveSimboloMoedaValorDocumento = false;
 
-            return boletoBancario.MontaHtmlEmbedded();
+            return boletoBancario;
         }
 
-        public string Bradesco()
+        public BoletoBancario Bradesco()
         {
             DateTime vencimento = DateTime.Now.AddDays(10);
 
@@ -209,7 +211,9 @@ namespace Boleto.Net.MVC.Models
 
 
             //Carteiras 
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 1.01m, "09", "01000000001", c);
+            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 1.00m, "09", "01000000001", c);
+            b.ValorMulta = 0.10m;
+            b.ValorCobrado = 1.10m;
             b.NumeroDocumento = "01000000001";
             b.DataVencimento = new DateTime(2015, 09, 12);
 
@@ -237,10 +241,10 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtmlEmbedded();
+            return boletoBancario;
         }
 
-        public string BRB()
+        public BoletoBancario BRB()
         {
             DateTime vencimento = DateTime.Now.AddDays(10);
 
@@ -265,10 +269,10 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtmlEmbedded();
+            return boletoBancario;
         }
 
-        public string Caixa()
+        public BoletoBancario Caixa()
         {
             DateTime vencimento = DateTime.Now.AddDays(10);
 
@@ -307,10 +311,10 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtmlEmbedded();
+            return boletoBancario;
         }
 
-        public string HSBC()
+        public BoletoBancario HSBC()
         {
             DateTime vencimento = DateTime.Now.AddDays(10);
 
@@ -331,10 +335,10 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtmlEmbedded();
+            return boletoBancario;
         }
 
-        public string Itau()
+        public BoletoBancario Itau()
         {
             DateTime vencimento = DateTime.Now.AddDays(1);
 
@@ -373,10 +377,10 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtmlEmbedded();
+            return boletoBancario;
         }
 
-        public string Real()
+        public BoletoBancario Real()
         {
             DateTime vencimento = DateTime.Now.AddDays(10);
 
@@ -402,10 +406,10 @@ namespace Boleto.Net.MVC.Models
             EspeciesDocumento ed = EspecieDocumento_Real.CarregaTodas();
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtmlEmbedded();
+            return boletoBancario;
         }
 
-        public string Safra()
+        public BoletoBancario Safra()
         {
             DateTime vencimento = DateTime.Now.AddDays(10);
 
@@ -437,10 +441,10 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtmlEmbedded();
+            return boletoBancario;
         }
 
-        public string Santander()
+        public BoletoBancario Santander()
         {
             DateTime vencimento = DateTime.Now.AddDays(10);
 
@@ -472,10 +476,10 @@ namespace Boleto.Net.MVC.Models
 
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtmlEmbedded();
+            return boletoBancario;
         }
 
-        public string Sicoob()
+        public BoletoBancario Sicoob()
         {
             DateTime vencimento = DateTime.Now.AddDays(10);
 
@@ -499,10 +503,10 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtmlEmbedded();
+            return boletoBancario;
         }
 
-        public string Sicred()
+        public BoletoBancario Sicred()
         {
 
             DateTime vencimento = DateTime.Now.AddDays(1);
@@ -534,10 +538,10 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtmlEmbedded();
+            return boletoBancario;
         }
 
-        public string Sudameris()
+        public BoletoBancario Sudameris()
         {
             DateTime vencimento = DateTime.Now.AddDays(10);
 
@@ -568,10 +572,10 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtmlEmbedded();
+            return boletoBancario;
         }
 
-        public string Unibanco()
+        public BoletoBancario Unibanco()
         {
             // ----------------------------------------------------------------------------------------
             // Exemplo 1
@@ -614,49 +618,7 @@ namespace Boleto.Net.MVC.Models
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
 
-            return boletoBancario.MontaHtmlEmbedded();
-        }
-
-        public byte[] ItauPDF()
-        {
-            DateTime vencimento = DateTime.Now.AddDays(1);
-
-            Instrucao_Itau item1 = new Instrucao_Itau(9, 5);
-            Instrucao_Itau item2 = new Instrucao_Itau(81, 10);
-            Cedente c = new Cedente("10.823.650/0001-90", "SAFIRALIFE", "4406", "22324");
-            //Na carteira 198 o código do Cedente é a conta bancária
-            c.Codigo = "13000";
-
-            BoletoNet.Boleto b = new BoletoNet.Boleto(vencimento, 0.1m, "176", "00000001", c, new EspecieDocumento(341, "1"));
-            b.NumeroDocumento = "00000001";
-
-            b.Sacado = new Sacado("000.000.000-00", "Nome do seu Cliente ");
-            b.Sacado.Endereco.End = "Endereço do seu Cliente ";
-            b.Sacado.Endereco.Bairro = "Bairro";
-            b.Sacado.Endereco.Cidade = "Cidade";
-            b.Sacado.Endereco.CEP = "00000000";
-            b.Sacado.Endereco.UF = "UF";
-
-            // Exemplo de como adicionar mais informações ao sacado
-            b.Sacado.InformacoesSacado.Add(new InfoSacado("TÍTULO: " + "2541245"));
-
-            item2.Descricao += " " + item2.QuantidadeDias.ToString() + " dias corridos do vencimento.";
-            b.Instrucoes.Add(item1);
-            b.Instrucoes.Add(item2);
-
-            // juros/descontos
-
-            if (b.ValorDesconto == 0)
-            {
-                Instrucao_Itau item3 = new Instrucao_Itau(999, 1);
-                item3.Descricao += ("1,00 por dia de antecipação.");
-                b.Instrucoes.Add(item3);
-            }
-
-            boletoBancario.Boleto = b;
-            boletoBancario.Boleto.Valida();
-
-            return boletoBancario.MontaBytesPDF();
+            return boletoBancario;
         }
     }
 }
