@@ -90,7 +90,7 @@ namespace BoletoNet.Util
 
         public static string Right(this string str, int length)
         {
-            return str.Substring(str.Length - length);
+            return str.Substring(length >= str.Length ? str : str.Length - length);
         }
 
     }
