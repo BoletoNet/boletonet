@@ -142,7 +142,7 @@ namespace BoletoNet
 
 		public override void Valida()
 		{
-	        base.Valida();
+	        // base.Valida();
 		}
 
 		#endregion
