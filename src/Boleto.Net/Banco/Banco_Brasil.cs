@@ -46,7 +46,7 @@ namespace BoletoNet
         public override void ValidaBoleto(Boleto boleto)
         {
             if (string.IsNullOrEmpty(boleto.Carteira))
-                throw new NotImplementedException("Carteira não informada. Utilize a carteira 11, 16, 17, 17-019, 17-027, 18, 18-019, 18-027, 18-035, 18-140, 17-159, 17-140, 17-067 ou 31.");
+                throw new NotImplementedException("Carteira não informada. Utilize a carteira 11, 16, 17, 17-019, 17-027, 17-051, 18, 18-019, 18-027, 18-035, 18-140, 17-159, 17-140, 17-067 ou 31.");
 
             //Verifica as carteiras implementadas
             if (!boleto.Carteira.Equals("11") &
@@ -54,7 +54,8 @@ namespace BoletoNet
                 !boleto.Carteira.Equals("17") &
                 !boleto.Carteira.Equals("17-019") &
                 !boleto.Carteira.Equals("17-027") &
-				!boleto.Carteira.Equals("17-035") &
+                !boleto.Carteira.Equals("17-051") &
+                !boleto.Carteira.Equals("17-035") &
                 !boleto.Carteira.Equals("17-067") &
                 !boleto.Carteira.Equals("17-140") &
                 !boleto.Carteira.Equals("17-159") &
@@ -66,7 +67,7 @@ namespace BoletoNet
                 !boleto.Carteira.Equals("18-140") &
                 !boleto.Carteira.Equals("31"))
 
-                throw new NotImplementedException("Carteira não informada. Utilize a carteira 11, 16, 17, 17-019, 17-027, 18, 18-019, 18-027, 18-035, 18-140, 17-159, 17-140, 17-067 ou 31.");
+                throw new NotImplementedException("Carteira não informada. Utilize a carteira 11, 16, 17, 17-019, 17-027, 17-051, 18, 18-019, 18-027, 18-035, 18-140, 17-159, 17-140, 17-067 ou 31.");
 
             //Verifica se o nosso número é válido
             if (Utils.ToString(boleto.NossoNumero) == string.Empty)
@@ -187,9 +188,9 @@ namespace BoletoNet
             }
             #endregion Carteira 17-019, 17-067 e 17-167
 
-            #region Carteira 17-027
+            #region Carteira 17-027, 17-051
             //Carteira 17, com variação 027, 129 e 140
-            if (boleto.Carteira.Equals("17-027") || boleto.Carteira.Equals("17-159") || boleto.Carteira.Equals("17-140"))
+            if (boleto.Carteira.Equals("17-027") || boleto.Carteira.Equals("17-051") || boleto.Carteira.Equals("17-159") || boleto.Carteira.Equals("17-140"))
             {
                 /*
                  * Convênio de 7 posições
@@ -228,7 +229,7 @@ namespace BoletoNet
                 else
                     boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 11);
             }
-            #endregion Carteira 17-027
+            #endregion Carteira 17-027, 17-051
 
             #region Carteira 17-035
             //Carteira 17, com variação 035
@@ -740,8 +741,8 @@ namespace BoletoNet
             }
             #endregion Carteira 17-019, 17-067 e 17-167
 
-            #region Carteira 17-027, 17-140 e 17-159
-            if (boleto.Carteira.Equals("17-027") || boleto.Carteira.Equals("17-140") || boleto.Carteira.Equals("17-159"))
+            #region Carteira 17-027, 17-051, 17-140 e 17-159
+            if (boleto.Carteira.Equals("17-027") || boleto.Carteira.Equals("17-051") || boleto.Carteira.Equals("17-140") || boleto.Carteira.Equals("17-159"))
             {
                 if (boleto.Cedente.Convenio.ToString().Length == 7)
                 {
@@ -799,7 +800,7 @@ namespace BoletoNet
                     throw new Exception("Código do convênio informado é inválido. O código do convenio deve ter 4, 6, ou 7 dígitos.");
                 }
             }
-            #endregion Carteira 17-027, 17-140 e 17-159
+            #endregion Carteira 17-027, 17-051, 17-140 e 17-159
 
 
             #region Carteira 17-035
@@ -1265,7 +1266,8 @@ namespace BoletoNet
             {
                 case "17-019":
                 case "17-027":
-				case "17-035":
+                case "17-051":
+                case "17-035":
                 case "17-067":
                 case "17-140":
                 case "17-159":
@@ -1482,7 +1484,7 @@ namespace BoletoNet
                 // 7 – para carteira 17 modalidade Simples.
                 if (boleto.ModalidadeCobranca == 0)
                 {
-                    if (boleto.Carteira.Equals("17-019") || boleto.Carteira.Equals("17-027") || boleto.Carteira.Equals("17-035") || boleto.Carteira.Equals("17-140") || boleto.Carteira.Equals("17-159") || boleto.Carteira.Equals("17-067") || boleto.Carteira.Equals("17-167") || boleto.Carteira.Equals("17"))
+                    if (boleto.Carteira.Equals("17-019") || boleto.Carteira.Equals("17-027") || boleto.Carteira.Equals("17-035") || boleto.Carteira.Equals("17-051") || boleto.Carteira.Equals("17-140") || boleto.Carteira.Equals("17-159") || boleto.Carteira.Equals("17-067") || boleto.Carteira.Equals("17-167") || boleto.Carteira.Equals("17"))
                         _segmentoP += "7";
                     else
                         _segmentoP += "0";
@@ -1545,8 +1547,8 @@ namespace BoletoNet
                     _segmentoP +=
                         Utils.FitStringLength(
                             boleto.DataDesconto == DateTime.MinValue
-                                ? boleto.DataVencimento.ToString("ddMMyy")
-                                : boleto.DataDesconto.ToString("ddMMyy"), 8, 8, '0', 0, true, true, false);
+                                ? boleto.DataVencimento.ToString("ddMMyyyy")
+                                : boleto.DataDesconto.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
                     _segmentoP += Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 }
                 else
@@ -2304,11 +2306,13 @@ namespace BoletoNet
                     #region DataVencimento
                     string vDataVencimento = "000000";
                     if (!boleto.DataVencimento.Equals(DateTime.MinValue))
-                        vDataVencimento = boleto.DataVencimento.ToString("ddMMyy");
+                        vDataVencimento = boleto.DataVencimento.ToString("dd/MM/yy");
+                    else
+                        throw new Exception("Data de inicio para Cobrança da Multa inválida.");
                     #endregion
 
                     reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0174, 001, 0, vCodigoMulta, '0'));                          //174 a 174      Código da Multa 1=Valor 
-                    reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAA___________, 0175, 006, 0, vDataVencimento, ' '));                       //175 a 180      Data de inicio para Cobrança da Multa 
+                    reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAA___________, 0175, 006, 0, DateTime.Parse(vDataVencimento), ' '));       //175 a 180      Data de inicio para Cobrança da Multa 
                     reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0180, 013, 2, vMulta, '0'));                                //181 a 192      Valor de Multa 
                 }
                 else

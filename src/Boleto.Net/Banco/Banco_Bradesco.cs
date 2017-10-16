@@ -116,7 +116,8 @@ namespace BoletoNet
             //if (boleto.Carteira == "06" && !Utils.DataValida(boleto.DataVencimento))
             //    FFFF = "0000";
 
-            string VVVVVVVVVV = boleto.ValorBoleto.ToString("N2").Replace(",", "").Replace(".", "");
+            var valor = boleto.ValorCobrado > boleto.ValorBoleto ? boleto.ValorCobrado : boleto.ValorBoleto;
+            string VVVVVVVVVV = valor.ToString("N2").Replace(",", "").Replace(".", "");
             VVVVVVVVVV = Utils.FormatCode(VVVVVVVVVV, 10);
 
             //if (Utils.ToInt64(VVVVVVVVVV) == 0)
@@ -148,7 +149,8 @@ namespace BoletoNet
         /// 
         public override void FormataCodigoBarra(Boleto boleto)
         {
-            var valorBoleto = boleto.ValorBoleto.ToString("N2").Replace(",", "").Replace(".", "");
+            var valor = boleto.ValorCobrado > boleto.ValorBoleto ? boleto.ValorCobrado : boleto.ValorBoleto;
+            var valorBoleto = valor.ToString("N2").Replace(",", "").Replace(".", "");
             valorBoleto = Utils.FormatCode(valorBoleto, 10);
 
             if (boleto.Carteira == "02" || boleto.Carteira == "03" || boleto.Carteira == "09" || boleto.Carteira == "19" || boleto.Carteira == "26") // Com registro
@@ -210,6 +212,7 @@ namespace BoletoNet
         {
             boleto.NossoNumero = string.Format("{0}/{1}-{2}", Utils.FormatCode(boleto.Carteira, 3), boleto.NossoNumero, boleto.DigitoNossoNumero);
         }
+
         public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos)
         {
             throw new NotImplementedException("Função não implementada.");
@@ -481,9 +484,11 @@ namespace BoletoNet
                 //Nº Inscrição da Empresa ==> 004 a 017
                 detalhe.NumeroInscricao = registro.Substring(3, 14);
 
-                //Identificação da Empresa Cedente no Banco ==> 021 a 037
-                detalhe.Agencia = Utils.ToInt32(registro.Substring(24, 6));
-                detalhe.Conta = Utils.ToInt32(registro.Substring(30, 7));
+                //Identificação da Empresa Cedente no Banco ==> 021 a 037 = 17 (Igual remessa)
+                // 0 + Carteira 3 + Agência 5 + Conta 7 + Digito 1 = 17
+                // ex: 00090750315206870
+                detalhe.Agencia = Utils.ToInt32(registro.Substring(24, 5));
+                detalhe.Conta = Utils.ToInt32(registro.Substring(29, 7));
                 detalhe.DACConta = Utils.ToInt32(registro.Substring(36, 1));
 
                 //Nº Controle do Participante ==> 038 a 062
@@ -1101,7 +1106,7 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Nome.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
 
                 //Endereço Completo (40, A)
-                _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.End.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
+                _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.EndComNumero.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
 
                 //1ª Mensagem (12, A)
                 /*Campo livre para uso da Empresa. A mensagem enviada nesse campo será impressa
