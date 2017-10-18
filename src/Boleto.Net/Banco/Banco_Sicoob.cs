@@ -49,27 +49,9 @@ namespace BoletoNet
             String nossoNumero = boleto.NossoNumero;
             StringBuilder seqValidacao = new StringBuilder();
 
-            /*
-             * Preenchendo com zero a esquerda
-             */
-            //Tratando cooperativa
-            for (int i = 0; i < 4 - cooperativa.Length; i++)
-            {
-                seqValidacao.Append("0");
-            }
-            seqValidacao.Append(cooperativa);
-            //Tratando cliente
-            for (int i = 0; i < 10 - codigo.Length; i++)
-            {
-                seqValidacao.Append("0");
-            }
-            seqValidacao.Append(codigo);
-            //Tratando nosso número
-            for (int i = 0; i < 7 - nossoNumero.Length; i++)
-            {
-                seqValidacao.Append("0");
-            }
-            seqValidacao.Append(nossoNumero);
+            seqValidacao.Append(cooperativa.PadLeft(4, '0'));
+            seqValidacao.Append(codigo.PadLeft(10, '0'));
+            seqValidacao.Append(nossoNumero.PadLeft(7, '0'));
 
             /*
              * Multiplicando cada posição por sua respectiva posição na constante.
@@ -429,7 +411,7 @@ namespace BoletoNet
                 _header.Append("1"); //Posição 002
                 _header.Append("REMESSA"); //Posição 003 a 009
                 _header.Append("01"); //Posição 010 a 011
-                _header.Append("COBRANÇA"); //Posição 012 a 019
+                _header.Append("COBRANCA"); //Posição 012 a 019
                 _header.Append(new string(' ', 7)); //Posição 020 a 026
                 _header.Append(Utils.FitStringLength(cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true)); //Posição 027 a 030
                 _header.Append(Utils.FitStringLength(cedente.ContaBancaria.DigitoAgencia, 1, 1, '0', 0, true, true, true)); //Posição 031
