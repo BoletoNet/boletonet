@@ -1,9 +1,7 @@
+using BoletoNet.EDI.Banco;
+using BoletoNet.Util;
 using System;
 using System.Web.UI;
-using BoletoNet.Util;
-using System.Text;
-using System.Collections.Generic;
-using BoletoNet.EDI.Banco;
 
 [assembly: WebResource("BoletoNet.Imagens.041.jpg", "image/jpg")]
 namespace BoletoNet
@@ -106,7 +104,7 @@ namespace BoletoNet
             string Metade1;
             string Metade2;
 
-            string Cedente = boleto.Cedente.Codigo.Substring(4); //Os quatro primeiros digitos do código do cedente é sempre a agência
+            string Cedente = boleto.Cedente.Codigo.Length < 11 ? boleto.Cedente.Codigo : boleto.Cedente.Codigo.Substring(4); //Os quatro primeiros digitos do código do cedente é sempre a agência
             string NossoNumero = boleto.NossoNumero.Substring(0, 8);
 
             //(Isso depende da constante que usar) no caso de cima "041" no de baixo "40" antes do "XX"
@@ -278,8 +276,11 @@ namespace BoletoNet
 
                 string nossoNumero = boleto.NossoNumero.Replace(".", "").Replace("-", "");
                 nossoNumero = nossoNumero.Substring(0, 8);
-                string codCedente = boleto.Cedente.Codigo.Substring(4, 7);// Os quatro primeiros digitos do código do cedente é sempre a agência
-                campoLivre = "21" + boleto.Cedente.ContaBancaria.Agencia + codCedente + nossoNumero + "40";
+
+                //11: 4 (agência) + 7 (cedente)
+                string codCedente = boleto.Cedente.Codigo.Substring(boleto.Cedente.Codigo.Length < 11 ? 0 : 4, 7);
+
+                campoLivre = "21" + boleto.Cedente.ContaBancaria.Agencia.Substring(0, 4) + codCedente + nossoNumero + "40";
                 string ncCodBarra = CalcularNCCodBarras(campoLivre);
                 Int32.TryParse(ncCodBarra.Substring(0, 1), out _primDigito);
                 Int32.TryParse(ncCodBarra.Substring(1, 1), out _segDigito);
@@ -300,7 +301,10 @@ namespace BoletoNet
                 string nossoNumero = boleto.NossoNumero.Replace(".", "").Replace("-", "");
                 nossoNumero = nossoNumero.Substring(0, 8);
                 //campoLivre = "21" + boleto.Cedente.ContaBancaria.Agencia.Substring(1, 3) + boleto.Cedente.ContaBancaria.Conta + nossoNumero + "041";
-                string codCedente = boleto.Cedente.Codigo.Substring(4, 7);// Os quatro primeiros digitos do código do cedente é sempre a agência
+
+                //11: 4 (agência) + 7 (cedente)
+                string codCedente = boleto.Cedente.Codigo.Substring(boleto.Cedente.Codigo.Length < 11 ? 0 : 4, 7);
+
                 campoLivre = "21" + boleto.Cedente.ContaBancaria.Agencia.Substring(1, 3) + codCedente + nossoNumero + "041";
                 string ncCodBarra = CalcularNCCodBarras(campoLivre);
                 Int32.TryParse(ncCodBarra.Substring(0, 1), out _primDigito);
@@ -408,7 +412,7 @@ namespace BoletoNet
 
             for (int i = seq.Length; i > 0; i--)
             {
-                s = s + (Convert.ToInt32(seq.Mid( i, 1)) * p);
+                s = s + (Convert.ToInt32(seq.Mid(i, 1)) * p);
                 if (p == b)
                     p = 2;
                 else
