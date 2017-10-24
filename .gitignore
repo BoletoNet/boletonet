@@ -196,7 +196,4 @@ src/.vs/config/applicationhost.config
 src/.vs/config/applicationhost.config
 *.config
 src/.vs/Boleto.Net.sqlite
-src/.vs/config/applicationhost.config
-src/.vs/config/applicationhost.config
-src/.vs/config/applicationhost.config
-src/.vs/Boleto.Net.sqlite
+src/.vs/
