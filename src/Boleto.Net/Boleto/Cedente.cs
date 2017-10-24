@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace BoletoNet
 {
-	[Serializable, Browsable(false)]
+    [Serializable, Browsable(false)]
     public class Cedente
     {
         #region Variaveis
@@ -17,6 +17,7 @@ namespace BoletoNet
         private int _numeroSequencial;
         private string _codigoTransmissao;
         private int _numeroBordero;
+        private string _digCedente;
         private int _digitoCedente = -1;
         private string _carteira;
         private Endereco _endereco;
@@ -40,33 +41,33 @@ namespace BoletoNet
             _nome = nome;
         }
 
-		public Cedente(string cpfcnpj, string nome, string agencia, string digitoAgencia, string conta, string digitoConta, string operacaoConta) :
-			this(cpfcnpj, nome, agencia, digitoAgencia, conta, digitoConta)
+        public Cedente(string cpfcnpj, string nome, string agencia, string digitoAgencia, string conta, string digitoConta, string operacaoConta) :
+            this(cpfcnpj, nome, agencia, digitoAgencia, conta, digitoConta)
         {
-			_contaBancaria = new ContaBancaria
-			{
-				Agencia = agencia,
-				DigitoAgencia = digitoAgencia,
-				Conta = conta,
-				DigitoConta = digitoConta,
-				OperacaConta = operacaoConta
-			};
+            _contaBancaria = new ContaBancaria
+            {
+                Agencia = agencia,
+                DigitoAgencia = digitoAgencia,
+                Conta = conta,
+                DigitoConta = digitoConta,
+                OperacaConta = operacaoConta
+            };
         }
 
         public Cedente(string cpfcnpj, string nome, string agencia, string digitoAgencia, string conta, string digitoConta)
-			: this(cpfcnpj, nome)
-		{
-			_contaBancaria = new ContaBancaria
+            : this(cpfcnpj, nome)
         {
-				Agencia = agencia,
-				DigitoAgencia = digitoAgencia,
-				Conta = conta,
-				DigitoConta = digitoConta
-			};
+            _contaBancaria = new ContaBancaria
+            {
+                Agencia = agencia,
+                DigitoAgencia = digitoAgencia,
+                Conta = conta,
+                DigitoConta = digitoConta
+            };
         }
 
-		public Cedente(string cpfcnpj, string nome, string agencia, string conta, string digitoConta) :
-			this(cpfcnpj, nome)
+        public Cedente(string cpfcnpj, string nome, string agencia, string conta, string digitoConta) :
+            this(cpfcnpj, nome)
         {
             _contaBancaria = new ContaBancaria();
             _contaBancaria.Agencia = agencia;
@@ -75,7 +76,7 @@ namespace BoletoNet
         }
 
         public Cedente(string cpfcnpj, string nome, string agencia, string conta)
-			: this(cpfcnpj, nome)
+            : this(cpfcnpj, nome)
         {
             _contaBancaria = new ContaBancaria();
             _contaBancaria.Agencia = agencia;
@@ -109,7 +110,19 @@ namespace BoletoNet
             {
                 _digitoCedente = value;
             }
-            
+
+        }
+
+        public string DigCedente
+        {
+            get
+            {
+                return _digCedente;
+            }
+            set
+            {
+                _digCedente = value;
+            }
         }
 
         /// <summary>
@@ -130,7 +143,7 @@ namespace BoletoNet
                 _cpfcnpj = value;
             }
         }
-		
+
         /// <summary>
         /// Retona o CPF ou CNPJ do Cedente (com máscara)
         /// </summary>
@@ -141,7 +154,7 @@ namespace BoletoNet
                 return _cpfcnpj;
             }
         }
-		
+
         /// <summary>
         /// Nome do Cedente
         /// </summary>
@@ -285,7 +298,7 @@ namespace BoletoNet
         }
 
 
-        
+
         #endregion Propriedades
     }
 }

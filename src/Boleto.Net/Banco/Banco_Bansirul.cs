@@ -57,6 +57,14 @@ namespace BoletoNet
             if (boleto.DataDocumento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 boleto.DataDocumento = DateTime.Now;
 
+            //Verifica se o codigo do cedente é valido
+            if (boleto.Cedente.DigitoCedente.Equals(-1))
+            {
+                var codCedente = boleto.Cedente.Codigo.Replace(".", "").Replace("-", "");
+                boleto.Cedente.DigCedente = codCedente.Substring((codCedente.Length - 2), 2);
+                boleto.Cedente.DigitoCedente = Convert.ToInt32(codCedente.Substring((codCedente.Length - 2), 2));
+            }
+
             FormataCodigoBarra(boleto);
             FormataLinhaDigitavel(boleto);
             FormataNossoNumero(boleto);
