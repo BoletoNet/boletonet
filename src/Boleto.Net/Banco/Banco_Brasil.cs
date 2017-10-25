@@ -1,9 +1,9 @@
+using BoletoNet.EDI.Banco;
+using BoletoNet.Excecoes;
+using BoletoNet.Util;
 using System;
 using System.Globalization;
 using System.Web.UI;
-using BoletoNet.Util;
-using BoletoNet.EDI.Banco;
-using BoletoNet.Excecoes;
 
 [assembly: WebResource("BoletoNet.Imagens.001.jpg", "image/jpg")]
 namespace BoletoNet
@@ -59,7 +59,7 @@ namespace BoletoNet
                 !boleto.Carteira.Equals("17-067") &
                 !boleto.Carteira.Equals("17-140") &
                 !boleto.Carteira.Equals("17-159") &
-                !boleto.Carteira.Equals("17-167")&
+                !boleto.Carteira.Equals("17-167") &
                 !boleto.Carteira.Equals("18") &
                 !boleto.Carteira.Equals("18-019") &
                 !boleto.Carteira.Equals("18-027") &
@@ -155,7 +155,11 @@ namespace BoletoNet
                  */
                 if (boleto.Cedente.Convenio.ToString().Length == 7)
                 {
-                    if (boleto.NossoNumero.Length > 10)
+                    if (boleto.NossoNumero.Length > 10 && (boleto.NossoNumero.Substring(0, 7) == boleto.Cedente.Convenio.ToString()))
+                    {
+                        boleto.NossoNumero = boleto.NossoNumero.Substring(7);
+                    }
+                    else
                         throw new NotImplementedException(string.Format("Para a carteira {0}, a quantidade máxima são de 10 de posições para o nosso número", boleto.Carteira));
 
                     boleto.NossoNumero = string.Format("{0}{1}", boleto.Cedente.Convenio, Utils.FormatCode(boleto.NossoNumero, 10));
@@ -252,10 +256,10 @@ namespace BoletoNet
                  */
                 else if (boleto.Cedente.Convenio.ToString().Length == 6)
                 {
-                        if ((boleto.Cedente.Codigo.ToString().Length + boleto.NossoNumero.Length) > 11)
-                            throw new NotImplementedException(string.Format("Para a carteira {0}, a quantidade máxima são de 11 de posições para o nosso número. Onde o nosso número é formado por CCCCCCNNNNN-X: C -> número do convênio fornecido pelo Banco, N -> seqüencial atribuído pelo cliente e X -> dígito verificador do “Nosso-Número”.", boleto.Carteira));
+                    if ((boleto.Cedente.Codigo.ToString().Length + boleto.NossoNumero.Length) > 11)
+                        throw new NotImplementedException(string.Format("Para a carteira {0}, a quantidade máxima são de 11 de posições para o nosso número. Onde o nosso número é formado por CCCCCCNNNNN-X: C -> número do convênio fornecido pelo Banco, N -> seqüencial atribuído pelo cliente e X -> dígito verificador do “Nosso-Número”.", boleto.Carteira));
 
-                        boleto.NossoNumero = string.Format("{0}{1}", boleto.Cedente.Convenio, Utils.FormatCode(boleto.NossoNumero, 5));
+                    boleto.NossoNumero = string.Format("{0}{1}", boleto.Cedente.Convenio, Utils.FormatCode(boleto.NossoNumero, 5));
                 }
                 /*
                   * Convênio de 4 posições
@@ -1678,12 +1682,12 @@ namespace BoletoNet
                 {
                     // Código da multa 2 - percentual
                     _segmentoR += "2";
-                } 
+                }
                 else if (boleto.ValorMulta > 0)
                 {
                     // Código da multa 1 - valor fixo
                     _segmentoR += "1";
-                } 
+                }
                 else
                 {
                     // Código da multa 0 - sem multa
@@ -1693,9 +1697,12 @@ namespace BoletoNet
                 _segmentoR += Utils.FitStringLength(boleto.DataMulta.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
 
                 // Multa em Percentual (%), Valor (R$)
-                if (boleto.PercMulta > 0) {
+                if (boleto.PercMulta > 0)
+                {
                     _segmentoR += Utils.FitStringLength(boleto.PercMulta.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
-                } else {
+                }
+                else
+                {
                     _segmentoR += Utils.FitStringLength(boleto.ValorMulta.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 }
 
@@ -1873,7 +1880,7 @@ namespace BoletoNet
                 string _brancos20 = new string(' ', 20);
                 string _brancos10 = new string(' ', 10);
                 string _header;
-                
+
                 _header = "00100000         ";
                 if (cedente.CPFCNPJ.Length <= 11)
                     _header += "1";
@@ -2524,7 +2531,7 @@ namespace BoletoNet
                     {
                         if (nossoNumero.Length != 17)
                             throw new TamanhoNossoNumeroInvalidoException();
-                        nossoNumero = nossoNumero.Substring(7);                        
+                        nossoNumero = nossoNumero.Substring(7);
                     }
                     break;
                 default:
