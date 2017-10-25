@@ -8,18 +8,18 @@ namespace BoletoNet
     /// </summary>
     public class Remessa
     {
-        public enum TipoAmbiemte
+        public enum TipoAmbiente
         {
             Homologacao,
             Producao
         }
         //
         #region Atributos e Propriedades
-        private TipoAmbiemte _Ambiente;
+        private TipoAmbiente _Ambiente;
         /// <summary>
         /// Variável que define se a Remessa é para Testes ou Produção
         /// </summary>
-        public TipoAmbiemte Ambiente
+        public TipoAmbiente Ambiente
         {
             get { return _Ambiente; }
             set { _Ambiente = value; }
@@ -61,7 +61,7 @@ namespace BoletoNet
         #endregion
 
         #region Constructors
-        public Remessa(){}
+        public Remessa() { }
         public Remessa(TipoOcorrenciaRemessa ocorrencia)
         {
             CodigoOcorrencia = ocorrencia.Format();
