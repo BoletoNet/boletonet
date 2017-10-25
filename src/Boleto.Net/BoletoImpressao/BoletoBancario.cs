@@ -1,3 +1,4 @@
+using BoletoNet.Enums;
 using BoletoNet.Util;
 using System;
 using System.Collections.Generic;
@@ -634,48 +635,52 @@ namespace BoletoNet
 
             if (!Cedente.DigitoCedente.Equals(-1))
             {
-                if (!string.IsNullOrEmpty(Cedente.ContaBancaria.OperacaConta))
-                    agenciaCodigoCedente = string.Format("{0}/{1}.{2}-{3}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.OperacaConta, Utils.FormatCode(Cedente.Codigo.ToString(), 6), Cedente.DigitoCedente.ToString());
+                //if (!string.IsNullOrEmpty(Cedente.ContaBancaria.OperacaConta))
+                //    agenciaCodigoCedente = string.Format("{0}/{1}.{2}-{3}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.OperacaConta, Utils.FormatCode(Cedente.Codigo, 6), Cedente.DigitoCedente);
 
                 switch (Boleto.Banco.Codigo)
                 {
-                    case 748:
+                    case (int)Bancos.Sicredi:
                         agenciaCodigoCedente = string.Format("{0}.{1}.{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.OperacaConta, Utils.FormatCode(Cedente.ContaBancaria.Conta, 5));
                         break;
-                    case 41:
+                    case (int)Bancos.Banrisul:
                         var codigo = Cedente.Codigo;
                         var dig1 = codigo.Substring(0, codigo.Length - (Cedente.DigCedente.Length + 1));
                         var dig2 = codigo.Substring((codigo.Length - (Cedente.DigCedente.Length + 1)), 1);
                         agenciaCodigoCedente = string.Format("{0}/{1}.{2}.{3}", Cedente.ContaBancaria.Agencia, dig1, dig2, Cedente.DigCedente);
                         //agenciaCodigoCedente = string.Format("{0}.{1}/{2}.{3}.{4}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Cedente.Codigo.Substring(4, 6), Cedente.Codigo.Substring(10, 1), Cedente.DigitoCedente);
                         break;
-                    case 1:
+                    case (int)Bancos.BancoBrasil:
                         agenciaCodigoCedente = string.Format("{0}-{1}/{2}-{3}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Utils.FormatCode(Cedente.ContaBancaria.Conta, 6), Cedente.ContaBancaria.DigitoConta);
                         break;
-                    case 399:
-                        agenciaCodigoCedente = string.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo.ToString() + Cedente.DigitoCedente.ToString(), 7));
+                    case (int)Bancos.HSBC:
+                        agenciaCodigoCedente = string.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo + Cedente.DigitoCedente, 7));
                         break;
                     default:
-                        agenciaCodigoCedente = string.Format("{0}/{1}-{2}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo.ToString(), 6), Cedente.DigitoCedente.ToString());
+                        agenciaCodigoCedente = string.Format("{0}/{1}-{2}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo, 6), Cedente.DigitoCedente);
                         break;
                 }
             }
             else
             {
                 //Para banco SANTANDER, a formatação do campo "Agencia/Identif.Cedente" - por jsoda em 07/05/2012
-                if (Boleto.Banco.Codigo == 33)
+                switch (Boleto.Banco.Codigo)
                 {
-                    agenciaCodigoCedente = string.Format("{0}-{1}/{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Utils.FormatCode(Cedente.Codigo.ToString(), 6));
-                    if (string.IsNullOrEmpty(Cedente.ContaBancaria.DigitoAgencia))
-                        agenciaCodigoCedente = string.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo.ToString(), 6));
+                    case (int)Bancos.Santander:
+                        agenciaCodigoCedente = string.Format("{0}-{1}/{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Utils.FormatCode(Cedente.Codigo, 6));
+                        if (string.IsNullOrEmpty(Cedente.ContaBancaria.DigitoAgencia))
+                            agenciaCodigoCedente = string.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo, 6));
+                        break;
+                    case (int)Bancos.HSBC:
+                        agenciaCodigoCedente = string.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo, 7)); //Solicitação do HSBC que mostrasse agencia/Conta - por Transis em 24/02/15
+                        break;
+                    case (int)Bancos.Sicredi:
+                        agenciaCodigoCedente = string.Format("{0}.{1}.{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.OperacaConta, Utils.FormatCode(Cedente.ContaBancaria.Conta, 5));
+                        break;
+                    default:
+                        agenciaCodigoCedente = agenciaConta;
+                        break;
                 }
-                else if (Boleto.Banco.Codigo == 399)
-                    //agenciaCodigoCedente = Utils.FormatCode(Cedente.Codigo.ToString(), 7); -> para Banco HSBC mostra apenas código Cedente - por Ponce em 08/06/2012
-                    agenciaCodigoCedente = string.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo.ToString(), 7)); //Solicitação do HSBC que mostrasse agencia/Conta - por Transis em 24/02/15
-                else if (Boleto.Banco.Codigo == 748)
-                    agenciaCodigoCedente = string.Format("{0}.{1}.{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.OperacaConta, Utils.FormatCode(Cedente.ContaBancaria.Conta, 5));
-                else
-                    agenciaCodigoCedente = agenciaConta;
             }
 
             html.Append(!FormatoCarne ? GeraHtmlReciboCedente() : GeraHtmlCarne(GeraHtmlReciboCedente()));
