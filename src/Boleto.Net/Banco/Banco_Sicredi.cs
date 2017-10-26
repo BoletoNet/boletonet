@@ -59,14 +59,18 @@ namespace BoletoNet
 
             if (string.IsNullOrEmpty(codigoCedente))
                 throw new BoletoNetException("Código do cedente deve ser informado, " + infoFormatoCodigoCedente);
-            else if (boleto.Cedente.ContaBancaria != null &&
+
+            var conta = boleto.Cedente.ContaBancaria.Conta;
+            if (boleto.Cedente.ContaBancaria != null &&
                 (!codigoCedente.StartsWith(boleto.Cedente.ContaBancaria.Agencia) ||
-                (!codigoCedente.EndsWith(boleto.Cedente.ContaBancaria.Conta))))
-                throw new BoletoNetException("Código do cedente deve estar no " + infoFormatoCodigoCedente);
+                 !(codigoCedente.EndsWith(conta) || codigoCedente.EndsWith(conta.Substring(0, conta.Length - 1)))))
+                //throw new BoletoNetException("Código do cedente deve estar no " + infoFormatoCodigoCedente);
+                boleto.Cedente.Codigo = string.Format("{0}{1}{2}", boleto.Cedente.ContaBancaria.Agencia, boleto.Cedente.ContaBancaria.OperacaConta, boleto.Cedente.Codigo);
 
             if (string.IsNullOrEmpty(boleto.Carteira))
                 throw new BoletoNetException("Tipo de carteira é obrigatório. " + ObterInformacoesCarteirasDisponiveis());
-            else if (!CarteiraValida(boleto.Carteira))
+
+            if (!CarteiraValida(boleto.Carteira))
                 throw new BoletoNetException("Carteira informada é inválida. Informe " + ObterInformacoesCarteirasDisponiveis());
 
             //Verifica se o nosso número é válido
