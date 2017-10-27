@@ -159,7 +159,7 @@ namespace BoletoNet
                     {
                         boleto.NossoNumero = boleto.NossoNumero.Substring(7);
                     }
-                    else
+                    else if (boleto.NossoNumero.Length > 10)
                         throw new NotImplementedException(string.Format("Para a carteira {0}, a quantidade máxima são de 10 de posições para o nosso número", boleto.Carteira));
 
                     boleto.NossoNumero = string.Format("{0}{1}", boleto.Cedente.Convenio, Utils.FormatCode(boleto.NossoNumero, 10));
@@ -2358,7 +2358,7 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0221, 014, 0, boleto.Sacado.CPFCNPJ, '0'));                     //221-234
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0235, 037, 0, boleto.Sacado.Nome.ToUpper(), ' '));              //235-271
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0272, 003, 0, string.Empty, ' '));                              //272-274
-                
+
                 var enderecoSacadoComNumero = boleto.Sacado.Endereco.End;
                 if (!string.IsNullOrEmpty(boleto.Sacado.Endereco.Numero))
                 {
