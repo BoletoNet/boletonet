@@ -200,6 +200,7 @@
     <Compile Include="EDI\Banco\TRegistroEDI_Banrisul_Retorno.cs" />
     <Compile Include="EDI\EDIBasicTypes.cs" />
     <Compile Include="EDI\EDIFile.cs" />
+    <Compile Include="Enums\Bancos.cs" />
     <Compile Include="Enums\CategoriaLancamento.cs" />
     <Compile Include="Enums\Extensions.cs" />
     <Compile Include="Enums\IsencaoCpmf.cs" />
