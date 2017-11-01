@@ -279,7 +279,7 @@ namespace BoletoNet
 			detalhe.Append(Utils.FitStringLength(string.Empty, 10, 10, ' ', 0, true, true, false));
 			detalhe.Append(
 				Utils.SubstituiCaracteresEspeciais(
-					Utils.FitStringLength(boleto.Sacado.Endereco.EndComNumero, 40, 40, ' ', 0, true, true, false)));
+					Utils.FitStringLength(boleto.Sacado.Endereco.EndComNumeroEComplemento, 40, 40, ' ', 0, true, true, false)));
 			detalhe.Append(
 				Utils.SubstituiCaracteresEspeciais(
 					Utils.FitStringLength(boleto.Sacado.Endereco.Bairro, 12, 12, ' ', 0, true, true, false)));

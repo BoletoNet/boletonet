@@ -26,6 +26,7 @@ namespace BoletoNet
 		/**
          * <summary>Construtor</summary>
          */
+<<<<<<< HEAD
 		internal Banco_Sicoob()
 		{
 			this.Nome = "Sicoob";
@@ -71,6 +72,35 @@ namespace BoletoNet
 			seqValidacao.Append(nossoNumero);
 
 			/*
+=======
+        internal Banco_Sicoob()
+        {
+            this.Nome = "Sicoob";
+            this.Codigo = 756;
+            this.Digito = "0";
+        }
+        #endregion CONSTRUTOR
+
+        #region FORMATAÇÕES
+
+        public override void FormataNossoNumero(Boleto boleto)
+        {
+            //Variaveis
+            int resultado = 0;
+            int dv = 0;
+            int resto = 0;
+            String constante = "319731973197319731973";
+            String cooperativa = boleto.Cedente.ContaBancaria.Agencia;
+            String codigo = boleto.Cedente.Codigo + boleto.Cedente.DigitoCedente.ToString();
+            String nossoNumero = boleto.NossoNumero;
+            StringBuilder seqValidacao = new StringBuilder();
+
+            seqValidacao.Append(cooperativa.PadLeft(4, '0'));
+            seqValidacao.Append(codigo.PadLeft(10, '0'));
+            seqValidacao.Append(nossoNumero.PadLeft(7, '0'));
+
+            /*
+>>>>>>> upstream/master
              * Multiplicando cada posição por sua respectiva posição na constante.
              */
 			for (int i = 0; i < 21; i++)
@@ -786,7 +816,7 @@ namespace BoletoNet
                 _header.Append("1"); //Posição 002
                 _header.Append("REMESSA"); //Posição 003 a 009
                 _header.Append("01"); //Posição 010 a 011
-                _header.Append("COBRANÇA"); //Posição 012 a 019
+                _header.Append("COBRANCA"); //Posição 012 a 019
                 _header.Append(new string(' ', 7)); //Posição 020 a 026
                 _header.Append(Utils.FitStringLength(cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true)); //Posição 027 a 030
                 _header.Append(Utils.FitStringLength(cedente.ContaBancaria.DigitoAgencia, 1, 1, '0', 0, true, true, true)); //Posição 031
@@ -943,7 +973,7 @@ namespace BoletoNet
                 _detalhe.Append(Utils.IdentificaTipoInscricaoSacado(boleto.Sacado.CPFCNPJ)); //Posição 219 a 220
                 _detalhe.Append(Utils.FitStringLength(boleto.Sacado.CPFCNPJ.Replace(".", "").Replace("-", "").Replace("/", ""), 14, 14, '0', 0, true, true, true)); //Posição 221 a 234
                 _detalhe.Append(Utils.FitStringLength(boleto.Sacado.Nome, 40, 40, ' ', 0, true, true, false)); //Posição 235 a 274
-                _detalhe.Append(Utils.FitStringLength(boleto.Sacado.Endereco.End, 37, 37, ' ', 0, true, true, false)); //Posição 275 a 311
+                _detalhe.Append(Utils.FitStringLength(boleto.Sacado.Endereco.EndComNumeroEComplemento, 37, 37, ' ', 0, true, true, false)); //Posição 275 a 311
                 _detalhe.Append(Utils.FitStringLength(boleto.Sacado.Endereco.Bairro, 15, 15, ' ', 0, true, true, false)); //Posição 312 a 326
                 _detalhe.Append(Utils.FitStringLength(boleto.Sacado.Endereco.CEP, 8, 8, '0', 0, true, true, true)); //Posição 327 a 334
                 _detalhe.Append(Utils.FitStringLength(boleto.Sacado.Endereco.Cidade, 15, 15, ' ', 0, true, true, false)); //Posição 335 a 349

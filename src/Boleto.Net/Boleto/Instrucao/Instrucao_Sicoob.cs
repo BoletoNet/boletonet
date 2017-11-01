@@ -26,7 +26,9 @@ namespace BoletoNet
 
         DevolverApos15DiasVencido = 42,
 
-        DevolverApos30DiasVencido = 43
+        DevolverApos30DiasVencido = 43,
+
+        CobrarTaxaDeMulta = 9999
     }
     #endregion
     
@@ -70,12 +72,11 @@ namespace BoletoNet
 
 		#region Metodos Privados
 
-        private void carregar(int idInstrucao, int nrDias, double percentualMultaDia)
+        private void carregar(int idInstrucao, int nrDias, double percentualMultaOuJuroAoMes)
         {
             try
             {
-                this.Banco = new Banco_Banrisul();
-                this.Valida();
+                this.Banco = new Banco_Sicoob();
 
                 switch ((EnumInstrucoes_Sicoob)idInstrucao)
                 {
@@ -83,7 +84,11 @@ namespace BoletoNet
                         break;
                     case EnumInstrucoes_Sicoob.CobrarJuros:
                         this.Codigo = (int)EnumInstrucoes_Sicoob.CobrarJuros;
-                        this.Descricao = "Cobrar Juros";
+                        this.Descricao = string.Format("Após vencimento cobrar juros de {0}% ao mês.", percentualMultaOuJuroAoMes.ToString("F2"));
+                        break;
+                    case EnumInstrucoes_Sicoob.CobrarTaxaDeMulta:
+                        this.Codigo = (int)EnumInstrucoes_Sicoob.CobrarTaxaDeMulta;
+                        this.Descricao = string.Format("Após vencimento cobrar multa de {0}% ao mês", percentualMultaOuJuroAoMes.ToString("F2"));
                         break;
                     case EnumInstrucoes_Sicoob.Protestar3DiasUteis:
                         this.Codigo = (int)EnumInstrucoes_Sicoob.Protestar3DiasUteis;
