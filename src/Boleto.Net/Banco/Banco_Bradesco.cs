@@ -770,7 +770,7 @@ namespace BoletoNet
                         _header = GerarHeaderRemessaCNAB240();
                         break;
                     case TipoArquivo.CNAB400:
-                        _header = GerarHeaderRemessaCNAB400(int.Parse(numeroConvenio), cedente, numeroArquivoRemessa);
+                        _header = GerarHeaderRemessaCNAB400(cedente, numeroArquivoRemessa);
                         break;
                     case TipoArquivo.Outro:
                         throw new Exception("Tipo de arquivo inexistente.");
@@ -790,7 +790,7 @@ namespace BoletoNet
             throw new NotImplementedException("Função não implementada.");
         }
 
-        public string GerarHeaderRemessaCNAB400(int numeroConvenio, Cedente cedente, int numeroArquivoRemessa)
+        public string GerarHeaderRemessaCNAB400(Cedente cedente, int numeroArquivoRemessa)
         {
             try
             {
@@ -1062,7 +1062,7 @@ namespace BoletoNet
 
                 //Data Limite P/Concessão de Desconto (06, N)
 				//if (boleto.DataDesconto.ToString("dd/MM/yyyy") == "01/01/0001")
-				if (boleto.DataDesconto == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
+				if (boleto.DataDesconto == DateTime.MinValue || boleto.ValorDesconto == 0) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 {
                     _detalhe += "000000"; //Caso nao tenha data de vencimento
                 }

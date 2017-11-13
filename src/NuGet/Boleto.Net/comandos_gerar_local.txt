@@ -1,0 +1,8 @@
+|----------------------------------------------------------------------------------------|
+  Comandos para gerar pacote localmente, sem necesidade de subir nova versão ao servidor
+|----------------------------------------------------------------------------------------|
+
+
+nuget pack
+
+nuget add  Boleto.Net.Fortes.2.1.232.nupkg -source C:\NuGetLocalRepository
