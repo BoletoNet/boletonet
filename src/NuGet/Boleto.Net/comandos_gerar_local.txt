@@ -5,4 +5,4 @@
 
 nuget pack
 
-nuget add  Boleto.Net.Fortes.2.1.232.nupkg -source C:\NuGetLocalRepository
+nuget add  Boleto.Net.Fortes.3.nupkg -source C:\NuGetLocalRepository

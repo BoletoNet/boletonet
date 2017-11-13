@@ -1404,8 +1404,15 @@ namespace BoletoNet
                 //Valor de mora a ser cobrado por dia de atraso == > 161 - 173
                 _detalhe += Utils.FitStringLength(boleto.JurosMora.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
 
-                //Data limite para concessão de desconto ==> 174 - 179
-                _detalhe += boleto.DataVencimento.ToString("ddMMyy");
+
+                if (boleto.DataDesconto == DateTime.MinValue || boleto.ValorDesconto == 0)
+                {
+                    _detalhe += "000000"; //Caso nao tenha data de vencimento
+                }
+                else
+                {
+                    _detalhe += boleto.DataDesconto.ToString("ddMMyy");
+                }
 
                 //Valor de desconto a ser concedido ==> 180 - 192
                 _detalhe += Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
