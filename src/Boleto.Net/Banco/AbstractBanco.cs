@@ -408,32 +408,7 @@ namespace BoletoNet
         {
             try
             {
-                HeaderRetorno header =
-                    new HeaderRetorno(registro)
-                    {
-                        TipoRegistro = Utils.ToInt32(registro.Substring(000, 1)),
-                        CodigoRetorno = Utils.ToInt32(registro.Substring(001, 1)),
-                        LiteralRetorno = registro.Substring(002, 7),
-                        CodigoServico = Utils.ToInt32(registro.Substring(009, 2)),
-                        LiteralServico = registro.Substring(011, 15),
-                        Agencia = Utils.ToInt32(registro.Substring(026, 4)),
-                        ComplementoRegistro1 = Utils.ToInt32(registro.Substring(030, 2)),
-                        Conta = Utils.ToInt32(registro.Substring(032, 5)),
-                        DACConta = Utils.ToInt32(registro.Substring(037, 1)),
-                        ComplementoRegistro2 = registro.Substring(038, 8),
-                        NomeEmpresa = registro.Substring(046, 30),
-                        CodigoBanco = Utils.ToInt32(registro.Substring(076, 3)),
-                        NomeBanco = registro.Substring(079, 15),
-                        DataGeracao = Utils.ToDateTime(Utils.ToInt32(registro.Substring(094, 6)).ToString("##-##-##")),
-                        Densidade = Utils.ToInt32(registro.Substring(100, 5)),
-                        UnidadeDensidade = registro.Substring(105, 3),
-                        NumeroSequencialArquivoRetorno = Utils.ToInt32(registro.Substring(108, 5)),
-                        DataCredito = Utils.ToDateTime(Utils.ToInt32(registro.Substring(113, 6)).ToString("##-##-##")),
-                        ComplementoRegistro3 = registro.Substring(119, 275),
-                        NumeroSequencial = Utils.ToInt32(registro.Substring(394, 6))
-                    };
-
-                return header;
+                return new HeaderRetorno(registro);
             }
             catch (Exception ex)
             {
