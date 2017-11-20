@@ -30,7 +30,6 @@ namespace BoletoNet
         private bool _desconto;
         private int _diasProtesto;
         private int _diasDevolucao;
-        private int diasDesconto;
 
         internal Banco_Caixa()
         {
@@ -92,7 +91,7 @@ namespace BoletoNet
                     //Cobrança sem registro, nosso número com 17 dígitos. 
 
                     //Posição 20 - 25
-                    string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo.ToString(), 6);
+                    string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo, 6);
 
                     // Posição 26
                     string dvCodigoCedente = Mod11Base9(codigoCedente).ToString();
@@ -143,7 +142,7 @@ namespace BoletoNet
             else
             {
                 //Posição 20 - 25
-                string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo.ToString(), 6);
+                string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo, 6);
 
                 // Posição 26
                 string dvCodigoCedente = Mod11Base9(codigoCedente).ToString();
@@ -159,8 +158,7 @@ namespace BoletoNet
                 //Cobrança simples 
 
                 //Posição 30
-                string primeiraConstante = boleto.Carteira;
-                primeiraConstante = boleto.Carteira == CarteiraSR ? "2" : boleto.Carteira;
+                string primeiraConstante = boleto.Carteira == CarteiraSR ? "2" : boleto.Carteira;
 
                 // Posição 31 - 33
                 string segundaParteNossoNumero = boleto.NossoNumero.Substring(0, 3); //(3, 3);
@@ -208,27 +206,22 @@ namespace BoletoNet
         /// </summary>
         public override void FormataLinhaDigitavel(Boleto boleto)
         {
-            string Grupo1 = string.Empty;
-            string Grupo2 = string.Empty;
-            string Grupo3 = string.Empty;
-            string Grupo4 = string.Empty;
-            string Grupo5 = string.Empty;
-
-            string str1 = string.Empty;
-            string str2 = string.Empty;
-            string str3 = string.Empty;
-
+            string Grupo1;
+            string Grupo2;
+            string Grupo3;
+            string Grupo4;
+            string Grupo5;
 
             if (boleto.NossoNumero.Length == 17)
             {
                 #region Campo 1
 
                 //POSIÇÃO 1 A 4 DO CODIGO DE BARRAS
-                str1 = boleto.CodigoBarra.Codigo.Substring(0, 4);
+                string str1 = boleto.CodigoBarra.Codigo.Substring(0, 4);
                 //POSICAO 20 A 24 DO CODIGO DE BARRAS
-                str2 = boleto.CodigoBarra.Codigo.Substring(19, 5);
+                string str2 = boleto.CodigoBarra.Codigo.Substring(19, 5);
                 //CALCULO DO DIGITO
-                str3 = Mod10(str1 + str2).ToString();
+                string str3 = Mod10(str1 + str2).ToString();
 
                 Grupo1 = str1 + str2 + str3;
                 Grupo1 = Grupo1.Substring(0, 5) + "." + Grupo1.Substring(5) + " ";
@@ -259,7 +252,7 @@ namespace BoletoNet
 
                 #region Campo 4
 
-                string D4 = _dacBoleto.ToString();
+                string D4 = _dacBoleto;
 
                 Grupo4 = string.Format("{0} ", D4);
 
@@ -316,7 +309,7 @@ namespace BoletoNet
 
                 #region Campo 4
 
-                string D4 = _dacBoleto.ToString();
+                string D4 = _dacBoleto;
 
                 Grupo4 = string.Format(" {0} ", D4);
 
@@ -768,7 +761,6 @@ namespace BoletoNet
             _desconto = false;
             _diasProtesto = 0;
             _diasDevolucao = 0;
-            diasDesconto = 0;
             foreach (IInstrucao instrucao in boleto.Instrucoes)
             {
                 if (instrucao.Codigo.Equals(9) || instrucao.Codigo.Equals(42) || instrucao.Codigo.Equals(81) || instrucao.Codigo.Equals(82))
@@ -784,7 +776,6 @@ namespace BoletoNet
                 else if (instrucao.Codigo.Equals(999))
                 {
                     _desconto = true;
-                    diasDesconto = instrucao.QuantidadeDias;
                 }
             }
         }
@@ -894,7 +885,7 @@ namespace BoletoNet
                 header += Utils.FormatCode(boleto.NumeroDocumento, "0", 11);                            // Número do Documento de Cobrança 
                 header += "    ";                                                                       // Uso Exclusivo CAIXA
                 header += boleto.DataVencimento.ToString("ddMMyyyy");                                   // Data de Vencimento do Título
-                header += Utils.FormatCode(boleto.ValorBoleto.ToString().Replace(",", "").Replace(".", ""), "0", 13); // Valor Nominal do Título 13
+                header += Utils.FormatCode(boleto.ValorBoleto.ToString(CultureInfo.InvariantCulture).Replace(",", "").Replace(".", ""), "0", 13); // Valor Nominal do Título 13
                 header += Utils.FormatCode(cedente.ContaBancaria.Agencia, "0", 5);                      // Agência Encarregada da Cobrança 
                 header += cedente.ContaBancaria.DigitoAgencia;                                          // Dígito Verificador da Agência 
                 header += boleto.EspecieDocumento.Codigo;                                // Espécie do Título 
@@ -903,12 +894,12 @@ namespace BoletoNet
                 header += (boleto.DataProcessamento.ToString("ddMMyyyy") == "01010001" ? DateTime.Now.ToString("ddMMyyyy") : boleto.DataProcessamento.ToString("ddMMyyyy"));
                 header += "1";                                                                          // Código do Juros de Mora '1' = Valor por Dia - '2' = Taxa Mensal 
                 header += (boleto.DataMulta.ToString("ddMMyyyy") == "01010001" ? "00000000" : boleto.DataMulta.ToString("ddMMyyyy")); // Data do Juros de Mora 
-                header += Utils.FormatCode(boleto.ValorMulta.ToString().Replace(",", "").Replace(".", ""), "0", 13); // Juros de Mora por Dia/Taxa 
+                header += Utils.FormatCode(boleto.ValorMulta.ToString(CultureInfo.InvariantCulture).Replace(",", "").Replace(".", ""), "0", 13); // Juros de Mora por Dia/Taxa 
                 header += (_desconto ? "1" : "0");                                                       // Código do Desconto 
                 header += (boleto.DataDesconto.ToString("ddMMyyyy") == "01010001" ? "00000000" : boleto.DataDesconto.ToString("ddMMyyyy")); // Data do Desconto
-                header += Utils.FormatCode(boleto.ValorDesconto.ToString().Replace(",", "").Replace(".", ""), "0", 13); // Valor/Percentual a ser Concedido 
-                header += Utils.FormatCode(boleto.IOF.ToString().Replace(",", "").Replace(".", ""), "0", 13); // Valor do IOF a ser Recolhido 
-                header += Utils.FormatCode(boleto.Abatimento.ToString().Replace(",", "").Replace(".", ""), "0", 13); // Valor do Abatimento 
+                header += Utils.FormatCode(boleto.ValorDesconto.ToString(CultureInfo.InvariantCulture).Replace(",", "").Replace(".", ""), "0", 13); // Valor/Percentual a ser Concedido 
+                header += Utils.FormatCode(boleto.IOF.ToString(CultureInfo.InvariantCulture).Replace(",", "").Replace(".", ""), "0", 13); // Valor do IOF a ser Recolhido 
+                header += Utils.FormatCode(boleto.Abatimento.ToString(CultureInfo.InvariantCulture).Replace(",", "").Replace(".", ""), "0", 13); // Valor do Abatimento 
                 header += Utils.FormatCode("", " ", 25);                                                // Identificação do Título na Empresa
                 header += (_protestar ? "1" : "3");                                                      // Código para Protesto
                 header += _diasProtesto.ToString("00");                                                  // Número de Dias para Protesto 2 posi
@@ -972,7 +963,7 @@ namespace BoletoNet
                 header += Utils.FormatCode("", " ", 48);                                                // Uso Exclusivo FEBRABAN/CNAB 
                 header += "1";                                          // Código da Multa '1' = Valor Fixo,'2' = Percentual,'0' = Sem Multa 
                 header += boleto.DataMulta.ToString("ddMMyyyy");                                        // Data da Multa 
-                header += Utils.FormatCode(boleto.ValorMulta.ToString().Replace(",", "").Replace(".", ""), "0", 13); // Valor/Percentual a Ser Aplicado
+                header += Utils.FormatCode(boleto.ValorMulta.ToString(CultureInfo.InvariantCulture).Replace(",", "").Replace(".", ""), "0", 13); // Valor/Percentual a Ser Aplicado
                 header += Utils.FormatCode("", " ", 10);                                                // Informação ao Sacado
                 header += Utils.FormatCode("", " ", 40);                                                // Mensagem 3
                 header += Utils.FormatCode("", " ", 40);                                                // Mensagem 4
@@ -1509,6 +1500,7 @@ namespace BoletoNet
         #endregion
 
         #region CNAB 400 - sidneiklein
+
         public bool ValidarRemessaCNAB400(string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, int numeroArquivoRemessa, out string mensagem)
         {
             bool vRetorno = true;
@@ -1689,9 +1681,6 @@ namespace BoletoNet
                             vInstrucao1 = "02";
                             prazoProtesto_Devolucao = instrucao.QuantidadeDias;
                             break;
-
-                        default:
-                            break;
                     }
                 }
                 #region OLD
@@ -1788,6 +1777,34 @@ namespace BoletoNet
             }
         }
 
+        public override HeaderRetorno LerHeaderRetornoCNAB400(string registro)
+        {
+            try
+            {
+                return new HeaderRetorno
+                {
+                    TipoRegistro = Utils.ToInt32(registro.Substring(000, 1)),
+                    CodigoRetorno = Utils.ToInt32(registro.Substring(001, 1)),
+                    LiteralRetorno = registro.Substring(002, 7),
+                    CodigoServico = Utils.ToInt32(registro.Substring(009, 2)),
+                    LiteralServico = registro.Substring(011, 15),
+                    Agencia = Utils.ToInt32(registro.Substring(026, 4)),
+                    CodigoEmpresa = registro.Substring(030, 6),
+                    NomeEmpresa = registro.Substring(046, 30),
+                    CodigoBanco = Utils.ToInt32(registro.Substring(076, 3)),
+                    NomeBanco = registro.Substring(079, 15),
+                    DataGeracao = Utils.ToDateTime(Utils.ToInt32(registro.Substring(094, 6)).ToString("##-##-##")),
+                    Mensagem = registro.Substring(100, 58),
+                    NumeroSequencialArquivoRetorno = Utils.ToInt32(registro.Substring(389, 5)),
+                    NumeroSequencial = Utils.ToInt32(registro.Substring(394, 6)),
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao ler header do arquivo de RETORNO / CNAB 400.", ex);
+            }
+        }
+
         public override DetalheRetorno LerDetalheRetornoCNAB400(string registro)
         {
             try
@@ -1796,7 +1813,7 @@ namespace BoletoNet
                 reg.DecodificarLinha();
 
                 //Passa para o detalhe as propriedades de reg;
-                DetalheRetorno detalhe = new DetalheRetorno(registro)
+                DetalheRetorno detalhe = new DetalheRetorno
                 {
                     NumeroInscricao = reg.NumeroInscricaoEmpresa,
                     CodigoInscricao = Utils.ToInt32(reg.CodigoEmpresa),
@@ -1811,59 +1828,25 @@ namespace BoletoNet
                             reg.IdentificacaoTituloCaixa_NossoNumero.Length - 1),
                     MotivosRejeicao = reg.CodigoMotivoRejeicao,
                     Carteira = reg.CodigoCarteira,
-                    CodigoOcorrencia = Utils.ToInt32(reg.CodigoOcorrencia)
+                    CodigoOcorrencia = Utils.ToInt32(reg.CodigoOcorrencia),
+                    DataOcorrencia = Utils.ToDateTime(Utils.ToInt32(reg.DataOcorrencia).ToString("##-##-##")),
+                    NumeroDocumento = reg.NumeroDocumento,
+                    DataVencimento = Utils.ToDateTime(Utils.ToInt32(reg.DataVencimentoTitulo).ToString("##-##-##")),
+                    ValorTitulo = (Convert.ToDecimal(reg.ValorTitulo)),
+                    CodigoBanco = Utils.ToInt32(reg.CodigoBancoCobrador),
+                    AgenciaCobradora = Utils.ToInt32(reg.CodigoAgenciaCobradora),
+                    ValorDespesa = (Convert.ToUInt64(reg.ValorDespesasCobranca) / 100),
+                    OrigemPagamento = reg.TipoLiquidacao,
+                    IOF = (Convert.ToUInt64(reg.ValorIOF) / 100),
+                    ValorAbatimento = (Convert.ToUInt64(reg.ValorAbatimentoConcedido) / 100),
+                    Descontos = (Convert.ToUInt64(reg.ValorDescontoConcedido) / 100),
+                    ValorPago = (Convert.ToUInt64(reg.ValorPago) / 100),
+                    JurosMora = (Convert.ToUInt64(reg.ValorJuros) / 100),
+                    TarifaCobranca = (Convert.ToUInt64(reg.ValorDespesasCobranca) / 100),
+                    DataCredito = Utils.ToDateTime(Utils.ToInt32(reg.DataCreditoConta).ToString("##-##-##")),
+                    NumeroSequencial = Utils.ToInt32(reg.NumeroSequenciaRegistro)
                 };
-                //
-                //reg.CodigoIdentificadorTipoRegistro;
-                //reg.TipoInscricaoEmpresa;
-                //reg.Branco1;
-                //
-                //Nosso Número sem o DV!
-                //reg.Brancos2;
-                //reg.IdentificacaoOperacao;
-                //
-                int dataOcorrencia = Utils.ToInt32(reg.DataOcorrencia);
-                detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
-                detalhe.NumeroDocumento = reg.NumeroDocumento;
-                //reg.Brancos3;
-                int dataVencimento = Utils.ToInt32(reg.DataVencimentoTitulo);
-                detalhe.DataVencimento = Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
-                detalhe.ValorTitulo = (Convert.ToInt64(reg.ValorTitulo) / 100);
-                detalhe.CodigoBanco = Utils.ToInt32(reg.CodigoBancoCobrador);
-                detalhe.AgenciaCobradora = Utils.ToInt32(reg.CodigoAgenciaCobradora);
-                //
-                //reg.EspecieTitulo;
-                detalhe.ValorDespesa = (Convert.ToUInt64(reg.ValorDespesasCobranca) / 100);
-                detalhe.OrigemPagamento = reg.TipoLiquidacao;
-                //reg.FormaPagamentoUtilizada;
-                //reg.FloatNegociado;
-                //reg.DataDebitoTarifaLiquidacao;
-                //reg.Brancos4;
-                detalhe.IOF = (Convert.ToUInt64(reg.ValorIOF) / 100);
-                detalhe.ValorAbatimento = (Convert.ToUInt64(reg.ValorAbatimentoConcedido) / 100);
-                detalhe.Descontos = (Convert.ToUInt64(reg.ValorDescontoConcedido) / 100);
-                detalhe.ValorPago = (Convert.ToUInt64(reg.ValorPago) / 100);
-                detalhe.JurosMora = (Convert.ToUInt64(reg.ValorJuros) / 100);
-                detalhe.TarifaCobranca = (Convert.ToUInt64(reg.ValorDespesasCobranca) / 100);
-                //reg.ValorMulta;
-                //reg.CodigoMoeda;
-                int dataCredito = Utils.ToInt32(reg.DataCreditoConta);
-                detalhe.DataCredito = Utils.ToDateTime(dataCredito.ToString("##-##-##"));
-                //reg.Brancos5;
-                //
-                detalhe.NumeroSequencial = Utils.ToInt32(reg.NumeroSequenciaRegistro);
-                detalhe.ValorPrincipal = detalhe.ValorPago;
-
-                #region NAO RETORNADOS PELA CAIXA
-                detalhe.OutrosCreditos = 0;
-                detalhe.ValorOutrasDespesas = 0;
-
-                detalhe.MotivoCodigoOcorrencia = string.Empty;
-                detalhe.MotivosRejeicao = string.Empty;
-                detalhe.NumeroCartorio = 0;
-                detalhe.NumeroProtocolo = string.Empty;
-                detalhe.NomeSacado = string.Empty;
-                #endregion
+                //detalhe.ValorPrincipal = detalhe.ValorPago;
 
                 return detalhe;
             }
@@ -1875,17 +1858,14 @@ namespace BoletoNet
 
         public string Ocorrencia(string codigo)
         {
-            int codigoMovimento = 0;
+            int codigoMovimento;
 
             if (int.TryParse(codigo, out codigoMovimento))
             {
                 CodigoMovimento_Caixa movimento = new CodigoMovimento_Caixa(codigoMovimento);
                 return movimento.Descricao;
             }
-            else
-            {
-                return string.Format("Erro ao retornar descrição para a ocorrência {0}", codigo);
-            }
+            return string.Format("Erro ao retornar descrição para a ocorrência {0}", codigo);
         }
 
         #endregion

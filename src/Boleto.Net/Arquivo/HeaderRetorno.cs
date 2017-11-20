@@ -149,6 +149,8 @@ namespace BoletoNet
 
         public string Versao { get; set; }
 
+        public string Mensagem { get; set; }
+
         #endregion
 
         #region Métodos de Instância

@@ -1,7 +1,7 @@
+using BoletoNet.Enums;
 using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 namespace BoletoNet
 {
@@ -26,7 +26,7 @@ namespace BoletoNet
         #region Construtores
 
         public ArquivoRetornoCNAB400()
-		{
+        {
             this.TipoArquivo = TipoArquivo.CNAB400;
         }
 
@@ -39,31 +39,30 @@ namespace BoletoNet
             try
             {
                 StreamReader stream = new StreamReader(arquivo, System.Text.Encoding.UTF8);
-                string linha = "";
                 // Identificação do registro detalhe
                 List<string> IdsRegistroDetalhe = new List<string>();
 
                 // Lendo o arquivo
-                linha = stream.ReadLine();
+                string linha = stream.ReadLine();
                 this.HeaderRetorno = banco.LerHeaderRetornoCNAB400(linha);
 
                 // Próxima linha (DETALHE)
                 linha = stream.ReadLine();
 
-                // 85 - CECRED - Código de registro detalhe 7 para CECRED
-                // 1 - Banco do Brasil- Código de registro detalhe 7 para convênios com 7 posições, e detalhe 1 para convênios com 6 posições(colocado as duas, pois não interferem em cada tipo de arquivo)
-                if (banco.Codigo == 85)
+                switch (banco.Codigo)
                 {
-                    IdsRegistroDetalhe.Add("7");
-                }
-                else if (banco.Codigo == 1)
-                {
-                    IdsRegistroDetalhe.Add("1");//Para convênios de 6 posições
-                    IdsRegistroDetalhe.Add("7");//Para convênios de 7 posições
-                }
-                else
-                {
-                    IdsRegistroDetalhe.Add("1");
+                    // 85 - CECRED - Código de registro detalhe 7 para CECRED
+                    case (int)Bancos.CECRED:
+                        IdsRegistroDetalhe.Add("7");
+                        break;
+                    // 1 - Banco do Brasil- Código de registro detalhe 7 para convênios com 7 posições, e detalhe 1 para convênios com 6 posições(colocado as duas, pois não interferem em cada tipo de arquivo)
+                    case (int)Bancos.BancoBrasil:
+                        IdsRegistroDetalhe.Add("1");//Para convênios de 6 posições
+                        IdsRegistroDetalhe.Add("7");//Para convênios de 7 posições
+                        break;
+                    default:
+                        IdsRegistroDetalhe.Add("1");
+                        break;
                 }
 
                 while (IdsRegistroDetalhe.Contains(DetalheRetorno.PrimeiroCaracter(linha)))

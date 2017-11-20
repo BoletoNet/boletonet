@@ -346,23 +346,24 @@ namespace BoletoNet
                 int dataVencimento = Utils.ToInt32(registro.Substring(146, 6));
                 int dataCredito = Utils.ToInt32(registro.Substring(295, 6));
 
-                DetalheRetorno detalhe = new DetalheRetorno(registro);
+                DetalheRetorno detalhe =
+                    new DetalheRetorno(registro)
+                    {
+                        CodigoInscricao = Utils.ToInt32(registro.Substring(1, 2)),
+                        NumeroInscricao = registro.Substring(3, 14),
+                        Agencia = Utils.ToInt32(registro.Substring(17, 4)),
+                        Conta = Utils.ToInt32(registro.Substring(23, 5)),
+                        DACConta = Utils.ToInt32(registro.Substring(28, 1)),
+                        UsoEmpresa = registro.Substring(37, 25),
+                        NossoNumeroComDV = registro.Substring(85, 9),
+                        NossoNumero = registro.Substring(85, 8),
+                        DACNossoNumero = registro.Substring(93, 1),
+                        Carteira = registro.Substring(107, 1),
+                        CodigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2)),
+                        DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##")),
+                        NumeroDocumento = registro.Substring(116, 10)
+                    };
 
-                detalhe.CodigoInscricao = Utils.ToInt32(registro.Substring(1, 2));
-                detalhe.NumeroInscricao = registro.Substring(3, 14);
-                detalhe.Agencia = Utils.ToInt32(registro.Substring(17, 4));
-                detalhe.Conta = Utils.ToInt32(registro.Substring(23, 5));
-                detalhe.DACConta = Utils.ToInt32(registro.Substring(28, 1));
-                detalhe.UsoEmpresa = registro.Substring(37, 25);
-                //
-                detalhe.NossoNumeroComDV = registro.Substring(85, 9);
-                detalhe.NossoNumero = registro.Substring(85, 8); //Sem o DV
-                detalhe.DACNossoNumero = registro.Substring(93, 1); //DV
-                //
-                detalhe.Carteira = registro.Substring(107, 1);
-                detalhe.CodigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2));
-                detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
-                detalhe.NumeroDocumento = registro.Substring(116, 10);
                 detalhe.NossoNumero = registro.Substring(126, 9);
                 detalhe.DataVencimento = Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
                 decimal valorTitulo = Convert.ToInt64(registro.Substring(152, 13));
