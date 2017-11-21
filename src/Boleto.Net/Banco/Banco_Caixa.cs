@@ -1840,11 +1840,12 @@ namespace BoletoNet
                     IOF = (Convert.ToUInt64(reg.ValorIOF) / 100),
                     ValorAbatimento = (Convert.ToUInt64(reg.ValorAbatimentoConcedido) / 100),
                     Descontos = (Convert.ToUInt64(reg.ValorDescontoConcedido) / 100),
-                    ValorPago = (Convert.ToUInt64(reg.ValorPago) / 100),
+                    ValorPago = Convert.ToDecimal(reg.ValorPago),
                     JurosMora = (Convert.ToUInt64(reg.ValorJuros) / 100),
                     TarifaCobranca = (Convert.ToUInt64(reg.ValorDespesasCobranca) / 100),
                     DataCredito = Utils.ToDateTime(Utils.ToInt32(reg.DataCreditoConta).ToString("##-##-##")),
-                    NumeroSequencial = Utils.ToInt32(reg.NumeroSequenciaRegistro)
+                    NumeroSequencial = Utils.ToInt32(reg.NumeroSequenciaRegistro),
+                    NomeSacado = reg.IdentificacaoTituloEmpresa
                 };
                 //detalhe.ValorPrincipal = detalhe.ValorPago;
 

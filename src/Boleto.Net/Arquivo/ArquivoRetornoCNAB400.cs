@@ -73,6 +73,8 @@ namespace BoletoNet
                     linha = stream.ReadLine();
                 }
 
+                //TODO: Tratar Triller.
+
                 stream.Close();
             }
             catch (Exception ex)

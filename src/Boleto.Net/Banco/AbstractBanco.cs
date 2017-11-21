@@ -13,6 +13,7 @@ namespace BoletoNet
         private string _digito = "0";
         private string _nome = string.Empty;
         private Cedente _cedente = null;
+        protected decimal divisor = 100.0M;
 
         #endregion Variaveis
 
