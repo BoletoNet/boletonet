@@ -6,23 +6,33 @@ namespace BoletoNet
 
     public enum EnumEspecieDocumento_Sicoob
     {
-        DuplicataMercantil = 1,
-        NotaPromissoria = 2,
-        NotaSeguro = 3,
-        Recibo = 5,
+        Cheque = 1,
+        DuplicataMercantil = 2,
+        DuplicataMercantilIndicacao = 3,
+        DuplicataServico = 4,
+        DuplicataServicoIndicacao = 5,
         DuplicataRural = 6,
-        LetraCambio = 8,
-        Warrant = 9,
-        Cheque = 10,
-        DuplicataServico = 12,
-        NotaDebito = 13,
+        LetraCambio = 7,
+        NotaCreditoComercial = 8,
+        NotaCreditoExportacao = 9,
+        NotaCreditoIndustrial = 10,
+        NotaCreditoRural = 11,
+        NotaPromissoria = 12,
+        NotaPromissoriaRural = 13,
         TriplicataMercantil = 14,
         TriplicataServico = 15,
+        NotaSeguro = 16,
+        Recibo = 17,
         Fatura = 18,
+        NotaDebito = 19,
         ApoliceSeguro = 20,
         MensalidadeEscolar = 21,
         ParcelaConsorcio = 22,
-        Outros = 99,
+        NotaFiscal = 23,
+        DocumentoDivida = 24,
+        CedulaProdutoRural = 25,
+        BoletoProposta = 32,
+        Outros = 99
     }
 
     #endregion
@@ -105,11 +115,6 @@ namespace BoletoNet
                         this.Codigo = getCodigoEspecieByEnum(EnumEspecieDocumento_Sicoob.LetraCambio);
                         this.Sigla = "LC";
                         this.Especie = "Letra de Câmbio";
-                        break;
-                    case EnumEspecieDocumento_Sicoob.Warrant:
-                        this.Codigo = getCodigoEspecieByEnum(EnumEspecieDocumento_Sicoob.Warrant);
-                        this.Sigla = "WR";
-                        this.Especie = "Warrant";
                         break;
                     case EnumEspecieDocumento_Sicoob.Cheque:
                         this.Codigo = getCodigoEspecieByEnum(EnumEspecieDocumento_Sicoob.Cheque);

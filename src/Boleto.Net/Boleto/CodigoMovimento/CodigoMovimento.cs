@@ -106,6 +106,10 @@ namespace BoletoNet
                     case 748:
                         _ICodigoMovimento = new CodigoMovimento_Sicredi(codigoMovimento);
                         break;
+                    //756 - Sicoob
+                    case 756:
+                        _ICodigoMovimento = new CodigoMovimento_Sicoob(codigoMovimento);
+                        break;
                     default:
                         throw new Exception("Código do banco não implementando: " + codigoBanco);
                 }
