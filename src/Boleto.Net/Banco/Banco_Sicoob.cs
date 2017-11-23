@@ -614,7 +614,7 @@ namespace BoletoNet
             try
             {
                 string detalhe = Utils.FormatCode(Codigo.ToString(), 3); //Posição 001 a 003   Código do Sicoob na Compensação: "756"
-                detalhe += Utils.FormatCode(numeroRegistro.ToString(), "0", 4, true); //Posição 004 a 007   Número Sequencial
+                detalhe += "0001"; //Posição 004 a 007   Lote
                 detalhe += "3"; //Posição 008   Tipo de Registro: "3"
                 detalhe += Utils.FormatCode(numeroRegistro.ToString(), "0", 5, true); //Posição 009 a 013   Número Sequencial
                 detalhe += "P"; //Posição 014 Cód. Segmento do Registro Detalhe: "P"
@@ -631,7 +631,7 @@ namespace BoletoNet
                 detalhe += " ";  //Posição 060 Tipo de Documento: Brancos
                 detalhe += "2";  //Posição 061 "Identificação da Emissão do Boleto: 1=Sicoob Emite 2=Beneficiário Emite TODO:Deivid
                 detalhe += "2";  //Posição 062 "Identificação da distribuição do Boleto: 1=Sicoob Emite 2=Beneficiário Emite TODO:Deivid
-                detalhe += Utils.FormatCode(boleto.NumeroDocumento, 15); //Posição 063 a 075 Número do documento de cobrança. TODO:Deivid
+                detalhe += Utils.FormatCode(boleto.NumeroDocumento, " ", 15); //Posição 063 a 075 Número do documento de cobrança. TODO:Deivid
                 detalhe += Utils.FormatCode(boleto.DataVencimento.ToString("ddMMyyyy"), 8);
 
                 string valorBoleto = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
@@ -662,7 +662,7 @@ namespace BoletoNet
                 
                 detalhe += Utils.FormatCode(boleto.IOF.ToString(), 15);//Posição 166 a 180   -  Valor do IOF a ser Recolhido
                 detalhe += Utils.FormatCode(boleto.Abatimento.ToString(), 15);//Posição 181 a 195   - Valor do Abatimento
-                detalhe += Utils.FormatCode(boleto.NumeroDocumento, 25); //Posição 196 a 220  - Identificação do título
+                detalhe += Utils.FormatCode(boleto.NumeroDocumento, " ", 25); //Posição 196 a 220  - Identificação do título
                 detalhe += "3"; //Posição 221  - Código do protesto 3 = Nao Protestar
 
                 #region Instruções
@@ -700,7 +700,7 @@ namespace BoletoNet
             try
             {
                 string detalhe = Utils.FormatCode(Codigo.ToString(), "0", 3, true); //Posição 001 a 003   Código do Sicoob na Compensação: "756"
-                detalhe += Utils.FormatCode(numeroRegistro.ToString(), "0", 4, true); //Posição 004 a 007   Número Sequencial
+                detalhe += "0001"; //Posição 004 a 007   Lote
                 detalhe += "3"; //Posição 008   Tipo de Registro: "3"
                 detalhe += Utils.FormatCode(numeroRegistro.ToString(), "0", 5, true); //Posição 009 a 013   Número Sequencial
                 detalhe += "Q"; //Posição 014 Cód. Segmento do Registro Detalhe: "P"
@@ -734,7 +734,7 @@ namespace BoletoNet
             try
             {
                 string detalhe = Utils.FormatCode(Codigo.ToString(), 3); //Posição 001 a 003   Código do Sicoob na Compensação: "756"
-                detalhe += Utils.FormatCode(numeroRegistro.ToString(), "0", 4, true); //Posição 004 a 007   Número Sequencial
+                detalhe += "0001"; //Posição 004 a 007   Lote
                 detalhe += "3"; //Posição 008   Tipo de Registro: "3"
                 detalhe += Utils.FormatCode(numeroRegistro.ToString(), "0", 5, true); //Posição 009 a 013   Número Sequencial
                 detalhe += "R"; //Posição 014 Cód. Segmento do Registro Detalhe: "R"
@@ -807,7 +807,7 @@ namespace BoletoNet
             try
             {
                 string trailer = Utils.FormatCode(Codigo.ToString(), "0", 3, true); //Código do banco
-                trailer += Utils.FormatCode("1", "0", 4, true); //Posição Uso 4 a 7  -  Número Lote - Sequencial
+                trailer += "0001"; //Posição 004 a 007   Lote
                 trailer += "5";
                 trailer += Utils.FormatCode("", " ", 9);  //Posição Uso 9 a 19    Exclusivo FEBRABAN/CNAB: Brancos
                 trailer += Utils.FormatCode(numeroRegistro.ToString(), "0", 6, true);
