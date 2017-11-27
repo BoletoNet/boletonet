@@ -740,7 +740,12 @@ namespace BoletoNet
                 header.CodigoBanco = Utils.ToInt32(registro.Substring(076, 3));
                 header.NomeBanco = registro.Substring(079, 15);
                 header.DataGeracao = Utils.ToDateTime(Utils.ToInt32(registro.Substring(094, 6)).ToString("##-##-##"));
-                header.Densidade = Utils.ToInt32(registro.Substring(100, 8));
+
+                var densidade = 0;
+                int.TryParse(registro.Substring(100, 8), out densidade);
+
+                header.Densidade = densidade;
+
                 header.NumeroSequencialArquivoRetorno = Utils.ToInt32(registro.Substring(108, 5));
                 header.ComplementoRegistro2 = registro.Substring(113, 266);
                 header.DataCredito = Utils.ToDateTime(Utils.ToInt32(registro.Substring(379, 6)).ToString("##-##-##"));
