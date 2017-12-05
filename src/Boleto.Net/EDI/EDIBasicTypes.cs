@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Globalization;
 
 namespace BoletoNet
 {
@@ -16,12 +16,12 @@ namespace BoletoNet
             return x.OrdemNoRegistroEDI.CompareTo(y.OrdemNoRegistroEDI);
         }
     }
-    
+
     /// <summary>
     /// Representa cada tipo de dado possível em um arquivo EDI.
     /// </summary>
     public enum TTiposDadoEDI
-    { 
+    {
         /// <summary>
         /// Representa um campo alfanumérico, alinhado à esquerda e com brancos à direita. A propriedade ValorNatural é do tipo String
         /// </summary>
@@ -230,7 +230,7 @@ namespace BoletoNet
         /// Cria um objeto TCampoRegistroEDI
         /// </summary>
         public TCampoRegistroEDI()
-        { 
+        {
         }
 
         /// <summary>
@@ -350,7 +350,7 @@ namespace BoletoNet
                     }
                 case TTiposDadoEDI.ediDataAAAAMMDD_________:
                     {
-                        if ( (DateTime)this._ValorNatural != DateTime.MinValue)
+                        if ((DateTime)this._ValorNatural != DateTime.MinValue)
                         {
                             string sep = (this._SeparadorDatas == null ? "" : this._SeparadorDatas.ToString());
                             string Formatacao = "{0:yyyy" + sep + "MM" + sep + "dd}";
@@ -455,7 +455,7 @@ namespace BoletoNet
                 case TTiposDadoEDI.ediDataDDMMAAAAWithZeros:
                     {
                         string sep = (this._SeparadorDatas == null ? "" : this._SeparadorDatas.ToString());
-                        if ( (this._ValorNatural != null) || (!this.ValorNatural.ToString().Trim().Equals("")))
+                        if ((this._ValorNatural != null) || (!this.ValorNatural.ToString().Trim().Equals("")))
                         {
                             string Formatacao = "{0:dd" + sep + "MM" + sep + "yyyy}";
                             this._ValorFormatado = String.Format(Formatacao, this._ValorNatural);
@@ -514,8 +514,8 @@ namespace BoletoNet
                         }
                     case TTiposDadoEDI.ediNumericoSemSeparador_:
                         {
-                            string s = this._ValorFormatado.Substring(0, this._ValorFormatado.Length - this._QtdDecimais) + "," + this._ValorFormatado.Substring(this._ValorFormatado.Length - this._QtdDecimais, this._QtdDecimais);
-                            this._ValorNatural = Double.Parse(s.Trim());
+                            string s = this._ValorFormatado.Substring(0, this._ValorFormatado.Length - this._QtdDecimais) + "." + this._ValorFormatado.Substring(this._ValorFormatado.Length - this._QtdDecimais, this._QtdDecimais);
+                            this._ValorNatural = double.Parse(s.Trim(), CultureInfo.InvariantCulture);
                             break;
                         }
                     case TTiposDadoEDI.ediNumericoComPonto_____:
@@ -814,7 +814,7 @@ namespace BoletoNet
             foreach (TCampoRegistroEDI campos in this._CamposEDI)
             {
                 campos.CodificarNaturalParaEDI();
-                this._LinhaRegistro += campos.ValorFormatado; 
+                this._LinhaRegistro += campos.ValorFormatado;
             }
         }
 
