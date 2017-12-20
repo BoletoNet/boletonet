@@ -109,5 +109,21 @@ namespace BoletoNet
                 return End;
             }
         }
+
+        public string EndComNumeroEComplemento
+        {
+            get
+            {
+                var endComNumeroEComplemento = End;
+
+                if (!string.IsNullOrEmpty(Numero))
+                    endComNumeroEComplemento += " " + Numero;
+
+                if (!string.IsNullOrEmpty(Complemento))
+                    endComNumeroEComplemento += " " + Complemento;
+
+                return endComNumeroEComplemento;
+            }
+        }
     }
 }

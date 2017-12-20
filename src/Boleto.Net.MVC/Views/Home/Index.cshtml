@@ -7,24 +7,26 @@
     e as regras estão sendo implementadas aos poucos.
 </p>
 <p>
-    Escolha um banco:@Html.DropDownList("bancos")</p>
-<div id="BoletoCarregado">
-</div>
+    Escolha um banco:@Html.DropDownList("bancos")
+    <button id="btnVisualizar">Visualizar</button>
+    <button id="btnGerarPDF">GerarPDF</button>
+</p>
+
 <script type="text/javascript">
     $(document).ready(function () {
 
-        $("#bancos").change(function () {
-            var strSelected = "";
-            $("#bancos option:selected").each(function () {
-                strSelected += $(this)[0].value;
-            });
-            var url = "/Home/VisualizarBoleto/" + strSelected;
-
-            //            $.post(url, function (data) {
-            //                $("#BoletoCarregado").html(data);
-            //            });
-
-            window.open(url, "WindowPopup", 'width=668,height=780');
+        $("#btnVisualizar").click(function () {
+            var url = "/Home/VisualizarBoleto/" + $("#bancos").val();
+            abrirPopup(url);
         });
+
+        $("#btnGerarPDF").click(function () {
+            var url = "/Home/GerarBoletoPDF/" + $("#bancos").val();
+            abrirPopup(url);
+        });
+
+        function abrirPopup(url) {
+            window.open(url, "WindowPopup", 'width=668,height=780');
+        }
     });
 </script>

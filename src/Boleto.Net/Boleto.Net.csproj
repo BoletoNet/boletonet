@@ -104,6 +104,7 @@
     <Compile Include="Banco\Carteiras\IBancoCarteira.cs" />
     <Compile Include="Banco\Carteiras\TipoCarteiraAttribute.cs" />
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Itau.cs" />
+    <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Sicoob.cs" />
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Sicredi.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Cecred.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Daycoval.cs" />
@@ -192,6 +193,8 @@
     <Compile Include="Boleto\DemonstrativoValoresBoleto\ItemDemonstrativo.cs" />
     <Compile Include="Boleto\Sacado\InformacoesSacado.cs" />
     <Compile Include="Boleto\Sacado\InfoSacado.cs" />
+    <Compile Include="EDI\Banco\TArquivoBanrisulRetorno_EDI.cs" />
+    <Compile Include="EDI\Banco\TArquivoCaixaRetorno_EDI.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_Banco_Nordeste_Retorno.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_Cecred_Retorno.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_Sicredi_Retorno.cs" />
@@ -200,6 +203,7 @@
     <Compile Include="EDI\Banco\TRegistroEDI_Banrisul_Retorno.cs" />
     <Compile Include="EDI\EDIBasicTypes.cs" />
     <Compile Include="EDI\EDIFile.cs" />
+    <Compile Include="Enums\Bancos.cs" />
     <Compile Include="Enums\CategoriaLancamento.cs" />
     <Compile Include="Enums\Extensions.cs" />
     <Compile Include="Enums\IsencaoCpmf.cs" />

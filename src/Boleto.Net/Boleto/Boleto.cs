@@ -87,7 +87,6 @@ namespace BoletoNet
 			this._nossoNumero = nossoNumero;
 			this._dataVencimento = dataVencimento;
 			this._valorBoleto = valorBoleto;
-			this._valorBoleto = valorBoleto;
 			this._valorCobrado = this.ValorCobrado;
 			this._cedente = cedente;
 
@@ -98,7 +97,6 @@ namespace BoletoNet
 		{
 			this._carteira = carteira;
 			this._nossoNumero = nossoNumero;
-			this._valorBoleto = valorBoleto;
 			this._valorBoleto = valorBoleto;
 			this._valorCobrado = this.ValorCobrado;
 			this._cedente = cedente;
@@ -122,7 +120,6 @@ namespace BoletoNet
 			this._digitoNossoNumero = digitoNossoNumero;
 			this._dataVencimento = dataVencimento;
 			this._valorBoleto = valorBoleto;
-			this._valorBoleto = valorBoleto;
 			this._valorCobrado = this.ValorCobrado;
 			this._cedente = cedente;
 		}
@@ -132,7 +129,6 @@ namespace BoletoNet
 			this._carteira = carteira;
 			this._nossoNumero = nossoNumero;
 			this._dataVencimento = dataVencimento;
-			this._valorBoleto = valorBoleto;
 			this._valorBoleto = valorBoleto;
 			this._valorCobrado = this.ValorCobrado;
 			this._cedente = new Cedente(new ContaBancaria(agencia, conta));

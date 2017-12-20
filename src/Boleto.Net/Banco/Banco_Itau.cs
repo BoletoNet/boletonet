@@ -1243,7 +1243,7 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.Sacado.CPFCNPJ, 14, 14, '0', 0, true, true, true).ToUpper();
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Nome.TrimStart(' '), 30, 30, ' ', 0, true, true, false);
                 _detalhe += usoBanco;
-                _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.End.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
+                _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.EndComNumeroEComplemento.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.Bairro.TrimStart(' '), 12, 12, ' ', 0, true, true, false).ToUpper();
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.CEP, 8, 8, ' ', 0, true, true, false).ToUpper();
                 ;
@@ -1608,7 +1608,7 @@ namespace BoletoNet
                 // 26 brancos
                 decimal iof = Convert.ToUInt64(registro.Substring(214, 13));
                 detalhe.IOF = iof / 100;
-                decimal valorAbatimento = Convert.ToUInt64(registro.Substring(227, 13));
+                decimal valorAbatimento = !String.IsNullOrWhiteSpace(registro.Substring(227, 13)) ? Convert.ToUInt64(registro.Substring(227, 13)) : 0;
                 detalhe.ValorAbatimento = valorAbatimento / 100;
 
                 decimal valorDescontos = Convert.ToUInt64(registro.Substring(240, 13));
