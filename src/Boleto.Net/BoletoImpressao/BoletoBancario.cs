@@ -356,6 +356,14 @@ namespace BoletoNet
                 if (Boleto.Sacado.Instrucoes.Count > 0)
                     MontaInstrucoes(Boleto.Sacado.Instrucoes);
 
+                //Para Banco do Brasil, a ficha de compensação não possui código da carteira
+                //na formatação do campo.
+                if (Boleto.Banco.Codigo == 1)
+                {
+                    html.Replace("Carteira /", "");
+                    html.Replace("@NOSSONUMERO", "@NOSSONUMEROBB");
+                }
+
                 return html.ToString().Replace("@INSTRUCOES", _instrucoesHtml);
             }
             catch (Exception ex)
@@ -390,9 +398,9 @@ namespace BoletoNet
                     html.Replace("(Texto de responsabilidade do cedente)", "(Todas as informações deste bloqueto são de exclusiva responsabilidade do cedente)");
                 }
 
-                //Para carteiras "17-019" e "18-019" do Banco do Brasil, a ficha de compensação não possui código da carteira
+                //Para Banco do Brasil, a ficha de compensação não possui código da carteira
                 //na formatação do campo.
-                if (Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("17-027") | Boleto.Carteira.Equals("18-019") | Boleto.Carteira.Equals("17-159") | Boleto.Carteira.Equals("17-140") | Boleto.Carteira.Equals("17-067")))
+                if (Boleto.Banco.Codigo == 1)
                 {
                     html.Replace("Carteira /", "");
                     html.Replace("@NOSSONUMERO", "@NOSSONUMEROBB");
