@@ -398,7 +398,7 @@ namespace BoletoNet
                     html.Replace("(Texto de responsabilidade do cedente)", "(Todas as informações deste bloqueto são de exclusiva responsabilidade do cedente)");
                 }
 
-                //Para Banco do Brasil, a ficha de compensação não possui código da carteira
+                //Para carteiras "17-019", "17-027", "17-159", "18-019", "17-140", "17-067" do Banco do Brasil, a ficha de compensação não possui código da carteira
                 //na formatação do campo.
                 if (Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("17-027") | Boleto.Carteira.Equals("18-019") | Boleto.Carteira.Equals("17-159") | Boleto.Carteira.Equals("17-140") | Boleto.Carteira.Equals("17-067")))
                 {
