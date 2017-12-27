@@ -400,7 +400,7 @@ namespace BoletoNet
 
                 //Para Banco do Brasil, a ficha de compensação não possui código da carteira
                 //na formatação do campo.
-                if (Boleto.Banco.Codigo == 1)
+                if (Boleto.Banco.Codigo == 1 & (Boleto.Carteira.Equals("17-019") | Boleto.Carteira.Equals("17-027") | Boleto.Carteira.Equals("18-019") | Boleto.Carteira.Equals("17-159") | Boleto.Carteira.Equals("17-140") | Boleto.Carteira.Equals("17-067")))
                 {
                     html.Replace("Carteira /", "");
                     html.Replace("@NOSSONUMERO", "@NOSSONUMEROBB");
