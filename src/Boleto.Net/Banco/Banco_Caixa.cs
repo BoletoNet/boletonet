@@ -52,7 +52,8 @@ namespace BoletoNet
             long fatorVencimento = FatorVencimento(boleto);
 
             // Posição 10 - 19     
-            string valorDocumento = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
+            var valor = boleto.ValorCobrado > boleto.ValorBoleto ? boleto.ValorCobrado : boleto.ValorBoleto;
+            string valorDocumento = valor.ToString("f").Replace(",", "").Replace(".", "");
             valorDocumento = Utils.FormatCode(valorDocumento, 10);
 
 
