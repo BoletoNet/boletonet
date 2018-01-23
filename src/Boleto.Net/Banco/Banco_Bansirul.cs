@@ -336,8 +336,8 @@ namespace BoletoNet
         {
             /* (N1*1-9) + (N2*2-9) + (N3*1-9) + (N4*2-9) + (N5*1-9) + (N6*2-9) + (N7*1-9) + (N8*2-9)
              * Observação:
-             * a) a subtração do 9 somente será feita se o produto obtido da multiplicação individual for maior do que 9. 
-             * b) quando o somatório for menor que 10, o resto da divisão por 10 será o próprio somatório. 
+             * a) a subtração do 9 somente será feita se o produto obtido da multiplicação individual for maior do que 9.
+             * b) quando o somatório for menor que 10, o resto da divisão por 10 será o próprio somatório.
              * c) quando o resto for 0, o primeiro DV é igual a 0.
              */
             int soma = 0, resto, peso = 2;
@@ -362,10 +362,10 @@ namespace BoletoNet
         {
             /* Obter somatório (peso de 2 a 7), sempre da direita para a esquerda (N1*4)+(N2*3)+(N3*2)+(N4*7)+(N5*6)+(N6*5)+(N7*4)+(N8*3)+(N9*2)
              * Caso o somatório obtido seja menor que "11", considerar como resto da divisão o próprio somatório.
-             * Caso o ''resto'' obtido no cálculo do módulo ''11'' seja igual a ''1'', considera-se o DV inválido. 
-             * Soma-se, então, "1" ao DV obtido do módulo "10" e refaz-se o cálculo do módulo 11 . 
-             * Se o dígito obtido pelo módulo 10 era igual a "9", considera-se então (9+1=10) DV inválido. 
-             * Neste caso, o DV do módulo "10" automaticamente será igual a "0" e procede-se assim novo cálculo pelo módulo "11". 
+             * Caso o ''resto'' obtido no cálculo do módulo ''11'' seja igual a ''1'', considera-se o DV inválido.
+             * Soma-se, então, "1" ao DV obtido do módulo "10" e refaz-se o cálculo do módulo 11 .
+             * Se o dígito obtido pelo módulo 10 era igual a "9", considera-se então (9+1=10) DV inválido.
+             * Neste caso, o DV do módulo "10" automaticamente será igual a "0" e procede-se assim novo cálculo pelo módulo "11".
              * Caso o ''resto'' obtido no cálculo do módulo "11" seja ''0'', o segundo ''NC'' será igual ao próprio ''resto''
              */
             int peso = 2, mult, sum = 0, rest, dv2, b = 7, n;
@@ -529,7 +529,7 @@ namespace BoletoNet
         {
             bool vRetorno = true;
             string vMsg = string.Empty;
-            //            
+            //
             switch (tipoArquivo)
             {
                 case TipoArquivo.CNAB240:
@@ -789,7 +789,7 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0105, 003, 0, string.Empty, ' '));                              //105-107
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0108, 001, 0, "1", ' '));                                       //108-108   //COBRANÇA SIMPLES
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0109, 002, 0, boleto.Remessa.CodigoOcorrencia, ' '));           //109-110   //REMESSA
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0111, 010, 0, boleto.NumeroDocumento, ' '));                    //111-120   
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0111, 010, 0, boleto.NumeroDocumento, ' '));                    //111-120
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAA___________, 0121, 006, 0, boleto.DataVencimento, ' '));                     //121-126
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0127, 013, 2, boleto.ValorBoleto, '0'));                        //127-139   //
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0140, 003, 0, "041", ' '));                                     //140-142
@@ -943,8 +943,8 @@ namespace BoletoNet
                         DataOcorrencia = Utils.ToDateTime(Utils.ToInt32(reg.DataOcorrenciaBanco).ToString("##-##-##")),
                         NumeroDocumento = reg.SeuNumero,
                         NossoNumeroComDV = reg.NossoNumero,
-                        NossoNumero = reg.NossoNumero.Substring(0, reg.NossoNumero.Length - 1),
-                        DACNossoNumero = reg.NossoNumero.Substring(reg.NossoNumero.Length - 1),
+                        NossoNumero = (reg.NossoNumero != null && reg.NossoNumero.Length >= 2) ? reg.NossoNumero.Substring(0, reg.NossoNumero.Length - 1) : string.Empty,
+                        DACNossoNumero = (reg.NossoNumero != null && reg.NossoNumero.Length >= 2) ? reg.NossoNumero.Substring(reg.NossoNumero.Length - 1) : string.Empty,
                         DataVencimento = Utils.ToDateTime(Utils.ToInt32(reg.DataVencimentoTitulo).ToString("##-##-##")),
                         ValorTitulo = Convert.ToInt64(reg.ValorTitulo) / divisor,
                         CodigoBanco = Utils.ToInt32(reg.CodigoBancoCobrador),
