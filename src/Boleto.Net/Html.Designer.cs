@@ -19,7 +19,7 @@ namespace BoletoNet {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Html {
@@ -428,6 +428,24 @@ namespace BoletoNet {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///        &lt;tr class=&quot;ct h13&quot;&gt;
+        ///            &lt;td class=&quot;w472&quot;&gt;Beneficiário&lt;/td&gt;
+        ///            &lt;td class=&quot;w180&quot;&gt;Agência / Código Beneficiário&lt;/td&gt;
+        ///        &lt;/tr&gt;
+        ///        &lt;tr class=&quot;cp h12 rBb&quot;&gt;
+        ///            &lt;td&gt;@DADOSCEDENTE&lt;/td&gt;
+        ///            &lt;td class=&quot;Ar&quot;&gt;@AGENCIACONTA&lt;/td&gt;
+        ///        &lt;/tr&gt;
+        ///    &lt;/table&gt;.
+        /// </summary>
+        internal static string ReciboCedenteParte13 {
+            get {
+                return ResourceManager.GetString("ReciboCedenteParte13", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
         ///				&lt;tr class=&quot;ct h13&quot;&gt;
         ///						&lt;td class=&quot;w472&quot;&gt;Local de pagamento&lt;/td&gt;
         ///						&lt;td class=&quot;w180&quot;&gt;Vencimento&lt;/td&gt;
@@ -448,7 +466,7 @@ namespace BoletoNet {
         ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
         ///				&lt;tr class=&quot;ct h13&quot;&gt;
         ///						&lt;td class=&quot;w472&quot;&gt;Beneficiário&lt;/td&gt;
-        ///						&lt;td class=&quot;w180&quot;&gt;Agência / Código Beneficiário&lt;/td&gt;
+        ///						&lt;td class=&quot;w180&quot;&gt;Agência / Código do Beneficiário&lt;/td&gt;
         ///				&lt;/tr&gt;
         ///				&lt;tr class=&quot;cp h12 rBb&quot;&gt;
         ///						&lt;td&gt;@CEDENTE_BOLETO&lt;/td&gt;

@@ -1,7 +1,6 @@
-using System;
-using System.Threading;
-using BoletoNet.Util;
 using BoletoNet.Enums;
+using BoletoNet.Util;
+using System;
 
 namespace BoletoNet
 {
@@ -14,6 +13,7 @@ namespace BoletoNet
         private string _digito = "0";
         private string _nome = string.Empty;
         private Cedente _cedente = null;
+        protected decimal divisor = 100.0M;
 
         #endregion Variaveis
 
@@ -72,12 +72,12 @@ namespace BoletoNet
         {
             throw new NotImplementedException("Função não implementada");
         }
-        
+
         public virtual bool ValidarRemessa(TipoArquivo tipoArquivo, string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, int numeroArquivoRemessa, out string mensagem)
         {
             throw new NotImplementedException("Função não implementada na classe filha. Implemente na classe que está sendo criada.");
         }
-        
+
         /// <summary>
         /// Gera os registros de header do aquivo de remessa
         /// </summary>
@@ -347,23 +347,24 @@ namespace BoletoNet
                 int dataVencimento = Utils.ToInt32(registro.Substring(146, 6));
                 int dataCredito = Utils.ToInt32(registro.Substring(295, 6));
 
-                DetalheRetorno detalhe = new DetalheRetorno(registro);
+                DetalheRetorno detalhe =
+                    new DetalheRetorno(registro)
+                    {
+                        CodigoInscricao = Utils.ToInt32(registro.Substring(1, 2)),
+                        NumeroInscricao = registro.Substring(3, 14),
+                        Agencia = Utils.ToInt32(registro.Substring(17, 4)),
+                        Conta = Utils.ToInt32(registro.Substring(23, 5)),
+                        DACConta = Utils.ToInt32(registro.Substring(28, 1)),
+                        UsoEmpresa = registro.Substring(37, 25),
+                        NossoNumeroComDV = registro.Substring(85, 9),
+                        NossoNumero = registro.Substring(85, 8),
+                        DACNossoNumero = registro.Substring(93, 1),
+                        Carteira = registro.Substring(107, 1),
+                        CodigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2)),
+                        DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##")),
+                        NumeroDocumento = registro.Substring(116, 10)
+                    };
 
-                detalhe.CodigoInscricao = Utils.ToInt32(registro.Substring(1, 2));
-                detalhe.NumeroInscricao = registro.Substring(3, 14);
-                detalhe.Agencia = Utils.ToInt32(registro.Substring(17, 4));
-                detalhe.Conta = Utils.ToInt32(registro.Substring(23, 5));
-                detalhe.DACConta = Utils.ToInt32(registro.Substring(28, 1));
-                detalhe.UsoEmpresa = registro.Substring(37, 25);
-                //
-                detalhe.NossoNumeroComDV = registro.Substring(85, 9);
-                detalhe.NossoNumero = registro.Substring(85, 8); //Sem o DV
-                detalhe.DACNossoNumero = registro.Substring(93, 1); //DV
-                //
-                detalhe.Carteira = registro.Substring(107, 1);
-                detalhe.CodigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2));
-                detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
-                detalhe.NumeroDocumento = registro.Substring(116, 10);
                 detalhe.NossoNumero = registro.Substring(126, 9);
                 detalhe.DataVencimento = Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
                 decimal valorTitulo = Convert.ToInt64(registro.Substring(152, 13));
@@ -409,29 +410,7 @@ namespace BoletoNet
         {
             try
             {
-                HeaderRetorno header = new HeaderRetorno(registro);
-                header.TipoRegistro = Utils.ToInt32(registro.Substring(000, 1));
-                header.CodigoRetorno = Utils.ToInt32(registro.Substring(001, 1));
-                header.LiteralRetorno = registro.Substring(002, 7);
-                header.CodigoServico = Utils.ToInt32(registro.Substring(009, 2));
-                header.LiteralServico = registro.Substring(011, 15);
-                header.Agencia = Utils.ToInt32(registro.Substring(026, 4));
-                header.ComplementoRegistro1 = Utils.ToInt32(registro.Substring(030, 2));
-                header.Conta = Utils.ToInt32(registro.Substring(032, 5));
-                header.DACConta = Utils.ToInt32(registro.Substring(037, 1));
-                header.ComplementoRegistro2 = registro.Substring(038, 8);
-                header.NomeEmpresa = registro.Substring(046, 30);
-                header.CodigoBanco = Utils.ToInt32(registro.Substring(076, 3));
-                header.NomeBanco = registro.Substring(079, 15);
-                header.DataGeracao = Utils.ToDateTime(Utils.ToInt32(registro.Substring(094, 6)).ToString("##-##-##"));
-                header.Densidade = Utils.ToInt32(registro.Substring(100, 5));
-                header.UnidadeDensidade = registro.Substring(105, 3);
-                header.NumeroSequencialArquivoRetorno = Utils.ToInt32(registro.Substring(108, 5));
-                header.DataCredito = Utils.ToDateTime(Utils.ToInt32(registro.Substring(113, 6)).ToString("##-##-##"));
-                header.ComplementoRegistro3 = registro.Substring(119, 275);
-                header.NumeroSequencial = Utils.ToInt32(registro.Substring(394, 6));
-
-                return header;
+                return new HeaderRetorno(registro);
             }
             catch (Exception ex)
             {
@@ -446,7 +425,9 @@ namespace BoletoNet
         /// <returns>Código da ocorrência</returns>
         protected string ObterCodigoDaOcorrencia(Boleto boleto)
         {
-            return boleto.Remessa != null && !string.IsNullOrEmpty(boleto.Remessa.CodigoOcorrencia) ? Utils.FormatCode(boleto.Remessa.CodigoOcorrencia, 2) : TipoOcorrenciaRemessa.EntradaDeTitulos.Format();
+            return boleto.Remessa != null && !string.IsNullOrEmpty(boleto.Remessa.CodigoOcorrencia)
+                ? Utils.FormatCode(boleto.Remessa.CodigoOcorrencia, 2)
+                : TipoOcorrenciaRemessa.EntradaDeTitulos.Format();
         }
         # endregion
 
@@ -602,7 +583,7 @@ namespace BoletoNet
 
             for (int i = seq.Length; i > 0; i--)
             {
-                s = s + (Convert.ToInt32(seq.Mid( i, 1)) * p);
+                s = s + (Convert.ToInt32(seq.Mid(i, 1)) * p);
                 if (p == b)
                     p = 2;
                 else
@@ -675,7 +656,7 @@ namespace BoletoNet
 
             while (pos <= seq.Length)
             {
-                num = seq.Mid( pos, 1);
+                num = seq.Mid(pos, 1);
                 total += Convert.ToInt32(num) * mult;
 
                 mult -= 1;
@@ -714,7 +695,7 @@ namespace BoletoNet
 
             while (pos <= seq.Length)
             {
-                num = seq.Mid( pos, 1);
+                num = seq.Mid(pos, 1);
                 total += Convert.ToInt32(num) * mult;
 
                 mult -= 1;
