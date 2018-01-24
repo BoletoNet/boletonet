@@ -155,6 +155,9 @@ namespace BoletoNet
                     case 637:
                         _IEspecieDocumento = new EspecieDocumento_Sofisa(codigoEspecie);
                         break;
+                    case 21:
+                        _IEspecieDocumento = new EspecieDocumento_Banestes(codigoEspecie);
+                        break;
                     default:
                         throw new Exception("Código do banco não implementando: " + codigoBanco);
                 }
