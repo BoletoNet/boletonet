@@ -410,5 +410,69 @@ namespace BoletoNet
                 throw new Exception(string.Format("Erro ao tentar gerar a chave ASBACE. {0}", e.Message));
             }
         }
+
+        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
+        {
+            try
+            {
+                string _header = " ";
+
+                base.GerarHeaderRemessa(numeroConvenio, cedente, tipoArquivo, numeroArquivoRemessa);
+
+                switch (tipoArquivo)
+                {
+
+                    case TipoArquivo.CNAB240:
+                        _header = GerarHeaderRemessaCNAB240();
+                        break;
+                    case TipoArquivo.CNAB400:
+                        _header = GerarHeaderRemessaCNAB400(int.Parse(numeroConvenio), cedente, numeroArquivoRemessa);
+                        break;
+                    case TipoArquivo.Outro:
+                        throw new Exception("Tipo de arquivo inexistente.");
+                }
+
+                return _header;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do HEADER do arquivo de REMESSA.", ex);
+            }
+        }
+
+        public string GerarHeaderRemessaCNAB240()
+        {
+            throw new NotImplementedException("Função não implementada.");
+        }
+
+        public string GerarHeaderRemessaCNAB400(int numeroConvenio, Cedente cedente, int numeroArquivoRemessa)
+        {
+            try
+            {
+                string complemento = new string(' ', 277);
+                string _header;
+
+                _header = "01REMESSA01";
+                _header += "COBRANCA".PadRight(15, ' ');
+                _header += Utils.FitStringLength(cedente.ContaBancaria.Conta, 11, 11, '0', 0, true, true, true); // Conta corrente
+                _header += new string(' ', 9); // Filler
+                _header += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false).ToUpper();
+                _header += "021";
+                _header += "BANESTES";
+                _header += new string(' ', 7); // Filler
+                _header += DateTime.Now.ToString("ddMMyy");
+                _header += new string(' ', 294);
+                _header += "000001";
+
+                _header = Utils.SubstituiCaracteresEspeciais(_header);
+
+                return _header;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao gerar HEADER do arquivo de remessa do CNAB400.", ex);
+            }
+        }
     }
 }
