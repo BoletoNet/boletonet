@@ -13,6 +13,7 @@ namespace BoletoNet
         private string _digito = "0";
         private string _nome = string.Empty;
         private Cedente _cedente = null;
+        protected decimal divisor = 100.0M;
 
         #endregion Variaveis
 
@@ -346,23 +347,24 @@ namespace BoletoNet
                 int dataVencimento = Utils.ToInt32(registro.Substring(146, 6));
                 int dataCredito = Utils.ToInt32(registro.Substring(295, 6));
 
-                DetalheRetorno detalhe = new DetalheRetorno(registro);
+                DetalheRetorno detalhe =
+                    new DetalheRetorno(registro)
+                    {
+                        CodigoInscricao = Utils.ToInt32(registro.Substring(1, 2)),
+                        NumeroInscricao = registro.Substring(3, 14),
+                        Agencia = Utils.ToInt32(registro.Substring(17, 4)),
+                        Conta = Utils.ToInt32(registro.Substring(23, 5)),
+                        DACConta = Utils.ToInt32(registro.Substring(28, 1)),
+                        UsoEmpresa = registro.Substring(37, 25),
+                        NossoNumeroComDV = registro.Substring(85, 9),
+                        NossoNumero = registro.Substring(85, 8),
+                        DACNossoNumero = registro.Substring(93, 1),
+                        Carteira = registro.Substring(107, 1),
+                        CodigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2)),
+                        DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##")),
+                        NumeroDocumento = registro.Substring(116, 10)
+                    };
 
-                detalhe.CodigoInscricao = Utils.ToInt32(registro.Substring(1, 2));
-                detalhe.NumeroInscricao = registro.Substring(3, 14);
-                detalhe.Agencia = Utils.ToInt32(registro.Substring(17, 4));
-                detalhe.Conta = Utils.ToInt32(registro.Substring(23, 5));
-                detalhe.DACConta = Utils.ToInt32(registro.Substring(28, 1));
-                detalhe.UsoEmpresa = registro.Substring(37, 25);
-                //
-                detalhe.NossoNumeroComDV = registro.Substring(85, 9);
-                detalhe.NossoNumero = registro.Substring(85, 8); //Sem o DV
-                detalhe.DACNossoNumero = registro.Substring(93, 1); //DV
-                //
-                detalhe.Carteira = registro.Substring(107, 1);
-                detalhe.CodigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2));
-                detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
-                detalhe.NumeroDocumento = registro.Substring(116, 10);
                 detalhe.NossoNumero = registro.Substring(126, 9);
                 detalhe.DataVencimento = Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
                 decimal valorTitulo = Convert.ToInt64(registro.Substring(152, 13));
@@ -408,32 +410,7 @@ namespace BoletoNet
         {
             try
             {
-                HeaderRetorno header =
-                    new HeaderRetorno(registro)
-                    {
-                        TipoRegistro = Utils.ToInt32(registro.Substring(000, 1)),
-                        CodigoRetorno = Utils.ToInt32(registro.Substring(001, 1)),
-                        LiteralRetorno = registro.Substring(002, 7),
-                        CodigoServico = Utils.ToInt32(registro.Substring(009, 2)),
-                        LiteralServico = registro.Substring(011, 15),
-                        Agencia = Utils.ToInt32(registro.Substring(026, 4)),
-                        ComplementoRegistro1 = Utils.ToInt32(registro.Substring(030, 2)),
-                        Conta = Utils.ToInt32(registro.Substring(032, 5)),
-                        DACConta = Utils.ToInt32(registro.Substring(037, 1)),
-                        ComplementoRegistro2 = registro.Substring(038, 8),
-                        NomeEmpresa = registro.Substring(046, 30),
-                        CodigoBanco = Utils.ToInt32(registro.Substring(076, 3)),
-                        NomeBanco = registro.Substring(079, 15),
-                        DataGeracao = Utils.ToDateTime(Utils.ToInt32(registro.Substring(094, 6)).ToString("##-##-##")),
-                        Densidade = Utils.ToInt32(registro.Substring(100, 5)),
-                        UnidadeDensidade = registro.Substring(105, 3),
-                        NumeroSequencialArquivoRetorno = Utils.ToInt32(registro.Substring(108, 5)),
-                        DataCredito = Utils.ToDateTime(Utils.ToInt32(registro.Substring(113, 6)).ToString("##-##-##")),
-                        ComplementoRegistro3 = registro.Substring(119, 275),
-                        NumeroSequencial = Utils.ToInt32(registro.Substring(394, 6))
-                    };
-
-                return header;
+                return new HeaderRetorno(registro);
             }
             catch (Exception ex)
             {

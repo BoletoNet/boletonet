@@ -511,14 +511,14 @@ namespace BoletoNet
                 {
                     //O BB manda como padrão 7 posições, mas é possível solicitar um convênio com 6 posições na carteira 31
                     case 5:
-                        if (boleto.NossoNumero.Length > 10)
+                        if (boleto.NossoNumero.Length > 12)
                             throw new NotImplementedException(string.Format("Para a carteira {0}, a quantidade máxima são de 12 de posições para o nosso número", boleto.Carteira));
-                        boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 10);
+                        boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 12);
                         break;
                     case 6:
-                        if (boleto.NossoNumero.Length > 10)
+                        if (boleto.NossoNumero.Length > 12)
                             throw new NotImplementedException(string.Format("Para a carteira {0}, a quantidade máxima são de 12 de posições para o nosso número", boleto.Carteira));
-                        boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 10);
+                        boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 12);
                         break;
                     case 7:
                         if (boleto.NossoNumero.Length > 17)

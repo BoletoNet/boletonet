@@ -1608,7 +1608,7 @@ namespace BoletoNet
                 // 26 brancos
                 decimal iof = Convert.ToUInt64(registro.Substring(214, 13));
                 detalhe.IOF = iof / 100;
-                decimal valorAbatimento = Convert.ToUInt64(registro.Substring(227, 13));
+                decimal valorAbatimento = !String.IsNullOrWhiteSpace(registro.Substring(227, 13)) ? Convert.ToUInt64(registro.Substring(227, 13)) : 0;
                 detalhe.ValorAbatimento = valorAbatimento / 100;
 
                 decimal valorDescontos = Convert.ToUInt64(registro.Substring(240, 13));

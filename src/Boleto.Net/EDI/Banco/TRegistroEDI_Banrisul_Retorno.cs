@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BoletoNet.EDI.Banco
+﻿namespace BoletoNet.EDI.Banco
 {
     /// <summary>
 	/// Classe de Integração Banrisul
@@ -10,146 +6,152 @@ namespace BoletoNet.EDI.Banco
     public class TRegistroEDI_Banrisul_Retorno : TRegistroEDI
     {
 
-		#region Atributos e Propriedades
-        private string _Constante1 = String.Empty;
+        #region Atributos e Propriedades
+        private string _Constante1 = string.Empty;
         public string Constante1
         {
             get { return _Constante1; }
             set { _Constante1 = value; }
         }
-        private string _TipoInscricao = String.Empty;
+        private string _TipoInscricao = string.Empty;
         public string TipoInscricao
         {
             get { return _TipoInscricao; }
             set { _TipoInscricao = value; }
         }
-        private string _CpfCnpj = String.Empty;
+        private string _CpfCnpj = string.Empty;
         public string CpfCnpj
         {
             get { return _CpfCnpj; }
             set { _CpfCnpj = value; }
         }
-        private string _CodigoCedente = String.Empty;
+        private string _CodigoCedente = string.Empty;
         public string CodigoCedente
         {
             get { return _CodigoCedente; }
             set { _CodigoCedente = value; }
         }
-        private string _EspecieCobrancaRegistrada = String.Empty;
+        private string _EspecieCobrancaRegistrada = string.Empty;
         public string EspecieCobrancaRegistrada
         {
             get { return _EspecieCobrancaRegistrada; }
             set { _EspecieCobrancaRegistrada = value; }
         }
-        private string _Branco1 = String.Empty;
+        private string _Branco1 = string.Empty;
         public string Branco1
         {
             get { return _Branco1; }
             set { _Branco1 = value; }
         }
-        private string _IdentificacaoTituloCedente = String.Empty;
+        private string _IdentificacaoTituloCedente = string.Empty;
         public string IdentificacaoTituloCedente
         {
             get { return _IdentificacaoTituloCedente; }
             set { _IdentificacaoTituloCedente = value; }
         }
-        private string _IdentificacaoTituloBanco_NossoNumero = String.Empty;
+        private string _IdentificacaoTituloBanco_NossoNumero = string.Empty;
         public string IdentificacaoTituloBanco_NossoNumero
         {
             get { return _IdentificacaoTituloBanco_NossoNumero; }
             set { _IdentificacaoTituloBanco_NossoNumero = value; }
         }
-        private string _IdentificacaoTituloBanco_NossoNumeroOpcional = String.Empty;
+        private string _IdentificacaoTituloBanco_NossoNumeroOpcional = string.Empty;
         public string IdentificacaoTituloBanco_NossoNumeroOpcional
         {
             get { return _IdentificacaoTituloBanco_NossoNumeroOpcional; }
             set { _IdentificacaoTituloBanco_NossoNumeroOpcional = value; }
         }
-        private string _NumeroContratoBLU = String.Empty;
+        private string _NumeroContratoBLU = string.Empty;
         public string NumeroContratoBLU
         {
             get { return _NumeroContratoBLU; }
             set { _NumeroContratoBLU = value; }
         }
-        private string _Brancos2 = String.Empty;
+        private string _Brancos2 = string.Empty;
         public string Brancos2
         {
             get { return _Brancos2; }
             set { _Brancos2 = value; }
         }
-        private string _TipoCarteira = String.Empty;
+        private string _TipoCarteira = string.Empty;
         public string TipoCarteira
         {
             get { return _TipoCarteira; }
             set { _TipoCarteira = value; }
         }
-        private string _CodigoOcorrencia = String.Empty;
+        private string _CanalPagamento = string.Empty;
+        public string CanalPagamento
+        {
+            get { return _CanalPagamento; }
+            set { _CanalPagamento = value; }
+        }
+        private string _CodigoOcorrencia = string.Empty;
         public string CodigoOcorrencia
         {
             get { return _CodigoOcorrencia; }
             set { _CodigoOcorrencia = value; }
         }
-        private string _DataOcorrenciaBanco = String.Empty;
+        private string _DataOcorrenciaBanco = string.Empty;
         public string DataOcorrenciaBanco
         {
             get { return _DataOcorrenciaBanco; }
             set { _DataOcorrenciaBanco = value; }
         }
-        private string _SeuNumero = String.Empty;
+        private string _SeuNumero = string.Empty;
         public string SeuNumero
         {
             get { return _SeuNumero; }
             set { _SeuNumero = value; }
         }
-        private string _NossoNumero = String.Empty;
+        private string _NossoNumero = string.Empty;
         public string NossoNumero
         {
             get { return _NossoNumero; }
             set { _NossoNumero = value; }
         }
-        private string _DataVencimentoTitulo = String.Empty;
+        private string _DataVencimentoTitulo = string.Empty;
         public string DataVencimentoTitulo
         {
             get { return _DataVencimentoTitulo; }
             set { _DataVencimentoTitulo = value; }
         }
-        private string _ValorTitulo = String.Empty;
+        private string _ValorTitulo = string.Empty;
         public string ValorTitulo
         {
             get { return _ValorTitulo; }
             set { _ValorTitulo = value; }
         }
-        private string _CodigoBancoCobrador = String.Empty;
+        private string _CodigoBancoCobrador = string.Empty;
         public string CodigoBancoCobrador
         {
             get { return _CodigoBancoCobrador; }
             set { _CodigoBancoCobrador = value; }
         }
-        private string _CodigoAgenciaCobradora = String.Empty;
+        private string _CodigoAgenciaCobradora = string.Empty;
         public string CodigoAgenciaCobradora
         {
             get { return _CodigoAgenciaCobradora; }
             set { _CodigoAgenciaCobradora = value; }
         }
-        private string _TipoDocumento = String.Empty;
+        private string _TipoDocumento = string.Empty;
         public string TipoDocumento
         {
             get { return _TipoDocumento; }
             set { _TipoDocumento = value; }
         }
-        private string _ValorDespesasCobranca = String.Empty;
+        private string _ValorDespesasCobranca = string.Empty;
         public string ValorDespesasCobranca
         {
             get { return _ValorDespesasCobranca; }
             set { _ValorDespesasCobranca = value; }
         }
-        private string _OutrasDespesas = String.Empty;
+        private string _OutrasDespesas = string.Empty;
         public string OutrasDespesas
         {
             get { return _OutrasDespesas; }
             set { _OutrasDespesas = value; }
         }
-        private string _Zeros1 = String.Empty;
+        private string _Zeros1 = string.Empty;
         public string Zeros1
         {
             get { return _Zeros1; }
@@ -160,79 +162,79 @@ namespace BoletoNet.EDI.Banco
         //private string _SituacaoIOF = String.Empty;
         //private string _Zeros2 = String.Empty;
         //
-        private string _ValorAbatimento_DeflacaoConcedido = String.Empty;
+        private string _ValorAbatimento_DeflacaoConcedido = string.Empty;
         public string ValorAbatimento_DeflacaoConcedido
         {
             get { return _ValorAbatimento_DeflacaoConcedido; }
             set { _ValorAbatimento_DeflacaoConcedido = value; }
         }
-        private string _ValorDescontoConcedido = String.Empty;
+        private string _ValorDescontoConcedido = string.Empty;
         public string ValorDescontoConcedido
         {
             get { return _ValorDescontoConcedido; }
             set { _ValorDescontoConcedido = value; }
         }
-        private string _ValorPago = String.Empty;
+        private string _ValorPago = string.Empty;
         public string ValorPago
         {
             get { return _ValorPago; }
             set { _ValorPago = value; }
         }
-        private string _ValorJuros = String.Empty;
+        private string _ValorJuros = string.Empty;
         public string ValorJuros
         {
             get { return _ValorJuros; }
             set { _ValorJuros = value; }
         }
-        private string _ValorOutrosRecebimentos = String.Empty;
+        private string _ValorOutrosRecebimentos = string.Empty;
         public string ValorOutrosRecebimentos
         {
             get { return _ValorOutrosRecebimentos; }
             set { _ValorOutrosRecebimentos = value; }
         }
-        private string _Brancos3 = String.Empty;
+        private string _Brancos3 = string.Empty;
         public string Brancos3
         {
             get { return _Brancos3; }
             set { _Brancos3 = value; }
         }
-        private string _DataCreditoConta = String.Empty;
+        private string _DataCreditoConta = string.Empty;
         public string DataCreditoConta
         {
             get { return _DataCreditoConta; }
             set { _DataCreditoConta = value; }
         }
-        private string _Brancos4 = String.Empty;
+        private string _Brancos4 = string.Empty;
         public string Brancos4
         {
             get { return _Brancos4; }
             set { _Brancos4 = value; }
         }
-        private string _PagamentoDinheiro_Cheque = String.Empty;
+        private string _PagamentoDinheiro_Cheque = string.Empty;
         public string PagamentoDinheiro_Cheque
         {
             get { return _PagamentoDinheiro_Cheque; }
             set { _PagamentoDinheiro_Cheque = value; }
         }
-        private string _Brancos5 = String.Empty;
+        private string _Brancos5 = string.Empty;
         public string Brancos5
         {
             get { return _Brancos5; }
             set { _Brancos5 = value; }
         }
-        private string _MotivoOcorrencia = String.Empty;
+        private string _MotivoOcorrencia = string.Empty;
         public string MotivoOcorrencia
         {
             get { return _MotivoOcorrencia; }
             set { _MotivoOcorrencia = value; }
         }
-        private string _Brancos6 = String.Empty;
+        private string _Brancos6 = string.Empty;
         public string Brancos6
         {
             get { return _Brancos6; }
             set { _Brancos6 = value; }
         }
-        private string _NumeroSequenciaRegistro = String.Empty;
+        private string _NumeroSequenciaRegistro = string.Empty;
         public string NumeroSequenciaRegistro
         {
             get { return _NumeroSequenciaRegistro; }
@@ -240,7 +242,7 @@ namespace BoletoNet.EDI.Banco
         }
         #endregion
 
-    
+
         public TRegistroEDI_Banrisul_Retorno()
         {
             /*
@@ -282,19 +284,20 @@ namespace BoletoNet.EDI.Banco
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0296, 006, 0, string.Empty, ' ')); //296-301
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0302, 041, 0, string.Empty, ' ')); //302-342
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0343, 001, 0, string.Empty, ' ')); //343-343
-            this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0344, 039, 0, string.Empty, ' ')); //344-382
+            this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0344, 001, 0, string.Empty, ' ')); //344-344
+            this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0345, 039, 0, string.Empty, ' ')); //344-382
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0383, 010, 0, string.Empty, ' ')); //383-392
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0393, 002, 0, string.Empty, ' ')); //393-394
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0395, 006, 0, string.Empty, ' ')); //395-400
             #endregion
         }
-		
-		/// <summary>
-		/// Aqui iremos atribuir os valores das propriedades em cada campo correspondente do Registro EDI
-		/// e codificaremos a linha para obter uma string formatada com o nosso layout.
-		/// Repare que declarei as propriedades em uma ordem tal que a adição dos objetos TCampoRegistroEDI na propriedade
-		/// _CamposEDI siga a mesma ordem. Portanto, utilizarei o índice na atribuição.
-		/// </summary>
+
+        /// <summary>
+        /// Aqui iremos atribuir os valores das propriedades em cada campo correspondente do Registro EDI
+        /// e codificaremos a linha para obter uma string formatada com o nosso layout.
+        /// Repare que declarei as propriedades em uma ordem tal que a adição dos objetos TCampoRegistroEDI na propriedade
+        /// _CamposEDI siga a mesma ordem. Portanto, utilizarei o índice na atribuição.
+        /// </summary>
         public override void CodificarLinha()
         {
             #region Todos os Campos
@@ -303,29 +306,29 @@ namespace BoletoNet.EDI.Banco
             //
             base.CodificarLinha(); //Aqui que eu chamo efetivamente a rotina de codificação; o resultado será exibido na propriedade LinhaRegistro.
         }
-		
-		/// <summary>
-		/// Agora, faço o inverso da codificação. Decodifico o valor da propriedade LinhaRegistro e separo em cada campo.
-		/// Cada campo é separado na propriedade ValorNatural de cada item da prop. _CamposEDI. Como esta é do tipo object, para atribuir
-		/// nas propriedades do registro é necessário fazer um cast para o tipo de dado adequado. Caso ocorra algum erro na decodificação,
-		/// uma exceção será disparada, provavelmente por causa de impossibilidade de fazer um cast na classe pai. Portanto, o layout deve estar
-		/// correto!
-		/// </summary>
-		public override void DecodificarLinha()
-		{
-			base.DecodificarLinha();
+
+        /// <summary>
+        /// Agora, faço o inverso da codificação. Decodifico o valor da propriedade LinhaRegistro e separo em cada campo.
+        /// Cada campo é separado na propriedade ValorNatural de cada item da prop. _CamposEDI. Como esta é do tipo object, para atribuir
+        /// nas propriedades do registro é necessário fazer um cast para o tipo de dado adequado. Caso ocorra algum erro na decodificação,
+        /// uma exceção será disparada, provavelmente por causa de impossibilidade de fazer um cast na classe pai. Portanto, o layout deve estar
+        /// correto!
+        /// </summary>
+        public override void DecodificarLinha()
+        {
+            base.DecodificarLinha();
             //
             this._Constante1 = (string)this._CamposEDI[0].ValorNatural;
             this._TipoInscricao = (string)this._CamposEDI[1].ValorNatural;
             this._CpfCnpj = (string)this._CamposEDI[2].ValorNatural;
             this._CodigoCedente = (string)this._CamposEDI[3].ValorNatural;
             this._EspecieCobrancaRegistrada = (string)this._CamposEDI[4].ValorNatural;
-            this._Branco1 = (string)this._CamposEDI[5].ValorNatural;
+            //this._Branco1 = (string)this._CamposEDI[5].ValorNatural;
             this._IdentificacaoTituloCedente = (string)this._CamposEDI[6].ValorNatural;
             this._IdentificacaoTituloBanco_NossoNumero = (string)this._CamposEDI[7].ValorNatural;
             this._IdentificacaoTituloBanco_NossoNumeroOpcional = (string)this._CamposEDI[8].ValorNatural;
             this._NumeroContratoBLU = (string)this._CamposEDI[9].ValorNatural;
-            this._Brancos2 = (string)this._CamposEDI[10].ValorNatural;
+            //this._Brancos2 = (string)this._CamposEDI[10].ValorNatural;
             this._TipoCarteira = (string)this._CamposEDI[11].ValorNatural;
             this._CodigoOcorrencia = (string)this._CamposEDI[12].ValorNatural;
             this._DataOcorrenciaBanco = (string)this._CamposEDI[13].ValorNatural;
@@ -339,45 +342,20 @@ namespace BoletoNet.EDI.Banco
             this._ValorDespesasCobranca = (string)this._CamposEDI[21].ValorNatural;
             this._OutrasDespesas = (string)this._CamposEDI[22].ValorNatural;
             this._Zeros1 = (string)this._CamposEDI[23].ValorNatural;
-            //this._ValorAvista = (string)this._CamposEDI[0].ValorNatural;
-            //this._SituacaoIOF = (string)this._CamposEDI[0].ValorNatural;
-            //this._Zeros2 = (string)this._CamposEDI[0].ValorNatural;
             this._ValorAbatimento_DeflacaoConcedido = (string)this._CamposEDI[24].ValorNatural;
             this._ValorDescontoConcedido = (string)this._CamposEDI[25].ValorNatural;
             this._ValorPago = (string)this._CamposEDI[26].ValorNatural;
             this._ValorJuros = (string)this._CamposEDI[27].ValorNatural;
             this._ValorOutrosRecebimentos = (string)this._CamposEDI[28].ValorNatural;
-            this._Brancos3 = (string)this._CamposEDI[29].ValorNatural;
+            //this._Brancos3 = (string)this._CamposEDI[29].ValorNatural;
             this._DataCreditoConta = (string)this._CamposEDI[30].ValorNatural;
             this._Brancos4 = (string)this._CamposEDI[31].ValorNatural;
             this._PagamentoDinheiro_Cheque = (string)this._CamposEDI[32].ValorNatural;
-            this._Brancos5 = (string)this._CamposEDI[33].ValorNatural;
+            this._CanalPagamento = (string)this._CamposEDI[33].ValorNatural;
+            //this._Brancos5 = (string)this._CamposEDI[34].ValorNatural;
             this._MotivoOcorrencia = (string)this._CamposEDI[34].ValorNatural;
-            this._Brancos6 = (string)this._CamposEDI[35].ValorNatural;
-            this._NumeroSequenciaRegistro = (string)this._CamposEDI[36].ValorNatural;   
-            //
-		}
-	}
-
-	/// <summary>
-	/// Classe que irá representar o arquivo EDI em si
-	/// </summary>
-    public class TArquivoBanrisulRetorno_EDI : TEDIFile
-	{
-		/*
-		 * De modo geral, apenas preciso sobreescrever o método de decodificação de linhas,
-		 * pois preciso adicionar um objeto do tipo registro na coleção do arquivo, passar a linha que vem do arquivo
-		 * neste objeto novo, e decodificá-lo para separar nos campos.
-		 * O DecodeLine é chamado a partir do método LoadFromFile() (ou Stream) da classe base.
-		 */
-		protected override void DecodeLine(string Line)
-		{
-			base.DecodeLine(Line);
-            Lines.Add(new TRegistroEDI_Banrisul_Retorno()); //Adiciono a linha a ser decodificada
-			Lines[Lines.Count - 1].LinhaRegistro = Line; //Atribuo a linha que vem do arquivo
-            Lines[Lines.Count - 1].DecodificarLinha(); //Finalmente, a separação das substrings na linha do arquivo.
-		}
-	}
-	
-
+            //this._Brancos6 = (string)this._CamposEDI[36].ValorNatural;
+            this._NumeroSequenciaRegistro = (string)this._CamposEDI[37].ValorNatural;
+        }
+    }
 }
