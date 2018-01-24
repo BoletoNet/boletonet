@@ -6,7 +6,8 @@ namespace BoletoNet
 
     public enum EnumInstrucoes_Banestes
     {
-        //TODO
+        Protestar = 6,
+        NaoProtestar = 7
     }
 
     #endregion 
