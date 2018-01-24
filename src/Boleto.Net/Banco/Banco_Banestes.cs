@@ -536,9 +536,24 @@ namespace BoletoNet
                 _detalhe += new string(' ', 6); // Identificação do carnê
                 _detalhe += new string(' ', 2); // Número da parcela do carnê
                 _detalhe += new string(' ', 2); // Quantidade de parcelas do carnê
-                _detalhe += (boleto?.Avalista?.CPFCNPJ?.Length ?? 0) <= 11 ? "1" : "2"; // Tipo de inscrição do sacador avalista
 
-                string cpfCnpjAvalista = (boleto?.Avalista?.CPFCNPJ ?? "").Replace("/", "").Replace(".", "").Replace("-", "");
+                // Tipo de inscrição do sacador avalista
+                if (boleto.Avalista != null && boleto.Avalista.CPFCNPJ.Length <= 11)
+                {
+                    _detalhe += "1";
+                }
+                else
+                {
+                    _detalhe += "2";
+                }
+
+                string cpfCnpjAvalista = "";
+
+                if (boleto.Avalista != null)
+                {
+                    cpfCnpjAvalista = boleto.Avalista.CPFCNPJ.Replace("/", "").Replace(".", "").Replace("-", "");
+                }
+
                 _detalhe += Utils.FitStringLength(cpfCnpjAvalista, 14, 14, '0', 0, true, true, true); // Inscrição do sacador avalista
 
                 _detalhe += Utils.FitStringLength(boleto.Carteira, 1, 1, '0', 0, true, true, true); // Carteira
