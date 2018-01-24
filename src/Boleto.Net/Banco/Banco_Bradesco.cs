@@ -731,32 +731,6 @@ namespace BoletoNet
         {
             try
             {
-<<<<<<< HEAD
-                HeaderRetorno header = new HeaderRetorno(registro);
-                header.TipoRegistro = Utils.ToInt32(registro.Substring(000, 1));
-                header.CodigoRetorno = Utils.ToInt32(registro.Substring(001, 1));
-                header.LiteralRetorno = registro.Substring(002, 7);
-                header.CodigoServico = Utils.ToInt32(registro.Substring(009, 2));
-                header.LiteralServico = registro.Substring(011, 15);
-                header.CodigoEmpresa = registro.Substring(026, 20);
-                header.NomeEmpresa = registro.Substring(046, 30);
-                header.CodigoBanco = Utils.ToInt32(registro.Substring(076, 3));
-                header.NomeBanco = registro.Substring(079, 15);
-                header.DataGeracao = Utils.ToDateTime(Utils.ToInt32(registro.Substring(094, 6)).ToString("##-##-##"));
-
-                var densidade = 0;
-                int.TryParse(registro.Substring(100, 8), out densidade);
-
-                header.Densidade = densidade;
-
-                header.NumeroSequencialArquivoRetorno = Utils.ToInt32(registro.Substring(108, 5));
-                header.ComplementoRegistro2 = registro.Substring(113, 266);
-                header.DataCredito = Utils.ToDateTime(Utils.ToInt32(registro.Substring(379, 6)).ToString("##-##-##"));
-                header.ComplementoRegistro3 = registro.Substring(385, 9);
-                header.NumeroSequencial = Utils.ToInt32(registro.Substring(394, 6));
-
-                return header;
-=======
                 return new HeaderRetorno(registro)
                 {
                     TipoRegistro = Utils.ToInt32(registro.Substring(000, 1)),
@@ -776,7 +750,6 @@ namespace BoletoNet
                     ComplementoRegistro3 = registro.Substring(385, 9),
                     NumeroSequencial = Utils.ToInt32(registro.Substring(394, 6))
                 };
->>>>>>> upstream/master
             }
             catch (Exception ex)
             {
