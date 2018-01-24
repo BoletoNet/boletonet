@@ -55,7 +55,7 @@ namespace BoletoNet
                 {
                     case EnumInstrucoes_Banestes.Protestar:
                         Codigo = 6;
-                        Descricao = $"Protestar após {nrDias} dias do vencimento";
+                        Descricao = string.Format("Protestar após {0} dias do vencimento", nrDias);
                         break;
                     case EnumInstrucoes_Banestes.NaoProtestar:
                         Codigo = 7;
@@ -84,7 +84,7 @@ namespace BoletoNet
                 {
                     case EnumInstrucoes_Banestes.Protestar:
                         Codigo = 6;
-                        Descricao = $"Protestar após {nrDias} dias do vencimento";
+                        Descricao = string.Format("Protestar após {0} dias do vencimento", nrDias);
                         break;
                     case EnumInstrucoes_Banestes.NaoProtestar:
                         Codigo = 7;
