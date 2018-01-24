@@ -613,5 +613,60 @@ namespace BoletoNet
                 throw new Exception("Erro ao gerar DETALHE do arquivo CNAB400.", ex);
             }
         }
+
+        public override string GerarTrailerRemessa(int numeroRegistro, TipoArquivo tipoArquivo, Cedente cedente, decimal vltitulostotal)
+        {
+            try
+            {
+                string _trailer = " ";
+
+                base.GerarTrailerRemessa(numeroRegistro, tipoArquivo, cedente, vltitulostotal);
+
+                switch (tipoArquivo)
+                {
+                    case TipoArquivo.CNAB240:
+                        _trailer = GerarTrailerRemessa240();
+                        break;
+                    case TipoArquivo.CNAB400:
+                        _trailer = GerarTrailerRemessa400(numeroRegistro);
+                        break;
+                    case TipoArquivo.Outro:
+                        throw new Exception("Tipo de arquivo inexistente.");
+                }
+
+                return _trailer;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("", ex);
+            }
+        }
+
+        public string GerarTrailerRemessa240()
+        {
+            throw new NotImplementedException("Função não implementada.");
+        }
+
+        public string GerarTrailerRemessa400(int numeroRegistro)
+        {
+            try
+            {
+                string complemento = new string(' ', 393);
+                string _trailer;
+
+                _trailer = "9";
+                _trailer += complemento;
+                _trailer += Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true); // Número sequencial do registro no arquivo.
+
+                _trailer = Utils.SubstituiCaracteresEspeciais(_trailer);
+
+                return _trailer;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do registro TRAILER do arquivo de REMESSA.", ex);
+            }
+        }
     }
 }
