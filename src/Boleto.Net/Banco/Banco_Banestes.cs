@@ -557,7 +557,7 @@ namespace BoletoNet
                 string vInstrucao1 = "00";
                 string vInstrucao2 = "00";
 
-                foreach (Instrucao_Banestes instrucao in boleto.Instrucoes)
+                foreach (var instrucao in boleto.Instrucoes)
                 {
                     switch ((EnumInstrucoes_Banestes)instrucao.Codigo)
                     {
