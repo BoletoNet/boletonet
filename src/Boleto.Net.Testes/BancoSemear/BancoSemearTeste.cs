@@ -72,15 +72,15 @@ namespace BoletoNet.Testes.BancoSemear
                 Codigo = "743",
                 MostrarCNPJnoBoleto = true,
                 Nome = "BANCO SEMEAR",
-                CPFCNPJ = "00795423000145",
+                CPFCNPJ = "65825481000110",
                 Carteira = "2",
                 DigCedente = "9",
                 ContaBancaria = new ContaBancaria()
                 {
                     Agencia = "001",
                     DigitoAgencia = "0",
-                    Conta = "1099681",
-                    DigitoConta = "8"
+                    Conta = "65456",
+                    DigitoConta = "5"
                 },
                 Endereco = new Endereco()
             };
@@ -102,16 +102,16 @@ namespace BoletoNet.Testes.BancoSemear
 
             boleto.Sacado = new Sacado()
             {
-                CPFCNPJ = "00023128321",
-                Nome = "REGINALDO MENDES DE OLIVEIRA",
+                CPFCNPJ = "05461883893",
+                Nome = "Joãozinho Testador",
                 Endereco = new Endereco()
                 {
-                    Complemento = "MODESTO DE MELO",
-                    Numero = "50",
+                    Complemento = "Bla bla",
+                    Numero = "80",
                     Bairro = "",
-                    CEP = "73801010",
-                    Cidade = "CENTRO-FORMOSA",
-                    UF = "Goiás",
+                    CEP = "32310535",
+                    Cidade = "Contagem",
+                    UF = "Minas Gerais",
                 }
             };
 
