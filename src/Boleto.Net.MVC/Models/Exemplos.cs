@@ -24,7 +24,8 @@ namespace Boleto.Net.MVC.Models
         Sicoob = 756,
         Sicred = 748,
         Sudameris = 347,
-        Unibanco = 409
+        Unibanco = 409,
+        Semear = 743
     }
 
     /// <Author>
@@ -617,6 +618,80 @@ namespace Boleto.Net.MVC.Models
 
             boletoBancario.Boleto = b;
             boletoBancario.Boleto.Valida();
+
+            return boletoBancario;
+        }
+
+        public BoletoBancario Semear()
+        {
+            var boleto = new BoletoNet.Boleto();
+
+            boleto.Cedente = new Cedente()
+            {
+                Codigo = "743",
+                MostrarCNPJnoBoleto = true,
+                Nome = "BANCO SEMEAR",
+                CPFCNPJ = "00795423000145",
+                Carteira = "03",
+                DigCedente = "9",
+                ContaBancaria = new ContaBancaria()
+                {
+                    Agencia = "001",
+                    DigitoAgencia = "0",
+                    Conta = "1099681",
+                    DigitoConta = "8"
+                },
+                Endereco = new Endereco()
+            };
+
+            boleto.LocalPagamento = "Este boleto poderá ser pago em toda a Rede Bancária até 5 dias após o vencimento. ";
+            boleto.Instrucoes.Add(new Instrucao_Bradesco()
+            {
+                Descricao = "Não receber após o vencimento",
+                QuantidadeDias = 3
+            });
+
+            boleto.ValorBoleto = 251.51M;
+            boleto.ValorCobrado = 251.51M;
+            boleto.NossoNumero = "35148373401";
+            boleto.NumeroDocumento = "051483734";
+            boleto.DataVencimento = new DateTime(2017, 12, 4);
+            boleto.DataProcessamento = DateTime.Now;
+            boleto.DataDocumento = DateTime.Now;
+            boleto.Carteira = "03";
+
+            boleto.Sacado = new Sacado()
+            {
+                CPFCNPJ = "00023128321",
+                Nome = "REGINALDO MENDES DE OLIVEIRA",
+                Endereco = new Endereco()
+                {
+                    Complemento = "MODESTO DE MELO",
+                    Numero = "50",
+                    Bairro = "",
+                    CEP = "73801010",
+                    Cidade = "CENTRO-FORMOSA",
+                    UF = "Goiás",
+                }
+            };
+
+            boleto.CodigoBarra.CodigoBanco = "743";
+            boleto.CodigoBarra.Moeda = 9;
+            boleto.CodigoBarra.CampoLivre = "0001023514837340110996818";
+            boleto.CodigoBarra.ValorDocumento = "0000025151";
+            boleto.CodigoBarra.FatorVencimento = 7363;
+            
+            var linhaDigitavel = boleto.CodigoBarra.LinhaDigitavelFormatada;
+            boleto.CodigoBarra.Codigo = boleto.CodigoBarra.LinhaDigitavelFormatada.Trim().Replace(".",string.Empty).Replace(" ", string.Empty);
+
+            var boletoBancario = new BoletoBancario
+            {
+                CodigoBanco = 743,
+                Boleto = boleto,
+                MostrarEnderecoCedente = true,
+                MostrarContraApresentacaoNaDataVencimento = false,
+                GerarArquivoRemessa = true
+            };
 
             return boletoBancario;
         }
