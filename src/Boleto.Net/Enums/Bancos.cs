@@ -15,6 +15,7 @@ namespace BoletoNet.Enums
         Itau = 341,
         [Description("033")]
         Santander = 33,
-        Sicredi = 748
+        Sicredi = 748,
+        Semear = 743
     }
 }
