@@ -264,7 +264,8 @@ namespace BoletoNet
                 { 756, new EspecieDocumento_Sicoob     ()  },
                 { 4, new EspecieDocumento_Nordeste     ()  },
                 { 707, new EspecieDocumento_Daycoval   ()  },
-                { 637, new EspecieDocumento_Sofisa     ()  }
+                { 637, new EspecieDocumento_Sofisa     ()  },
+                { 743, new EspecieDocumento_Semear     ()  }
         };
     }
 }

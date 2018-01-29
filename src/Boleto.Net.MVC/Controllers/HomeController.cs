@@ -74,6 +74,8 @@ namespace Boleto.Net.MVC.Controllers
                     return exemplos.Sudameris();
                 case Bancos.Unibanco:
                     return exemplos.Unibanco();
+                case Bancos.Semear:
+                    return exemplos.Semear();
                 default:
                     throw new ArgumentException("Banco não implementado");
             }
