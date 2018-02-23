@@ -60,8 +60,10 @@ namespace BoletoNet
             // Inicio Campo livre
             string campoLivre = string.Empty;
 
+
             //ESSA IMPLEMENTAÇÃO FOI FEITA PARA CARTEIAS SIGCB CarteiraSR COM NOSSO NUMERO DE 14 e 17 POSIÇÕES
-            if (boleto.Carteira.Equals(CarteiraSR) || boleto.Carteira.Equals(CarteiraRG))
+            //Implementei também a validação da carteira preenchida com "SR" e "RG" para atender a issue #638
+            if (boleto.Carteira.Equals(CarteiraSR) || boleto.Carteira.Equals(CarteiraRG) || boleto.Carteira.Equals("SR") || boleto.Carteira.Equals("RG"))
             {
                 //14 POSIÇOES
                 if (boleto.NossoNumero.Length == 14)
@@ -112,7 +114,12 @@ namespace BoletoNet
                             primeiraConstante = "1";
                             break;
                         default:
-                            primeiraConstante = boleto.Carteira;
+                            if (boleto.Carteira.Equals("SR"))
+                                primeiraConstante = "2";
+                            else if (boleto.Carteira.Equals("RG"))
+                                primeiraConstante = "1";
+                            else
+                                primeiraConstante = boleto.Carteira;
                             break;
                     }
 
@@ -157,9 +164,9 @@ namespace BoletoNet
                 //Cobrança sem registro. 
                 //Cobrança sem registro, nosso número com 16 dígitos. 
                 //Cobrança simples 
-
+                
                 //Posição 30
-                string primeiraConstante = boleto.Carteira == CarteiraSR ? "2" : boleto.Carteira;
+                string primeiraConstante = (boleto.Carteira == CarteiraSR || boleto.Carteira.Equals("SR")) ? "2" : boleto.Carteira;
 
                 // Posição 31 - 33
                 string segundaParteNossoNumero = boleto.NossoNumero.Substring(0, 3); //(3, 3);
@@ -337,7 +344,7 @@ namespace BoletoNet
 
         public override void FormataNossoNumero(Boleto boleto)
         {
-            if (boleto.Carteira.Equals(CarteiraSR))
+            if (boleto.Carteira.Equals(CarteiraSR) || boleto.Carteira.Equals("SR"))
             {
                 if (boleto.NossoNumero.Length == 14)
                 {
@@ -356,14 +363,14 @@ namespace BoletoNet
 
         public override void ValidaBoleto(Boleto boleto)
         {
-            if (boleto.Carteira.Equals(CarteiraSR))
+            if (boleto.Carteira.Equals(CarteiraSR) || boleto.Carteira.Equals("SR"))
             {
                 if ((boleto.NossoNumero.Length != 10) && (boleto.NossoNumero.Length != 14) && (boleto.NossoNumero.Length != 17))
                 {
                     throw new Exception("Nosso Número inválido, Para Caixa Econômica - Carteira SR o Nosso Número deve conter 10, 14 ou 17 posições.");
                 }
             }
-            else if (boleto.Carteira.Equals(CarteiraRG))
+            else if (boleto.Carteira.Equals(CarteiraRG) || boleto.Carteira.Equals("RG"))
             {
                 if (boleto.NossoNumero.Length != 17)
                     throw new Exception("Nosso número inválido. Para Caixa Econômica - SIGCB carteira rápida, o nosso número deve conter 17 caracteres.");
