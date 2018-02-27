@@ -267,7 +267,7 @@ namespace BoletoNet.Arquivo
             this.radioButtonSicredi.Name = "radioButtonSicredi";
             this.radioButtonSicredi.Size = new System.Drawing.Size(57, 17);
             this.radioButtonSicredi.TabIndex = 29;
-            this.radioButtonSicredi.Tag = "104";
+            this.radioButtonSicredi.Tag = "748";
             this.radioButtonSicredi.Text = "Sicredi";
             this.radioButtonSicredi.UseVisualStyleBackColor = true;
             // 

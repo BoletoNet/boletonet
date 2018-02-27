@@ -7,29 +7,16 @@ namespace BoletoNet
 
         #region Variáveis
 
-        private int _tipoRegistro = 0;
-        private int _codigoRetorno = 0;
         private string _literalRetorno = string.Empty;
-        private int _codigoServico = 0;
         private string _literalServico = string.Empty;
-        private int _agencia = 0;
-        private int _conta = 0;
-        private int _dacConta = 0;
-        private int _complementoRegistro1 = 0;
         private string _complementoRegistro2 = string.Empty;
         private string _complementoRegistro3 = string.Empty;
         private string _nomeEmpresa = string.Empty;
         private string _codigoEmpresa = string.Empty;
-        private int _codigoBanco = 0;
         private DateTime _dataGeracao = new DateTime(1, 1, 1);
-        private int _densidade = 0;
         private string _unidadeDensidade = string.Empty;
-        private int _numeroSequencialArquivoRetorno = 0;
         private DateTime _dataCredito = new DateTime(1, 1, 1);
         private string _nomeBanco = string.Empty;
-
-        private int _numeroSequencial = 0;
-        private string _registro;
 
         #endregion
 
@@ -37,11 +24,34 @@ namespace BoletoNet
 
         public HeaderRetorno()
         {
+            NumeroSequencial = 0;
+            CodigoBanco = 0;
+            Conta = 0;
+            Agencia = 0;
+            NumeroSequencialArquivoRetorno = 0;
+            Densidade = 0;
+            ComplementoRegistro1 = 0;
+            CodigoServico = 0;
+            CodigoRetorno = 0;
+            TipoRegistro = 0;
+            DACConta = 0;
         }
 
         public HeaderRetorno(string registro)
         {
-            _registro = registro;
+            NumeroSequencial = 0;
+            CodigoBanco = 0;
+            Conta = 0;
+            Agencia = 0;
+            NumeroSequencialArquivoRetorno = 0;
+            Densidade = 0;
+            ComplementoRegistro1 = 0;
+            CodigoServico = 0;
+            CodigoRetorno = 0;
+            TipoRegistro = 0;
+            DACConta = 0;
+            Registro = registro;
+            this.LerHeaderRetornoCNAB400(registro);
         }
 
         #endregion
@@ -49,29 +59,14 @@ namespace BoletoNet
         #region Propriedades
 
 
-        public int TipoRegistro
-        {
-            get { return _tipoRegistro; }
-            set { _tipoRegistro = value; }
-        }
+        public int TipoRegistro { get; set; }
 
-        public int CodigoRetorno
-        {
-            get { return _codigoRetorno; }
-            set { _codigoRetorno = value; }
-        }
+        public int CodigoRetorno { get; set; }
 
-        public int CodigoServico
-        {
-            get { return _codigoServico; }
-            set { _codigoServico = value; }
-        }
+        public int CodigoServico { get; set; }
 
-        public int ComplementoRegistro1
-        {
-            get { return _complementoRegistro1; }
-            set { _complementoRegistro1 = value; }
-        }
+        public int ComplementoRegistro1 { get; set; }
+
         public string ComplementoRegistro2
         {
             get { return _complementoRegistro2; }
@@ -84,46 +79,21 @@ namespace BoletoNet
             set { _complementoRegistro3 = value; }
         }
 
-        public int Densidade
-        {
-            get { return _densidade; }
-            set { _densidade = value; }
-        }
+        public int Densidade { get; set; }
 
-        public int NumeroSequencialArquivoRetorno
-        {
-            get { return _numeroSequencialArquivoRetorno; }
-            set { _numeroSequencialArquivoRetorno = value; }
-        }
-
+        public int NumeroSequencialArquivoRetorno { get; set; }
 
 
         /// <summary>
         /// Agência com o Dígito Verificador, quando houver
         /// </summary>
-        public int Agencia
-        {
-            get { return _agencia; }
-            set { _agencia = value; }
-        }
+        public int Agencia { get; set; }
 
-        public int Conta
-        {
-            get { return _conta; }
-            set { _conta = value; }
-        }
+        public int Conta { get; set; }
 
-        public int DACConta
-        {
-            get { return _dacConta; }
-            set { _dacConta = value; }
-        }
+        public int DACConta { get; set; }
 
-        public int CodigoBanco
-        {
-            get { return _codigoBanco; }
-            set { _codigoBanco = value; }
-        }
+        public int CodigoBanco { get; set; }
 
         public DateTime DataCredito
         {
@@ -131,16 +101,9 @@ namespace BoletoNet
             set { _dataCredito = value; }
         }
 
-        public int NumeroSequencial
-        {
-            get { return _numeroSequencial; }
-            set { _numeroSequencial = value; }
-        }
+        public int NumeroSequencial { get; set; }
 
-        public string Registro
-        {
-            get { return _registro; }
-        }
+        public string Registro { get; private set; }
 
         public string LiteralRetorno
         {
@@ -185,6 +148,8 @@ namespace BoletoNet
         }
 
         public string Versao { get; set; }
+
+        public string Mensagem { get; set; }
 
         #endregion
 

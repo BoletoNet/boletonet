@@ -97,10 +97,10 @@ namespace BoletoNet
         /// <returns></returns>
         internal static string FormatCode(string text, string with, int length, bool left)
         {
-			// caso tamanho da string maior que desejado , corta a mesma , evitando estouro no tamanho 
-			if (text.Length > length)
+            // caso tamanho da string maior que desejado , corta a mesma , evitando estouro no tamanho 
+            if (text.Length > length)
                 text = text.Substring(0, length);
-		
+
             //Esse método já existe, é PadLeft e PadRight da string
             length -= text.Length;
             if (left)
@@ -127,7 +127,7 @@ namespace BoletoNet
 
         internal static string FormatCode(string text, int length)
         {
-            return text.PadLeft(length, '0'); 
+            return text.PadLeft(length, '0');
         }
 
         /// <summary>
@@ -234,10 +234,14 @@ namespace BoletoNet
             }
         }
 
-        internal static decimal ToDecimal(string value) {
-            try {
+        internal static decimal ToDecimal(string value)
+        {
+            try
+            {
                 return Convert.ToDecimal(value);
-            } catch {
+            }
+            catch
+            {
                 return 0;
             }
         }
@@ -443,7 +447,7 @@ namespace BoletoNet
                     if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
                         sb.Append(c);
                 }
-                return Regex.Replace(sb.ToString(), @"[^0-9a-zA-Z°ºª&¹²³.,\\@\- ]+", " ")
+                return Regex.Replace(sb.ToString(), @"[^0-9a-zA-Z°ºª&¹²³.,\\@\- ]+", x => new string(' ', x.Length))
                     .Replace("ª", "a")
                     .Replace("º", "o")
                     .Replace("°", "o")
@@ -504,14 +508,18 @@ namespace BoletoNet
             ;
         }
 
-        public static string Transform(string text, string mask, char charMask = 'X') {
+        public static string Transform(string text, string mask, char charMask = 'X')
+        {
             string retorno = text;
 
-            if (!string.IsNullOrEmpty(mask)) {
+            if (!string.IsNullOrEmpty(mask))
+            {
 
                 int idx = 0;
-                foreach (var m in mask) {
-                    if (m != charMask) {
+                foreach (var m in mask)
+                {
+                    if (m != charMask)
+                    {
                         retorno = retorno.Insert(idx, m.ToString());
                     }
                     idx++;

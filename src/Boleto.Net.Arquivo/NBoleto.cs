@@ -121,6 +121,69 @@ namespace BoletoNet.Arquivo
         }
         #endregion
 
+        #region BOLETO Caixa
+        private void GeraBoletoSicredi(int qtde)
+        {
+            // Cria o boleto, e passa os parâmetros usuais
+            BoletoBancario bb;
+
+            List<BoletoBancario> boletos = new List<BoletoBancario>();
+            for (int i = 0; i < qtde; i++)
+            {
+
+                bb = new BoletoBancario();
+                bb.CodigoBanco = _codigoBanco;
+                bb.MostrarEnderecoCedente = true;                
+                bb.FormatoCarne = true;
+                bb.OcultarInstrucoes = true;
+                DateTime vencimento = DateTime.Now.AddDays(10);
+
+                Instrucao_Sicredi item1 = new Instrucao_Sicredi((int)EnumInstrucoes_Sicredi.AlteracaoOutrosDados_Desconto, (Double)50.90, AbstractInstrucao.EnumTipoValor.Reais);
+              
+             
+                Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "0132", "00542");
+                c.Codigo = "01321000542";
+                c.ContaBancaria.Agencia = "0132";               
+                c.ContaBancaria.Conta = "00542";
+                c.ContaBancaria.OperacaConta = "10";
+
+                Boleto b = new Boleto(vencimento, Convert.ToDecimal(1460), "1", "17200001" , c, new EspecieDocumento(_codigoBanco, "A"));
+               
+                Endereco endCed = new Endereco();
+
+                b.NumeroParcela = 1;
+                b.TotalParcela = 10;
+                b.TipoImpressao = "B";
+
+
+                endCed.End = "Rua Testando o Boleto";
+                endCed.Bairro = "BairroTest";
+                endCed.Cidade = "CidadeTes";
+                endCed.CEP = "70000000";
+                endCed.UF = "MG";
+                b.Cedente.Endereco = endCed;
+
+                b.NumeroDocumento = "1001";
+
+                b.Sacado = new Sacado("000.000.000-00", "Fulano de Silva");
+                b.Sacado.Endereco.End = "SSS 154 Bloco J Casa 23";
+                b.Sacado.Endereco.Bairro = "Testando";
+                b.Sacado.Endereco.Cidade = "Testelândia";
+                b.Sacado.Endereco.CEP = "70000000";
+                b.Sacado.Endereco.UF = "DF";
+                b.Instrucoes.Add(item1);
+              
+
+                bb.Boleto = b;
+                bb.Boleto.Valida();
+
+                boletos.Add(bb);
+            }
+
+            GeraLayout(boletos);
+        }
+        #endregion
+
         #region BOLETO ITAÚ
         private void GeraBoletoItau(int qtde)
         {
@@ -175,7 +238,6 @@ namespace BoletoNet.Arquivo
         }
         #endregion
 
-
         #region BOLETO UNIBANCO
         public void GeraBoletoUnibanco(int qtde)
         {
@@ -220,8 +282,7 @@ namespace BoletoNet.Arquivo
             GeraLayout(boletos);
         }
         #endregion
-
-
+        
         #region BOLETO SUDAMERIS
         public void GeraBoletoSudameris(int qtde)
         {
@@ -269,8 +330,7 @@ namespace BoletoNet.Arquivo
             GeraLayout(boletos);
         }
         #endregion
-
-
+        
         #region BOLETO SAFRA
         public void GeraBoletoSafra(int qtde)
         {
@@ -312,8 +372,7 @@ namespace BoletoNet.Arquivo
             GeraLayout(boletos);
         }
         #endregion
-
-
+        
         #region BOLETO REAL
         public void GeraBoletoReal(int qtde)
         {
@@ -355,8 +414,7 @@ namespace BoletoNet.Arquivo
             GeraLayout(boletos);
         }
         #endregion
-
-
+        
         #region BOLETO HSBC
         public void GeraBoletoHsbc(int qtde)
         {
@@ -399,8 +457,7 @@ namespace BoletoNet.Arquivo
             GeraLayout(boletos);
         }
         #endregion
-
-
+        
         #region BOLETO BANCO DO BRASIL
         public void GeraBoletoBB(int qtde)
         {
@@ -450,8 +507,7 @@ namespace BoletoNet.Arquivo
             GeraLayout(boletos);
         }
         #endregion
-
-
+        
         #region BOLETO BRADESCO
         public void GeraBoletoBradesco(int qtde)
         {
@@ -598,6 +654,10 @@ namespace BoletoNet.Arquivo
                     break;
                 case 4: //BNB
                     GeraBoletoBNB((int)numericUpDown.Value);
+                    break;
+
+                case 748:
+                    GeraBoletoSicredi((int)numericUpDown.Value);
                     break;
             }
 

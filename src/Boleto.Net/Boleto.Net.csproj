@@ -96,6 +96,7 @@
     <Compile Include="Banco\Banco_Daycoval.cs" />
     <Compile Include="Banco\Banco_Nordeste.cs" />
     <Compile Include="Banco\Banco_Cecred.cs" />
+    <Compile Include="Banco\Banco_Semear.cs" />
     <Compile Include="Banco\Banco_Sofisa.cs" />
     <Compile Include="Banco\Banco_Votorantim.cs" />
     <Compile Include="Banco\Carteiras\BancoCarteiraFactory.cs" />
@@ -104,7 +105,10 @@
     <Compile Include="Banco\Carteiras\IBancoCarteira.cs" />
     <Compile Include="Banco\Carteiras\TipoCarteiraAttribute.cs" />
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Itau.cs" />
+    <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Sicoob.cs" />
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Sicredi.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Banestes.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Semear.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Cecred.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Daycoval.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Nordeste.cs" />
@@ -192,6 +196,8 @@
     <Compile Include="Boleto\DemonstrativoValoresBoleto\ItemDemonstrativo.cs" />
     <Compile Include="Boleto\Sacado\InformacoesSacado.cs" />
     <Compile Include="Boleto\Sacado\InfoSacado.cs" />
+    <Compile Include="EDI\Banco\TArquivoBanrisulRetorno_EDI.cs" />
+    <Compile Include="EDI\Banco\TArquivoCaixaRetorno_EDI.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_Banco_Nordeste_Retorno.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_Cecred_Retorno.cs" />
     <Compile Include="EDI\Banco\TRegistroEDI_Sicredi_Retorno.cs" />
@@ -200,6 +206,7 @@
     <Compile Include="EDI\Banco\TRegistroEDI_Banrisul_Retorno.cs" />
     <Compile Include="EDI\EDIBasicTypes.cs" />
     <Compile Include="EDI\EDIFile.cs" />
+    <Compile Include="Enums\Bancos.cs" />
     <Compile Include="Enums\CategoriaLancamento.cs" />
     <Compile Include="Enums\Extensions.cs" />
     <Compile Include="Enums\IsencaoCpmf.cs" />
@@ -337,6 +344,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Imagens\655.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Imagens\743.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

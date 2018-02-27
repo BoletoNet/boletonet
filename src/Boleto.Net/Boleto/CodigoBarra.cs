@@ -52,7 +52,7 @@ namespace BoletoNet
         {
             get
             {
-                var pt1 = (CodigoBanco + Moeda).PadRight(9, '0');
+                var pt1 = (CodigoBanco + Moeda + CampoLivre.Substring(0, 5));
                 var mod10 = AbstractBanco.Mod10(pt1);
                 pt1 = (pt1 + mod10).Insert(5, ".");
 
