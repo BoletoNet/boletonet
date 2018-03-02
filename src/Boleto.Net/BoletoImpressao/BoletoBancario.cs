@@ -669,9 +669,13 @@ namespace BoletoNet
                     case (int)Bancos.Santander:
                         agenciaCodigoCedente = string.Format("{0}-{1}/{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Utils.FormatCode(Cedente.Codigo, 6));
                         if (string.IsNullOrEmpty(Cedente.ContaBancaria.DigitoAgencia))
+			{
                             agenciaCodigoCedente = string.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo, 6));			
-			if (Utils.FormatCode(Cedente.Codigo, 6).Equals("000000"))			    
-                            agenciaCodigoCedente = String.Format("{0}/{1}-{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.Conta,Cedente.ContaBancaria.DigitoConta);
+			    if (Utils.FormatCode(Cedente.Codigo, 6).Equals("000000"))
+			    {
+                               agenciaCodigoCedente = String.Format("{0}/{1}-{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.Conta,Cedente.ContaBancaria.DigitoConta);
+			    }
+		        }
                         break;
                     case (int)Bancos.HSBC:
                         agenciaCodigoCedente = string.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo, 7)); //Solicitação do HSBC que mostrasse agencia/Conta - por Transis em 24/02/15
