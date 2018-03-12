@@ -458,7 +458,7 @@ namespace BoletoNet
             if (!string.IsNullOrEmpty(_instrucoesHtml))
                 _instrucoesHtml = string.Concat(_instrucoesHtml, "<br />");
 
-            if (instrucoes.Count > 0)
+            if (instrucoes.Count > 0 || Banco.Codigo == 104)
             {
                 //_instrucoesHtml = string.Empty;
                 //Flavio(fhlviana@hotmail.com) - retirei a tag <span> de cada instrução por não ser mais necessáras desde que dentro
@@ -471,7 +471,19 @@ namespace BoletoNet
                     Instrucoes.Add(instrucao);
                 }
 
-                _instrucoesHtml = _instrucoesHtml.Left(_instrucoesHtml.Length - 6);
+                //Suelton - 12/03/2018
+                //Para homologação da Caixa é obrigatório ter as informações do SAC
+                if (Banco.Codigo == 104)
+                {
+                    //_instrucoesHtml = _instrucoesHtml +
+                    //                  "<br><br><p>SAC CAIXA: 0800 726 0101 (Informações, reclamações, sugestões e elogios)</p> <p> Para pessoas com deficiência auditiva ou de fala: 0800 726 2492 </p><p> Ouvidoria: 0800 725 7474 - caixa.gov.br </p>";
+                    _instrucoesHtml = _instrucoesHtml +
+                                      "<br>SAC CAIXA: 0800 726 0101 (Informações, reclamações, sugestões e elogios)<br/> Para pessoas com deficiência auditiva ou de fala: 0800 726 2492 Ouvidoria: 0800 725 7474 <br/> caixa.gov.br";
+                }
+                else
+                {
+                    _instrucoesHtml = _instrucoesHtml.Left(_instrucoesHtml.Length - 6);
+                }
             }
         }
 
@@ -836,11 +848,11 @@ namespace BoletoNet
             html.Append(MontaHtml(srcLogo, srcBarra, "<img src=\"" + srcCodigoBarra + "\" alt=\"Código de Barras\" />"));
             if (imprimeFooter)
                 HtmlOfflineFooter(html);
+
+          
+ 
             return html;
         }
-
-
-
 
         /// <summary>
         /// Monta o Header de um email com pelo menos um boleto dentro.
@@ -875,6 +887,14 @@ namespace BoletoNet
             html.Append("<body>\n");
         }
 
+        /// <summary>
+        /// Adicionar o SAC da Caixa no rodapé do boleto
+        /// </summary>
+        /// <param name="saida"></param>
+        protected static void AddRodapeSacCaixa(StringBuilder saida)
+        {
+            saida.Append("SAC CAIXA: 0800 726 0101 (Informações, reclamações, sugestões e elogios) <p> Para pessoas com deficiência auditiva ou de fala: 0800 726 2492 <p> Ouvidoria: 0800 725 7474 <p> caixa.gov.br");
+        }
 
         /// <summary>
         /// Monta o Footer de um email com pelo menos um boleto dentro.
