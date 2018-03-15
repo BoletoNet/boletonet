@@ -158,6 +158,10 @@ namespace BoletoNet
                     case 21:
                         _IEspecieDocumento = new EspecieDocumento_Banestes(codigoEspecie);
                         break;
+                    //422 - Safra
+                    case 422:
+                        _IEspecieDocumento = new EspecieDocumento_Safra(codigoEspecie);
+                        break;
                     default:
                         throw new Exception("Código do banco não implementando: " + codigoBanco);
                 }
@@ -202,6 +206,8 @@ namespace BoletoNet
                         return EspecieDocumento_Cecred.CarregaTodas();
                     case 5:
                         return EspecieDocumento_Nordeste.CarregaTodas();
+                    case 422:
+                        return EspecieDocumento_Safra.CarregaTodas();
                     default:
                         throw new Exception("Espécies do Documento não implementado para o banco : " + codigoBanco);
                 }
@@ -268,7 +274,8 @@ namespace BoletoNet
                 { 4, new EspecieDocumento_Nordeste     ()  },
                 { 707, new EspecieDocumento_Daycoval   ()  },
                 { 637, new EspecieDocumento_Sofisa     ()  },
-                { 743, new EspecieDocumento_Semear     ()  }
+                { 743, new EspecieDocumento_Semear     ()  },
+                { 422, new EspecieDocumento_Safra      ()  }
         };
     }
 }

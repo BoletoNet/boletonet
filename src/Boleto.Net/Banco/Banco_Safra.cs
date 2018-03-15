@@ -68,7 +68,7 @@ namespace BoletoNet
         public string CampoLivre(Boleto boleto)
         {
 
-            string campolivre = "7" + boleto.Cedente.ContaBancaria.Conta.ToString() + boleto.Cedente.ContaBancaria.Agencia.ToString() +
+            string campolivre = "7" + boleto.Cedente.ContaBancaria.Agencia.ToString() + boleto.Cedente.ContaBancaria.Conta.ToString() + 
                                 boleto.NossoNumero.Substring(0, 9) + "2";
             return campolivre;
         }
@@ -102,6 +102,10 @@ namespace BoletoNet
 			if (boleto.DataDocumento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 boleto.DataDocumento = DateTime.Now;
 
+            string cedente = boleto.Cedente.Codigo;
+
+            boleto.Cedente.Codigo = string.Format("{0}/{1}-{2}", cedente.Substring(0, 5), cedente.Substring(5, 8), cedente.Substring(13));
+
             FormataCodigoBarra(boleto);
             FormataLinhaDigitavel(boleto);
             FormataNossoNumero(boleto);
@@ -114,7 +118,21 @@ namespace BoletoNet
 
         public override void FormataNossoNumero(Boleto boleto)
         {
-            //throw new NotImplementedException("Função não implementada.");
+            string nossoNumero = boleto.NossoNumero;
+
+            if (nossoNumero == null || nossoNumero.Length != 9)
+            {
+                throw new Exception("Erro ao tentar formatar nosso número, verifique o tamanho do campo");
+            }
+
+            try  
+            {
+                boleto.NossoNumero = string.Format("{0}-{1}", nossoNumero.Substring(0, 8), nossoNumero.Substring(8));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao formatar nosso número", ex);
+            }
         }
 
         /// <summary>
@@ -142,58 +160,62 @@ namespace BoletoNet
         /// <summary>
         /// A linha digitável será composta por cinco campos:
         ///    1º CAMPO - Composto pelo código do banco ( sem o dígito verificador = 422 ), 
-        ///       código da moeda, as cinco primeiras posições do campo livre ou seja, da 
-        ///       posição 20 à 24 do código de barras, e mais um dígito verificador deste campo. 
+        ///       código da moeda,digito(7), os quatros primeiros numeros da agência e mais
+        ///       um dígito verificador deste campo. 
         ///       Após os 5 primeiros dígitos deste campo separar o conteúdo por um ponto ( . ). 
-        ///    2º CAMPO - Composto pelas posições 6 à 15 do campo livre ou seja, da 
-        ///       posição 25 à 34 do código de barras e mais um dígito verificador deste campo. 
+        ///    2º CAMPO - Composto pelo ultimo numero da agência, numero da conta bancária com 
+        ///        o digito e mais um dígito verificador deste campo. 
         ///       Após os 5 primeiros dígitos deste campo separar o conteúdo por um ponto ( . ).
-        ///    3º CAMPO - Composto pelas posições 16 à 25 do campo livre ou seja, da 
-        ///       posição 35 à 44 do código de barras, e mais um dígito verificador deste campo. 
+        ///    3º CAMPO - Composto pelos 9 numeros do nosso numero,digito fixo(2) e mais um dígito verificador deste campo. 
         ///       Após os 5 primeiros dígitos deste campo separar o conteúdo por um ponto ( . ).
         ///    4º CAMPO  - Composto pelo dígito de autoconferência do código de barras.
-        ///    5º CAMPO - Composto pelo valor nominal do documento ou seja, pelas 
-        ///       posições 06 à 19 do código de barras, com supressão de zeros a esquerda e 
-        ///       sem edição ( sem ponto e vírgula ). Quando se tratar de valor zerado, a 
-        ///       representação deverá ser 000 ( três zeros ).
+        ///    5º CAMPO - Composto pelo 4 numeros do fator vencimento e pelo valor nominal do documento, com supressão de 
+        ///    zeros a esquerda e sem edição ( sem ponto e vírgula ). 
+        ///    Quando se tratar de valor zerado, a representação deverá ser 000 ( três zeros ).
         /// </summary>
+        /// Modificado por Carlos Rogerio - Aracaju/SE
         public override void FormataLinhaDigitavel(Boleto boleto)
         {
 
             //AAABC.CCCCX DDDDD.DDDDDY EEEEE.EEEEEZ K VVVVVVVVVVVVVV
 
             string LD = string.Empty; //Linha Digitável
-
+            
             #region Campo 1
 
             //Campo 1
             string AAA = Utils.FormatCode(Codigo.ToString(), 3);
             string B = boleto.Moeda.ToString();
-            string CCCCC = CampoLivre(boleto).Substring(0, 4);
-            string X = Mod10(AAA + B + CCCCC).ToString();
+            string F = Digito;
+            string CCCCC = boleto.Cedente.ContaBancaria.Agencia.Substring(0, 4); //CampoLivre(boleto).Substring(0, 5);
+            string X = Mod10(AAA + B + F + CCCCC).ToString();
 
-            LD = string.Format("{0}{1}{2}.", AAA, B, CCCCC.Substring(0, 1));
-            LD += string.Format("{0}{1}", CCCCC.Substring(0, 4), X);
+            LD = string.Format("{0}{1}{2}.", AAA, B, F);
+            LD += string.Format("{0}{1} ", CCCCC, X);
 
             #endregion Campo 1
 
             #region Campo 2
 
-            string DDDDDD = CampoLivre(boleto).Substring(6, 15);
-            string Y = Mod10(DDDDDD).ToString();
+            string C = boleto.Cedente.ContaBancaria.Agencia.Substring(4, 1);
+            string DDDDDDDDD = boleto.Cedente.ContaBancaria.Conta.ToString().Trim() +  boleto.Cedente.ContaBancaria.DigitoConta.ToString().Trim(); //CampoLivre(boleto).Substring(6, 15);
+            DDDDDDDDD = DDDDDDDDD.Replace(" ", "");
+            DDDDDDDDD = Utils.FormatCode(DDDDDDDDD, 9);
+            string Y = Mod10(C + DDDDDDDDD).ToString();
 
-            LD += string.Format("{0}.", DDDDDD.Substring(0, 5));
-            LD += string.Format("{0}{1} ", DDDDDD.Substring(5, 10), Y);
+            LD += string.Format("{0}{1}.", C, DDDDDDDDD.Substring(0, 4));
+            LD += string.Format("{0}{1} ", DDDDDDDDD.Substring(4, 5), Y);
 
             #endregion Campo 2
 
             #region Campo 3
 
-            string EEEEE = CampoLivre(boleto).Substring(12, 10);
-            string Z = Mod10(EEEEE).ToString();
+            string EEEEE = boleto.NossoNumero.Substring(0, 9); //CampoLivre(boleto).Substring(11, 10);
+            string FX = "2";
+            string Z = Mod10(EEEEE + FX).ToString();
 
             LD += string.Format("{0}.", EEEEE.Substring(0, 5));
-            LD += string.Format("{0}{1} ", EEEEE.Substring(5, 5), Z);
+            LD += string.Format("{0}{1}{2}", EEEEE.Substring(5, 4), FX, Z);
 
             #endregion Campo 3
 
@@ -206,16 +228,19 @@ namespace BoletoNet
             #endregion Campo 4
 
             #region Campo 5
-            string VVVVVVVVVVVVVV;
+            string FVENC = FatorVencimento(boleto).ToString();
+            string VVVVVVVVVV;
+
             if (boleto.ValorBoleto != 0)
             {
-                VVVVVVVVVVVVVV = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
-                VVVVVVVVVVVVVV = Utils.FormatCode(VVVVVVVVVVVVVV, 14);
+                VVVVVVVVVV = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
+                VVVVVVVVVV = Utils.FormatCode(VVVVVVVVVV, 10);
             }
             else
-                VVVVVVVVVVVVVV = "000";
+                VVVVVVVVVV = "000";
 
-            LD += VVVVVVVVVVVVVV;
+            //LD += VVVVVVVVVV;
+            LD += string.Format("{0}{1} ", FVENC.Substring(0,4), VVVVVVVVVV);
 
             #endregion Campo 5
 

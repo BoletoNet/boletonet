@@ -1846,19 +1846,18 @@ namespace BoletoNet
                     ValorTitulo = (Convert.ToDecimal(reg.ValorTitulo)),
                     CodigoBanco = Utils.ToInt32(reg.CodigoBancoCobrador),
                     AgenciaCobradora = Utils.ToInt32(reg.CodigoAgenciaCobradora),
-                    ValorDespesa = (Convert.ToDecimal(reg.ValorDespesasCobranca) / 100),
+                    ValorDespesa = (Convert.ToUInt64(reg.ValorDespesasCobranca) / 100),
                     OrigemPagamento = reg.TipoLiquidacao,
-                    IOF = (Convert.ToDecimal(reg.ValorIOF) / 100),
-                    ValorAbatimento = (Convert.ToDecimal(reg.ValorAbatimentoConcedido) / 100),
-                    Descontos = (Convert.ToDecimal(reg.ValorDescontoConcedido) / 100),
+                    IOF = (Convert.ToUInt64(reg.ValorIOF) / 100),
+                    ValorAbatimento = (Convert.ToUInt64(reg.ValorAbatimentoConcedido) / 100),
+                    Descontos = (Convert.ToUInt64(reg.ValorDescontoConcedido) / 100),
                     ValorPago = Convert.ToDecimal(reg.ValorPago),
-                    JurosMora = (Convert.ToDecimal(reg.ValorJuros) / 100),
-                    TarifaCobranca = (Convert.ToDecimal(reg.ValorDespesasCobranca) / 100),
+                    JurosMora = (Convert.ToUInt64(reg.ValorJuros) / 100),
+                    TarifaCobranca = (Convert.ToUInt64(reg.ValorDespesasCobranca) / 100),
                     DataCredito = Utils.ToDateTime(Utils.ToInt32(reg.DataCreditoConta).ToString("##-##-##")),
                     NumeroSequencial = Utils.ToInt32(reg.NumeroSequenciaRegistro),
                     NomeSacado = reg.IdentificacaoTituloEmpresa
                 };
-
                 //detalhe.ValorPrincipal = detalhe.ValorPago;
 
                 return detalhe;
