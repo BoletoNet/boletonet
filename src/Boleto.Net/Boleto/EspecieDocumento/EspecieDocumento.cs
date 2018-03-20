@@ -150,10 +150,13 @@ namespace BoletoNet
                         _IEspecieDocumento = new EspecieDocumento_Votorantim(codigoEspecie);
                         break;
                     case 707:
-                        this._IEspecieDocumento = new EspecieDocumento_Daycoval(codigoEspecie);
+                        _IEspecieDocumento = new EspecieDocumento_Daycoval(codigoEspecie);
                         break;
                     case 637:
-                        this._IEspecieDocumento = new EspecieDocumento_Sofisa(codigoEspecie);
+                        _IEspecieDocumento = new EspecieDocumento_Sofisa(codigoEspecie);
+                        break;
+                    case 21:
+                        _IEspecieDocumento = new EspecieDocumento_Banestes(codigoEspecie);
                         break;
                     default:
                         throw new Exception("Código do banco não implementando: " + codigoBanco);
@@ -264,7 +267,8 @@ namespace BoletoNet
                 { 756, new EspecieDocumento_Sicoob     ()  },
                 { 4, new EspecieDocumento_Nordeste     ()  },
                 { 707, new EspecieDocumento_Daycoval   ()  },
-                { 637, new EspecieDocumento_Sofisa     ()  }
+                { 637, new EspecieDocumento_Sofisa     ()  },
+                { 743, new EspecieDocumento_Semear     ()  }
         };
     }
 }

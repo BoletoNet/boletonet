@@ -60,8 +60,10 @@ namespace BoletoNet
             // Inicio Campo livre
             string campoLivre = string.Empty;
 
+
             //ESSA IMPLEMENTAÇÃO FOI FEITA PARA CARTEIAS SIGCB CarteiraSR COM NOSSO NUMERO DE 14 e 17 POSIÇÕES
-            if (boleto.Carteira.Equals(CarteiraSR) || boleto.Carteira.Equals(CarteiraRG))
+            //Implementei também a validação da carteira preenchida com "SR" e "RG" para atender a issue #638
+            if (boleto.Carteira.Equals(CarteiraSR) || boleto.Carteira.Equals(CarteiraRG) || boleto.Carteira.Equals("SR") || boleto.Carteira.Equals("RG"))
             {
                 //14 POSIÇOES
                 if (boleto.NossoNumero.Length == 14)
@@ -112,7 +114,12 @@ namespace BoletoNet
                             primeiraConstante = "1";
                             break;
                         default:
-                            primeiraConstante = boleto.Carteira;
+                            if (boleto.Carteira.Equals("SR"))
+                                primeiraConstante = "2";
+                            else if (boleto.Carteira.Equals("RG"))
+                                primeiraConstante = "1";
+                            else
+                                primeiraConstante = boleto.Carteira;
                             break;
                     }
 
@@ -157,9 +164,9 @@ namespace BoletoNet
                 //Cobrança sem registro. 
                 //Cobrança sem registro, nosso número com 16 dígitos. 
                 //Cobrança simples 
-
+                
                 //Posição 30
-                string primeiraConstante = boleto.Carteira == CarteiraSR ? "2" : boleto.Carteira;
+                string primeiraConstante = (boleto.Carteira == CarteiraSR || boleto.Carteira.Equals("SR")) ? "2" : boleto.Carteira;
 
                 // Posição 31 - 33
                 string segundaParteNossoNumero = boleto.NossoNumero.Substring(0, 3); //(3, 3);
@@ -337,7 +344,7 @@ namespace BoletoNet
 
         public override void FormataNossoNumero(Boleto boleto)
         {
-            if (boleto.Carteira.Equals(CarteiraSR))
+            if (boleto.Carteira.Equals(CarteiraSR) || boleto.Carteira.Equals("SR"))
             {
                 if (boleto.NossoNumero.Length == 14)
                 {
@@ -356,14 +363,14 @@ namespace BoletoNet
 
         public override void ValidaBoleto(Boleto boleto)
         {
-            if (boleto.Carteira.Equals(CarteiraSR))
+            if (boleto.Carteira.Equals(CarteiraSR) || boleto.Carteira.Equals("SR"))
             {
                 if ((boleto.NossoNumero.Length != 10) && (boleto.NossoNumero.Length != 14) && (boleto.NossoNumero.Length != 17))
                 {
                     throw new Exception("Nosso Número inválido, Para Caixa Econômica - Carteira SR o Nosso Número deve conter 10, 14 ou 17 posições.");
                 }
             }
-            else if (boleto.Carteira.Equals(CarteiraRG))
+            else if (boleto.Carteira.Equals(CarteiraRG) || boleto.Carteira.Equals("RG"))
             {
                 if (boleto.NossoNumero.Length != 17)
                     throw new Exception("Nosso número inválido. Para Caixa Econômica - SIGCB carteira rápida, o nosso número deve conter 17 caracteres.");
@@ -895,12 +902,15 @@ namespace BoletoNet
                 header += (boleto.DataProcessamento.ToString("ddMMyyyy") == "01010001" ? DateTime.Now.ToString("ddMMyyyy") : boleto.DataProcessamento.ToString("ddMMyyyy"));
                 header += "1";                                                                          // Código do Juros de Mora '1' = Valor por Dia - '2' = Taxa Mensal 
                 header += (boleto.DataMulta.ToString("ddMMyyyy") == "01010001" ? "00000000" : boleto.DataMulta.ToString("ddMMyyyy")); // Data do Juros de Mora 
-                header += Utils.FormatCode(boleto.ValorMulta.ToString(CultureInfo.InvariantCulture).Replace(",", "").Replace(".", ""), "0", 13); // Juros de Mora por Dia/Taxa 
-                header += (_desconto ? "1" : "0");                                                       // Código do Desconto 
+
+                header += Utils.FormatCode(boleto.ValorMulta.ToString().Replace(",", "").Replace(".", ""), "0", 13); // Juros de Mora por Dia/Taxa 
+
+                header += (boleto.ValorDesconto > 0 ? "1" : "0"); // Código do Desconto 
                 header += (boleto.DataDesconto.ToString("ddMMyyyy") == "01010001" ? "00000000" : boleto.DataDesconto.ToString("ddMMyyyy")); // Data do Desconto
                 header += Utils.FormatCode(boleto.ValorDesconto.ToString(CultureInfo.InvariantCulture).Replace(",", "").Replace(".", ""), "0", 13); // Valor/Percentual a ser Concedido 
                 header += Utils.FormatCode(boleto.IOF.ToString(CultureInfo.InvariantCulture).Replace(",", "").Replace(".", ""), "0", 13); // Valor do IOF a ser Recolhido 
                 header += Utils.FormatCode(boleto.Abatimento.ToString(CultureInfo.InvariantCulture).Replace(",", "").Replace(".", ""), "0", 13); // Valor do Abatimento 
+
                 header += Utils.FormatCode("", " ", 25);                                                // Identificação do Título na Empresa
                 header += (_protestar ? "1" : "3");                                                      // Código para Protesto
                 header += _diasProtesto.ToString("00");                                                  // Número de Dias para Protesto 2 posi
@@ -1836,18 +1846,19 @@ namespace BoletoNet
                     ValorTitulo = (Convert.ToDecimal(reg.ValorTitulo)),
                     CodigoBanco = Utils.ToInt32(reg.CodigoBancoCobrador),
                     AgenciaCobradora = Utils.ToInt32(reg.CodigoAgenciaCobradora),
-                    ValorDespesa = (Convert.ToUInt64(reg.ValorDespesasCobranca) / 100),
+                    ValorDespesa = (Convert.ToDecimal(reg.ValorDespesasCobranca) / 100),
                     OrigemPagamento = reg.TipoLiquidacao,
-                    IOF = (Convert.ToUInt64(reg.ValorIOF) / 100),
-                    ValorAbatimento = (Convert.ToUInt64(reg.ValorAbatimentoConcedido) / 100),
-                    Descontos = (Convert.ToUInt64(reg.ValorDescontoConcedido) / 100),
+                    IOF = (Convert.ToDecimal(reg.ValorIOF) / 100),
+                    ValorAbatimento = (Convert.ToDecimal(reg.ValorAbatimentoConcedido) / 100),
+                    Descontos = (Convert.ToDecimal(reg.ValorDescontoConcedido) / 100),
                     ValorPago = Convert.ToDecimal(reg.ValorPago),
-                    JurosMora = (Convert.ToUInt64(reg.ValorJuros) / 100),
-                    TarifaCobranca = (Convert.ToUInt64(reg.ValorDespesasCobranca) / 100),
+                    JurosMora = (Convert.ToDecimal(reg.ValorJuros) / 100),
+                    TarifaCobranca = (Convert.ToDecimal(reg.ValorDespesasCobranca) / 100),
                     DataCredito = Utils.ToDateTime(Utils.ToInt32(reg.DataCreditoConta).ToString("##-##-##")),
                     NumeroSequencial = Utils.ToInt32(reg.NumeroSequenciaRegistro),
                     NomeSacado = reg.IdentificacaoTituloEmpresa
                 };
+
                 //detalhe.ValorPrincipal = detalhe.ValorPago;
 
                 return detalhe;

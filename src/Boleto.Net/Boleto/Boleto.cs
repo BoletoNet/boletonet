@@ -611,9 +611,11 @@ namespace BoletoNet
 
         public IBancoCarteira BancoCarteira { get; set; }
 
-		#endregion Properties
+        public string TipoDeCobranca { get; set; }
 
-		public void Valida()
+        #endregion Properties
+
+        public void Valida()
 		{
 			// Validações básicas, caso ainda tenha implementada na classe do banco.ValidaBoleto()
 			if (this.Cedente == null)
