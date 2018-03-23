@@ -456,7 +456,10 @@ namespace BoletoNet
 
                 _header = "01REMESSA01";
                 _header += "COBRANCA".PadRight(15, ' ');
-                _header += Utils.FitStringLength(cedente.ContaBancaria.Conta, 11, 11, '0', 0, true, true, true); // Conta corrente
+
+                var contaCorrenteComDigito = cedente.ContaBancaria.Conta + cedente.ContaBancaria.DigitoConta;
+                _header += Utils.FitStringLength(contaCorrenteComDigito, 11, 11, '0', 0, true, true, true); // Conta corrente
+
                 _header += new string(' ', 9); // Filler
                 _header += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false).ToUpper();
                 _header += "021";
@@ -523,11 +526,14 @@ namespace BoletoNet
                 string cpfCnpjCedente = boleto.Cedente.CPFCNPJ.Replace("/", "").Replace(".", "").Replace("-", "");
                 _detalhe += Utils.FitStringLength(cpfCnpjCedente, 14, 14, '0', 0, true, true, true); // Número da inscrição da empresa.
 
-                _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 11, 11, '0', 0, true, true, true); // Identificação da empresa no Banestes
+                var contaComDigito = boleto.Cedente.ContaBancaria + boleto.Cedente.ContaBancaria.DigitoConta;
+                _detalhe += Utils.FitStringLength(contaComDigito, 11, 11, '0', 0, true, true, true); // Identificação da empresa no Banestes
 
                 _detalhe += new string(' ', 9); // Filler
                 _detalhe += Utils.FitStringLength(boleto.NumeroControle ?? boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, false);// Identificação da operação na empresa
-                _detalhe += Utils.FitStringLength(boleto.NossoNumero, 10, 10, '0', 0, true, true, true); // Nosso número
+
+                _detalhe += Utils.FitStringLength(boleto.NossoNumero.Replace(".", ""), 10, 10, '0', 0, true, true, true); // Nosso número
+
                 _detalhe += boleto.PercMulta > 0 ? "1" : "0";  // Código da multa
 
                 var valorDaMulta = boleto.PercMulta > 0 ? boleto.PercMulta : boleto.ValorMulta;
@@ -564,7 +570,7 @@ namespace BoletoNet
                 _detalhe += new string('0', 3); // Filler
                 _detalhe += Utils.FitStringLength(boleto.ValorBoleto.ApenasNumeros(), 10, 10, '0', 0, true, true, true); // Valor nominal do título
                 _detalhe += "021"; // Código do banco
-                _detalhe += new string(' ', 5); // Praça de cobrança
+                _detalhe += "00501"; // Praça de cobrança
                 _detalhe += Utils.FitStringLength(boleto.EspecieDocumento.Codigo.ToString(), 2, 2, '0', 0, true, true, true); // Espécie do título
                 _detalhe += "N"; // Identificação do aceite
                 _detalhe += boleto.DataProcessamento.ToString("ddMMyy"); // Data da emissão do título (DDMMAA)
@@ -578,7 +584,7 @@ namespace BoletoNet
                     {
                         case EnumInstrucoes_Banestes.Protestar:
                             vInstrucao1 = "P6";
-                            vInstrucao2 = "00";
+                            vInstrucao2 = instrucao.QuantidadeDias.ToString().PadLeft(2, '0');
                             break;
                         case EnumInstrucoes_Banestes.NaoProtestar:
                             vInstrucao1 = "P7";
