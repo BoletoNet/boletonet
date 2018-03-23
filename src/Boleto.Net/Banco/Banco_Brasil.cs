@@ -1560,7 +1560,7 @@ namespace BoletoNet
 
                 _segmentoP += "000000000000000";
                 _segmentoP += "000000000000000";
-                _segmentoP += Utils.FitStringLength(boleto.NumeroDocumento, 25, 25, '0', 0, true, true, true);
+                _segmentoP += Utils.FitStringLength(boleto.NumeroControle, 25, 25, ' ', 0, true, true, false); //alterado por diegodariolli - 15/03/2018
 
                 //alterado por marcelhsouza em 28/03/2013
                 //O Banco do Brasil trata somente os códigos '1' – Protestar dias corridos, '2' – Protestar dias úteis, e '3' – Não protestar.
@@ -1907,7 +1907,7 @@ namespace BoletoNet
                 _header += _brancos10;
                 _header += "1";
                 _header += DateTime.Now.ToString("ddMMyyyy");
-                _header += DateTime.Now.ToString("hhMMss");
+                _header += DateTime.Now.ToString("HHmmss"); //alterado por diegodariolli - 15/03/2018
                 // NÚMERO SEQUENCIAL DO ARQUIVO *EVOLUIR UM NÚMERO A CADA HEADER DE ARQUIVO
                 //_header += "000001";
                 //alterado por MarcelHenrique 13/04/2013 deve-se ser sequencia a numeracao do arquivo incrementando a cada envio
@@ -2080,11 +2080,9 @@ namespace BoletoNet
             O total da soma deverá ser dividido por 11:
             179 / 11=16
             RESTO=3
-
             Se o resto da divisão for igual a 10 o D.V. será igual a X. 
             Se o resto da divisão for igual a 0 o D.V. será igual a 0.
             Se o resto for menor que 10, o D.V.  será igual ao resto.
-
             No exemplo acima, o dígito verificador será igual a 3
             */
             #endregion
@@ -2270,7 +2268,7 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0023, 008, 0, boleto.Cedente.ContaBancaria.Conta, '0'));        //023-030
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0031, 001, 0, boleto.Cedente.ContaBancaria.DigitoConta, ' '));  //031-031
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0032, 007, 0, boleto.Cedente.Convenio, ' '));                   //032-038
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0039, 025, 0, boleto.NumeroDocumento, ' '));                    //039-063
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0039, 025, 0, boleto.NumeroControle, ' '));                     //039-063 //alterado por diegodariolli 15/03/2018
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0064, 017, 0, boleto.NossoNumero, '0'));                        //064-080
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0081, 002, 0, "00", '0'));                                      //081-082
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0083, 002, 0, "00", '0'));                                      //083-084
