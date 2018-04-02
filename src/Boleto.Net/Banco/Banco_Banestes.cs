@@ -526,7 +526,7 @@ namespace BoletoNet
                 string cpfCnpjCedente = boleto.Cedente.CPFCNPJ.Replace("/", "").Replace(".", "").Replace("-", "");
                 _detalhe += Utils.FitStringLength(cpfCnpjCedente, 14, 14, '0', 0, true, true, true); // Número da inscrição da empresa.
 
-                var contaComDigito = boleto.Cedente.ContaBancaria + boleto.Cedente.ContaBancaria.DigitoConta;
+                var contaComDigito = boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta;
                 _detalhe += Utils.FitStringLength(contaComDigito, 11, 11, '0', 0, true, true, true); // Identificação da empresa no Banestes
 
                 _detalhe += new string(' ', 9); // Filler
@@ -570,7 +570,17 @@ namespace BoletoNet
                 _detalhe += new string('0', 3); // Filler
                 _detalhe += Utils.FitStringLength(boleto.ValorBoleto.ApenasNumeros(), 10, 10, '0', 0, true, true, true); // Valor nominal do título
                 _detalhe += "021"; // Código do banco
-                _detalhe += "00501"; // Praça de cobrança
+
+
+                var pracaDeCobranca = "00000";
+
+                if (boleto.ApenasRegistrar)
+                {
+                    pracaDeCobranca = "00501";
+                }
+
+                _detalhe += pracaDeCobranca;
+
                 _detalhe += Utils.FitStringLength(boleto.EspecieDocumento.Codigo.ToString(), 2, 2, '0', 0, true, true, true); // Espécie do título
                 _detalhe += "N"; // Identificação do aceite
                 _detalhe += boleto.DataProcessamento.ToString("ddMMyy"); // Data da emissão do título (DDMMAA)
