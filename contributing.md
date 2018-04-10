@@ -11,12 +11,12 @@ Estudar o código antes de mudá-lo é muito importante!
 Muitas pessoas certamente irão te ajudar com isto! Então se não sabe como colaborar, peça ajuda!
 
 ## Enviando suas contribuições
-Neste projetos, todos temos outras atribuições, então seja prático, envie seus Pull Requests (PR) bem documentados e revise-o também. 
+Todos temos outras atribuições, então seja prático, envie seus Pull Requests (PR) bem documentados e revise-os também. 
 É comum vir muitos arquivos desnessários nos PR, dependendo da ferramenta que você utiliza!
 
-Se o seu PR estiver confuso, certamente iremos lhe questionar. Então não reclame ou crie caso, tomamos precaução para que o projeto não cause problema para os usuários!
+Se o seu PR estiver confuso, certamente iremos lhe questionar. Então não reclame ou crie caso, seja prestativo e nos ajude!
 
 ## Finalizando
 Este projeto vem crescendo graças a colaboração de TODOS, então faça parte deste time e colabore também! 
-Não seja um usuário READONLY, devolva o que melhorar para o projeto! Todos ganham.
+Não seja um usuário READONLY, envie o que melhorar para o projeto! Todos ganham.
 
