@@ -24,6 +24,5 @@ Install-Package Boleto.Net
 
 Para informações sobre o projeto e bancos implementados, consulte o nosso [Wiki](https://github.com/BoletoNet/boletonet/wiki).
 
-Teste
 
 
