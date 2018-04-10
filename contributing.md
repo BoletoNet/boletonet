@@ -7,9 +7,14 @@ Não temos um canal de suporte, sendo assim, se você tem um problema, abra uma 
 Analise as Issues abertas e trabalhe na que se sentir mais confortável. 
 Estudar o código antes de mudá-lo é muito importante!
 
+## Nao conheço Git, mas quero ajudar!
+Muitas pessoas certamente irão te ajudar com isto! Então se não sabe como colaborar, peça ajuda!
+
 ## Enviando suas contribuições
 Neste projetos, todos temos outras atribuições, então seja prático, envie seus Pull Requests (PR) bem documentados e revise-o também. 
 É comum vir muitos arquivos desnessários nos PR, dependendo da ferramenta que você utiliza!
+
+Se o seu PR estiver confuso, certamente iremos lhe questionar. Então não reclame ou crie caso, tomamos precaução para que o projeto não cause problema para os usuários!
 
 ## Finalizando
 Este projeto vem crescendo graças a colaboração de TODOS, então faça parte deste time e colabore também! 
