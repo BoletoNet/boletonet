@@ -200,7 +200,7 @@ namespace BoletoNet
                         return EspecieDocumento_Sicoob.CarregaTodas();
                     case 85:
                         return EspecieDocumento_Cecred.CarregaTodas();
-                    case 5:
+                    case 4:
                         return EspecieDocumento_Nordeste.CarregaTodas();
                     default:
                         throw new Exception("Espécies do Documento não implementado para o banco : " + codigoBanco);
