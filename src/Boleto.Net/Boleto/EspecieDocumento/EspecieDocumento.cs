@@ -200,6 +200,8 @@ namespace BoletoNet
                         return EspecieDocumento_Sicoob.CarregaTodas();
                     case 85:
                         return EspecieDocumento_Cecred.CarregaTodas();
+                    case 97:
+                        return EspecieDocumento_CrediSIS.CarregaTodas();
                     case 5:
                         return EspecieDocumento_Nordeste.CarregaTodas();
                     default:
