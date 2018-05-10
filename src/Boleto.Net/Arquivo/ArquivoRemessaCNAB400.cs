@@ -68,6 +68,18 @@ namespace BoletoNet
                     vltitulostotal += boleto.ValorBoleto;   //Uso apenas no registro TRAILER do banco Santander - jsoda em 09/05/2012 - Add no registro TRAILER do banco Banrisul - sidneiklein em 08/08/2013
                     numeroRegistro++;
 
+                    // Banco CrediSis - 97
+                    if (banco.Codigo == 97)
+                    {
+                        if (boleto.ValorDesconto > 0 || boleto.PercMulta > 0 || boleto.ValorMulta > 0)
+                        {
+                            Banco_CrediSis _banco = new Banco_CrediSis();
+                            strline = _banco.GerarRegistroDetalhe2(boleto, numeroRegistro);
+                            incluiLinha.WriteLine(strline);
+                            numeroRegistro++;
+                        }
+                    }
+
                     // 85 - CECRED
                     if (banco.Codigo == 85) {
                         if (boleto.PercMulta > 0 || boleto.ValorMulta > 0) {

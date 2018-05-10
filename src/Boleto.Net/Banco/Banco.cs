@@ -144,6 +144,10 @@ namespace BoletoNet
 					case 21:
 						_IBanco = new Banco_Banestes();
 						break;
+                    //97 - CrediSis
+                    case 97:
+                        _IBanco = new Banco_CrediSis();
+                        break;
 					//004 - Nordeste
 					case 4:
 						_IBanco = new Banco_Nordeste();
