@@ -13,6 +13,7 @@ namespace BoletoNet.Enums
         CECRED = 85,
         HSBC = 399,
         Itau = 341,
+        Maxima = 243,
         [Description("033")]
         Santander = 33,
         Sicredi = 748,
