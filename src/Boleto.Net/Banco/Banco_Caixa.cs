@@ -1844,7 +1844,7 @@ namespace BoletoNet
                     DataOcorrencia = Utils.ToDateTime(Utils.ToInt32(reg.DataOcorrencia).ToString("##-##-##")),
                     NumeroDocumento = reg.NumeroDocumento,
                     DataVencimento = Utils.ToDateTime(Utils.ToInt32(reg.DataVencimentoTitulo).ToString("##-##-##")),
-                    ValorTitulo = (Convert.ToDecimal(reg.ValorTitulo)),
+                    ValorTitulo = (Convert.ToDecimal(reg.ValorTitulo) / 100),
                     CodigoBanco = Utils.ToInt32(reg.CodigoBancoCobrador),
                     AgenciaCobradora = Utils.ToInt32(reg.CodigoAgenciaCobradora),
                     ValorDespesa = (Convert.ToDecimal(reg.ValorDespesasCobranca) / 100),
