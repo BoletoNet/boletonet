@@ -417,7 +417,10 @@ namespace BoletoNet
                 throw new Exception("O código do cedente deve conter apenas 6 dígitos");
 
             //Atribui o nome do banco ao local de pagamento
-            boleto.LocalPagamento = "PREFERENCIALMENTE NAS CASAS LOTÉRICAS E AGÊNCIAS DA CAIXA";
+            //Suélton 23/03/18 - Na homolagação do boleto junto a Caixa solicitaram que o texto do local de pagamento fosse esse
+            //Estou deixando também para que se possa personalizar na aplicação caso necessário
+            if (string.IsNullOrEmpty(boleto.LocalPagamento))
+                boleto.LocalPagamento = "PREFERENCIALMENTE NAS CASAS LOTÉRICAS ATÉ O VALOR LIMITE";
 
             /* 
              * Na Carteira Simples não é necessário gerar a impressão do boleto,
