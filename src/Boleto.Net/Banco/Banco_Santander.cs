@@ -1256,7 +1256,11 @@ namespace BoletoNet
                 //Bloco if-else adicionado por Jéferson (jefhtavares). Segundo o Banco o código de transmissão muda de acordo com o tamanho (length) da conta corrente
 
                 //Número de controle do participante, controle do cedente ==> 038 - 062
-                _detalhe += Utils.FitStringLength(boleto.NumeroControle, 25, 25, ' ', 0, true, true, false); //alterado por diegodariolli - 15/03/2018 - estava passando vazio impossibilitando controle interno
+                var numeroControle = string.Empty;
+                if (!string.IsNullOrEmpty(boleto.NumeroControle))
+                    numeroControle = boleto.NumeroControle;
+
+                _detalhe += Utils.FitStringLength(numeroControle, 25, 25, ' ', 0, true, true, false); //alterado por diegodariolli - 15/03/2018 - estava passando vazio impossibilitando controle interno
 
                 //NossoNumero com DV, pegar os 8 primeiros dígitos, da direita para esquerda ==> 063 - 070
                 string nossoNumero = Utils.FormatCode(boleto.NossoNumero, 12) + Mod11Santander(Utils.FormatCode(boleto.NossoNumero, 12), 9);//13
