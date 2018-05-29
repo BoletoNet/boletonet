@@ -1560,7 +1560,7 @@ namespace BoletoNet
 
                 _segmentoP += "000000000000000";
                 _segmentoP += "000000000000000";
-                _segmentoP += Utils.FitStringLength(boleto.NumeroControle, 25, 25, ' ', 0, true, true, false); //alterado por diegodariolli - 15/03/2018
+                _segmentoP += Utils.FitStringLength(boleto.NumeroControle ?? boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, false); //alterado por diegodariolli - 15/03/2018
 
                 //alterado por marcelhsouza em 28/03/2013
                 //O Banco do Brasil trata somente os códigos '1' – Protestar dias corridos, '2' – Protestar dias úteis, e '3' – Não protestar.
