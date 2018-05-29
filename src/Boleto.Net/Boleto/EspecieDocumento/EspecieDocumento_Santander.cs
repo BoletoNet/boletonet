@@ -100,6 +100,23 @@ namespace BoletoNet
             }
         }
 
+        public override string getCodigoEspecieBySigla(string sigla)
+        {
+            switch (sigla)
+            {
+                case "DM": return "2";
+                case "DS": return "4";
+                case "LS": return "7";
+                case "NP": return "12";
+                case "NPR": return "13";
+                case "RC": return "17";
+                case "AP": return "20";
+                case "CH": return "97";
+                case "ND": return "98";
+                default: return "2";
+            }
+        }
+
         private void carregar(string idCodigo)
         {
             try

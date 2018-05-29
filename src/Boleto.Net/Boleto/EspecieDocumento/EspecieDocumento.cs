@@ -44,6 +44,20 @@ namespace BoletoNet
             }
         }
 
+        public EspecieDocumento(string CodigoBanco, string sigla)
+        {
+            try
+            {
+                int codBanco = Convert.ToInt32(CodigoBanco);
+
+                InstanciaEspecieDocumento(codBanco, getCodigoEspecieBySigla(codBanco, sigla));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao instanciar objeto.", ex);
+            }
+        }
+
         #endregion
 
         #region Propriedades da interface
@@ -107,6 +121,7 @@ namespace BoletoNet
                     case 237:
                         _IEspecieDocumento = new EspecieDocumento_Bradesco(codigoEspecie);
                         break;
+                    //356 - Real
                     case 356:
                         _IEspecieDocumento = new EspecieDocumento_Real(codigoEspecie);
                         break;
@@ -114,6 +129,7 @@ namespace BoletoNet
                     case 33:
                         _IEspecieDocumento = new EspecieDocumento_Santander(codigoEspecie);
                         break;
+                    //347 - Sudameris
                     case 347:
                         _IEspecieDocumento = new EspecieDocumento_Sudameris(codigoEspecie);
                         break;
@@ -141,7 +157,7 @@ namespace BoletoNet
                     case 756:
                         _IEspecieDocumento = new EspecieDocumento_Sicoob(codigoEspecie);
                         break;
-                    //004 Banco do Nordeste
+                    //004 - Banco do Nordeste
                     case 4:
                         _IEspecieDocumento = new EspecieDocumento_Nordeste(codigoEspecie);
                         break;
@@ -149,12 +165,15 @@ namespace BoletoNet
                     case 655:
                         _IEspecieDocumento = new EspecieDocumento_Votorantim(codigoEspecie);
                         break;
+                    //707 - Daycoval
                     case 707:
                         _IEspecieDocumento = new EspecieDocumento_Daycoval(codigoEspecie);
                         break;
+                    //637 - Sofisa
                     case 637:
                         _IEspecieDocumento = new EspecieDocumento_Sofisa(codigoEspecie);
                         break;
+                    //21 - Banestes
                     case 21:
                         _IEspecieDocumento = new EspecieDocumento_Banestes(codigoEspecie);
                         break;
@@ -251,6 +270,84 @@ namespace BoletoNet
                 throw new BoletoNetException("Espécies de documentos não implementados para o banco.");
 
             return especiesDocumentosBancos[banco.Codigo].DuplicataMercantil();
+        }
+
+        private string getCodigoEspecieBySigla(int codigoBanco, string sigla)
+        {
+
+            try
+            {
+                switch (codigoBanco)
+                {
+                    //341 - Itaú
+                    case 341:
+                        return new EspecieDocumento_Itau().getCodigoEspecieBySigla(sigla);
+                    //479 - BankBoston
+                    case 479:
+                        return new EspecieDocumento_BankBoston().getCodigoEspecieBySigla(sigla);
+                    //422 - Safra
+                    case 1:
+                        return new EspecieDocumento_BancoBrasil().getCodigoEspecieBySigla(sigla);
+                    //237 - Bradesco
+                    case 237:
+                        return new EspecieDocumento_Bradesco().getCodigoEspecieBySigla(sigla);
+                    //356 - Real
+                    case 356:
+                        return new EspecieDocumento_Real().getCodigoEspecieBySigla(sigla);
+                    //033 - Santander
+                    case 33:
+                        return new EspecieDocumento_Santander().getCodigoEspecieBySigla(sigla);
+                    //347 - Sudameris
+                    case 347:
+                        return new EspecieDocumento_Sudameris().getCodigoEspecieBySigla(sigla);
+                    //104 - Caixa
+                    case 104:
+                        return new EspecieDocumento_Caixa().getCodigoEspecieBySigla(sigla);
+                    //399 - HSBC
+                    case 399:
+                        return new EspecieDocumento_HSBC().getCodigoEspecieBySigla(sigla);
+                    //748 - Sicredi
+                    case 748:
+                        return new EspecieDocumento_Sicredi().getCodigoEspecieBySigla(sigla);
+                    //41 - Banrisul - sidneiklein
+                    case 41:
+                        return new EspecieDocumento_Banrisul().getCodigoEspecieBySigla(sigla);
+                    //085 - Cecred
+                    case 85:
+                        return new EspecieDocumento_Cecred().getCodigoEspecieBySigla(sigla);
+                    //756 - Sicoob
+                    case 756:
+                        return new EspecieDocumento_Sicoob().getCodigoEspecieBySigla(sigla);
+                    //004 Banco do Nordeste
+                    case 4:
+                        return new EspecieDocumento_Nordeste().getCodigoEspecieBySigla(sigla);
+                    //655 - Votorantim
+                    case 655:
+                        return new EspecieDocumento_Votorantim().getCodigoEspecieBySigla(sigla);
+                    //707 - Daycoval
+                    case 707:
+                        return new EspecieDocumento_Daycoval().getCodigoEspecieBySigla(sigla);
+                    //637 - Sofisa
+                    case 637:
+                        return new EspecieDocumento_Sofisa().getCodigoEspecieBySigla(sigla);
+                    //21 - Banestes
+                    case 21:
+                        return new EspecieDocumento_Banestes().getCodigoEspecieBySigla(sigla);
+                    //97 - CrediSis
+                    case 97:
+                        return new EspecieDocumento_CrediSIS().getCodigoEspecieBySigla(sigla);
+                    //743 - Semear
+                    case 743:
+                        return new EspecieDocumento_Semear().getCodigoEspecieBySigla(sigla);
+                    default:
+                        throw new Exception("Código do banco não implementando: " + codigoBanco);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a execução da transação.", ex);
+            }
+        
         }
 
         private static Dictionary<int, AbstractEspecieDocumento> especiesDocumentosBancos = new Dictionary<int, AbstractEspecieDocumento>() {

@@ -81,6 +81,21 @@ namespace BoletoNet
             }
         }
 
+        public override string getCodigoEspecieBySigla(string sigla)
+        {
+            switch (sigla)
+            {
+                case "DM": return "01";
+                case "NP": return "02";
+                case "CH": return "03";
+                case "CR": return "04";
+                case "RC": return "05";
+                case "DS": return "06";
+                case "OUTROS": return "19";
+                default: return "01";
+            }
+        }
+
         private void carregar(string idCodigo)
         {
             try
@@ -122,7 +137,7 @@ namespace BoletoNet
                     case EnumEspecieDocumento_Nordeste.Carne:
                         this.Codigo = getCodigoEspecieByEnum(EnumEspecieDocumento_Nordeste.Carne);
                         this.Especie = "CARNE";
-                        this.Sigla = "";
+                        this.Sigla = "CR";
                         break;
                     default:
                         this.Codigo = "0";

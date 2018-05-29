@@ -43,6 +43,18 @@ namespace BoletoNet {
             }
         }
 
+        public override string getCodigoEspecieBySigla(string sigla)
+        {
+            switch (sigla)
+            {
+                case "DM": return "1";
+                case "NF": return "2";
+                case "RC": return "5";
+                case "DS": return "12";             
+                default: return "1";
+            }
+        }
+
         private void carregar(string idCodigo) {
             try {
                 this.Banco = new Banco_Sicredi();
