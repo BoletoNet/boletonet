@@ -154,12 +154,12 @@ namespace BoletoNet
                 Metade1 = string.Empty;
                 //Metade1 = Cedente.Substring(0, 5);
                 string A = boleto.Cedente.ContaBancaria.Agencia.Substring(3, 1);
-                string CCCC = Cedente.Substring(0, 4);
+                string CCCC = boleto.Cedente.ContaBancaria.Conta.Substring(0, 4);
                 Metade1 = A + CCCC;
 
                 Metade2 = string.Empty;
                 //Metade2 = Cedente.Substring(5, 2) + NossoNumero.Substring(0, 3);
-                string CCC = Cedente.Substring(4, 3);
+                string CCC = boleto.Cedente.ContaBancaria.Conta.Substring(4, 3);
                 string NN = NossoNumero.Substring(0, 2);
                 Metade2 = CCC + NN;
                 string d2 = Mod10Banri(Metade1 + Metade2).ToString();
@@ -296,7 +296,7 @@ namespace BoletoNet
                 //11: 4 (agência) + 7 (cedente)
                 string codCedente = boleto.Cedente.Codigo.Replace(".", "").Replace("-", "").Substring(boleto.Cedente.Codigo.Length < 11 ? 0 : 4, 7);
 
-                campoLivre = "21" + boleto.Cedente.ContaBancaria.Agencia + codCedente + nossoNumero + "40";
+                campoLivre = "21" + boleto.Cedente.ContaBancaria.Agencia.Substring(0, 4) + codCedente + nossoNumero + "40";
                 string ncCodBarra = CalcularNCCodBarras(campoLivre);
                 int.TryParse(ncCodBarra.Substring(0, 1), out _primDigito);
                 int.TryParse(ncCodBarra.Substring(1, 1), out _segDigito);

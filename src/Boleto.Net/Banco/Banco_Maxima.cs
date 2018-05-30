@@ -33,6 +33,29 @@ namespace BoletoNet
             return retorno;
         }
 
+        private string ContaBancariaFormatada(Cedente cedente)
+        {
+            string linha;
+
+            if (cedente != null && cedente.ContaBancaria != null)
+            {
+                // Agência Mantenedora da Conta
+                linha = Utils.FormatCode(cedente.ContaBancaria.Agencia, "0", 5, true);
+                // Dígito Verificador da Agência
+                linha += String.IsNullOrEmpty(cedente.ContaBancaria.DigitoAgencia) ? " " : cedente.ContaBancaria.DigitoAgencia;
+                // Número da Conta Corrente
+                linha += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 12, true);
+                // Dígito Verificador da Conta
+                linha += String.IsNullOrEmpty(cedente.ContaBancaria.DigitoConta) ? " " : cedente.ContaBancaria.DigitoConta;
+            }
+            else
+            {
+                linha = new string('0', 19);
+            }
+
+            return linha;
+        }
+
 
         #region HEADER
         public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
@@ -83,14 +106,10 @@ namespace BoletoNet
                 header.Append(Utils.FormatCode(cedente.CPFCNPJ, "0", 14, true));
                 // Código do Convênio no Banco
                 header.Append(Utils.FormatCode(numeroConvenio.ToString(), " ", 20));
-                // Agência Mantenedora da Conta
-                header.Append(Utils.FormatCode(cedente.ContaBancaria.Agencia, " ", 5, true));
-                // Dígito Verificador da Agência
-                header.Append(String.IsNullOrEmpty(cedente.ContaBancaria.DigitoAgencia) ? " " : cedente.ContaBancaria.DigitoAgencia);
-                // Número da Conta Corrente
-                header.Append(Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 12, true));
-                // Dígito Verificador da Conta
-                header.Append(String.IsNullOrEmpty(cedente.ContaBancaria.DigitoConta) ? " " : cedente.ContaBancaria.DigitoConta);
+
+                // Agencia e Conta
+                header.Append(ContaBancariaFormatada(cedente));
+
                 // Dígito Verificador da Ag/Conta
                 header.Append(" ");
                 // Nome da Empresa
@@ -175,14 +194,9 @@ namespace BoletoNet
                 header += Utils.FormatCode(cedente.CPFCNPJ, "0", 15, true);
                 // Código do Convênio no Banco
                 header += Utils.FormatCode(codigoConvenio, " ", 20);
-                // Agência Mantenedora da Conta
-                header += Utils.FormatCode(cedente.ContaBancaria.Agencia, "0", 5, true);
-                // Dígito Verificador da Agência
-                header += String.IsNullOrEmpty(cedente.ContaBancaria.DigitoAgencia) ? " " : cedente.ContaBancaria.DigitoAgencia;
-                // Número da Conta Corrente
-                header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 12, true);
-                // Dígito Verificador da Conta
-                header += Utils.FormatCode(String.IsNullOrEmpty(cedente.ContaBancaria.DigitoConta) ? " " : cedente.ContaBancaria.DigitoConta, " ", 1, true);
+                // Agencia e Conta
+                header += ContaBancariaFormatada(cedente);
+
                 // Dígito Verificador da Ag/Conta
                 header += " ";
                 // Nome da Empresa
@@ -236,75 +250,73 @@ namespace BoletoNet
                 detalhe += " ";
                 // Código de Movimento Remessa 
                 detalhe += ObterCodigoDaOcorrencia(boleto);
-                // Agência Mantenedora da Conta 
-                detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true);
-                // Dígito Verificador da Agência 
-                detalhe += " ";
-                // Número da Conta Corrente 
-                detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 12, 12, '0', 0, true, true, true);
-                // Dígito Verificador da Conta 
-                detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoConta ?? "", 1, 1, ' ' , 0, true, true, false);
+
+                // Agencia e Conta
+                detalhe += ContaBancariaFormatada(boleto.Cedente);
                 // Dígito Verificador da Ag/Conta 
                 detalhe += " ";
                 // Posição 38 a 57  - Nosso Número
                 detalhe += Utils.FormatCode(NossoNumeroFormatado(boleto), 20);
                 // Posição 58 - Código da Carteira
-                detalhe += boleto.Carteira;
+                if (!String.IsNullOrEmpty(boleto.Carteira) && boleto.Carteira.Length == 1)
+                    detalhe += Utils.FitStringLength(boleto.Carteira, 1, 1, '0', 0, true, true, true);
+                else
+                    detalhe += "0";
                 // Posição 59       - Forma de Cadastr. do Título no Banco: "1" - Cobrança Registrada
                 detalhe += "1";
                 //Posição 60        - Tipo de Documento: Brancos
                 detalhe += " ";
                 //Posição 61        - Identificação da Emissão do Boleto: 1=Banco Emite
                 detalhe += "1";
+                // Posição 62       - Identificação da Distribuição. '1' = Banco Distribui
+                detalhe += "1";
                 //Posição 63 a 77   - Número do documento de cobrança.
                 detalhe += Utils.FormatCode(boleto.NumeroDocumento, " ", 15);
                 // Posição 78 a 85  - Data de Vencimento do Título
                 detalhe += Utils.FitStringLength(boleto.DataVencimento == DateTime.MinValue ? "0" : boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
                 // Posição 86 a 100 - Valor Nominal do Título
-                detalhe += Utils.FitStringLength(boleto.ValorBoleto.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
-                // Posição 101 a 105 - Agência Encarregada da Cobrança 
+                detalhe += Utils.FitStringLength(boleto.ValorBoleto.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
+                // Posição 101 a 105- Agência Encarregada da Cobrança 
                 detalhe += "00000";
-                // Dígito Verificador da Agência 
+                // Posição 106      - Dígito Verificador da Agência 
                 detalhe += " ";
-                // Espécie do Título 
+                // Posição 107 A 108- Espécie do Título 
                 detalhe += "02";
-                // Identific. de Título Aceito/Não Aceito 
+                // Posição 109      - Identific. de Título Aceito/Não Aceito 
                 detalhe += "A";
-                // Data da Emissão do Título 
+                // Posição 110 A 117- Data da Emissão do Título 
                 detalhe += Utils.FitStringLength(boleto.DataDocumento == DateTime.MinValue ? "0" : boleto.DataDocumento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
-                // Código do Juros de Mora 
+                // Posição 118      - Código do Juros de Mora 
                 detalhe += "0";
-                // Data do Juros de Mora 
+                // Posição 119 A 126- Data do Juros de Mora 
                 detalhe += Utils.FitStringLength(boleto.DataJurosMora == DateTime.MinValue ? "0" : boleto.DataJurosMora.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
-
-                // Juros de Mora por Dia/Taxa 
-                detalhe += Utils.FitStringLength(boleto.JurosMora.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
-                // Código do Desconto 1 
+                // Posição 127 A 141- Juros de Mora por Dia/Taxa 
+                detalhe += Utils.FitStringLength(boleto.JurosMora.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
+                // Posição 142      - Código do Desconto 1 
                 detalhe += "0";
-                // Data do Desconto 1 
+                // Posição 143 a 150- Data do Desconto 1 
                 detalhe += Utils.FitStringLength(boleto.DataDesconto == DateTime.MinValue ? "0" : boleto.DataDesconto.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
-
-                // Valor/Percentual a ser Concedido 
-                detalhe += Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
-                // Valor do IOF a ser Recolhido 
-                detalhe += Utils.FitStringLength(boleto.IOF.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
-                // Valor do Abatimento 
-                detalhe += Utils.FitStringLength(boleto.Abatimento.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
-                // Identificação do Título na Empresa 
+                // Posição 151 a 165- Valor/Percentual a ser Concedido 
+                detalhe += Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
+                // Posição 166 a 180- Valor do IOF a ser Recolhido 
+                detalhe += Utils.FitStringLength(boleto.IOF.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
+                // Posição 181 a 195- Valor do Abatimento 
+                detalhe += Utils.FitStringLength(boleto.Abatimento.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
+                // Posição 196 a 220- Identificação do Título na Empresa 
                 detalhe += Utils.FitStringLength(boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, false);
-                // Código para Protesto 
+                // Posição 221      - Código para Protesto 
                 detalhe += "0";
-                // Número de Dias para Protesto 
+                // Posição 222 a 223- Número de Dias para Protesto 
                 detalhe += "00";
-                // Código para Baixa/Devolução 
+                // Posição 224      - Código para Baixa/Devolução 
                 detalhe += "0";
-                // Número de Dias para Baixa/Devolução 
+                // Posição 225 a 227- Número de Dias para Baixa/Devolução 
                 detalhe += "   ";
-                // Código da Moeda 
+                // Posição 228 a 229- Código da Moeda 
                 detalhe += "00";
-                // Nº do Contrato da Operação de Créd. 
+                // Posição 230 a 239- Nº do Contrato da Operação de Créd. 
                 detalhe += new string('0', 10);
-                // Uso livre banco/empresa ou autorização de pagamento parcial
+                // Posição 240      - Uso livre banco/empresa ou autorização de pagamento parcial
                 detalhe += " ";
 
                 detalhe = Utils.SubstituiCaracteresEspeciais(detalhe);
@@ -397,22 +409,22 @@ namespace BoletoNet
                 // Posição 24 a 29      - Quantidade de Títulos em Cobrança 
                 trailer += Utils.FormatCode("", "0", 6, true);
                 // Posição 30 a 46      - Valor Total dos Títulos em Carteiras 
-                trailer += Utils.FormatCode("", "0", 15, true);
+                trailer += Utils.FormatCode("", "0", 17, true);
                 // Totalização da Cobrança Vinculada 
                 // Posição 47 a 52      - Quantidade de Títulos em Cobrança 
                 trailer += Utils.FormatCode("", "0", 6, true);
                 // Posição 53 a 69      - Valor Total dos Títulos em Carteiras 
-                trailer += Utils.FormatCode("", "0", 15, true);
+                trailer += Utils.FormatCode("", "0", 17, true);
                 // Totalização da Cobrança Caucionada 
                 // Posição 70 a 75      - Quantidade de Títulos em Cobrança 
                 trailer += Utils.FormatCode("", "0", 6, true);
                 // Posição 76 a 92      - Valor Total dos Títulos em Carteiras 
-                trailer += Utils.FormatCode("", "0", 15, true);
+                trailer += Utils.FormatCode("", "0", 17, true);
                 // Totalização da Cobrança Descontada 
                 // Posição 93 a 98      - Quantidade de Títulos em Cobrança 
                 trailer += Utils.FormatCode("", "0", 6, true);
                 // Posição 99 a 115     - Valor Total dos Títulos em Carteiras 
-                trailer += Utils.FormatCode("", "0", 15, true);
+                trailer += Utils.FormatCode("", "0", 17, true);
                 // Posição 116 a 123    - Número do Aviso de Lançamento 
                 trailer += Utils.FormatCode("", "0", 8, true);
                 // Posição 124 a 240    - Uso Exclusivo FEBRABAN/CNAB 
