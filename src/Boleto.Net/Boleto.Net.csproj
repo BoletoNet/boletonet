@@ -105,6 +105,7 @@
     <Compile Include="Banco\Carteiras\Brasil\CarteiraBrasil.cs" />
     <Compile Include="Banco\Carteiras\IBancoCarteira.cs" />
     <Compile Include="Banco\Carteiras\TipoCarteiraAttribute.cs" />
+    <Compile Include="Banco\Banco_Maxima.cs" />
     <Compile Include="Boleto\Carteira\Carteira_CrediSIS.cs" />
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Itau.cs" />
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Sicoob.cs" />
