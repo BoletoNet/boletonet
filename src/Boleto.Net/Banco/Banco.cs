@@ -169,6 +169,9 @@ namespace BoletoNet
                     case 743:
                         _IBanco = new Banco_Semear();
                         break;
+                    case ((int)Enums.Bancos.Maxima):
+                        _IBanco = new Banco_Maxima();
+                        break;
 					default:
 						throw new Exception("Código do banco não implementando: " + codigoBanco);
 				}
