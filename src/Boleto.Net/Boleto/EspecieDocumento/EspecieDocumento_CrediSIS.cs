@@ -78,6 +78,20 @@ namespace BoletoNet
             }
         }
 
+        public override string getCodigoEspecieBySigla(string sigla)
+        {
+            switch (sigla)
+            {
+                case "DMI": return "3";
+                case "DSI": return "5";
+                case "NP": return "12";
+                case "RC": return "17";
+                case "ME": return "21";
+                case "NF": return "23";
+                default: return "5";
+            }
+        }
+
         private void carregar(string idCodigo)
         {
             try

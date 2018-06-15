@@ -67,6 +67,16 @@ namespace BoletoNet
             }
         }
 
+        public override string getCodigoEspecieBySigla(string sigla)
+        {
+            switch (sigla)
+            {
+                case "DM": return "1";
+                case "OU": return "99";
+                default: return "1";
+            }
+        }
+
         private void carregar(string idCodigo)
         {
             try
