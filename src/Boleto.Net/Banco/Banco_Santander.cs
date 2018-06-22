@@ -1409,7 +1409,13 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.JurosMora.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
 
                 //Data limite para concessão de desconto ==> 174 - 179
-                _detalhe += boleto.DataVencimento.ToString("ddMMyy");
+                var dataLimiteConcessaoDesconto = "000000";
+                if (boleto.ValorDesconto > 0)
+                {
+                    dataLimiteConcessaoDesconto = boleto.DataVencimento.ToString("ddMMyy");
+                }
+
+                _detalhe += dataLimiteConcessaoDesconto;
 
                 //Valor de desconto a ser concedido ==> 180 - 192
                 _detalhe += Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
