@@ -596,6 +596,7 @@ namespace BoletoNet
                 //detalhe. = reg.Brancos1;
                 detalhe.Carteira = reg.Carteira;
                 detalhe.CodigoOcorrencia = Utils.ToInt32(reg.Comando);
+                detalhe.DescricaoOcorrencia = new CodigoMovimento(4, detalhe.CodigoOcorrencia).Descricao;
                 //
                 detalhe.NumeroDocumento = reg.NumeroTituloCedente;
                 //detalhe. = reg.Brancos2;
