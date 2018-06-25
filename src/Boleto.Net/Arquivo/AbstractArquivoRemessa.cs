@@ -34,7 +34,8 @@ namespace BoletoNet
             switch (tipoArquivo)
             {
                 case TipoArquivo.CNAB240:
-                    _arquivoRemessa = new ArquivoRemessaCNAB240();
+                case TipoArquivo.CNAB240EmModoTeste:
+                    _arquivoRemessa = new ArquivoRemessaCNAB240(){ ModoTeste = tipoArquivo== TipoArquivo.CNAB240EmModoTeste };
                     _arquivoRemessa.LinhaDeArquivoGerada += new EventHandler<LinhaDeArquivoGeradaArgs>(_arquivoRemessa_LinhaDeArquivoGerada);
                     break;
                 case TipoArquivo.CNAB400:
