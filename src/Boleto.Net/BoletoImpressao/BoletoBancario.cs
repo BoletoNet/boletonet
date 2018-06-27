@@ -481,7 +481,8 @@ namespace BoletoNet
                     Instrucoes.Add(instrucao);
                 }
 		
-		_instrucoesHtml = _instrucoesHtml.Left(_instrucoesHtml.Length - 6);
+		 if (instrucoes.Any())
+		     _instrucoesHtml = _instrucoesHtml.Left(_instrucoesHtml.Length - 6);
             }
         }
 
