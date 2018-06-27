@@ -420,6 +420,16 @@ namespace BoletoNet
                 //Limpa as intruções para o Cedente
                 _instrucoesHtml = "";
 
+		//Suelton - 12/03/2018
+                //Para homologação da Caixa é obrigatório ter as informações do SAC
+                if (Banco.Codigo == 104)
+                {
+                    //_instrucoesHtml = _instrucoesHtml +
+                    //                  "<br><br><p>SAC CAIXA: 0800 726 0101 (Informações, reclamações, sugestões e elogios)</p> <p> Para pessoas com deficiência auditiva ou de fala: 0800 726 2492 </p><p> Ouvidoria: 0800 725 7474 - caixa.gov.br </p>";
+                    _instrucoesHtml = _instrucoesHtml +
+                                      "<br>SAC CAIXA: 0800 726 0101 (Informações, reclamações, sugestões e elogios)<br/> Para pessoas com deficiência auditiva ou de fala: 0800 726 2492 Ouvidoria: 0800 725 7474 <br/> caixa.gov.br";
+                }
+		
                 MontaInstrucoes(Boleto.Instrucoes);
 
                 if (Boleto.Cedente.Instrucoes.Count > 0)
@@ -470,20 +480,8 @@ namespace BoletoNet
                     //Adiciona a instrução as instruções disponíveis no Boleto
                     Instrucoes.Add(instrucao);
                 }
-
-                //Suelton - 12/03/2018
-                //Para homologação da Caixa é obrigatório ter as informações do SAC
-                if (Banco.Codigo == 104)
-                {
-                    //_instrucoesHtml = _instrucoesHtml +
-                    //                  "<br><br><p>SAC CAIXA: 0800 726 0101 (Informações, reclamações, sugestões e elogios)</p> <p> Para pessoas com deficiência auditiva ou de fala: 0800 726 2492 </p><p> Ouvidoria: 0800 725 7474 - caixa.gov.br </p>";
-                    _instrucoesHtml = _instrucoesHtml +
-                                      "<br>SAC CAIXA: 0800 726 0101 (Informações, reclamações, sugestões e elogios)<br/> Para pessoas com deficiência auditiva ou de fala: 0800 726 2492 Ouvidoria: 0800 725 7474 <br/> caixa.gov.br";
-                }
-                else
-                {
-                    _instrucoesHtml = _instrucoesHtml.Left(_instrucoesHtml.Length - 6);
-                }
+		
+		_instrucoesHtml = _instrucoesHtml.Left(_instrucoesHtml.Length - 6);
             }
         }
 
