@@ -76,6 +76,7 @@
     <Compile Include="CecredTeste.cs" />
     <Compile Include="FatorVencimentoTeste.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Remessa\RemessaCnab240Teste.cs" />
     <Compile Include="Retorno\ArquivoRetornoCrb643Teste.cs" />
     <Compile Include="EnumExtensionTeste.cs" />
     <Compile Include="AbstractBancoTeste.cs" />
