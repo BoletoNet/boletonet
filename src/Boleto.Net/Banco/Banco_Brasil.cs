@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.UI;
 using BoletoNet.EDI.Banco;
 using BoletoNet.Excecoes;
@@ -2087,6 +2088,7 @@ namespace BoletoNet
              * r - Resto
              */
 
+            value = Regex.Replace(value, "[^0-9]+", "", RegexOptions.Compiled);
             string d;
             int s = 0, p = 9, b = 2;
 
