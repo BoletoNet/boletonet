@@ -45,7 +45,7 @@ namespace BoletoNet
             switch (especie)
             {
                 case EnumEspecieDocumento_Banestes.DuplicataMercantil:
-                    return "2";
+                    return "1";
                 case EnumEspecieDocumento_Banestes.Outros:
                     return "99";
                 default:
