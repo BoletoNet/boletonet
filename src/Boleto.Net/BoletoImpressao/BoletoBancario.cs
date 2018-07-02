@@ -362,6 +362,8 @@ namespace BoletoNet
                 //Limpa as intruções para o Sacado
                 _instrucoesHtml = "";
 
+                MontaInstrucaoCaixa();
+
                 MontaInstrucoes(Boleto.Instrucoes);
 
                 if (Boleto.Sacado.Instrucoes.Count > 0)
@@ -420,6 +422,8 @@ namespace BoletoNet
                 //Limpa as intruções para o Cedente
                 _instrucoesHtml = "";
 
+                MontaInstrucaoCaixa();
+
                 MontaInstrucoes(Boleto.Instrucoes);
 
                 if (Boleto.Cedente.Instrucoes.Count > 0)
@@ -430,6 +434,19 @@ namespace BoletoNet
             catch (Exception ex)
             {
                 throw new Exception("Erro na execução da transação.", ex);
+            }
+        }
+
+        private void MontaInstrucaoCaixa()
+        {
+            //Suelton - 12/03/2018
+            //Para homologação da Caixa é obrigatório ter as informações do SAC
+            if (Banco.Codigo == 104)
+            {
+                //_instrucoesHtml = _instrucoesHtml +
+                //                  "<br><br><p>SAC CAIXA: 0800 726 0101 (Informações, reclamações, sugestões e elogios)</p> <p> Para pessoas com deficiência auditiva ou de fala: 0800 726 2492 </p><p> Ouvidoria: 0800 725 7474 - caixa.gov.br </p>";
+                _instrucoesHtml = _instrucoesHtml +
+                                  "<br>SAC CAIXA: 0800 726 0101 (Informações, reclamações, sugestões e elogios)<br/> Para pessoas com deficiência auditiva ou de fala: 0800 726 2492 Ouvidoria: 0800 725 7474 <br/> caixa.gov.br";
             }
         }
 
@@ -471,19 +488,8 @@ namespace BoletoNet
                     Instrucoes.Add(instrucao);
                 }
 
-                //Suelton - 12/03/2018
-                //Para homologação da Caixa é obrigatório ter as informações do SAC
-                if (Banco.Codigo == 104)
-                {
-                    //_instrucoesHtml = _instrucoesHtml +
-                    //                  "<br><br><p>SAC CAIXA: 0800 726 0101 (Informações, reclamações, sugestões e elogios)</p> <p> Para pessoas com deficiência auditiva ou de fala: 0800 726 2492 </p><p> Ouvidoria: 0800 725 7474 - caixa.gov.br </p>";
-                    _instrucoesHtml = _instrucoesHtml +
-                                      "<br>SAC CAIXA: 0800 726 0101 (Informações, reclamações, sugestões e elogios)<br/> Para pessoas com deficiência auditiva ou de fala: 0800 726 2492 Ouvidoria: 0800 725 7474 <br/> caixa.gov.br";
-                }
-                else
-                {
+                if (instrucoes.Any())
                     _instrucoesHtml = _instrucoesHtml.Left(_instrucoesHtml.Length - 6);
-                }
             }
         }
 
@@ -681,13 +687,13 @@ namespace BoletoNet
                     case (int)Bancos.Santander:
                         agenciaCodigoCedente = string.Format("{0}-{1}/{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Utils.FormatCode(Cedente.Codigo, 6));
                         if (string.IsNullOrEmpty(Cedente.ContaBancaria.DigitoAgencia))
-			{
-                            agenciaCodigoCedente = string.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo, 6));			
-			    if (Utils.FormatCode(Cedente.Codigo, 6).Equals("000000"))
-			    {
-                               agenciaCodigoCedente = String.Format("{0}/{1}-{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.Conta,Cedente.ContaBancaria.DigitoConta);
-			    }
-		        }
+                        {
+                            agenciaCodigoCedente = string.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo, 6));
+                            if (Utils.FormatCode(Cedente.Codigo, 6).Equals("000000"))
+                            {
+                                agenciaCodigoCedente = String.Format("{0}/{1}-{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.Conta, Cedente.ContaBancaria.DigitoConta);
+                            }
+                        }
                         break;
                     case (int)Bancos.HSBC:
                         agenciaCodigoCedente = string.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo, 7)); //Solicitação do HSBC que mostrasse agencia/Conta - por Transis em 24/02/15
@@ -855,8 +861,6 @@ namespace BoletoNet
             if (imprimeFooter)
                 HtmlOfflineFooter(html);
 
-          
- 
             return html;
         }
 
