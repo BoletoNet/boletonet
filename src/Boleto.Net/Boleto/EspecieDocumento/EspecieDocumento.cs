@@ -97,7 +97,7 @@ namespace BoletoNet
 
         #endregion
 
-        # region MÈtodos Privados
+        # region M√©todos Privados
 
         private void InstanciaEspecieDocumento(int codigoBanco, string codigoEspecie)
         {
@@ -105,7 +105,7 @@ namespace BoletoNet
             {
                 switch (codigoBanco)
                 {
-                    //341 - Ita˙
+                    //341 - Ita√∫
                     case 341:
                         _IEspecieDocumento = new EspecieDocumento_Itau(codigoEspecie);
                         break;
@@ -178,12 +178,12 @@ namespace BoletoNet
                         _IEspecieDocumento = new EspecieDocumento_Banestes(codigoEspecie);
                         break;
                     default:
-                        throw new Exception("CÛdigo do banco n„o implementando: " + codigoBanco);
+                        throw new Exception("C√≥digo do banco n√£o implementando: " + codigoBanco);
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro durante a execuÁ„o da transaÁ„o.", ex);
+                throw new Exception("Erro durante a execu√ß√£o da transa√ß√£o.", ex);
             }
         }
 
@@ -224,7 +224,7 @@ namespace BoletoNet
                     case 97:
                         return EspecieDocumento_CrediSIS.CarregaTodas();
                     default:
-                        throw new Exception("EspÈcies do Documento n„o implementado para o banco : " + codigoBanco);
+                        throw new Exception("Esp√©cies do Documento n√£o implementado para o banco : " + codigoBanco);
                 }
             }
             catch (Exception ex)
@@ -267,7 +267,7 @@ namespace BoletoNet
         public IEspecieDocumento DuplicataMercantil(IBanco banco)
         {
             if (!especiesDocumentosBancos.ContainsKey(banco.Codigo))
-                throw new BoletoNetException("EspÈcies de documentos n„o implementados para o banco.");
+                throw new BoletoNetException("Esp√©cies de documentos n√£o implementados para o banco.");
 
             return especiesDocumentosBancos[banco.Codigo].DuplicataMercantil();
         }
@@ -279,7 +279,7 @@ namespace BoletoNet
             {
                 switch (codigoBanco)
                 {
-                    //341 - Ita˙
+                    //341 - Ita√∫
                     case 341:
                         return new EspecieDocumento_Itau().getCodigoEspecieBySigla(sigla);
                     //479 - BankBoston
@@ -340,12 +340,12 @@ namespace BoletoNet
                     case 743:
                         return new EspecieDocumento_Semear().getCodigoEspecieBySigla(sigla);
                     default:
-                        throw new Exception("CÛdigo do banco n„o implementando: " + codigoBanco);
+                        throw new Exception("C√≥digo do banco n√£o implementando: " + codigoBanco);
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro durante a execuÁ„o da transaÁ„o.", ex);
+                throw new Exception("Erro durante a execu√ß√£o da transa√ß√£o.", ex);
             }
         
         }
@@ -367,7 +367,8 @@ namespace BoletoNet
                 { 4, new EspecieDocumento_Nordeste     ()  },
                 { 707, new EspecieDocumento_Daycoval   ()  },
                 { 637, new EspecieDocumento_Sofisa     ()  },
-                { 743, new EspecieDocumento_Semear     ()  }
+                { 743, new EspecieDocumento_Semear     ()  },
+                { 21, new EspecieDocumento_Banestes    ()  }
         };
     }
 }
