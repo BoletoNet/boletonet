@@ -743,8 +743,8 @@ namespace BoletoNet
                     vMsg += string.Concat("Para o Tipo Documento [1 - SIGCB - COM REGISTRO], o CEP do SACADO é Obrigatório!", Environment.NewLine);
                     vRetorno = false;
                 }
-                if (boleto.NossoNumero.Length > 15)
-                    boleto.NossoNumero = boleto.NossoNumero.Substring(0, 15);
+                if (boleto.NossoNumero.Length > 17)
+                    boleto.NossoNumero = boleto.NossoNumero.Substring(0, 17);
                 //if (!boleto.Remessa.TipoDocumento.Equals("2")) //2 - SIGCB - SEM REGISTRO
                 //{
                 //    //Para o "Remessa.TipoDocumento = "2", não poderá ter NossoNumero Gerado!
@@ -1265,7 +1265,7 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0030, 011, 0, "0", '0'));                                           // posição 30 até 40   (11)- Uso Exclusivo CAIXA
                 //modalidade são os dois algarimos iniciais do nosso número...                
                 //nosso numero já traz a modalidade concatenada, então passa direto o nosso nro que preenche os dois campos do leiaute
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0041, 017, 0, boleto.NossoNumero, '0'));                            // posição 43 até 57   (15)- Identificação do Título no Banco
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0041, 017, 0, boleto.NossoNumero, '0'));                            // posição 41 até 57   (15)- Identificação do Título no Banco
                 #region Código da Carteira
                 //Código adotado pela FEBRABAN, para identificar a característica dos títulos dentro das modalidades de cobrança existentes no banco.
                 //?1? = Cobrança Simples; ?3? = Cobrança Caucionada; ?4? = Cobrança Descontada
