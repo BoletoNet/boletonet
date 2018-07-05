@@ -61,7 +61,7 @@ namespace BoletoNet
             boleto.Cedente.ContaBancaria.DigitoConta = Utils.FormatCode(boleto.Cedente.ContaBancaria.DigitoConta, 1);
 
             if (string.IsNullOrEmpty(boleto.DigitoNossoNumero))
-                boleto.DigitoNossoNumero = Mod11(boleto.NossoNumero, 8).ToString();
+                boleto.DigitoNossoNumero = Mod11Nordeste(boleto.NossoNumero, 8).ToString();
 
             boleto.DigitoNossoNumero = Utils.FormatCode(boleto.DigitoNossoNumero, 1);
 
@@ -99,7 +99,7 @@ namespace BoletoNet
             string digNossN = "";
 
             if (string.IsNullOrEmpty(digNossN))
-                digNossN = Mod11(nossoNumero, 8).ToString();
+                digNossN = Mod11Nordeste(nossoNumero, 8).ToString();
 
             digNossN = Utils.FormatCode(digNossN, 1);
 
@@ -334,9 +334,31 @@ namespace BoletoNet
         }
         #endregion
 
-        internal static string Mod11BancoNordeste(string value)
+        
+        protected static int Mod11Nordeste(string seq, int b)
         {
-            throw new NotImplementedException("Função não implementada.");
+            //Suélton - 05/07/2018 - Implementação do cálculo do DV do nosso número para o Banco do Nordeste
+
+            int soma = 0, peso = 2;
+
+            //Multiplica - se, da direita para a esquerda, cada algarismo do NOSSO NÚMERO pelos pesos ‘2’ a ‘8’;
+            for (var i = seq.Length; i > 0; i--)
+            {
+                soma = soma + (Convert.ToInt32(seq.Mid(i, 1)) * peso);
+                if (peso == b)
+                    peso = 2;
+                else
+                    peso = peso + 1;
+            }
+
+            var modulo = (soma % 11);
+
+            //Se o módulo da divisão anterior for igual a ‘0’ (Zero) ou ‘1’ (um) o dígito verificador será ‘0’ (zero), para
+            //qualquer outro valor Subtrair o módulo do número 11 para obter o dígito verificador.
+            if ((modulo == 0) || (modulo == 1))
+                return 0;
+
+            return (11 - modulo);
         }
 
         //Carteira para Codigo de Operacao
