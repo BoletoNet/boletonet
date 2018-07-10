@@ -784,12 +784,12 @@ namespace BoletoNet
             diasDesconto = 0;
             foreach (IInstrucao instrucao in boleto.Instrucoes)
             {
-                if (instrucao.Codigo.Equals(9) || instrucao.Codigo.Equals(42) || instrucao.Codigo.Equals(81) || instrucao.Codigo.Equals(82))
+                if (instrucao.Codigo.Equals(1) || instrucao.Codigo.Equals(9) || instrucao.Codigo.Equals(42) || instrucao.Codigo.Equals(81) || instrucao.Codigo.Equals(82))
                 {
                     protestar = true;
                     diasProtesto = instrucao.QuantidadeDias;
                 }
-                else if (instrucao.Codigo.Equals(91) || instrucao.Codigo.Equals(92))
+                else if (instrucao.Codigo.Equals(2) || instrucao.Codigo.Equals(91) || instrucao.Codigo.Equals(92))
                 {
                     baixaDevolver = true;
                     diasDevolucao = instrucao.QuantidadeDias;
