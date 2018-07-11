@@ -245,7 +245,7 @@ namespace BoletoNet
 
                     }
                     numeroRegistro++;
-                
+                    
                     strline = banco.GerarTrailerRemessaComDetalhes(numeroRegistro, boletos.Count,  TipoArquivo.CNAB240, cedente, totalTitulos);
                     incluiLinha.WriteLine(strline);
                     OnLinhaGerada(null, strline, EnumTipodeLinha.TraillerDeArquivo);
@@ -282,7 +282,6 @@ namespace BoletoNet
                     }
 
 
-                    numeroRegistro--;
                     strline = banco.GerarTrailerLoteRemessa(numeroRegistro);
                     incluiLinha.WriteLine(strline);
                     OnLinhaGerada(null, strline, EnumTipodeLinha.TraillerDeLote);
