@@ -1027,7 +1027,7 @@ namespace BoletoNet
                 string vInstrucao1 = "00"; //1ª instrução (2, N) Caso Queira colocar um cod de uma instrução. ver no Manual caso nao coloca 00
                 string vInstrucao2 = "00"; //2ª instrução (2, N) Caso Queira colocar um cod de uma instrução. ver no Manual caso nao coloca 00
 
-                foreach (Instrucao instrucao in boleto.Instrucoes)
+                foreach (var instrucao in boleto.Instrucoes)
                 {
                     switch ((EnumInstrucoes_Bradesco)instrucao.Codigo)
                     {
