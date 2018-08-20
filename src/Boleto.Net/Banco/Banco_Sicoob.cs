@@ -643,7 +643,7 @@ namespace BoletoNet
                 detalhe += Utils.FormatCode(boleto.EspecieDocumento.Codigo, 2);  //Posição 107 a 108   Espécie do título
                 detalhe += Utils.FormatCode(boleto.Aceite, 1);  //Posição 109 Identificação do título Aceito/Não Aceito  TODO:Deivid
                 detalhe += Utils.FormatCode(boleto.DataProcessamento.ToString("ddMMyyyy"), 8);   //Posição 110 a 117   Data Emissão do Título
-                detalhe += Utils.FormatCode(boleto.CodJurosMora, "2", 1); //Posição 118  - Código do juros mora. 2 = Padrao % Mes
+                detalhe += Utils.FormatCode(boleto.CodJurosMora, "0", 1); //Posição 118  - Código do juros mora. 2 = Padrao % Mes
                 detalhe += Utils.FormatCode(boleto.DataJurosMora > DateTime.MinValue ? boleto.DataJurosMora.ToString("ddMMyyyy") : "".PadLeft(8, '0'), 8);  //Posição 119 a 126  - Data do Juros de Mora: preencher com a Data de Vencimento do Título
                 detalhe += Utils.FormatCode(boleto.CodJurosMora == "0" ? "".PadLeft(15, '0') : (boleto.CodJurosMora == "1" ? boleto.JurosMora.ToString("f").Replace(",", "").Replace(".", "") : boleto.PercJurosMora.ToString("f").Replace(",", "").Replace(".", "")), 15);   //Posição 127 a 141  - Data do Juros de Mora: preencher com a Data de Vencimento do Título
 
