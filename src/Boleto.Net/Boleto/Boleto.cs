@@ -583,11 +583,21 @@ namespace BoletoNet
             set { _numeroControle = value; }
         }
 
+        /// <summary>
+        /// Imagem que sera incluida logo abaixo das instrucoes
+        /// </summary>
+        public string LogoCedente { get; set; }
+
+        /// <summary>
+        /// Arquivo de template utilizado para personalizar o arquivo
+        /// </summary>
+        public string ArquivoTemplate { get; set; }
+
         public IBancoCarteira BancoCarteira { get; set; }
 
-		#endregion Properties
+        #endregion Properties
 
-		public void Valida()
+        public void Valida()
 		{
 			// Validações básicas, caso ainda tenha implementada na classe do banco.ValidaBoleto()
 			if (this.Cedente == null)

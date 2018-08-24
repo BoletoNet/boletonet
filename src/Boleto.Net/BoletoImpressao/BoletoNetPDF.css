@@ -374,3 +374,34 @@ img {
 .cod-barra-banco-104 {
     font-size: 5mm !important;
 }
+
+.im666 {
+    height: auto;
+    max-height: 100px;
+    width: auto;
+    max-width: 200px;
+}
+
+.im666.opaco.centro {
+    width: 200px;
+    margin: 0 233px 0 233px;
+    position: absolute;
+    opacity: 0.3;
+    margin-top: 25mm;
+}
+
+.wB * {
+    border: 0 !important;
+}
+
+.fb {
+    font-weight: bold !important;
+}
+
+.f18 {
+    font: 18px arial;
+}
+
+.f12 {
+    font: 12px arial;
+}

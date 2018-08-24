@@ -32,6 +32,7 @@ namespace BoletoNet
 
         #region Variaveis
 
+        private bool _personalizado = false;
         private Banco _ibanco = null;
         private short _codigoBanco = 0;
         private Boleto _boleto;
@@ -59,7 +60,20 @@ namespace BoletoNet
         public short CodigoBanco
         {
             get { return _codigoBanco; }
-            set { _codigoBanco = value; }
+            set
+            {
+                _codigoBanco = value;
+                _personalizado = value != 104; //Personalizar os boletos apenas se for Caixa
+            }
+        }
+
+
+        /// <summary>
+        /// Define se o boleto pode ou não ter o layout personalizado com a logo do cedente
+        /// </summary>
+        public bool Personalizado
+        {
+            get { return _personalizado && !string.IsNullOrWhiteSpace(Boleto?.ArquivoTemplate) && !string.IsNullOrWhiteSpace(Boleto?.LogoCedente); }
         }
 
         /// <summary>
@@ -219,7 +233,6 @@ namespace BoletoNet
             }
         }
 
-
         #endregion Propriedades
 
         public static string UrlLogo(int banco)
@@ -263,7 +276,7 @@ namespace BoletoNet
             //Atribui os valores ao html do boleto bancário
             //output.Write(MontaHtml(urlImagemCorte, urlImagemLogo, urlImagemBarra, urlImagemPonto, urlImagemBarraInterna,
             //    "<img src=\"ImagemCodigoBarra.ashx?code=" + Boleto.CodigoBarra.Codigo + "\" alt=\"Código de Barras\" />"));
-            output.Write(MontaHtml(urlImagemLogo, urlImagemBarra, "<img src=\"ImagemCodigoBarra.ashx?code=" + Boleto.CodigoBarra.Codigo + "\" alt=\"Código de Barras\" />"));
+            output.Write(MontaHtml(urlImagemLogo, Boleto.LogoCedente, urlImagemBarra, "<img src=\"ImagemCodigoBarra.ashx?code=" + Boleto.CodigoBarra.Codigo + "\" alt=\"Código de Barras\" />"));
         }
         #endregion Override
 
@@ -327,26 +340,34 @@ namespace BoletoNet
                 .Replace("@TELEFONE", telefone)
                 .Replace("#BOLETO#", htmlBoleto);
         }
+
         public string GeraHtmlReciboSacado()
         {
             try
             {
+
                 var html = new StringBuilder();
 
-                html.Append(Html.ReciboSacadoParte1);
-                html.Append("<br />");
-                html.Append(Html.ReciboSacadoParte2);
-                html.Append(Html.ReciboSacadoParte3);
-
-                if (MostrarEnderecoCedente)
+                if (Personalizado)
                 {
-                    html.Append(Html.ReciboSacadoParte10);
+                    var template = File.ReadAllText(Boleto?.ArquivoTemplate);
+                    html.Append(template);
                 }
+                else
+                {
+                    html.Append(Html.ReciboSacadoParte1);
+                    html.Append("<br />");
+                    html.Append(Html.ReciboSacadoParte2);
+                    html.Append(Html.ReciboSacadoParte3);
 
-                html.Append(Html.ReciboSacadoParte4);
-                html.Append(Html.ReciboSacadoParte5);
-                html.Append(Html.ReciboSacadoParte6);
-                html.Append(Html.ReciboSacadoParte7);
+                    if (MostrarEnderecoCedente)
+                        html.Append(Html.ReciboSacadoParte10);
+
+                    html.Append(Html.ReciboSacadoParte4);
+                    html.Append(Html.ReciboSacadoParte5);
+                    html.Append(Html.ReciboSacadoParte6);
+                    html.Append(Html.ReciboSacadoParte7);
+                }
 
                 //Limpa as intruções para o Sacado
                 _instrucoesHtml = "";
@@ -355,6 +376,9 @@ namespace BoletoNet
 
                 if (Boleto.Sacado.Instrucoes.Count > 0)
                     MontaInstrucoes(Boleto.Sacado.Instrucoes);
+
+                if (Boleto.LogoCedente != null)
+                    MontaImagemInstrucoes(Boleto.LogoCedente);
 
                 //Para Banco do Brasil, a ficha de compensação não possui código da carteira
                 //na formatação do campo.
@@ -369,6 +393,24 @@ namespace BoletoNet
             catch (Exception ex)
             {
                 throw new Exception("Erro durante a execução da transação.", ex);
+            }
+        }
+
+        private void MontaImagemInstrucoes(string imagem)
+        {
+            if (Personalizado) //Já é boleto personalizado, a logo fica no topo
+                return;
+
+            if (!string.IsNullOrWhiteSpace(_instrucoesHtml))
+                _instrucoesHtml = string.Concat(_instrucoesHtml, "<br />");
+
+            if (imagem != null)
+            {
+                var cssClass = "im666";
+                if (Banco.Codigo == 104)
+                    cssClass += " opaco centro";
+
+                _instrucoesHtml += string.Format("<br /><img class='{0}' src='{1}' />", cssClass, imagem);
             }
         }
 
@@ -472,10 +514,11 @@ namespace BoletoNet
             }
         }
 
-        private string MontaHtml(string urlImagemLogo, string urlImagemBarra, string imagemCodigoBarras)
+        private string MontaHtml(string urlImagemLogo, string urlImagemLogoCedente, string urlImagemBarra, string imagemCodigoBarras)
         {
             var html = new StringBuilder();
             string enderecoCedente = "";
+            string enderecoSacado = "";
 
             if (_ajustaTamanhoFonte)
             {
@@ -545,26 +588,10 @@ namespace BoletoNet
                     html.Append(GeraHtmlReciboSacado());
 
                     //Caso mostre o Endereço do Cedente
-                    if (MostrarEnderecoCedente)
+                    if (MostrarEnderecoCedente || Personalizado)
                     {
-                        if (Cedente.Endereco == null)
-                            throw new ArgumentNullException("Endereço do Cedente");
-
-                        string Numero = !String.IsNullOrEmpty(Cedente.Endereco.Numero) ? Cedente.Endereco.Numero + ", " : "";
-                        enderecoCedente = string.Concat(Cedente.Endereco.End, " , ", Numero);
-
-                        if (Cedente.Endereco.CEP == String.Empty)
-                        {
-                            enderecoCedente += string.Format("{0} - {1}/{2}", Cedente.Endereco.Bairro,
-                                                             Cedente.Endereco.Cidade, Cedente.Endereco.UF);
-                        }
-                        else
-                        {
-                            enderecoCedente += string.Format("{0} - {1}/{2} - CEP: {3}", Cedente.Endereco.Bairro,
-                                                             Cedente.Endereco.Cidade, Cedente.Endereco.UF,
-                                                             Utils.FormataCEP(Cedente.Endereco.CEP));
-                        }
-
+                        if (Cedente.Endereco != null)
+                            enderecoCedente = Cedente.Endereco.ToString();
                     }
                 }
             }
@@ -589,27 +616,13 @@ namespace BoletoNet
             //Caso não oculte o Endereço do Sacado,
             if (!OcultarEnderecoSacado)
             {
-                String enderecoSacado = "";
+                if (Sacado.Endereco != null)
+                    enderecoSacado = Sacado.Endereco.ToString();
 
-                if (Sacado.Endereco.CEP == String.Empty)
-                    enderecoSacado = string.Format("{0} - {1}/{2}", Sacado.Endereco.Bairro, Sacado.Endereco.Cidade, Sacado.Endereco.UF);
+                if (infoSacado == string.Empty)
+                    infoSacado += InfoSacado.Render(new string[] { enderecoSacado }, false);
                 else
-                    enderecoSacado = string.Format("{0} - {1}/{2} - CEP: {3}", Sacado.Endereco.Bairro,
-                    Sacado.Endereco.Cidade, Sacado.Endereco.UF, Utils.FormataCEP(Sacado.Endereco.CEP));
-
-                if (Sacado.Endereco.End != string.Empty && enderecoSacado != string.Empty)
-                {
-                    string Numero = !String.IsNullOrEmpty(Sacado.Endereco.Numero) ? ", " + Sacado.Endereco.Numero : "";
-
-                    if (infoSacado == string.Empty)
-                        infoSacado += InfoSacado.Render(Sacado.Endereco.End + Numero, enderecoSacado, false);
-                    else
-                        infoSacado += InfoSacado.Render(Sacado.Endereco.End + Numero, enderecoSacado, true);
-                }
-                //"Informações do Sacado" foi introduzido para possibilitar que o boleto na informe somente o endereço do sacado
-                //como em outras situaçoes onde se imprime matriculas, codigos e etc, sobre o sacado.
-                //Sendo assim o endereço do sacado passa a ser uma Informaçao do Sacado que é adicionada no momento da renderização
-                //de acordo com a flag "OcultarEnderecoSacado"
+                    infoSacado += InfoSacado.Render(new string[] { enderecoSacado }, true);
             }
 
             string agenciaConta = Utils.FormataAgenciaConta(Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Cedente.ContaBancaria.Conta, Cedente.ContaBancaria.DigitoConta);
@@ -679,6 +692,9 @@ namespace BoletoNet
             if (MostrarContraApresentacaoNaDataVencimento)
                 dataVencimento = "Contra Apresentação";
 
+            if (!string.IsNullOrEmpty(urlImagemLogoCedente) && Personalizado)
+                vLocalLogoCedente = urlImagemLogoCedente;
+
             if (String.IsNullOrEmpty(vLocalLogoCedente))
                 vLocalLogoCedente = urlImagemLogo;
 
@@ -727,33 +743,31 @@ namespace BoletoNet
                 .Replace("@QUANTIDADE", (Boleto.QuantidadeMoeda == 0 ? "" : Boleto.QuantidadeMoeda.ToString()))
                 .Replace("@VALORDOCUMENTO", Boleto.ValorMoeda)
                 .Replace("@=VALORDOCUMENTO", valorBoleto)
-                .Replace(
-                    "@VALORCOBRADO",
-                    Boleto.ValorCobrado == 0 ? "" : Boleto.ValorCobrado.ToString("C", CultureInfo.GetCultureInfo("PT-BR")))
+                .Replace("@VALORCOBRADO", Boleto.ValorCobrado == 0 ? "" : Boleto.ValorCobrado.ToString("C", CultureInfo.GetCultureInfo("PT-BR")))
                 .Replace("@OUTROSACRESCIMOS", "")
                 .Replace("@LABELOUTRASDEDUCOES", _ibanco.LabelOutrasDeducoes)
                 .Replace("@OUTRASDEDUCOES", "")
                 .Replace("@LABELDESCONTO", _ibanco.LabelDesconto)
-                .Replace(
-                    "@DESCONTOS",
-                    Boleto.ValorDesconto == 0 ? "" : Boleto.ValorDesconto.ToString("C", CultureInfo.GetCultureInfo("PT-BR")))
+                .Replace("@DESCONTOS", Boleto.ValorDesconto == 0 ? "" : Boleto.ValorDesconto.ToString("C", CultureInfo.GetCultureInfo("PT-BR")))
                 .Replace("@AGENCIACONTA", agenciaCodigoCedente)
+
                 .Replace("@SACADO", sacado)
+                .Replace("@NOMESACADO", Sacado.Nome)
+                .Replace("@CPFCGCSACADO", Sacado.CPFCNPJ)
+                .Replace("@ENDERECOSACADO", enderecoSacado ?? "")
+
                 .Replace("@INFOSACADO", infoSacado)
                 .Replace("@AGENCIACODIGOCEDENTE", agenciaCodigoCedente)
                 .Replace("@CPFCNPJ", Cedente.CPFCNPJ)
                 .Replace("@LABELMORA", _ibanco.LabelMora)
-                .Replace(
-                    "@MORAMULTA",
-                    Boleto.ValorMulta == 0 ? "" : Boleto.ValorMulta.ToString("C", CultureInfo.GetCultureInfo("PT-BR")))
+                .Replace("@MORAMULTA", Boleto.ValorMulta == 0 ? "" : Boleto.ValorMulta.ToString("C", CultureInfo.GetCultureInfo("PT-BR")))
                 .Replace("@AUTENTICACAOMECANICA", "")
                 .Replace("@USODOBANCO", Boleto.UsoBanco)
                 .Replace("@IMAGEMCODIGOBARRA", imagemCodigoBarras)
                 .Replace("@CODBARRABANCO104", Boleto.Banco.Codigo == 104 ? "cod-barra-banco-104" : "") // Banco Caixa
                 .Replace("@ACEITE", Boleto.Aceite)
                 .Replace("@LABELSAC", _ibanco.LabelSAC)
-                .ToString()
-                .Replace("@ENDERECOCEDENTE", MostrarEnderecoCedente ? enderecoCedente : "")
+                .Replace("@ENDERECOCEDENTE", MostrarEnderecoCedente || Personalizado ? enderecoCedente : "")
                 .Replace("@ALTURALOGOEMMILIMETROS", _ibanco.AlturaLogoEmMilimetros.ToString())
                 .Replace(
                     "@AVALISTA",
@@ -761,7 +775,8 @@ namespace BoletoNet
                         "{0} - {1}",
                         Boleto.Avalista != null ? Boleto.Avalista.Nome : string.Empty,
                         Boleto.Avalista != null ? Boleto.Avalista.CPFCNPJ : string.Empty))
-                .Replace("Ar\">R$", RemoveSimboloMoedaValorDocumento ? "Ar\">" : "Ar\">R$");
+                .Replace("Ar\">R$", RemoveSimboloMoedaValorDocumento ? "Ar\">" : "Ar\">R$")
+                .ToString();
 
         }
 
@@ -831,7 +846,7 @@ namespace BoletoNet
             {
                 html.Append(textoNoComecoDoEmail);
             }
-            html.Append(MontaHtml(srcLogo, srcBarra, "<img src=\"" + srcCodigoBarra + "\" alt=\"Código de Barras\" />"));
+            html.Append(MontaHtml(srcLogo, Boleto.LogoCedente, srcBarra, "<img src=\"" + srcCodigoBarra + "\" alt=\"Código de Barras\" />"));
             HtmlOfflineFooter(html);
             return html;
         }
@@ -920,6 +935,7 @@ namespace BoletoNet
                     umBoleto.GeraGraficosParaEmailOffLine(out lrImagemLogo, out lrImagemBarra, out lrImagemCodigoBarra);
                     var theOutput = umBoleto.MontaHtml(
                         "cid:" + lrImagemLogo.ContentId,
+                        umBoleto.Boleto.LogoCedente,
                         "cid:" + lrImagemBarra.ContentId,
                         "<img src=\"cid:" + lrImagemCodigoBarra.ContentId + "\" alt=\"Código de Barras\" />");
 
