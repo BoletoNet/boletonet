@@ -286,7 +286,8 @@ namespace BoletoNet
                     incluiLinha.WriteLine(strline);
                     OnLinhaGerada(null, strline, EnumTipodeLinha.TraillerDeLote);
 
-                    numeroRegistro++;
+                    if (banco.Codigo != 001)
+                        numeroRegistro++;
                     numeroRegistro++;
 
                     strline = banco.GerarTrailerArquivoRemessa(numeroRegistro);
