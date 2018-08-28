@@ -1033,7 +1033,7 @@ namespace BoletoNet
                     {
                         case EnumInstrucoes_Bradesco.Protestar:
                             vInstrucao1 = "06"; //Indicar o código “06” - (Protesto)
-                            vInstrucao2 = "00";
+                            vInstrucao2 = Utils.FitStringLength(instrucao.QuantidadeDias.ToString(), 2, 2, '0', 0, true, true, true);
                             break;
                         case EnumInstrucoes_Bradesco.NaoProtestar:
                             vInstrucao1 = "00";
