@@ -1084,14 +1084,14 @@ namespace BoletoNet
 
             string fnLogo = fileName + @"BoletoNet" + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg";
 
-            if (!System.IO.File.Exists(fnLogo))
-            {
-                Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BoletoNet.Imagens." + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg");
+            //if (!System.IO.File.Exists(fnLogo))  Comentado por diego.dariolli pois quando trocava o logo do banco, como já existia no caminho ele não substituia
+            //{
+                Stream streamLogo = Assembly.GetExecutingAssembly().GetManifestResourceStream("BoletoNet.Imagens." + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg");
                 using (Stream file = File.Create(fnLogo))
                 {
-                    CopiarStream(stream, file);
+                    CopiarStream(streamLogo, file);
                 }
-            }
+            //}
 
             string fnBarra = fileName + @"BoletoNetBarra.gif";
             if (!File.Exists(fnBarra))
