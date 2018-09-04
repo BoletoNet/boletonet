@@ -1266,7 +1266,6 @@ namespace BoletoNet
             switch (boleto.Carteira)
             {
                 case "17-019":
-                case "17-027":
                 case "17-035":
                 case "17-067":
                 case "17-140":
