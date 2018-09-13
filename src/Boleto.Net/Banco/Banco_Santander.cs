@@ -1242,18 +1242,8 @@ namespace BoletoNet
                 //CNPJ ou CPF do cedente ==> 004 - 017
                 _detalhe += Utils.FitStringLength(boleto.Cedente.CPFCNPJ, 14, 14, '0', 0, true, true, true);
 
-                //Código da agência cedente ==> 018 - 021
-                _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 4, 4, '0', 0, true, true, true);
-
-                //Conta movimento cedente ==> 022 - 029
-                _detalhe += Utils.FitStringLength(boleto.Cedente.Codigo.ToString(), 8, 8, '0', 0, true, true, true);
-
-                //Conta cobrança cedente ==> 030 - 037                
-                if (boleto.Cedente.ContaBancaria.Conta.Length == 9 || (!String.IsNullOrEmpty(boleto.Cedente.ContaBancaria.DigitoConta) && boleto.Cedente.ContaBancaria.Conta.Length == 8))
-                    _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta.Substring(0, 8), 8, 8, '0', 0, true, true, true); //alterado por diegodariolli - 15/03/2018 - estava cortando um digito
-                else
-                    _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 8, 8, '0', 0, true, true, true);
-                //Bloco if-else adicionado por Jéferson (jefhtavares). Segundo o Banco o código de transmissão muda de acordo com o tamanho (length) da conta corrente
+                //Código de Transmissão ==> 018 - 037
+                _detalhe += Utils.FitStringLength(boleto.Cedente.CodigoTransmissao, 20, 20, '0', 0, true, true, true);
 
                 //Número de controle do participante, controle do cedente ==> 038 - 062
                 var numeroControle = string.Empty;
