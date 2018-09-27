@@ -387,7 +387,7 @@ namespace BoletoNet
                 header += Utils.FormatCode(cedente.ContaBancaria.DigitoAgencia, "0", 1);  //Posição 058 a 058 Digito Agência
                 header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 12, true);   //Posição 059 a 070
                 header += cedente.ContaBancaria.DigitoConta;  //Posição 071 a 71
-                header += new string(' ', 1); //Posição 072 a 72     Dígito Verificador da Ag/Conta: Brancos
+                header += "0"; //Posição 072 a 72     Dígito Verificador da Ag/Conta: Brancos
                 header += Utils.FormatCode(cedente.Nome, " ", 30);  //Posição 073 a 102      Nome do Banco: SICOOB
                 header += Utils.FormatCode("SICOOB", " ", 30);     //Posição 103 a 132       Nome da Empresa
                 header += Utils.FormatCode("", " ", 10);     //Posição 133 a 142  Uso Exclusivo FEBRABAN / CNAB: Brancos
@@ -647,16 +647,16 @@ namespace BoletoNet
 
                 valorBoleto = Utils.FormatCode(valorBoleto, 15);
                 detalhe += valorBoleto; //Posição 86 a 100   Valor Nominal do Título
-                detalhe += Utils.FormatCode(boleto.ContaBancaria.Agencia, 5);//Posição 101 a 105     Agência Encarregada da Cobrança: "00000"
+                detalhe += "00000"; //Posição 101 a 105     Agência Encarregada da Cobrança: "00000"
                 detalhe += new string(' ', 1);  //Posição 106  Dígito Verificador da Agência: Brancos
                 detalhe += Utils.FormatCode(boleto.EspecieDocumento.Codigo, 2);  //Posição 107 a 108   Espécie do título
                 detalhe += Utils.FormatCode(boleto.Aceite, 1);  //Posição 109 Identificação do título Aceito/Não Aceito  TODO:Deivid
                 detalhe += Utils.FormatCode(boleto.DataProcessamento.ToString("ddMMyyyy"), 8);   //Posição 110 a 117   Data Emissão do Título
-                detalhe += Utils.FormatCode(boleto.CodJurosMora, "0", 1); //Posição 118  - Código do juros mora. 2 = Padrao % Mes
+                detalhe += boleto.CodJurosMora = Utils.FormatCode(boleto.CodJurosMora, "0", 1); //Posição 118  - Código do juros mora. 2 = Padrao % Mes
                 detalhe += Utils.FormatCode(boleto.DataJurosMora > DateTime.MinValue ? boleto.DataJurosMora.ToString("ddMMyyyy") : "".PadLeft(8, '0'), 8);  //Posição 119 a 126  - Data do Juros de Mora: preencher com a Data de Vencimento do Título
                 detalhe += Utils.FormatCode(boleto.CodJurosMora == "0" ? "".PadLeft(15, '0') : (boleto.CodJurosMora == "1" ? boleto.JurosMora.ToString("f").Replace(",", "").Replace(".", "") : boleto.PercJurosMora.ToString("f").Replace(",", "").Replace(".", "")), 15);   //Posição 127 a 141  - Data do Juros de Mora: preencher com a Data de Vencimento do Título
 
-                if (boleto.DataDesconto > DateTime.MinValue)
+                if (boleto.DataDesconto > DateTime.MinValue && boleto.ValorDesconto > 0)
                 {
                     detalhe += "1"; //Posição 118  - Código do desconto
                     detalhe += Utils.FormatCode(boleto.DataDesconto.ToString("ddMMyyyy"), 8); //Posição 143 a 150  - Data do Desconto 1
@@ -691,7 +691,7 @@ namespace BoletoNet
 
                 detalhe += Utils.FormatCode(vInstrucao1, 2);  //Posição 222 a 223  - Código do protesto
                 detalhe += Utils.FormatCode("0", 1);     //Posição 224  - Código para Baixa/Devolução: "0"
-                detalhe += Utils.FormatCode("0", 3);     //Posição 225 A 227  - Número de Dias para Baixa/Devolução: Brancos
+                detalhe += new string (' ', 3);     //Posição 225 A 227  - Número de Dias para Baixa/Devolução: Brancos
                 detalhe += Utils.FormatCode(boleto.Moeda.ToString(), "0", 2, true); //Posição 228 A 229  - Código da Moeda
                 detalhe += Utils.FormatCode("", "0", 10, true); //Posição 230 A 239    -  Nº do Contrato da Operação de Créd.: "0000000000"
                 detalhe += " ";
@@ -771,14 +771,14 @@ namespace BoletoNet
                 {
                     // Código da multa 2 - percentual
                     detalhe += "2";
-                    detalhe += Utils.FormatCode(boleto.DataMulta.ToString("ddMMyyyy"), 8);  //Posição 119 a 126  - Data do Juros de Mora: preencher com a Data de Vencimento do Título
+                    detalhe += Utils.FormatCode(boleto.DataVencimento.ToString("ddMMyyyy"), 8);  //Posição 119 a 126  - Data do Juros de Mora: preencher com a Data de Vencimento do Título
                     detalhe += Utils.FitStringLength(boleto.PercMulta.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 }
                 else if (boleto.ValorMulta > 0)
                 {
                     // Código da multa 1 - valor fixo
                     detalhe += "1";
-                    detalhe += Utils.FormatCode(boleto.DataMulta.ToString("ddMMyyyy"), 8);  //Posição 119 a 126  - Data do Juros de Mora: preencher com a Data de Vencimento do Título
+                    detalhe += Utils.FormatCode(boleto.DataVencimento.ToString("ddMMyyyy"), 8);  //Posição 119 a 126  - Data do Juros de Mora: preencher com a Data de Vencimento do Título
                     detalhe += Utils.FitStringLength(boleto.ValorMulta.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 }
                 else
@@ -828,7 +828,7 @@ namespace BoletoNet
                 trailer += Utils.FormatCode("", "0", 17, true);
                 trailer += Utils.FormatCode("", "0", 6, true);
                 trailer += Utils.FormatCode("", "0", 17, true);
-                trailer += Utils.FormatCode("", "0", 8, true);
+                trailer += Utils.FormatCode("", " ", 8);
                 trailer += Utils.FormatCode("", " ", 117);
                 trailer = Utils.SubstituiCaracteresEspeciais(trailer);
 
