@@ -191,7 +191,5 @@ ModelManifest.xml
 *.pdb
 src/Boleto.Net.v12.suo
 src/.vs/config/applicationhost.config
-src/.vs/config/applicationhost.config
-src/.vs/config/applicationhost.config
-src/.vs/config/applicationhost.config
+src/.vs/
 *.config
