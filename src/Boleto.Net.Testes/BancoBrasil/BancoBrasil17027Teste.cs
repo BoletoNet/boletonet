@@ -37,7 +37,7 @@ namespace Boleto.Net.Testes.BancoBrasil
 
             boletoBancario.Boleto.Valida();
 
-            string nossoNumeroValido = "17/23790018204";
+            string nossoNumeroValido = "23790018204";
 
             Assert.AreEqual(boletoBancario.Boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido para 4 posições");
         }
@@ -51,7 +51,7 @@ namespace Boleto.Net.Testes.BancoBrasil
 
             boletoBancario.Boleto.Valida();
 
-            string nossoNumeroValido = "17/23796618204";
+            string nossoNumeroValido = "23796618204";
 
             Assert.AreEqual(boletoBancario.Boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido para 6 posições");
         }
@@ -65,7 +65,7 @@ namespace Boleto.Net.Testes.BancoBrasil
 
             boletoBancario.Boleto.Valida();
 
-            string nossoNumeroValido = "17/23796610000018204";
+            string nossoNumeroValido = "23796610000018204";
 
             Assert.AreEqual(boletoBancario.Boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido para 7 posições");
         }
