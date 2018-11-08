@@ -2353,7 +2353,7 @@ namespace BoletoNet
 
                 // Caso o campo “Comando” tenha sido preenchido com “01-Registro de títulos” e o campo “instrução codificada” tenha sido preenchido com “06”,
                 // informar o número de dias corridos para protesto: de 06 a 29, 35 ou 40 dias
-                var qtdDiasParaProtesto = boleto.Instrucoes.FirstOrDefault(x => ObterCodigoDaOcorrencia(boleto) == "01" && x.Codigo == 6)?.QuantidadeDias ?? 0;
+                var qtdDiasParaProtesto = boleto.Instrucoes.FirstOrDefault(x => ObterCodigoDaOcorrencia(boleto) == "01" && x.Codigo == 6)?.QuantidadeDias.ToString() ?? "";
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0392, 002, 0, qtdDiasParaProtesto, ' '));                       //392-393
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0394, 001, 0, string.Empty, ' '));                              //394-394                
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0395, 006, 0, numeroRegistro, '0'));                            //395-400
