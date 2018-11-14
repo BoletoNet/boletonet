@@ -97,10 +97,9 @@ namespace BoletoNet
 
         public override string ToString()
         {
-            string numero = !string.IsNullOrWhiteSpace(Numero) ? Numero + ", " : "";
-            var endereco = string.Concat(End, " , ", Numero) + " ";
+            var endereco = string.Concat(Logradouro, " , ", Numero) + " ";
 
-            if (CEP == string.Empty)
+            if (string.IsNullOrEmpty(CEP))
                 endereco += string.Format("{0} - {1}/{2}", Bairro, Cidade, UF);
             else
                 endereco += string.Format("{0} - {1}/{2} - CEP: {3}", Bairro, Cidade, UF, Utils.FormataCEP(CEP));
