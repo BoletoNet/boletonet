@@ -286,7 +286,7 @@ namespace BoletoNet
                     _detalhe += "02"; // CNPJ
                 _detalhe += Utils.FitStringLength(boleto.Sacado.CPFCNPJ, 14, 14, '0', 0, true, true, true).ToUpper();
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Nome, 30, 30, ' ', 0, true, true, false);
-                _detalhe += Utils.FitStringLength((boleto.Sacado.Endereco.End + " " + boleto.Sacado.Endereco.Numero + " - " + boleto.Sacado.Endereco.Complemento + " " + boleto.Sacado.Endereco.Bairro), 37, 37, ' ', 0, true, true, true).ToUpper();
+                _detalhe += Utils.FitStringLength((boleto.Sacado.Endereco.End + " - " + boleto.Sacado.Endereco.Complemento + " " + boleto.Sacado.Endereco.Bairro), 37, 37, ' ', 0, true, true, true).ToUpper();
                 _detalhe += "               ";
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.CEP, 8, 8, ' ', 0, true, true, false).ToUpper(); ;
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.Cidade, 15, 15, ' ', 0, true, true, false).ToUpper();
