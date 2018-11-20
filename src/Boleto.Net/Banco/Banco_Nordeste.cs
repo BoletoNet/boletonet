@@ -204,9 +204,9 @@ namespace BoletoNet
 
                 switch (tipoArquivo)
                 {
-                    case TipoArquivo.CNAB240:
+                    case TipoArquivo.Cnab240:
                         throw new NotImplementedException("Remessa não implementada!");
-                    case TipoArquivo.CNAB400:
+                    case TipoArquivo.Cnab400:
                         _header = GerarHeaderRemessaCNAB400(cedente, numeroArquivoRemessa);
                         break;
                     case TipoArquivo.Outro:
@@ -232,9 +232,9 @@ namespace BoletoNet
             //            
             switch (tipoArquivo)
             {
-                case TipoArquivo.CNAB240:
+                case TipoArquivo.Cnab240:
                     throw new NotImplementedException("CNAB240 não implementado!");
-                case TipoArquivo.CNAB400:
+                case TipoArquivo.Cnab400:
                     vRetorno = ValidarRemessaCNAB400(numeroConvenio, banco, cedente, boletos, numeroArquivoRemessa, out vMsg);
                     break;
                 case TipoArquivo.Outro:
@@ -258,9 +258,9 @@ namespace BoletoNet
 
                 switch (tipoArquivo)
                 {
-                    case TipoArquivo.CNAB240:
+                    case TipoArquivo.Cnab240:
                         throw new NotImplementedException("Remessa não implementada!");
-                    case TipoArquivo.CNAB400:
+                    case TipoArquivo.Cnab400:
                         _detalhe = GerarDetalheRemessaCNAB400(boleto, numeroRegistro, tipoArquivo);
                         break;
                     case TipoArquivo.Outro:
@@ -301,9 +301,9 @@ namespace BoletoNet
 
                 switch (tipoArquivo)
                 {
-                    case TipoArquivo.CNAB240:
+                    case TipoArquivo.Cnab240:
                         throw new NotImplementedException("Remessa não implementada!");
-                    case TipoArquivo.CNAB400:
+                    case TipoArquivo.Cnab400:
                         _trailer = GerarTrailerRemessa400(numeroRegistro, 0);
                         break;
                     case TipoArquivo.Outro:

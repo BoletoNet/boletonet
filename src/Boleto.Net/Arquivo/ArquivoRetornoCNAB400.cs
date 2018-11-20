@@ -27,7 +27,7 @@ namespace BoletoNet
 
         public ArquivoRetornoCNAB400()
         {
-            this.TipoArquivo = TipoArquivo.CNAB400;
+            this.TipoArquivo = TipoArquivo.Cnab400;
         }
 
         #endregion
@@ -52,7 +52,7 @@ namespace BoletoNet
                 switch (banco.Codigo)
                 {
                     // 85 - CECRED - Código de registro detalhe 7 para CECRED
-                    case (int)Bancos.CECRED:
+                    case (int)Bancos.Cecred:
                         IdsRegistroDetalhe.Add("7");
                         break;
                     // 1 - Banco do Brasil- Código de registro detalhe 7 para convênios com 7 posições, e detalhe 1 para convênios com 6 posições(colocado as duas, pois não interferem em cada tipo de arquivo)

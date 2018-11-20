@@ -6,6 +6,7 @@ using BoletoNet.Util;
 using System.Drawing;
 using System.ComponentModel;
 using System.Drawing.Imaging;
+using System.Linq;
 
 namespace BoletoNet
 {
@@ -369,33 +370,33 @@ namespace BoletoNet
         /// <summary>
         /// Formata o campo de acordo com o tipo e o tamanho 
         /// </summary>        
-        public static string FitStringLength(string SringToBeFit, int maxLength, int minLength, char FitChar, int maxStartPosition, bool maxTest, bool minTest, bool isNumber)
+        public static string FitStringLength(string sringToBeFit, int maxLength, int minLength, char fitChar, int maxStartPosition, bool maxTest, bool minTest, bool isNumber)
         {
             try
             {
-                string result = "";
+                string result = string.Empty;
 
                 if (maxTest == true)
                 {
                     // max
-                    if (SringToBeFit.Length > maxLength)
+                    if (sringToBeFit.Length > maxLength)
                     {
-                        result += SringToBeFit.Substring(maxStartPosition, maxLength);
+                        result += sringToBeFit.Substring(maxStartPosition, maxLength);
                     }
                 }
 
                 if (minTest == true)
                 {
                     // min
-                    if (SringToBeFit.Length <= minLength)
+                    if (sringToBeFit.Length <= minLength)
                     {
-                        if (isNumber == true)
+                        if (isNumber)
                         {
-                            result += (string)(new string(FitChar, (minLength - SringToBeFit.Length)) + SringToBeFit);
+                            result += new string(fitChar, (minLength - sringToBeFit.Length)) + sringToBeFit;
                         }
                         else
                         {
-                            result += (string)(SringToBeFit + new string(FitChar, (minLength - SringToBeFit.Length)));
+                            result += sringToBeFit + new string(fitChar, (minLength - sringToBeFit.Length));
                         }
                     }
                 }
@@ -403,7 +404,7 @@ namespace BoletoNet
             }
             catch (Exception ex)
             {
-                Exception tmpEx = new Exception("Problemas ao Formatar a string. String = " + SringToBeFit, ex);
+                Exception tmpEx = new Exception("Problemas ao Formatar a string. String = " + sringToBeFit, ex);
                 throw tmpEx;
             }
         }
@@ -421,15 +422,10 @@ namespace BoletoNet
             string tipo = string.Empty;
             //Tratamento
             inscricao = inscricao.Replace(".", "").Replace("-", "").Replace("/", "");
-            //Verifica tipo
             if (inscricao.Length == 11)
-            {
                 tipo = "01"; //CPF
-            }
             else if (inscricao.Length == 14)
-            {
-                tipo = "02"; // CNPJ
-            }
+            tipo = "02"; // CNPJ
 
             //Retorno
             return tipo;
@@ -476,21 +472,20 @@ namespace BoletoNet
                 bytes = (byte[])converter.ConvertTo(image, typeof(byte[]));
                 return bytes;
             }
-            else if (image.GetType().ToString() == "System.Drawing.Bitmap")
+
+            switch (image.GetType().ToString())
             {
-                bytes = (byte[])TypeDescriptor.GetConverter(image).ConvertTo(image, typeof(byte[]));
-                return bytes;
+                case "System.Drawing.Bitmap":
+                    bytes = (byte[])TypeDescriptor.GetConverter(image).ConvertTo(image, typeof(byte[]));
+                    return bytes;
+                default:
+                    throw new NotImplementedException("ConvertImageToByte invalid type " + image.GetType().ToString());
             }
-            else
-                throw new NotImplementedException("ConvertImageToByte invalid type " + image.GetType().ToString());
         }
 
         internal static bool DataValida(DateTime dateTime)
         {
-            if (dateTime.ToString("dd/MM/yyyy") == "01/01/1900" | dateTime.ToString("dd/MM/yyyy") == "01/01/0001")
-                return false;
-            else
-                return true;
+            return !(dateTime.ToString("dd/MM/yyyy") == "01/01/1900" | dateTime.ToString("dd/MM/yyyy") == "01/01/0001");
         }
 
         /// <summary>
@@ -502,8 +497,7 @@ namespace BoletoNet
         /// </summary>        
         public static string Right(string seq, int qtde, char ch, bool completaPelaEsquerda)
         {
-            string final;
-            final = Strings.Right(seq, qtde);
+            var final = seq.Right(qtde);
             return FitStringLength(final, qtde, qtde, ch, 0, true, true, completaPelaEsquerda);
             ;
         }
@@ -519,8 +513,7 @@ namespace BoletoNet
                 foreach (var m in mask)
                 {
                     if (m != charMask)
-                    {
-                        retorno = retorno.Insert(idx, m.ToString());
+                    {retorno = retorno.Insert(idx, m.ToString());
                     }
                     idx++;
                 }
@@ -531,16 +524,9 @@ namespace BoletoNet
         }
 
 
-        public static bool IsNullOrWhiteSpace(String value)
+        public static bool IsNullOrWhiteSpace(string value)
         {
-            if (value == null) return true;
-
-            for (int i = 0; i < value.Length; i++)
-            {
-                if (!Char.IsWhiteSpace(value[i])) return false;
-            }
-
-            return true;
+            return value == null || value.All(char.IsWhiteSpace);
         }
     }
 }

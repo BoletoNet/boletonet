@@ -671,7 +671,7 @@ namespace BoletoNet
                     case (int)Bancos.BancoBrasil:
                         agenciaCodigoCedente = string.Format("{0}-{1}/{2}-{3}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Utils.FormatCode(Cedente.ContaBancaria.Conta, 6), Cedente.ContaBancaria.DigitoConta);
                         break;
-                    case (int)Bancos.HSBC:
+                    case (int)Bancos.Hsbc:
                         agenciaCodigoCedente = string.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo + Cedente.DigitoCedente, 7));
                         break;
                     default:
@@ -695,7 +695,7 @@ namespace BoletoNet
                             }
                         }
                         break;
-                    case (int)Bancos.HSBC:
+                    case (int)Bancos.Hsbc:
                         agenciaCodigoCedente = string.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo, 7)); //Solicitação do HSBC que mostrasse agencia/Conta - por Transis em 24/02/15
                         break;
                     case (int)Bancos.Sicredi:

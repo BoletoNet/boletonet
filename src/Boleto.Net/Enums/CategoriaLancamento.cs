@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace BoletoNet
+namespace BoletoNet.Enums
 {
     public enum CategoriaLancamento
     {

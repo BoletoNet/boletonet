@@ -2,10 +2,10 @@ namespace BoletoNet
 {
     public enum TipoArquivo
     {
-        CNAB240,
-        CNAB240EmModoTeste,
-        CNAB400,
-        CBR643,
+        Cnab240,
+        Cnab240EmModoTeste,
+        Cnab400,
+        Cbr643,
         Outro,
     }
 }

@@ -208,7 +208,7 @@ namespace BoletoNet.Testes
             objBOLETOS.Add(objBOLETO);
 
             var mem = new MemoryStream();
-            var objREMESSA = new ArquivoRemessa(TipoArquivo.CNAB400);
+            var objREMESSA = new ArquivoRemessa(TipoArquivo.Cnab400);
             objREMESSA.GerarArquivoRemessa("09", new Banco(237), objCEDENTE, objBOLETOS, mem, 1000);
 
 

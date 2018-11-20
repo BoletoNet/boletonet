@@ -1,4 +1,5 @@
 using System;
+using BoletoNet.Enums;
 
 namespace BoletoNet
 {

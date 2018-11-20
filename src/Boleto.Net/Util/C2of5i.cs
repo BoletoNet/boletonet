@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using BoletoNet.Util;
 
 namespace BoletoNet
 {
@@ -87,8 +88,8 @@ namespace BoletoNet
             int i;
             string ftemp;
 
-            xPos = 0;
-            yPos = 0;
+            XPos = 0;
+            YPos = 0;
 
             if (this.Digits == 0)
             {
@@ -134,7 +135,7 @@ namespace BoletoNet
         /// <returns>byte[]</returns>
         public byte[] ToByte()
         {
-            return base.toByte(ToBitmap());
+            return base.ToByte(ToBitmap());
         }
     }
 }

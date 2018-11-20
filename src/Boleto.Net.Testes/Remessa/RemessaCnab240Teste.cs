@@ -56,7 +56,7 @@ namespace Boleto.Net.Testes.Remessa
             var boletos = new Boletos {boleto};
 
             var mem = new MemoryStream();
-            var objREMESSA = new ArquivoRemessa(TipoArquivo.CNAB240EmModoTeste);
+            var objREMESSA = new ArquivoRemessa(TipoArquivo.Cnab240EmModoTeste);
             objREMESSA.LinhaDeArquivoGerada+= delegate(object sender, LinhaDeArquivoGeradaArgs args)
             {
                 if(args.TipoLinha == EnumTipodeLinha.HeaderDeArquivo || args.TipoLinha == EnumTipodeLinha.HeaderDeLote)
@@ -65,7 +65,7 @@ namespace Boleto.Net.Testes.Remessa
             objREMESSA.GerarArquivoRemessa("09", new Banco(001), cedente, boletos, mem, 1000);
 
             mem = new MemoryStream();
-            objREMESSA = new ArquivoRemessa(TipoArquivo.CNAB240);
+            objREMESSA = new ArquivoRemessa(TipoArquivo.Cnab240);
             objREMESSA.LinhaDeArquivoGerada += delegate (object sender, LinhaDeArquivoGeradaArgs args)
             {
                 if (args.TipoLinha == EnumTipodeLinha.HeaderDeArquivo || args.TipoLinha == EnumTipodeLinha.HeaderDeLote)

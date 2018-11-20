@@ -27,15 +27,15 @@ namespace BoletoNet
         {
             switch (tipoArquivo)
             {
-                case TipoArquivo.CNAB240:
+                case TipoArquivo.Cnab240:
                     _arquivoRetorno = new ArquivoRetornoCNAB240();
                     _arquivoRetorno.LinhaDeArquivoLida += ArquivoRemessa_LinhaDeArquivoLidaCNAB240;
                     break;
-                case TipoArquivo.CNAB400:
+                case TipoArquivo.Cnab400:
                     _arquivoRetorno = new ArquivoRetornoCNAB400();
                     _arquivoRetorno.LinhaDeArquivoLida += ArquivoRemessa_LinhaDeArquivoLidaCNAB400;
                     break;
-                case TipoArquivo.CBR643:
+                case TipoArquivo.Cbr643:
                     _arquivoRetorno = new ArquivoRetornoCrb643();
                     break;
                 default:

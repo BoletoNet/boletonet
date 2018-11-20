@@ -38,7 +38,7 @@ namespace Boleto.Net.Testes.BancoSicredi
             var banco = itensRemessa.First().Banco;
             var cedente = itensRemessa.First().Cedente;
 
-            ArquivoRemessa arquivoRemessa = new ArquivoRemessa(TipoArquivo.CNAB400);
+            ArquivoRemessa arquivoRemessa = new ArquivoRemessa(TipoArquivo.Cnab400);
             arquivoRemessa.LinhaDeArquivoGerada += (object sender, LinhaDeArquivoGeradaArgs e) =>
             {
                 Debug.WriteLine(e.Linha);

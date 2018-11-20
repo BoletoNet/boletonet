@@ -10,8 +10,8 @@ namespace BoletoNet.Enums
         Banrisul = 041,
         Bradesco = 237,
         Caixa = 104,
-        CECRED = 85,
-        HSBC = 399,
+        Cecred = 85,
+        Hsbc = 399,
         Itau = 341,
         Maxima = 243,
         [Description("033")]

@@ -56,12 +56,12 @@ namespace BoletoNet
 
 				switch (tipoArquivo)
 				{
-					case TipoArquivo.CNAB240:
+					case TipoArquivo.Cnab240:
 						break;
-					case TipoArquivo.CNAB400:
+					case TipoArquivo.Cnab400:
 						detalhe = this.GerarDetalheRemessaCNAB400(boleto, numeroRegistro);
 						break;
-					case TipoArquivo.CBR643:
+					case TipoArquivo.Cbr643:
 						break;
 					case TipoArquivo.Outro:
 						break;
@@ -95,12 +95,12 @@ namespace BoletoNet
 
 				switch (tipoArquivo)
 				{
-					case TipoArquivo.CNAB240:
+					case TipoArquivo.Cnab240:
 						break;
-					case TipoArquivo.CNAB400:
+					case TipoArquivo.Cnab400:
 						header = this.GerarHeaderRemessaCNAB400(numeroConvenio);
 						break;
-					case TipoArquivo.CBR643:
+					case TipoArquivo.Cbr643:
 						break;
 					case TipoArquivo.Outro:
 						break;
@@ -130,9 +130,9 @@ namespace BoletoNet
 
 				switch (tipoArquivo)
 				{
-					case TipoArquivo.CNAB240:
+					case TipoArquivo.Cnab240:
 						break;
-					case TipoArquivo.CNAB400:
+					case TipoArquivo.Cnab400:
 						trailer = this.GerarTrailerRemessa400(numeroRegistro);
 						break;
 					case TipoArquivo.Outro:

@@ -1,9 +1,8 @@
-using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 
-namespace BoletoNet
+namespace BoletoNet.Util
 {
     public abstract class BarCodeBase
     {
@@ -15,13 +14,13 @@ namespace BoletoNet
         private int _thin;
         private int _full;
 
-        protected int xPos = 0;
-        protected int yPos = 0;
+        protected int XPos = 0;
+        protected int YPos = 0;
 
         private string _contenttype;
 
-        protected Brush BLACK = Brushes.Black;
-        protected Brush WHITE = Brushes.White;
+        protected Brush Black = Brushes.Black;
+        protected Brush White = Brushes.White;
 
         #endregion
 
@@ -74,14 +73,14 @@ namespace BoletoNet
             {
                 try
                 {
-                    int temp = value;
+                    var temp = value;
                     _thin = temp;
                     //					_half = temp * 2;
                     _full = temp * 3;
                 }
                 catch
                 {
-                    int temp = 1;
+                    const int temp = 1;
                     _thin = temp;
                     //					_half = temp * 2;
                     _full = temp * 3;
@@ -203,13 +202,12 @@ namespace BoletoNet
             }
         }
         #endregion
-        protected virtual byte[] toByte(Bitmap bitmap)
+        protected virtual byte[] ToByte(Bitmap bitmap)
         {
-            MemoryStream mstream = new MemoryStream();
-            ImageCodecInfo myImageCodecInfo = GetEncoderInfo(ContentType);
-
-            EncoderParameter myEncoderParameter0 = new EncoderParameter(Encoder.Quality, (long)100);
-            EncoderParameters myEncoderParameters = new EncoderParameters(1);
+            var mstream = new MemoryStream();
+            var myImageCodecInfo = GetEncoderInfo(ContentType);
+            var myEncoderParameter0 = new EncoderParameter(Encoder.Quality, (long)100);
+            var myEncoderParameters = new EncoderParameters(1);
             myEncoderParameters.Param[0] = myEncoderParameter0;
 
             bitmap.Save(mstream, myImageCodecInfo, myEncoderParameters);
@@ -219,8 +217,7 @@ namespace BoletoNet
         private static ImageCodecInfo GetEncoderInfo(string mimeType)
         {
             int j;
-            ImageCodecInfo[] encoders;
-            encoders = ImageCodecInfo.GetImageEncoders();
+            var encoders = ImageCodecInfo.GetImageEncoders();
             for (j = 0; j < encoders.Length; ++j)
             {
                 if (encoders[j].MimeType == mimeType)
@@ -230,21 +227,13 @@ namespace BoletoNet
         }
         protected virtual void DrawPattern(ref Graphics g, string Pattern)
         {
-            int tempWidth;
-
-            for (int i = 0; i < Pattern.Length; i++)
+            for (var i = 0; i < Pattern.Length; i++)
             {
-                if (Pattern[i] == '0')
-                    tempWidth = _thin;
-                else
-                    tempWidth = _full;
+                var tempWidth = Pattern[i] == '0' ? _thin : _full;
 
-                if (i % 2 == 0)
-                    g.FillRectangle(BLACK, xPos, yPos, tempWidth, _height);
-                else
-                    g.FillRectangle(WHITE, xPos, yPos, tempWidth, _height);
+                g.FillRectangle(i % 2 == 0 ? Black : White, XPos, YPos, tempWidth, _height);
 
-                xPos += tempWidth;
+                XPos += tempWidth;
             }
         }
 

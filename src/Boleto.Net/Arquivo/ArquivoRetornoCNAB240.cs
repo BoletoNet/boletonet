@@ -31,18 +31,18 @@ namespace BoletoNet
 
         public ArquivoRetornoCNAB240()
 		{
-            this.TipoArquivo = TipoArquivo.CNAB240;
+            this.TipoArquivo = TipoArquivo.Cnab240;
         }
 
         public ArquivoRetornoCNAB240(Stream streamArquivo)
         {
-            this.TipoArquivo = TipoArquivo.CNAB240;
+            this.TipoArquivo = TipoArquivo.Cnab240;
             _streamArquivo = streamArquivo;
         }
 
         public ArquivoRetornoCNAB240(string caminhoArquivo)
         {
-            this.TipoArquivo = TipoArquivo.CNAB240;
+            this.TipoArquivo = TipoArquivo.Cnab240;
 
             _streamArquivo = new StreamReader(caminhoArquivo).BaseStream;
         }
