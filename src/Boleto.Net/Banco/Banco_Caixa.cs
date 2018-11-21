@@ -1843,22 +1843,50 @@ namespace BoletoNet
                             reg.IdentificacaoTituloCaixa_NossoNumero.Length - 1),
                     MotivosRejeicao = reg.CodigoMotivoRejeicao,
                     Carteira = reg.CodigoCarteira,
-                    CodigoOcorrencia = Utils.ToInt32(reg.CodigoOcorrencia),
-                    DataOcorrencia = Utils.ToDateTime(Utils.ToInt32(reg.DataOcorrencia).ToString("##-##-##")),
+                    CodigoOcorrencia = !string.IsNullOrEmpty(reg.CodigoOcorrencia ) ? 
+                        Utils.ToInt32(reg.CodigoOcorrencia) 
+                        : 0,
+                    DataOcorrencia = !string.IsNullOrEmpty(reg.DataOcorrencia) ? 
+                        Utils.ToDateTime(Utils.ToInt32(reg.DataOcorrencia).ToString("##-##-##"))
+                        : DateTime.MinValue,
                     NumeroDocumento = reg.NumeroDocumento,
-                    DataVencimento = Utils.ToDateTime(Utils.ToInt32(reg.DataVencimentoTitulo).ToString("##-##-##")),
-                    ValorTitulo = (Convert.ToDecimal(reg.ValorTitulo) / 100),
-                    CodigoBanco = Utils.ToInt32(reg.CodigoBancoCobrador),
-                    AgenciaCobradora = Utils.ToInt32(reg.CodigoAgenciaCobradora),
-                    ValorDespesa = (Convert.ToDecimal(reg.ValorDespesasCobranca) / 100),
+                    DataVencimento = !string.IsNullOrEmpty(reg.DataVencimentoTitulo) ? 
+                        Utils.ToDateTime(Utils.ToInt32(reg.DataVencimentoTitulo).ToString("##-##-##"))
+                        : DateTime.MinValue,
+                    ValorTitulo = !string.IsNullOrEmpty(reg.ValorTitulo) ? 
+                        (Convert.ToDecimal(reg.ValorTitulo) / 100)
+                        : 0,
+                    CodigoBanco = !string.IsNullOrEmpty(reg.CodigoBancoCobrador) ? 
+                        Utils.ToInt32(reg.CodigoBancoCobrador) 
+                        : 0,
+                    AgenciaCobradora = !string.IsNullOrEmpty(reg.CodigoAgenciaCobradora) ? 
+                        Utils.ToInt32(reg.CodigoAgenciaCobradora) 
+                        : 0,
+                    ValorDespesa = !string.IsNullOrEmpty(reg.ValorDespesasCobranca) ? 
+                        (Convert.ToDecimal(reg.ValorDespesasCobranca) / 100)
+                        : 0 ,
                     OrigemPagamento = reg.TipoLiquidacao,
-                    IOF = (Convert.ToDecimal(reg.ValorIOF) / 100),
-                    ValorAbatimento = (Convert.ToDecimal(reg.ValorAbatimentoConcedido) / 100),
-                    Descontos = (Convert.ToDecimal(reg.ValorDescontoConcedido) / 100),
-                    ValorPago = (Convert.ToDecimal(reg.ValorPago) / 100),
-                    JurosMora = (Convert.ToDecimal(reg.ValorJuros) / 100),
-                    TarifaCobranca = (Convert.ToDecimal(reg.ValorDespesasCobranca) / 100),
-                    DataCredito = Utils.ToDateTime(Utils.ToInt32(reg.DataCreditoConta).ToString("##-##-##")),
+                    IOF = !string.IsNullOrEmpty(reg.ValorIOF) ? 
+                        (Convert.ToDecimal(reg.ValorIOF) / 100)
+                        : 0 ,
+                    ValorAbatimento = !string.IsNullOrEmpty(reg.ValorAbatimentoConcedido) ? 
+                        (Convert.ToDecimal(reg.ValorAbatimentoConcedido) / 100)
+                        : 0,
+                    Descontos = !string.IsNullOrEmpty(reg.ValorDescontoConcedido) ? 
+                        (Convert.ToDecimal(reg.ValorDescontoConcedido) / 100)
+                        : 0,
+                    ValorPago = !string.IsNullOrEmpty(reg.ValorPago) ? 
+                        (Convert.ToDecimal(reg.ValorPago) / 100)
+                        : 0 ,
+                    JurosMora = !string.IsNullOrEmpty(reg.ValorJuros) ? 
+                        (Convert.ToDecimal(reg.ValorJuros) / 100)
+                        : 0,
+                    TarifaCobranca = !string.IsNullOrEmpty(reg.ValorDespesasCobranca) ? 
+                        (Convert.ToDecimal(reg.ValorDespesasCobranca) / 100)
+                        : 0 ,
+                    DataCredito = !string.IsNullOrEmpty(reg.DataCreditoConta) ? 
+                        Utils.ToDateTime(Utils.ToInt32(reg.DataCreditoConta).ToString("##-##-##"))
+                        : DateTime.MinValue,
                     NumeroSequencial = Utils.ToInt32(reg.NumeroSequenciaRegistro),
                     NomeSacado = reg.IdentificacaoTituloEmpresa
                 };
