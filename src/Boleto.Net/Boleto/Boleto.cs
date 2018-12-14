@@ -70,11 +70,12 @@ namespace BoletoNet
 		private Remessa _remessa;
 
 		private ObservableCollection<GrupoDemonstrativo> _demonstrativos;
+        private string _codDesconto;
 
-		#endregion
+        #endregion
 
-		#region Construtor
-		public Boleto()
+        #region Construtor
+        public Boleto()
 		{
 		}
 
@@ -420,6 +421,15 @@ namespace BoletoNet
         {
             get { return this._codJurosMora; }
             set { this._codJurosMora = value; }
+        }
+
+        /// <summary> 
+        /// Código do Desconto 1 - "0" = Sem desconto. "1"= Valor Fixo até a data informada "2" = Percentual até a data informada
+        /// </summary> 
+        public string CodDesconto
+        {
+            get { return this._codDesconto; }
+            set { this._codDesconto = value; }
         }
 
         /// <summary>
