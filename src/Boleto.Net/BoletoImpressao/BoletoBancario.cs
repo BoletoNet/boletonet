@@ -604,7 +604,7 @@ namespace BoletoNet
                     if (MostrarEnderecoCedente || Personalizado)
                     {
                         if (Cedente.Endereco != null)
-                            enderecoCedente = Cedente.Endereco.ToString();
+                            enderecoCedente = Cedente.Endereco.End.ToString();
                     }
                 }
             }
