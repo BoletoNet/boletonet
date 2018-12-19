@@ -406,7 +406,7 @@ namespace BoletoNet
                 return false;
             }
             return Boleto.Carteira == "17-019" || Boleto.Carteira == "18-019" || Boleto.Carteira == "17-159" ||
-                Boleto.Carteira == "17-140" || Boleto.Carteira == "17-067";
+                Boleto.Carteira == "17-140" || Boleto.Carteira == "17-067" || Boleto.Carteira == "17-035";
         }
 
         private void MontaImagemInstrucoes(string imagem)
@@ -740,7 +740,7 @@ namespace BoletoNet
                 //Variável inserida para atender às especificações das carteiras "17-019", "18-019" do Banco do Brasil
                 //apenas para a ficha de compensação.
                 //Como a variável não existirá se não forem as carteiras "17-019", "17-035", "17-140", "17-159", "17-067", "17-167" e "18-019", não foi colocado o [if].
-                .Replace("@NOSSONUMEROBB", TemSuporteNossoNumeroBB() ? Boleto.NossoNumero.Substring(3) : string.Empty)
+                .Replace("@NOSSONUMEROBB", TemSuporteNossoNumeroBB() ? Boleto.NossoNumero : string.Empty)
 
             #endregion Implementação para o Banco do Brasil
 

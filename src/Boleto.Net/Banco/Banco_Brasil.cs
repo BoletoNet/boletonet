@@ -156,7 +156,11 @@ namespace BoletoNet
                  */
                 if (boleto.Cedente.Convenio.ToString().Length == 7)
                 {
-                    if (boleto.NossoNumero.Length > 10)
+                    if (boleto.NossoNumero.Length > 10 && (boleto.NossoNumero.Substring(0, 7) == boleto.Cedente.Convenio.ToString()))
+                    {
+                        boleto.NossoNumero = boleto.NossoNumero.Substring(7);
+                    }
+                    else if (boleto.NossoNumero.Length > 10)
                         throw new NotImplementedException(string.Format("Para a carteira {0}, a quantidade máxima são de 10 de posições para o nosso número", boleto.Carteira));
 
                     boleto.NossoNumero = string.Format("{0}{1}", boleto.Cedente.Convenio, Utils.FormatCode(boleto.NossoNumero, 10));
@@ -1272,7 +1276,11 @@ namespace BoletoNet
                 case "17-159":
                 case "17-167":
                 case "18-019":
-                    boleto.NossoNumero = string.Format("{0}/{1}", LimparCarteira(boleto.Carteira), boleto.NossoNumero);
+                    if (boleto.Cedente.Convenio.ToString().Length == 6 || boleto.Cedente.Convenio.ToString().Length == 4)
+                    {
+                        boleto.NossoNumero = boleto.NossoNumero + string.Concat("-", Mod11BancoBrasil(boleto.NossoNumero));
+                        return;
+                    }
                     return;
                 case "31":
                     boleto.NossoNumero = string.Format("{0}{1}", Utils.FormatCode(boleto.Cedente.Convenio.ToString(), 7), boleto.NossoNumero);
@@ -1611,8 +1619,7 @@ namespace BoletoNet
 
         private string FormataNossoNumeroSegmentoPCarteira17035(Boleto boleto)
         {
-            var nossoNumeroSequencial = Utils.FormatCode(boleto.NossoNumero.Substring(boleto.NossoNumero.Length - 5, 5), 5);
-            return string.Format("{0}{1}{2}", boleto.Cedente.Convenio, nossoNumeroSequencial, Mod11BancoBrasil(nossoNumeroSequencial));
+            return boleto.NossoNumero.Replace("-", "");
         }
 
         public override string GerarDetalheSegmentoQRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
@@ -2225,7 +2232,8 @@ namespace BoletoNet
 
                 var nossoNumero = boleto.NossoNumero;
                 if (boleto.Carteira.Equals("17-027") || boleto.Carteira.Equals("17-019"))
-                    nossoNumero = boleto.NossoNumero.Substring(3);
+                    if (boleto.Cedente.Convenio.ToString().Length == 6 || boleto.Cedente.Convenio.ToString().Length == 4)
+                        nossoNumero = boleto.NossoNumero.Remove(11,2);
 
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0002, 002, 0, vCpfCnpjEmi, '0'));                               //002-003
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0004, 014, 0, boleto.Cedente.CPFCNPJ, '0'));                    //004-017
