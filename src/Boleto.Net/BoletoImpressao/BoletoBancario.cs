@@ -214,6 +214,14 @@ namespace BoletoNet
             get { return Utils.ToBool(ViewState["9"]); }
             set { ViewState["9"] = value; }
         }
+	
+	[Browsable(true), Description("Mostra o endereço do Cedente sem Avalista")]
+        public bool MostrarEnderecoCedenteSemSacadorAvalista
+        {
+            get { return Utils.ToBool(ViewState["10"]); }
+            set { ViewState["10"] = value; }
+        }
+
 
         #endregion Propriedades
 
