@@ -346,7 +346,11 @@ namespace BoletoNet
                 html.Append(Html.ReciboSacadoParte2);
                 html.Append(Html.ReciboSacadoParte3);
 
-                if (MostrarEnderecoCedente)
+		if (MostrarEnderecoCedenteSemSacadorAvalista)
+                {
+                    html.Append(Html.ReciboSacadoParte10SemSacador);
+                }
+                else if (MostrarEnderecoCedente)
                 {
                     html.Append(Html.ReciboSacadoParte10);
                 }
