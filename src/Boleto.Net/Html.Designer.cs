@@ -538,8 +538,7 @@ namespace BoletoNet {
         ///								&lt;div class=&quot;t&quot;&gt;(-) Desconto / Abatimentos&lt;/div&gt;
         ///								&lt;div class=&quot;c BB&quot;&gt;@DESCONTOS&lt;/div&gt;
         ///								&lt;div class=&quot;t&quot;&gt;(-) Outras deduções&lt;/div&gt;
-        ///								&lt;div class=&quot;c BB&quot;&gt;@OUTRASDEDUCOES&lt;/div&gt;
-        /// [rest of string was truncated]&quot;;.
+        ///								&lt;div class=&quot;c BB&quot;&gt;@OUTRASDEDUCOES&lt;/div&gt;        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReciboCedenteParte6 {
             get {
@@ -699,6 +698,30 @@ namespace BoletoNet {
         internal static string ReciboSacadoParte3 {
             get {
                 return ResourceManager.GetString("ReciboSacadoParte3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///				&lt;tr class=&quot;ct h13 At&quot;&gt;
+        ///						&lt;td class=&quot;w298&quot;&gt;Beneficiário&lt;/td&gt;
+        ///						&lt;td class=&quot;w126&quot;&gt;Agência / Código do Beneficiário&lt;/td&gt;
+        ///						&lt;td class=&quot;w34&quot;&gt;Espécie&lt;/td&gt;
+        ///						&lt;td class=&quot;w45&quot;&gt;Quantidade&lt;/td&gt;
+        ///						&lt;td class=&quot;w128&quot;&gt;Nosso número&lt;/td&gt;
+        ///				&lt;/tr&gt;
+        ///				&lt;tr class=&quot;cp h12 At rBb&quot;&gt;
+        ///						&lt;td&gt;@CEDENTE&lt;/td&gt;
+        ///						&lt;td&gt;@AGENCIACODIGOCEDENTE&lt;/td&gt;
+        ///						&lt;td&gt;@ESPECIE&lt;/td&gt;
+        ///						&lt;td&gt;@QUANTIDADE&lt;/td&gt;
+        ///						&lt;td class=&quot;Ar&quot;&gt;@NOSSONUMERO&lt;/td&gt;
+        ///				&lt;/tr&gt;
+        ///		&lt;/table&gt;.
+        /// </summary>
+        internal static string ReciboSacadoParte3SemCarteira {
+            get {
+                return ResourceManager.GetString("ReciboSacadoParte3SemCarteira", resourceCulture);
             }
         }
         

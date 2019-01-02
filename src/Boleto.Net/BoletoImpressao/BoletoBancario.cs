@@ -222,6 +222,13 @@ namespace BoletoNet
             set { ViewState["10"] = value; }
         }
 
+        [Browsable(true), Description("Mostra o Nosso Numero sem Carteira")]
+        public bool MostrarNossoNumeroSemCarteira
+        {
+            get { return Utils.ToBool(ViewState["11"]); }
+            set { ViewState["11"] = value; }
+        }
+
 
         #endregion Propriedades
 
@@ -352,7 +359,7 @@ namespace BoletoNet
                 html.Append(Html.ReciboSacadoParte1);
                 html.Append("<br />");
                 html.Append(Html.ReciboSacadoParte2);
-                html.Append(Html.ReciboSacadoParte3);
+                html.Append(MostrarNossoNumeroSemCarteira ? Html.ReciboSacadoParte3SemCarteira : Html.ReciboSacadoParte3);
 
                 if (MostrarEnderecoCedenteSemSacadorAvalista)
                 {
@@ -370,6 +377,13 @@ namespace BoletoNet
 
                 //if (Instrucoes.Count == 0)
                 html.Append(Html.ReciboSacadoParte8);
+
+                //BANRISUL nao possui codigo de carteira - Felipe Transis em 02/01/19
+                if (Boleto.Banco.Codigo == 41)
+                {
+                    html.Replace("Carteira /", "");
+                }
+
 
                 //Limpa as intruções para o Sacado
                 _instrucoesHtml = "";
@@ -425,7 +439,8 @@ namespace BoletoNet
                 else
                 {
                     //Para SANTANDER, a ficha de compensação não possui código da carteira - por jsoda em 08/12/2012
-                    if (Boleto.Banco.Codigo == 33)
+                    //BANRISUL tb nao possui codigo de carteira - Felipe Transis em 02/01/19
+                    if (Boleto.Banco.Codigo == 33 || Boleto.Banco.Codigo == 41)
                     {
                         html.Replace("Carteira /", "");
                     }
