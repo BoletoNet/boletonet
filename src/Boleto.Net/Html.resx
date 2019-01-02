@@ -804,4 +804,14 @@
         &lt;/tr&gt;
     &lt;/table&gt;</value>
   </data>
+  <data name="ReciboSacadoParte10SemSacador" xml:space="preserve">
+    <value>&lt;table class="w666"&gt;
+				&lt;tr class="ct h13"&gt;
+						&lt;td class="w659"&gt;Beneficiário Endereço&lt;/td&gt; 
+				&lt;/tr&gt;
+				&lt;tr class="cp h12 rBb"&gt;
+						&lt;td class="At"&gt;@ENDERECOCEDENTE&lt;/td&gt;
+				&lt;/tr&gt;
+		&lt;/table&gt;</value>
+  </data>
 </root>

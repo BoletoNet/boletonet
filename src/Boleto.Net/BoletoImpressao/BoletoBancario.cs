@@ -215,6 +215,14 @@ namespace BoletoNet
             set { ViewState["9"] = value; }
         }
 
+        [Browsable(true), Description("Mostra o endereço do Cedente sem Avalista")]
+        public bool MostrarEnderecoCedenteSemSacadorAvalista
+        {
+            get { return Utils.ToBool(ViewState["10"]); }
+            set { ViewState["10"] = value; }
+        }
+
+
         #endregion Propriedades
 
         /// <summary> 
@@ -346,7 +354,11 @@ namespace BoletoNet
                 html.Append(Html.ReciboSacadoParte2);
                 html.Append(Html.ReciboSacadoParte3);
 
-                if (MostrarEnderecoCedente)
+                if (MostrarEnderecoCedenteSemSacadorAvalista)
+                {
+                    html.Append(Html.ReciboSacadoParte10SemSacador);
+                }
+                else if (MostrarEnderecoCedente)
                 {
                     html.Append(Html.ReciboSacadoParte10);
                 }
@@ -663,9 +675,14 @@ namespace BoletoNet
                         break;
                     case (int)Bancos.Banrisul:
                         var codigo = Cedente.Codigo;
+                        if (Cedente.Codigo.Substring(0, 4).Equals(Cedente.ContaBancaria.Agencia))
+                            //RETIRA OS DIGITOS DA AGENCIA SE ESTIVEREM JUNTOS NO CODIGO DA CONTA
+                            codigo = Cedente.Codigo.Substring(4, codigo.Length - 4);
                         var dig1 = codigo.Substring(0, codigo.Length - (Cedente.DigCedente.Length + 1));
                         var dig2 = codigo.Substring((codigo.Length - (Cedente.DigCedente.Length + 1)), 1);
+
                         agenciaCodigoCedente = string.Format("{0}/{1}.{2}.{3}", Cedente.ContaBancaria.Agencia, dig1, dig2, Cedente.DigCedente);
+
                         //agenciaCodigoCedente = string.Format("{0}.{1}/{2}.{3}.{4}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Cedente.Codigo.Substring(4, 6), Cedente.Codigo.Substring(10, 1), Cedente.DigitoCedente);
                         break;
                     case (int)Bancos.BancoBrasil:

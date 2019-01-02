@@ -538,7 +538,8 @@ namespace BoletoNet {
         ///								&lt;div class=&quot;t&quot;&gt;(-) Desconto / Abatimentos&lt;/div&gt;
         ///								&lt;div class=&quot;c BB&quot;&gt;@DESCONTOS&lt;/div&gt;
         ///								&lt;div class=&quot;t&quot;&gt;(-) Outras deduções&lt;/div&gt;
-        ///								&lt;div class=&quot;c BB&quot;&gt;@OUTRASDEDUCOES&lt;/div&gt;        /// [rest of string was truncated]&quot;;.
+        ///								&lt;div class=&quot;c BB&quot;&gt;@OUTRASDEDUCOES&lt;/div&gt;
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReciboCedenteParte6 {
             get {
@@ -641,6 +642,22 @@ namespace BoletoNet {
         internal static string ReciboSacadoParte10 {
             get {
                 return ResourceManager.GetString("ReciboSacadoParte10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///				&lt;tr class=&quot;ct h13&quot;&gt;
+        ///						&lt;td class=&quot;w659&quot;&gt;Beneficiário Endereço&lt;/td&gt; 
+        ///				&lt;/tr&gt;
+        ///				&lt;tr class=&quot;cp h12 rBb&quot;&gt;
+        ///						&lt;td class=&quot;At&quot;&gt;@ENDERECOCEDENTE&lt;/td&gt;
+        ///				&lt;/tr&gt;
+        ///		&lt;/table&gt;.
+        /// </summary>
+        internal static string ReciboSacadoParte10SemSacador {
+            get {
+                return ResourceManager.GetString("ReciboSacadoParte10SemSacador", resourceCulture);
             }
         }
         

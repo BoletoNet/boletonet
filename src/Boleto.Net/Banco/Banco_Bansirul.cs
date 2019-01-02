@@ -46,9 +46,9 @@ namespace BoletoNet
             boleto.NossoNumero = CalcularNCNossoNumero(boleto.NossoNumero);
 
             //Atribui o nome do banco ao local de pagamento
-            if (string.IsNullOrEmpty(boleto.LocalPagamento))
-                boleto.LocalPagamento = "Pagar preferencialmente nas agências do Banco Banrisul";
-            
+            if (boleto.LocalPagamento == "Até o vencimento, preferencialmente no ")
+                boleto.LocalPagamento += Nome;
+
             //Verifica se data do processamento é valida
             if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 boleto.DataProcessamento = DateTime.Now;
