@@ -663,6 +663,9 @@ namespace BoletoNet
                         break;
                     case (int)Bancos.Banrisul:
                         var codigo = Cedente.Codigo;
+			if (Cedente.Codigo.Substring(0, 4).Equals(Cedente.ContaBancaria.Agencia))
+                            //RETIRA OS DIGITOS DA AGENCIA SE ESTIVEREM JUNTOS NO CODIGO DA CONTA
+                            codigo = Cedente.Codigo.Substring(4, codigo.Length - 4);
                         var dig1 = codigo.Substring(0, codigo.Length - (Cedente.DigCedente.Length + 1));
                         var dig2 = codigo.Substring((codigo.Length - (Cedente.DigCedente.Length + 1)), 1);
                         agenciaCodigoCedente = string.Format("{0}/{1}.{2}.{3}", Cedente.ContaBancaria.Agencia, dig1, dig2, Cedente.DigCedente);
