@@ -68,7 +68,7 @@ namespace BoletoNet
 					case EnumEspecieDocumento_Sofisa.Recibo:
 						this.Codigo = this.RetornaCodigoEspecie(EnumEspecieDocumento_Sofisa.Recibo);
 						this.Especie = "Recibo";
-						this.Sigla = "RE";
+						this.Sigla = "RC";
 						break;
 					case EnumEspecieDocumento_Sofisa.DuplicataServico:
 						this.Codigo = this.RetornaCodigoEspecie(EnumEspecieDocumento_Sofisa.DuplicataServico);
@@ -142,6 +142,22 @@ namespace BoletoNet
 					return EnumEspecieDocumento_Sofisa.DuplicataMercantil;
 			}
 		}
+
+        public override string getCodigoEspecieBySigla(string sigla)
+        {
+            switch (sigla)
+            {
+                case "DM": return "01";
+                case "NP": return "02";
+                case "CH": return "03";
+                case "LC": return "04";
+                case "RC": return "05";
+                case "AS": return "08";
+                case "DS": return "12";
+                case "OU": return "99";
+                default: return "01";
+            }
+        }
 
         public override IEspecieDocumento DuplicataMercantil()
         {

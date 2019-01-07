@@ -63,6 +63,7 @@ namespace BoletoNet
 		private DateTime _dataDesconto;
 		private DateTime _dataOutrosAcrescimos;
 		private DateTime _dataOutrosDescontos;
+        private DateTime _dataLimitePagamento;
 		private short _percentualIOS;
         private short _modalidadeCobranca = 0;
         private short _numeroDiasBaixa = 0;
@@ -547,6 +548,15 @@ namespace BoletoNet
 			get { return this._dataOutrosDescontos; }
 			set { this._dataOutrosDescontos = value; }
 		}
+
+        /// <summary> 
+        /// Data de Outros Descontos
+        /// </summary>  
+        public DateTime DataLimitePagamento
+        {
+            get { return _dataLimitePagamento; }
+            set { _dataLimitePagamento = value; }
+        }
 
 		/// <summary> 
 		/// Retorna o tipo da modalidade

@@ -58,7 +58,10 @@ namespace BoletoNet
             {
                 switch (codigoBanco)
                 {
-
+                    //004 - Banco do Nordeste
+                    case 4:
+                        _ICodigoMovimento = new CodigoMovimento_Nordeste(codigoMovimento);
+                        break;
                     // Caixa
                     case 104:
                         _ICodigoMovimento = new CodigoMovimento_Caixa(codigoMovimento);

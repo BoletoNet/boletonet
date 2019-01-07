@@ -93,6 +93,7 @@
     <Compile Include="Arquivo\Reader\TextPosAttribute.cs" />
     <Compile Include="Arquivo\Reader\TextPosReader.cs" />
     <Compile Include="Banco\AbstractBanco.cs" />
+    <Compile Include="Banco\Banco_CrediSis.cs" />
     <Compile Include="Banco\Banco_Daycoval.cs" />
     <Compile Include="Banco\Banco_Nordeste.cs" />
     <Compile Include="Banco\Banco_Cecred.cs" />
@@ -104,10 +105,14 @@
     <Compile Include="Banco\Carteiras\Brasil\CarteiraBrasil.cs" />
     <Compile Include="Banco\Carteiras\IBancoCarteira.cs" />
     <Compile Include="Banco\Carteiras\TipoCarteiraAttribute.cs" />
+    <Compile Include="Banco\Banco_Maxima.cs" />
+    <Compile Include="Boleto\Carteira\Carteira_CrediSIS.cs" />
+    <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Nordeste.cs" />
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Itau.cs" />
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Sicoob.cs" />
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Sicredi.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Banestes.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_CrediSIS.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Semear.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Cecred.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Daycoval.cs" />
@@ -181,6 +186,7 @@
     <Compile Include="Boleto\Instrucao\Instrucao_BRB.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Caixa.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Cecred.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_CrediSIS.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_HSBC.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Itau.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_BankBoston.cs" />
@@ -347,6 +353,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Imagens\743.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Imagens\097.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

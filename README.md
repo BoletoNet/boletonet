@@ -21,6 +21,8 @@ Para instalar o BoletoNet, utilize o Nuget:
 ```powershell
 Install-Package Boleto.Net
 ```
+Se você é novo por aqui, dê uma olhada nos projetos de testes, que contem exemplos de utilização:
+https://github.com/BoletoNet/boletonet/tree/master/src/Boleto.Net.Testes
 
 Para informações sobre o projeto e bancos implementados, consulte o nosso [Wiki](https://github.com/BoletoNet/boletonet/wiki).
 

@@ -61,7 +61,7 @@ namespace BoletoNet
             boleto.Cedente.ContaBancaria.DigitoConta = Utils.FormatCode(boleto.Cedente.ContaBancaria.DigitoConta, 1);
 
             if (string.IsNullOrEmpty(boleto.DigitoNossoNumero))
-                boleto.DigitoNossoNumero = Mod11(boleto.NossoNumero, 8).ToString();
+                boleto.DigitoNossoNumero = Mod11Nordeste(boleto.NossoNumero, 8).ToString();
 
             boleto.DigitoNossoNumero = Utils.FormatCode(boleto.DigitoNossoNumero, 1);
 
@@ -99,7 +99,7 @@ namespace BoletoNet
             string digNossN = "";
 
             if (string.IsNullOrEmpty(digNossN))
-                digNossN = Mod11(nossoNumero, 8).ToString();
+                digNossN = Mod11Nordeste(nossoNumero, 8).ToString();
 
             digNossN = Utils.FormatCode(digNossN, 1);
 
@@ -334,9 +334,31 @@ namespace BoletoNet
         }
         #endregion
 
-        internal static string Mod11BancoNordeste(string value)
+        
+        protected static int Mod11Nordeste(string seq, int b)
         {
-            throw new NotImplementedException("Função não implementada.");
+            //Suélton - 05/07/2018 - Implementação do cálculo do DV do nosso número para o Banco do Nordeste
+
+            int soma = 0, peso = 2;
+
+            //Multiplica - se, da direita para a esquerda, cada algarismo do NOSSO NÚMERO pelos pesos ‘2’ a ‘8’;
+            for (var i = seq.Length; i > 0; i--)
+            {
+                soma = soma + (Convert.ToInt32(seq.Mid(i, 1)) * peso);
+                if (peso == b)
+                    peso = 2;
+                else
+                    peso = peso + 1;
+            }
+
+            var modulo = (soma % 11);
+
+            //Se o módulo da divisão anterior for igual a ‘0’ (Zero) ou ‘1’ (um) o dígito verificador será ‘0’ (zero), para
+            //qualquer outro valor Subtrair o módulo do número 11 para obter o dígito verificador.
+            if ((modulo == 0) || (modulo == 1))
+                return 0;
+
+            return (11 - modulo);
         }
 
         //Carteira para Codigo de Operacao
@@ -451,14 +473,13 @@ namespace BoletoNet
         {
             try
             {
-
                 base.GerarDetalheRemessa(boleto, numeroRegistro, tipoArquivo);
                 //
                 TRegistroEDI reg = new TRegistroEDI();
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0001, 001, 0, "1", '0'));                                       //001-001
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0002, 016, 0, string.Empty, ' '));                              //002-017
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0018, 004, 0, boleto.Cedente.ContaBancaria.Agencia, '0'));      //018-021
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0022, 002, 0, "00", '0'));                                      //021-023
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0022, 002, 0, "00", '0'));                                      //022-023
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0024, 007, 0, boleto.Cedente.ContaBancaria.Conta, '0'));        //024-030
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0031, 001, 0, boleto.Cedente.ContaBancaria.DigitoConta, ' '));  //031-031
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0032, 002, 0, boleto.PercMulta, '0'));                          //032-033 Perc Multa 
@@ -479,7 +500,7 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliDireita______, 0111, 010, 0, boleto.NumeroDocumento, ' '));                    //111-120
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAA___________, 0121, 006, 0, boleto.DataVencimento, ' '));                     //121-126
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0127, 013, 2, boleto.ValorBoleto, '0'));                        //127-139
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0140, 003, 0, "004", '0'));                                     //140-142   
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0140, 003, 0, "000", '0'));                                     //140-142   
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0143, 004, 0, "0000", '0'));                                    //143-146
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0147, 001, 0, string.Empty, ' '));                              //147-147
                 string especieDocumento = "";
@@ -494,9 +515,17 @@ namespace BoletoNet
                     vInstrucao = boleto.Instrucoes[0].Codigo.ToString();
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0157, 004, 0, vInstrucao, '0'));                               //157-160
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0161, 013, 2, boleto.JurosMora, '0'));                         //161-173
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0174, 006, 0, "000000", '0'));                                 //174-179
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0180, 013, 2, '0', '0'));                                      //180-192
-
+                //Suélton - 09/04/2018 - Implementação do desconto por antecipação
+                if (boleto.ValorDesconto > 0)
+                {
+                    reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0174, 006, 0, boleto.DataDesconto == DateTime.MinValue ? boleto.DataVencimento.ToString("ddMMyy") : boleto.DataDesconto.ToString("ddMMyy"), '0')); //174-179
+                    reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0180, 013, 2, boleto.ValorDesconto, '0')); //180-192
+                }
+                else
+                {
+                    reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0174, 006, 0, "000000", '0')); //174-179
+                    reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0180, 013, 2, '0', '0')); //180-192
+                }
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0193, 013, 2, boleto.IOF, '0'));                                //193-205
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0206, 013, 2, boleto.Abatimento, '0'));                         //206-218
                 #region Regra Tipo de Inscrição Sacado
@@ -589,6 +618,7 @@ namespace BoletoNet
                 //detalhe. = reg.Brancos1;
                 detalhe.Carteira = reg.Carteira;
                 detalhe.CodigoOcorrencia = Utils.ToInt32(reg.Comando);
+                detalhe.DescricaoOcorrencia = new CodigoMovimento(4, detalhe.CodigoOcorrencia).Descricao;
                 //
                 detalhe.NumeroDocumento = reg.NumeroTituloCedente;
                 //detalhe. = reg.Brancos2;

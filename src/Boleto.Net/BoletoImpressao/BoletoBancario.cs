@@ -215,6 +215,21 @@ namespace BoletoNet
             set { ViewState["9"] = value; }
         }
 
+        [Browsable(true), Description("Mostra o endereço do Cedente sem Avalista")]
+        public bool MostrarEnderecoCedenteSemSacadorAvalista
+        {
+            get { return Utils.ToBool(ViewState["10"]); }
+            set { ViewState["10"] = value; }
+        }
+
+        [Browsable(true), Description("Mostra o Nosso Numero sem Carteira")]
+        public bool MostrarNossoNumeroSemCarteira
+        {
+            get { return Utils.ToBool(ViewState["11"]); }
+            set { ViewState["11"] = value; }
+        }
+
+
         #endregion Propriedades
 
         /// <summary> 
@@ -344,9 +359,13 @@ namespace BoletoNet
                 html.Append(Html.ReciboSacadoParte1);
                 html.Append("<br />");
                 html.Append(Html.ReciboSacadoParte2);
-                html.Append(Html.ReciboSacadoParte3);
+                html.Append(MostrarNossoNumeroSemCarteira ? Html.ReciboSacadoParte3SemCarteira : Html.ReciboSacadoParte3);
 
-                if (MostrarEnderecoCedente)
+                if (MostrarEnderecoCedenteSemSacadorAvalista)
+                {
+                    html.Append(Html.ReciboSacadoParte10SemSacador);
+                }
+                else if (MostrarEnderecoCedente)
                 {
                     html.Append(Html.ReciboSacadoParte10);
                 }
@@ -359,8 +378,17 @@ namespace BoletoNet
                 //if (Instrucoes.Count == 0)
                 html.Append(Html.ReciboSacadoParte8);
 
+                //BANRISUL nao possui codigo de carteira - Felipe Transis em 02/01/19
+                if (Boleto.Banco.Codigo == 41)
+                {
+                    html.Replace("Carteira /", "");
+                }
+
+
                 //Limpa as intruções para o Sacado
                 _instrucoesHtml = "";
+
+                MontaInstrucaoCaixa();
 
                 MontaInstrucoes(Boleto.Instrucoes);
 
@@ -411,7 +439,8 @@ namespace BoletoNet
                 else
                 {
                     //Para SANTANDER, a ficha de compensação não possui código da carteira - por jsoda em 08/12/2012
-                    if (Boleto.Banco.Codigo == 33)
+                    //BANRISUL tb nao possui codigo de carteira - Felipe Transis em 02/01/19
+                    if (Boleto.Banco.Codigo == 33 || Boleto.Banco.Codigo == 41)
                     {
                         html.Replace("Carteira /", "");
                     }
@@ -419,6 +448,8 @@ namespace BoletoNet
 
                 //Limpa as intruções para o Cedente
                 _instrucoesHtml = "";
+
+                MontaInstrucaoCaixa();
 
                 MontaInstrucoes(Boleto.Instrucoes);
 
@@ -430,6 +461,19 @@ namespace BoletoNet
             catch (Exception ex)
             {
                 throw new Exception("Erro na execução da transação.", ex);
+            }
+        }
+
+        private void MontaInstrucaoCaixa()
+        {
+            //Suelton - 12/03/2018
+            //Para homologação da Caixa é obrigatório ter as informações do SAC
+            if (Banco.Codigo == 104)
+            {
+                //_instrucoesHtml = _instrucoesHtml +
+                //                  "<br><br><p>SAC CAIXA: 0800 726 0101 (Informações, reclamações, sugestões e elogios)</p> <p> Para pessoas com deficiência auditiva ou de fala: 0800 726 2492 </p><p> Ouvidoria: 0800 725 7474 - caixa.gov.br </p>";
+                _instrucoesHtml = _instrucoesHtml +
+                                  "<br>SAC CAIXA: 0800 726 0101 (Informações, reclamações, sugestões e elogios)<br/> Para pessoas com deficiência auditiva ou de fala: 0800 726 2492 Ouvidoria: 0800 725 7474 <br/> caixa.gov.br";
             }
         }
 
@@ -458,7 +502,7 @@ namespace BoletoNet
             if (!string.IsNullOrEmpty(_instrucoesHtml))
                 _instrucoesHtml = string.Concat(_instrucoesHtml, "<br />");
 
-            if (instrucoes.Count > 0)
+            if (instrucoes.Count > 0 || Banco.Codigo == 104)
             {
                 //_instrucoesHtml = string.Empty;
                 //Flavio(fhlviana@hotmail.com) - retirei a tag <span> de cada instrução por não ser mais necessáras desde que dentro
@@ -471,7 +515,8 @@ namespace BoletoNet
                     Instrucoes.Add(instrucao);
                 }
 
-                _instrucoesHtml = _instrucoesHtml.Left(_instrucoesHtml.Length - 6);
+                if (instrucoes.Any())
+                    _instrucoesHtml = _instrucoesHtml.Left(_instrucoesHtml.Length - 6);
             }
         }
 
@@ -645,9 +690,14 @@ namespace BoletoNet
                         break;
                     case (int)Bancos.Banrisul:
                         var codigo = Cedente.Codigo;
+                        if (Cedente.Codigo.Substring(0, 4).Equals(Cedente.ContaBancaria.Agencia))
+                            //RETIRA OS DIGITOS DA AGENCIA SE ESTIVEREM JUNTOS NO CODIGO DA CONTA
+                            codigo = Cedente.Codigo.Substring(4, codigo.Length - 4);
                         var dig1 = codigo.Substring(0, codigo.Length - (Cedente.DigCedente.Length + 1));
                         var dig2 = codigo.Substring((codigo.Length - (Cedente.DigCedente.Length + 1)), 1);
+
                         agenciaCodigoCedente = string.Format("{0}/{1}.{2}.{3}", Cedente.ContaBancaria.Agencia, dig1, dig2, Cedente.DigCedente);
+
                         //agenciaCodigoCedente = string.Format("{0}.{1}/{2}.{3}.{4}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Cedente.Codigo.Substring(4, 6), Cedente.Codigo.Substring(10, 1), Cedente.DigitoCedente);
                         break;
                     case (int)Bancos.BancoBrasil:
@@ -669,13 +719,13 @@ namespace BoletoNet
                     case (int)Bancos.Santander:
                         agenciaCodigoCedente = string.Format("{0}-{1}/{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Utils.FormatCode(Cedente.Codigo, 6));
                         if (string.IsNullOrEmpty(Cedente.ContaBancaria.DigitoAgencia))
-			{
-                            agenciaCodigoCedente = string.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo, 6));			
-			    if (Utils.FormatCode(Cedente.Codigo, 6).Equals("000000"))
-			    {
-                               agenciaCodigoCedente = String.Format("{0}/{1}-{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.Conta,Cedente.ContaBancaria.DigitoConta);
-			    }
-		        }
+                        {
+                            agenciaCodigoCedente = string.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo, 6));
+                            if (Utils.FormatCode(Cedente.Codigo, 6).Equals("000000"))
+                            {
+                                agenciaCodigoCedente = String.Format("{0}/{1}-{2}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.Conta, Cedente.ContaBancaria.DigitoConta);
+                            }
+                        }
                         break;
                     case (int)Bancos.HSBC:
                         agenciaCodigoCedente = string.Format("{0}/{1}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.Codigo, 7)); //Solicitação do HSBC que mostrasse agencia/Conta - por Transis em 24/02/15
@@ -842,11 +892,9 @@ namespace BoletoNet
             html.Append(MontaHtml(srcLogo, srcBarra, "<img src=\"" + srcCodigoBarra + "\" alt=\"Código de Barras\" />"));
             if (imprimeFooter)
                 HtmlOfflineFooter(html);
+
             return html;
         }
-
-
-
 
         /// <summary>
         /// Monta o Header de um email com pelo menos um boleto dentro.
@@ -881,6 +929,14 @@ namespace BoletoNet
             html.Append("<body>\n");
         }
 
+        /// <summary>
+        /// Adicionar o SAC da Caixa no rodapé do boleto
+        /// </summary>
+        /// <param name="saida"></param>
+        protected static void AddRodapeSacCaixa(StringBuilder saida)
+        {
+            saida.Append("SAC CAIXA: 0800 726 0101 (Informações, reclamações, sugestões e elogios) <p> Para pessoas com deficiência auditiva ou de fala: 0800 726 2492 <p> Ouvidoria: 0800 725 7474 <p> caixa.gov.br");
+        }
 
         /// <summary>
         /// Monta o Footer de um email com pelo menos um boleto dentro.
@@ -1060,14 +1116,14 @@ namespace BoletoNet
 
             string fnLogo = fileName + @"BoletoNet" + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg";
 
-            if (!System.IO.File.Exists(fnLogo))
-            {
-                Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("BoletoNet.Imagens." + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg");
+            //if (!System.IO.File.Exists(fnLogo))  Comentado por diego.dariolli pois quando trocava o logo do banco, como já existia no caminho ele não substituia
+            //{
+                Stream streamLogo = Assembly.GetExecutingAssembly().GetManifestResourceStream("BoletoNet.Imagens." + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg");
                 using (Stream file = File.Create(fnLogo))
                 {
-                    CopiarStream(stream, file);
+                    CopiarStream(streamLogo, file);
                 }
-            }
+            //}
 
             string fnBarra = fileName + @"BoletoNetBarra.gif";
             if (!File.Exists(fnBarra))
