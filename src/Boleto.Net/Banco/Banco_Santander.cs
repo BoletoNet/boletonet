@@ -8,7 +8,9 @@ using BoletoNet.Excecoes;
 [assembly: WebResource("BoletoNet.Imagens.033.jpg", "image/jpg")]
 namespace BoletoNet
 {
-    /// <author>  
+	using System.Text;
+
+	/// <author>  
     /// Eduardo Frare
     /// Stiven 
     /// Diogo
@@ -1492,15 +1494,13 @@ namespace BoletoNet
             try
             {
 
-                string _detalhe = "";
+                var linhasGeradas = new StringBuilder();
 
                 foreach (var _instrucao in boleto.Instrucoes)
                 {
+	                var _detalhe = string.Empty;
 
-                    if (!string.IsNullOrEmpty(_detalhe))
-                        _detalhe += Environment.NewLine;
-
-                    //Código do registro = 2 (Recibo do Sacado) 3, 4, 5, 6 e 7 (Ficha de Compensação) ==> 001 - 001
+	                //Código do registro = 2 (Recibo do Sacado) 3, 4, 5, 6 e 7 (Ficha de Compensação) ==> 001 - 001
                     _detalhe += "2";
 
                     //Uso do Banco ==> 002 - 017
@@ -1541,6 +1541,19 @@ namespace BoletoNet
 
                     //Número sequêncial do registro no arquivo ==> 395 - 400
                     _detalhe += Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true);
+                    
+                    _detalhe = Utils.SubstituiCaracteresEspeciais(_detalhe);
+
+                    if (!string.IsNullOrEmpty(_detalhe))
+                    {
+                        if (linhasGeradas.Length > 0)
+                        {
+                            linhasGeradas.Append(Environment.NewLine);
+                        }
+
+	                    linhasGeradas.Append(Utils.SubstituiCaracteresEspeciais(_detalhe));
+                    }
+					
                     numeroRegistro++;
 
                 }
@@ -1551,10 +1564,7 @@ namespace BoletoNet
                     if (CodigoRegistroSacado > 7)
                         throw new Exception("So pode ter 3 mensagens no recibo do sacdo.");
 
-                    if (!string.IsNullOrEmpty(_detalhe))
-                        _detalhe += Environment.NewLine;
-
-                    _detalhe += Environment.NewLine;
+                    var _detalhe = string.Empty;
 
                     //((Instrucao_Santander)_instrucao).
 
@@ -1599,13 +1609,23 @@ namespace BoletoNet
 
                     //Número sequêncial do registro no arquivo ==> 395 - 400
                     _detalhe += Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true);
-                    numeroRegistro++;
+                    
+                    _detalhe = Utils.SubstituiCaracteresEspeciais(_detalhe);
 
+                    if (!string.IsNullOrEmpty(_detalhe))
+                    {
+                        if (linhasGeradas.Length > 0)
+                        {
+                            linhasGeradas.Append(Environment.NewLine);
+                        }
+
+                        linhasGeradas.Append(Utils.SubstituiCaracteresEspeciais(_detalhe));
+                    }
+
+                    numeroRegistro++;
                 }
 
-                _detalhe = Utils.SubstituiCaracteresEspeciais(_detalhe);
-
-                return _detalhe;
+                return linhasGeradas.ToString();
             }
             catch (Exception ex)
             {
