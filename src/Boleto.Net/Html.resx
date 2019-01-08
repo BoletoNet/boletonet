@@ -384,7 +384,7 @@
   <data name="ReciboCedenteParte3" xml:space="preserve">
     <value>&lt;table class="w666"&gt;
 				&lt;tr class="ct h13"&gt;
-						&lt;td class="w472"&gt;Beneficiário&lt;/td&gt;
+						&lt;td class="w472"&gt;Beneficiário /&lt;/td&gt;
 						&lt;td class="w180"&gt;Agência / Código Beneficiário&lt;/td&gt;
 				&lt;/tr&gt;
 				&lt;tr class="cp h12 rBb"&gt;
