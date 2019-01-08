@@ -51,7 +51,7 @@ namespace BoletoNet
 						str = this.GerarDetalheRemessaCNAB400(boleto, numeroRegistro);
 						goto case TipoArquivo.CNAB240;
 					default:
-						throw new ArgumentOutOfRangeException(nameof(tipoArquivo), (object)tipoArquivo, (string)null);
+						throw new ArgumentOutOfRangeException("tipoArquivo", (object)tipoArquivo, (string)null);
 				}
 			}
 			catch (Exception ex)
@@ -77,7 +77,7 @@ namespace BoletoNet
 						str = this.GerarHeaderRemessaCNAB400(numeroConvenio);
 						goto case TipoArquivo.CNAB240;
 					default:
-						throw new ArgumentOutOfRangeException(nameof(tipoArquivo), (object)tipoArquivo, (string)null);
+						throw new ArgumentOutOfRangeException("tipoArquivo", (object)tipoArquivo, (string)null);
 				}
 			}
 			catch (Exception ex)
@@ -101,7 +101,7 @@ namespace BoletoNet
 						str = this.GerarTrailerRemessa400(numeroRegistro);
 						goto case TipoArquivo.CNAB240;
 					default:
-						throw new ArgumentOutOfRangeException(nameof(tipoArquivo), (object)tipoArquivo, (string)null);
+						throw new ArgumentOutOfRangeException("tipoArquivo", (object)tipoArquivo, (string)null);
 				}
 			}
 			catch (Exception ex)
