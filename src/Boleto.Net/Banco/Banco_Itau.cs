@@ -273,7 +273,7 @@ namespace BoletoNet
                     #region FGGGG.GGHHHZ
 
                     string F = agencia.Substring(3, 1);
-                    string GGGGGG = boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta;
+                    string GGGGGG = boleto.Cedente.ContaBancaria.Conta.PadLeft(5, '0') + boleto.Cedente.ContaBancaria.DigitoConta;
                     string HHH = "000";
                     string Z = Mod10(F + GGGGGG + HHH).ToString();
 
