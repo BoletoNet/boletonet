@@ -215,6 +215,21 @@ namespace BoletoNet
             set { ViewState["9"] = value; }
         }
 
+        [Browsable(true), Description("Mostra o endereço do Cedente sem Avalista")]
+        public bool MostrarEnderecoCedenteSemSacadorAvalista
+        {
+            get { return Utils.ToBool(ViewState["10"]); }
+            set { ViewState["10"] = value; }
+        }
+
+        [Browsable(true), Description("Mostra o Nosso Numero sem Carteira")]
+        public bool MostrarNossoNumeroSemCarteira
+        {
+            get { return Utils.ToBool(ViewState["11"]); }
+            set { ViewState["11"] = value; }
+        }
+
+
         #endregion Propriedades
 
         /// <summary> 
@@ -344,9 +359,13 @@ namespace BoletoNet
                 html.Append(Html.ReciboSacadoParte1);
                 html.Append("<br />");
                 html.Append(Html.ReciboSacadoParte2);
-                html.Append(Html.ReciboSacadoParte3);
+                html.Append(MostrarNossoNumeroSemCarteira ? Html.ReciboSacadoParte3SemCarteira : Html.ReciboSacadoParte3);
 
-                if (MostrarEnderecoCedente)
+                if (MostrarEnderecoCedenteSemSacadorAvalista)
+                {
+                    html.Append(Html.ReciboSacadoParte10SemSacador);
+                }
+                else if (MostrarEnderecoCedente)
                 {
                     html.Append(Html.ReciboSacadoParte10);
                 }
@@ -358,6 +377,13 @@ namespace BoletoNet
 
                 //if (Instrucoes.Count == 0)
                 html.Append(Html.ReciboSacadoParte8);
+
+                //BANRISUL nao possui codigo de carteira - Felipe Transis em 02/01/19
+                if (Boleto.Banco.Codigo == 41)
+                {
+                    html.Replace("Carteira /", "");
+                }
+
 
                 //Limpa as intruções para o Sacado
                 _instrucoesHtml = "";
@@ -413,7 +439,8 @@ namespace BoletoNet
                 else
                 {
                     //Para SANTANDER, a ficha de compensação não possui código da carteira - por jsoda em 08/12/2012
-                    if (Boleto.Banco.Codigo == 33)
+                    //BANRISUL tb nao possui codigo de carteira - Felipe Transis em 02/01/19
+                    if (Boleto.Banco.Codigo == 33 || Boleto.Banco.Codigo == 41)
                     {
                         html.Replace("Carteira /", "");
                     }
@@ -663,9 +690,14 @@ namespace BoletoNet
                         break;
                     case (int)Bancos.Banrisul:
                         var codigo = Cedente.Codigo;
+                        if (Cedente.Codigo.Substring(0, 4).Equals(Cedente.ContaBancaria.Agencia))
+                            //RETIRA OS DIGITOS DA AGENCIA SE ESTIVEREM JUNTOS NO CODIGO DA CONTA
+                            codigo = Cedente.Codigo.Substring(4, codigo.Length - 4);
                         var dig1 = codigo.Substring(0, codigo.Length - (Cedente.DigCedente.Length + 1));
                         var dig2 = codigo.Substring((codigo.Length - (Cedente.DigCedente.Length + 1)), 1);
+
                         agenciaCodigoCedente = string.Format("{0}/{1}.{2}.{3}", Cedente.ContaBancaria.Agencia, dig1, dig2, Cedente.DigCedente);
+
                         //agenciaCodigoCedente = string.Format("{0}.{1}/{2}.{3}.{4}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Cedente.Codigo.Substring(4, 6), Cedente.Codigo.Substring(10, 1), Cedente.DigitoCedente);
                         break;
                     case (int)Bancos.BancoBrasil:
