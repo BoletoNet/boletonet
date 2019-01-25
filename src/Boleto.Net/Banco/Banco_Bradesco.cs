@@ -1238,16 +1238,16 @@ namespace BoletoNet
                 }
 
                 //Data limite para concessão de Desconto 2 ==> 322 a 327
-                _detalhe += new string(' ', 6);
+                _detalhe += new string('0', 6);
 
                 //Valor do Desconto - 328 a 340
-                _detalhe += new string(' ', 13);
+                _detalhe += new string('0', 13);
 
                 //Data limite para concessão de Desconto 3 - 341 a 346
-                _detalhe += new string(' ', 6);
+                _detalhe += new string('0', 6);
 
                 //Valor do Desconto - 347 a 359
-                _detalhe += new string(' ', 13);
+                _detalhe += new string('0', 13);
 
                 //Reserva - 360 a 366
                 _detalhe += new string(' ', 7);
