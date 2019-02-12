@@ -436,6 +436,10 @@ namespace BoletoNet
                 html.Append(Html.ReciboCedenteParte1);
                 html.Append(Html.ReciboCedenteParte2);
                 html.Append(Html.ReciboCedenteParte3);
+
+                if (MostrarEnderecoCedente)
+                    html.Append(Html.ReciboSacadoParte10);
+
                 html.Append(Html.ReciboCedenteParte4);
                 html.Append(Html.ReciboCedenteParte5);
                 html.Append(Html.ReciboCedenteParte6);
