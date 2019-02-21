@@ -93,12 +93,12 @@ namespace BoletoNet
 
 
                 // Calcula o DAC da Conta Corrente
-                boleto.Cedente.ContaBancaria.DigitoConta = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta).ToString();
+                boleto.Cedente.ContaBancaria.DigitoDac = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta).ToString();
 
                 // Calcula o DAC do Nosso Número a maioria das carteiras
                 // agencia/conta/carteira/nosso numero
                 if (boleto.Carteira == "112")
-                    _dacNossoNumero = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta + boleto.Carteira + boleto.NossoNumero);
+                    _dacNossoNumero = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoDac + boleto.Carteira + boleto.NossoNumero);
                 else if (boleto.Carteira != "126" && boleto.Carteira != "131"
                     && boleto.Carteira != "146" && boleto.Carteira != "150"
                     && boleto.Carteira != "168")
@@ -159,7 +159,7 @@ namespace BoletoNet
                         string.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}000", Codigo, boleto.Moeda,
                                       FatorVencimento(boleto), valorBoleto, boleto.Carteira,
                                       boleto.NossoNumero, _dacNossoNumero, boleto.Cedente.ContaBancaria.Agencia,//Flavio(fhlviana@hotmail.com) => Cedente.ContaBancaria.Agencia --> boleto.Cedente.ContaBancaria.Agencia
-                                      Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 5), boleto.Cedente.ContaBancaria.DigitoConta);//Flavio(fhlviana@hotmail.com) => Cedente.ContaBancaria.DigitoConta --> boleto.Cedente.ContaBancaria.DigitoConta
+                                      Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 5), boleto.Cedente.ContaBancaria.DigitoDac);//Flavio(fhlviana@hotmail.com) => Cedente.ContaBancaria.DigitoConta --> boleto.Cedente.ContaBancaria.DigitoDac
                 }
                 else if (boleto.Carteira == "198" || boleto.Carteira == "107"
                          || boleto.Carteira == "122" || boleto.Carteira == "142"
@@ -273,7 +273,7 @@ namespace BoletoNet
                     #region FGGGG.GGHHHZ
 
                     string F = agencia.Substring(3, 1);
-                    string GGGGGG = boleto.Cedente.ContaBancaria.Conta.PadLeft(5, '0') + boleto.Cedente.ContaBancaria.DigitoConta;
+                    string GGGGGG = boleto.Cedente.ContaBancaria.Conta.PadLeft(5, '0') + boleto.Cedente.ContaBancaria.DigitoDac;
                     string HHH = "000";
                     string Z = Mod10(F + GGGGGG + HHH).ToString();
 
@@ -850,7 +850,7 @@ namespace BoletoNet
                 _segmentoP += "0000000";
                 _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 5, 5, '0', 0, true, true, true);
                 _segmentoP += " ";
-                _segmentoP += Utils.FormatCode(String.IsNullOrEmpty(boleto.Cedente.ContaBancaria.DigitoConta) ? " " : boleto.Cedente.ContaBancaria.DigitoConta, " ", 1, true);
+                _segmentoP += Utils.FormatCode(String.IsNullOrEmpty(boleto.Cedente.ContaBancaria.DigitoDac) ? " " : boleto.Cedente.ContaBancaria.DigitoDac, " ", 1, true);
                 _segmentoP += Utils.FitStringLength(boleto.Carteira, 3, 3, '0', 0, true, true, true);
                 _segmentoP += Utils.FitStringLength(boleto.NossoNumero, 8, 8, '0', 0, true, true, true);
                 _segmentoP += Utils.FitStringLength(boleto.DigitoNossoNumero, 1, 1, '0', 1, true, true, true);
@@ -1153,7 +1153,7 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia.ToString(), 4, 4, '0', 0, true, true, true);
                 _detalhe += "00";
                 _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta.ToString(), 5, 5, '0', 0, true, true, true);
-                _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoConta.ToString(), 1, 1, ' ', 0, true, true, false);
+                _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoDac.ToString(), 1, 1, ' ', 0, true, true, false);
                 _detalhe += "    "; // Complemento do registro - 4 posições em branco
 
                 // Código da instrução/alegação a ser cancelada
