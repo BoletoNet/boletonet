@@ -70,7 +70,7 @@ namespace Boleto.Net.Testes.Retorno
         {
             var convenio = 1234567;
             var nossoNumero = 100003147578;
-            var dv = 7;
+            var dv = 6;
 
             var nossoNumeroRetorno = string.Format("{0}{1}", nossoNumero, dv);
 
