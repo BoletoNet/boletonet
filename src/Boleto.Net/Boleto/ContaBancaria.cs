@@ -72,6 +72,11 @@ namespace BoletoNet
         public string DigitoAgencia { get; set;}
 
         /// <summary>
+        /// Digito Verificador da Conta Corrente (apenas ITAÚ)
+        /// </summary>
+        public string DigitoDac { get; set; }
+
+        /// <summary>
         /// Número da Conta Corrente
         /// </summary>
         public string Conta {get; set;}
