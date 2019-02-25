@@ -18,7 +18,6 @@ namespace BoletoNet
 
         private int _dacBoleto = 0;
         private int _dacNossoNumero = 0;
-        private int _dacDigito = 0;
 
         #endregion
 
