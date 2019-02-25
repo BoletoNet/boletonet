@@ -96,6 +96,7 @@ namespace BoletoNet
 
 
                 // Calcula o DAC da Conta Corrente
+                boleto.Cedente.ContaBancaria.Conta = boleto.Cedente.ContaBancaria.Conta.PadLeft(5, '0');
                 boleto.Cedente.ContaBancaria.DigitoDac = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta).ToString();
 
                 // Calcula o DAC do Nosso Número a maioria das carteiras
