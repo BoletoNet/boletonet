@@ -345,13 +345,13 @@ namespace BoletoNet
         /// <param name="conta">Código da conta</param>
         /// <param name="digitoConta">dígito verificador da conta. Pode ser vazio.</param>
         /// <returns>Agência e conta formatadas</returns>
-        internal static string FormataAgenciaConta(string agencia, string digitoAgencia, string conta, string digitoConta, IBanco banco)
+        internal static string FormataAgenciaConta(string agencia, string digitoAgencia, string conta, string digitoConta)
         {
             string agenciaConta = string.Empty;
             try
             {
                 agenciaConta = agencia;
-                if (!string.IsNullOrEmpty(digitoAgencia) && !(banco is Banco_Itau))
+                if (!string.IsNullOrEmpty(digitoAgencia))
                     agenciaConta += "-" + digitoAgencia;
 
                 agenciaConta += "/" + conta;
