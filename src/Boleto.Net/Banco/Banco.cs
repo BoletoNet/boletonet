@@ -50,6 +50,11 @@ namespace BoletoNet
             get { return _IBanco.Nome; }
         }
 
+        public IBanco GetBancoInstancia
+        {
+            get { return _IBanco; }
+        }
+
         public override string LabelDesconto => _IBanco.LabelDesconto;
         public override string LabelMora => _IBanco.LabelMora;
         public override string LabelOutrasDeducoes => _IBanco.LabelOutrasDeducoes;
