@@ -1469,7 +1469,7 @@ namespace BoletoNet
                 var instrucao = boleto.Instrucoes.FirstOrDefault(x => x.Codigo == 6);
                 if (instrucao != null)
                 {
-                    _detalhe += Utils.FitStringLength(((Instrucao_Santander)instrucao).QuantidadeDias.ToString(), 2, 2, '0', 0, true, true, true);
+                    _detalhe += Utils.FitStringLength(instrucao.QuantidadeDias.ToString(), 2, 2, '0', 0, true, true, true);
                 }
                 else
                     _detalhe += "00";
