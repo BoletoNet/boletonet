@@ -1828,6 +1828,10 @@ namespace BoletoNet
                 reg.DecodificarLinha();
 
                 //Passa para o detalhe as propriedades de reg;
+		//ADRIANO - PESSOAL, POR FAVOR PRESTAR ATENÇÃO AO ALTERAREM A DIVISÃO DO VALOR DO TÍTULO E DO VALOR PAGO POR 100
+		//ESTES CAMPOS "NÃO" PODEM SER DIVIDIDOS, POIS HÁ NO ARQUIVO TRegistroEDI_Caixa_Retorno UMA DIVISÃO JÁ PARA ESTES
+		//CAMPOS, POR FAVOR, ATENÇÃO!!!!
+		
                 DetalheRetorno detalhe = new DetalheRetorno
                 {
                     NumeroInscricao = reg.NumeroInscricaoEmpresa,
@@ -1855,7 +1859,7 @@ namespace BoletoNet
                         Utils.ToDateTime(Utils.ToInt32(reg.DataVencimentoTitulo).ToString("##-##-##"))
                         : DateTime.MinValue,
                     ValorTitulo = !string.IsNullOrEmpty(reg.ValorTitulo) ? 
-                        (Convert.ToDecimal(reg.ValorTitulo) / 100)
+                        Convert.ToDecimal(reg.ValorTitulo)
                         : 0,
                     CodigoBanco = !string.IsNullOrEmpty(reg.CodigoBancoCobrador) ? 
                         Utils.ToInt32(reg.CodigoBancoCobrador) 
@@ -1877,7 +1881,7 @@ namespace BoletoNet
                         (Convert.ToDecimal(reg.ValorDescontoConcedido) / 100)
                         : 0,
                     ValorPago = !string.IsNullOrEmpty(reg.ValorPago) ? 
-                        (Convert.ToDecimal(reg.ValorPago) / 100)
+                        Convert.ToDecimal(reg.ValorPago)
                         : 0 ,
                     JurosMora = !string.IsNullOrEmpty(reg.ValorJuros) ? 
                         (Convert.ToDecimal(reg.ValorJuros) / 100)
