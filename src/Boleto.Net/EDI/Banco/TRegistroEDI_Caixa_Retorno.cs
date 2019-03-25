@@ -355,7 +355,10 @@ namespace BoletoNet.EDI.Banco
             this._NumeroDocumento = (string)this._CamposEDI[17].ValorNatural;
             // this._Brancos3 = (string)this._CamposEDI[18].ValorNatural;
             this._DataVencimentoTitulo = (string)this._CamposEDI[19].ValorNatural;
-            this._ValorTitulo = ((double)this._CamposEDI[20].ValorNatural).ToString(CultureInfo.InvariantCulture);
+
+            if (this._CamposEDI[20].ValorNatural != null)
+                this._ValorTitulo = ((double)this._CamposEDI[20].ValorNatural).ToString(CultureInfo.InvariantCulture);
+
             this._CodigoBancoCobrador = (string)this._CamposEDI[21].ValorNatural;
             this._CodigoAgenciaCobradora = (string)this._CamposEDI[22].ValorNatural;
             this._EspecieTitulo = (string)this._CamposEDI[23].ValorNatural;
@@ -368,7 +371,8 @@ namespace BoletoNet.EDI.Banco
             this._ValorIOF = (string)this._CamposEDI[30].ValorNatural;
             this._ValorAbatimentoConcedido = (string)this._CamposEDI[31].ValorNatural;
             this._ValorDescontoConcedido = (string)this._CamposEDI[32].ValorNatural;
-            this._ValorPago = ((double)this._CamposEDI[33].ValorNatural).ToString(CultureInfo.InvariantCulture);
+            if(this._CamposEDI[33].ValorNatural != null)
+                this._ValorPago = ((double)this._CamposEDI[33].ValorNatural).ToString(CultureInfo.InvariantCulture);
             this._ValorJuros = (string)this._CamposEDI[34].ValorNatural;
             this._ValorMulta = (string)this._CamposEDI[35].ValorNatural;
             this._CodigoMoeda = (string)this._CamposEDI[36].ValorNatural;
