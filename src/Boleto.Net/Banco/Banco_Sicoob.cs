@@ -638,7 +638,7 @@ namespace BoletoNet
 
                 valorBoleto = Utils.FormatCode(valorBoleto, 15);
                 detalhe += valorBoleto; //Posição 86 a 100   Valor Nominal do Título
-                detalhe += Utils.FormatCode(boleto.ContaBancaria.Agencia, 5);//Posição 101 a 105     Agência Encarregada da Cobrança: "00000"
+                detalhe += "00000";//Posição 101 a 105     Agência Encarregada da Cobrança: "00000"
                 detalhe += new string(' ', 1);  //Posição 106  Dígito Verificador da Agência: Brancos
                 detalhe += Utils.FormatCode(boleto.EspecieDocumento.Codigo, 2);  //Posição 107 a 108   Espécie do título
                 detalhe += Utils.FormatCode(boleto.Aceite, 1);  //Posição 109 Identificação do título Aceito/Não Aceito  TODO:Deivid
@@ -682,7 +682,7 @@ namespace BoletoNet
 
                 detalhe += Utils.FormatCode(vInstrucao1, 2);  //Posição 222 a 223  - Código do protesto
                 detalhe += Utils.FormatCode("0", 1);     //Posição 224  - Código para Baixa/Devolução: "0"
-                detalhe += Utils.FormatCode("0", 3);     //Posição 225 A 227  - Número de Dias para Baixa/Devolução: Brancos
+                detalhe += Utils.FormatCode(" ", 3);     //Posição 225 A 227  - Número de Dias para Baixa/Devolução: Brancos
                 detalhe += Utils.FormatCode(boleto.Moeda.ToString(), "0", 2, true); //Posição 228 A 229  - Código da Moeda
                 detalhe += Utils.FormatCode("", "0", 10, true); //Posição 230 A 239    -  Nº do Contrato da Operação de Créd.: "0000000000"
                 detalhe += " ";
@@ -819,7 +819,7 @@ namespace BoletoNet
                 trailer += Utils.FormatCode("", "0", 17, true);
                 trailer += Utils.FormatCode("", "0", 6, true);
                 trailer += Utils.FormatCode("", "0", 17, true);
-                trailer += Utils.FormatCode("", "0", 8, true);
+                trailer += Utils.FormatCode("", " ", 8, true);
                 trailer += Utils.FormatCode("", " ", 117);
                 trailer = Utils.SubstituiCaracteresEspeciais(trailer);
 
