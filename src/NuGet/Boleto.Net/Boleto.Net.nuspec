@@ -3,7 +3,7 @@
     <metadata>
         <id>Boleto.Net.Fortes</id>
         <title>Boleto.Net.Fortes</title>
-        <version>3.3.1.0</version>
+        <version>3.3.1.2</version>
         <authors>BoletoNet</authors>
         <owners>BoletoNet</owners>
         <licenseUrl>https://github.com/BoletoNet/boletonet/blob/master/LICENSE</licenseUrl>
@@ -17,7 +17,7 @@ Emissão e Impressão de Boletos Bancários
 Geração de Arquivo de Remessa (CNAB 240 e 400)
 Leitura do Arquivo de Retorno (CNAB 240 e 400)</description>
         <summary>Boleto.net is a library developed for use in Brazil, given it has been programmed with Brazilian retail legislation and business rules for bank registered billing integration.</summary>
-        <releaseNotes>A versão 3.3.1.0 está disponível. Nessa versão contempla pequenas correções na geração de remessa para o banco Santander.</releaseNotes>
+        <releaseNotes>A versão 3.3.1.2 está disponível. Nessa versão contempla pequenas correções na geração das instruçoes na remessa para o banco do brasil.</releaseNotes>
         <tags>boleto cnab banco</tags>
     </metadata>
     <files>
