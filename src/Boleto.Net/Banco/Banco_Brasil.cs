@@ -2413,7 +2413,7 @@ namespace BoletoNet
                 reg.DecodificarLinha();
 
                 //Passa para o detalhe as propriedades de reg;
-                DetalheRetorno detalhe = new DetalheRetorno(registro);
+                DetalheRetorno detalhe = new DetalheRetorno(registro);                
                 //
                 //detalhe. = reg.Identificacao;
                 //detalhe. = reg.Zeros1;
@@ -2458,6 +2458,7 @@ namespace BoletoNet
                 //
                 int dataCredito = Utils.ToInt32(reg.DataCredito);
                 detalhe.DataOcorrencia = Utils.ToDateTime(dataCredito.ToString("##-##-##"));
+                detalhe.DataCredito = detalhe.DataOcorrencia;
                 //
                 detalhe.TarifaCobranca = (Convert.ToDecimal(reg.ValorTarifa) / 100);
                 detalhe.OutrasDespesas = (Convert.ToDecimal(reg.OutrasDespesas) / 100);
