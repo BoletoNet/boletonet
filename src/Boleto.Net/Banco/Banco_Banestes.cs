@@ -1,3 +1,4 @@
+using BoletoNet.Enums;
 using BoletoNet.Util;
 using System;
 using System.Web.UI;
@@ -22,7 +23,7 @@ namespace BoletoNet
 
         internal Banco_Banestes()
         {
-            Codigo = 21;
+            Codigo = (int)Bancos.Banestes;
             Digito = "3";
             Nome = "Banestes";
         }

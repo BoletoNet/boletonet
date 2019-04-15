@@ -1,11 +1,12 @@
+using BoletoNet.Enums;
+using BoletoNet.Util;
 using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using BoletoNet.Util;
-using System.Drawing;
-using System.ComponentModel;
-using System.Drawing.Imaging;
 
 namespace BoletoNet
 {
@@ -345,7 +346,7 @@ namespace BoletoNet
         /// <param name="conta">Código da conta</param>
         /// <param name="digitoConta">dígito verificador da conta. Pode ser vazio.</param>
         /// <returns>Agência e conta formatadas</returns>
-        internal static string FormataAgenciaConta(string agencia, string digitoAgencia, string conta, string digitoConta)
+        internal static string FormataAgenciaConta(int codigoBanco, string agencia, string digitoAgencia, string conta, string digitoConta)
         {
             string agenciaConta = string.Empty;
             try
@@ -355,8 +356,15 @@ namespace BoletoNet
                     agenciaConta += "-" + digitoAgencia;
 
                 agenciaConta += "/" + conta;
+
                 if (!string.IsNullOrEmpty(digitoConta))
-                    agenciaConta += "-" + digitoConta;
+                {
+                    agenciaConta += codigoBanco == (int)Bancos.Banestes 
+                        ? "" 
+                        : "-";
+
+                    agenciaConta += digitoConta;
+                }
 
                 return agenciaConta;
             }
