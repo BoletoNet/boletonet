@@ -97,7 +97,9 @@ namespace BoletoNet
 
                 var VVVVVVVVVV = _valorMoeda = Utils.FormatCode(boleto.ValorBoleto.ToString("N").Replace(".", "").Replace(",", ""), 10);
 
-                boleto.Banco.ChaveASBACE = GeraChaveASBACE(boleto.Carteira, boleto.Cedente.ContaBancaria.Conta, boleto.NossoNumero, 4);
+                var contaComDigitoVerificador = boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta;
+
+                boleto.Banco.ChaveASBACE = GeraChaveASBACE(boleto.Carteira, contaComDigitoVerificador, boleto.NossoNumero, 4);
 
                 string chave = string.Format("0219{0}{1}{2}", FFFF, VVVVVVVVVV, boleto.Banco.ChaveASBACE);
 
