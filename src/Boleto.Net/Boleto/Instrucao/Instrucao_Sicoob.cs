@@ -88,7 +88,7 @@ namespace BoletoNet
                         break;
                     case EnumInstrucoes_Sicoob.CobrarTaxaDeMulta:
                         this.Codigo = (int)EnumInstrucoes_Sicoob.CobrarTaxaDeMulta;
-                        this.Descricao = string.Format("Após vencimento cobrar multa de {0}% ao mês", percentualMultaOuJuroAoMes.ToString("F2"));
+                        this.Descricao = string.Format("Após vencimento cobrar multa de {0}%", percentualMultaOuJuroAoMes.ToString("F2"));
                         break;
                     case EnumInstrucoes_Sicoob.Protestar3DiasUteis:
                         this.Codigo = (int)EnumInstrucoes_Sicoob.Protestar3DiasUteis;
