@@ -76,7 +76,8 @@ namespace BoletoNet
         NegativacaoExpressaInformal = 79,                                               //79 - NEGATIVAÇÃO EXPRESSA INFORMACIONAL (NOTA 25 – TABELA 12)
         EntradaNegativacaoExpressaTarifa = 80,                                          //80 - CONFIRMAÇÃO DE ENTRADA EM NEGATIVAÇÃO EXPRESSA – TARIFA
         CancelamentoNegativacaoExpressaTarifa = 82,                                     //82 - CONFIRMAÇÃO DE CANCELAMENTO EM NEGATIVAÇÃO EXPRESSA – TARIFA
-        ExclusaoNegativacaoExpressaTarifa = 83                                         //83 - CONFIRMAÇÃO DA EXCLUSÃO/CANCELAMENTO DA NEGATIVAÇÃO EXPRESSA POR LIQUIDAÇÃO - TARIFA
+        ExclusaoNegativacaoExpressaTarifa = 83,                                         //83 - CONFIRMAÇÃO DA EXCLUSÃO/CANCELAMENTO DA NEGATIVAÇÃO EXPRESSA POR LIQUIDAÇÃO - TARIFA
+        ConfirmaRecebimentoInstrucaoNaoNegativar = 94                                   //94 - CONFIRMA RECEBIMENTO DE INSTRUÇÃO DE NÃO NEGATIVAR
     }
     public class CodigoMovimento_Itau : AbstractCodigoMovimento, ICodigoMovimento
     {
@@ -186,7 +187,8 @@ namespace BoletoNet
             { EnumCodigoMovimento_Itau.NegativacaoExpressaInformal                                               , "Negativacao expressa informal" },
             { EnumCodigoMovimento_Itau.EntradaNegativacaoExpressaTarifa                                          , "Recebimento de instrução de negativação expressa - tarifa" },
             { EnumCodigoMovimento_Itau.ExclusaoNegativacaoExpressaTarifa                                         , "Recebimento de exclusão de negativação expressa - tarifa" },
-            { EnumCodigoMovimento_Itau.CancelamentoNegativacaoExpressaTarifa                                     , "Recebimento de cancelamento de negativação expressa - tarifa" }
+            { EnumCodigoMovimento_Itau.CancelamentoNegativacaoExpressaTarifa                                     , "Recebimento de cancelamento de negativação expressa - tarifa" },
+            { EnumCodigoMovimento_Itau.ConfirmaRecebimentoInstrucaoNaoNegativar                                  , "Confirma Recebimento de instrução de não negativar" }
         };
 
         private static Dictionary<EnumCodigoMovimento_Itau, TipoOcorrenciaRetorno> correspondentesFebraban = new Dictionary<EnumCodigoMovimento_Itau, TipoOcorrenciaRetorno>()
