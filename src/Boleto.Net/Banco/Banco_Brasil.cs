@@ -2287,12 +2287,9 @@ namespace BoletoNet
                         vInstrucao2 = boleto.Instrucoes[1].Codigo.ToString();
                         break;
 
-                    default:
-                        if (boleto.Carteira.Equals("17-027"))
-                        {
-                            vInstrucao1 = "00";
-                            vInstrucao2 = "07";
-                        }
+                    default: 
+                        vInstrucao1 = "00";
+                        vInstrucao2 = "07";
                         break;
                 }
                 #endregion
