@@ -77,7 +77,8 @@ namespace BoletoNet
         EntradaNegativacaoExpressaTarifa = 80,                                          //80 - CONFIRMAÇÃO DE ENTRADA EM NEGATIVAÇÃO EXPRESSA – TARIFA
         AlteracaoBloqueadaNegativacaoExpresso = 81,                                     //81 - Alteração Bloqueada - TITULO COM NEGATIVAÇÃO EXPRESSA OU PROTESTO
         CancelamentoNegativacaoExpressaTarifa = 82,                                     //82 - CONFIRMAÇÃO DE CANCELAMENTO EM NEGATIVAÇÃO EXPRESSA – TARIFA
-        ExclusaoNegativacaoExpressaTarifa = 83                                         //83 - CONFIRMAÇÃO DA EXCLUSÃO/CANCELAMENTO DA NEGATIVAÇÃO EXPRESSA POR LIQUIDAÇÃO - TARIFA
+        ExclusaoNegativacaoExpressaTarifa = 83,                                         //83 - CONFIRMAÇÃO DA EXCLUSÃO/CANCELAMENTO DA NEGATIVAÇÃO EXPRESSA POR LIQUIDAÇÃO - TARIFA
+        ConfirmaRecebimentoInstrucaoNaoNegativar = 94                                   //94 - CONFIRMA RECEBIMENTO DE INSTRUÇÃO DE NÃO NEGATIVAR
     }
     public class CodigoMovimento_Itau : AbstractCodigoMovimento, ICodigoMovimento
     {
@@ -188,7 +189,8 @@ namespace BoletoNet
             { EnumCodigoMovimento_Itau.AlteracaoBloqueadaNegativacaoExpresso                                     , "Alteração Bloqueada - Título com negativação expressa ou protesto" },
             { EnumCodigoMovimento_Itau.EntradaNegativacaoExpressaTarifa                                          , "Recebimento de instrução de negativação expressa - tarifa" },
             { EnumCodigoMovimento_Itau.ExclusaoNegativacaoExpressaTarifa                                         , "Recebimento de exclusão de negativação expressa - tarifa" },
-            { EnumCodigoMovimento_Itau.CancelamentoNegativacaoExpressaTarifa                                     , "Recebimento de cancelamento de negativação expressa - tarifa" }
+            { EnumCodigoMovimento_Itau.CancelamentoNegativacaoExpressaTarifa                                     , "Recebimento de cancelamento de negativação expressa - tarifa" },
+            { EnumCodigoMovimento_Itau.ConfirmaRecebimentoInstrucaoNaoNegativar                                  , "Confirma Recebimento de instrução de não negativar" }
         };
 
         private static Dictionary<EnumCodigoMovimento_Itau, TipoOcorrenciaRetorno> correspondentesFebraban = new Dictionary<EnumCodigoMovimento_Itau, TipoOcorrenciaRetorno>()
