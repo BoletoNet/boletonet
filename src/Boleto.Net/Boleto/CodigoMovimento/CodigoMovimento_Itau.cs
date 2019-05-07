@@ -75,6 +75,7 @@ namespace BoletoNet
         RecebimentoInstrucaoCancelamentoNegativacaoExpressa = 78,                       //78 - CONFIRMA O RECEBIMENTO DE INSTRUÇÃO DE CANCELAMENTO DA NEGATIVAÇÃO EXPRESSA
         NegativacaoExpressaInformal = 79,                                               //79 - NEGATIVAÇÃO EXPRESSA INFORMACIONAL (NOTA 25 – TABELA 12)
         EntradaNegativacaoExpressaTarifa = 80,                                          //80 - CONFIRMAÇÃO DE ENTRADA EM NEGATIVAÇÃO EXPRESSA – TARIFA
+        AlteracaoBloqueadaNegativacaoExpresso = 81,                                     //81 - Alteração Bloqueada - TITULO COM NEGATIVAÇÃO EXPRESSA OU PROTESTO
         CancelamentoNegativacaoExpressaTarifa = 82,                                     //82 - CONFIRMAÇÃO DE CANCELAMENTO EM NEGATIVAÇÃO EXPRESSA – TARIFA
         ExclusaoNegativacaoExpressaTarifa = 83                                         //83 - CONFIRMAÇÃO DA EXCLUSÃO/CANCELAMENTO DA NEGATIVAÇÃO EXPRESSA POR LIQUIDAÇÃO - TARIFA
     }
@@ -184,6 +185,7 @@ namespace BoletoNet
             { EnumCodigoMovimento_Itau.RecebimentoInstrucaoExclusaoNegativacaoExpressa                           , "Recebimento de exclusão de negativação expressa" },
             { EnumCodigoMovimento_Itau.RecebimentoInstrucaoCancelamentoNegativacaoExpressa                       , "Recebimento de cancelamento de negativação expressa" },
             { EnumCodigoMovimento_Itau.NegativacaoExpressaInformal                                               , "Negativacao expressa informal" },
+            { EnumCodigoMovimento_Itau.AlteracaoBloqueadaNegativacaoExpresso                                     , "Alteração Bloqueada - Título com negativação expressa ou protesto" },
             { EnumCodigoMovimento_Itau.EntradaNegativacaoExpressaTarifa                                          , "Recebimento de instrução de negativação expressa - tarifa" },
             { EnumCodigoMovimento_Itau.ExclusaoNegativacaoExpressaTarifa                                         , "Recebimento de exclusão de negativação expressa - tarifa" },
             { EnumCodigoMovimento_Itau.CancelamentoNegativacaoExpressaTarifa                                     , "Recebimento de cancelamento de negativação expressa - tarifa" }
