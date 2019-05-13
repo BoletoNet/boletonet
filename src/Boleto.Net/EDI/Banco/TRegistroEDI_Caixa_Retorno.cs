@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 
 namespace BoletoNet.EDI.Banco
 {
@@ -286,7 +286,7 @@ namespace BoletoNet.EDI.Banco
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0117, 010, 0, string.Empty, ' ')); //117-126
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0127, 020, 0, string.Empty, ' ')); //127-146
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0147, 006, 0, string.Empty, ' ')); //147-152
-            this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0153, 013, 2, 000000000000, '0')); //153-165 - Valor Boleto
+            this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0153, 013, 0, 000000000000, '0')); //153-165 - Valor Boleto
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0166, 003, 0, string.Empty, ' ')); //166-168
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0169, 005, 0, string.Empty, ' ')); //169-173
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0174, 002, 0, string.Empty, ' ')); //174-175
@@ -299,7 +299,7 @@ namespace BoletoNet.EDI.Banco
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0215, 013, 0, string.Empty, ' ')); //215-227
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0228, 013, 0, string.Empty, ' ')); //228-240
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0241, 013, 0, string.Empty, ' ')); //241-253
-            this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0254, 013, 2, 000000000000, '0')); //254-266 - Valor Pago
+            this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0254, 013, 0, 000000000000, '0')); //254-266 - Valor Pago
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0267, 013, 0, string.Empty, ' ')); //267-279
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0280, 013, 0, string.Empty, ' ')); //280-292
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0293, 001, 0, string.Empty, ' ')); //293-293
@@ -355,7 +355,7 @@ namespace BoletoNet.EDI.Banco
             this._NumeroDocumento = (string)this._CamposEDI[17].ValorNatural;
             // this._Brancos3 = (string)this._CamposEDI[18].ValorNatural;
             this._DataVencimentoTitulo = (string)this._CamposEDI[19].ValorNatural;
-            this._ValorTitulo = ((double)this._CamposEDI[20].ValorNatural).ToString(CultureInfo.InvariantCulture);
+            this._ValorTitulo = (string)this._CamposEDI[20].ValorNatural;
             this._CodigoBancoCobrador = (string)this._CamposEDI[21].ValorNatural;
             this._CodigoAgenciaCobradora = (string)this._CamposEDI[22].ValorNatural;
             this._EspecieTitulo = (string)this._CamposEDI[23].ValorNatural;
@@ -368,7 +368,7 @@ namespace BoletoNet.EDI.Banco
             this._ValorIOF = (string)this._CamposEDI[30].ValorNatural;
             this._ValorAbatimentoConcedido = (string)this._CamposEDI[31].ValorNatural;
             this._ValorDescontoConcedido = (string)this._CamposEDI[32].ValorNatural;
-            this._ValorPago = ((double)this._CamposEDI[33].ValorNatural).ToString(CultureInfo.InvariantCulture);
+            this._ValorPago = (string)this._CamposEDI[33].ValorNatural;
             this._ValorJuros = (string)this._CamposEDI[34].ValorNatural;
             this._ValorMulta = (string)this._CamposEDI[35].ValorNatural;
             this._CodigoMoeda = (string)this._CamposEDI[36].ValorNatural;
