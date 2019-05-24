@@ -1106,7 +1106,7 @@ namespace BoletoNet
                 segmentoU.ValorOutrosCreditos = Convert.ToDecimal(registro.Substring(122, 15)) / DECIMAL_100;
                 segmentoU.DataOcorrencia = segmentoU.DataOcorrencia = DateTime.ParseExact(registro.Substring(137, 8), "ddMMyyyy", CultureInfo.InvariantCulture);
                 segmentoU.DataCredito = registro.Substring(145, 8).Equals("00000000") ? DateTime.Now : DateTime.ParseExact(registro.Substring(145, 8), "ddMMyyyy", CultureInfo.InvariantCulture);
-                segmentoU.CodigoOcorrenciaSacado = registro.Substring(153, 4);
+                segmentoU.CodigoOcorrenciaSacado = registro.Substring(15, 2);
 
                 return segmentoU;
             }
