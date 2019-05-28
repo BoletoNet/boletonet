@@ -1,11 +1,9 @@
-﻿using System;
-using System.Data;
-using System.Globalization;
-using System.Web.UI;
-//using Microsoft.VisualBasic;
+﻿//using Microsoft.VisualBasic;
 using BoletoNet.EDI.Banco;
-using System.Collections.Generic;
 using BoletoNet.Util;
+using System;
+using System.Linq;
+using System.Web.UI;
 
 [assembly: WebResource("BoletoNet.Imagens.004.jpg", "image/jpg")]
 namespace BoletoNet
@@ -520,7 +518,17 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0335, 015, 0, boleto.Sacado.Endereco.Cidade.ToUpper(), ' '));   //335-349
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0350, 002, 0, boleto.Sacado.Endereco.UF.ToUpper(), ' '));       //350-351
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0352, 040, 0, string.Empty, ' '));                              //352-391
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0392, 002, 0, "99", ' '));                                      //392-393
+
+                var prazoDeProstesoEmDias = boleto.Instrucoes
+                    .Where(x => x.QuantidadeDias > 0)
+                    .DefaultIfEmpty(new Instrucao_BancoNordeste()
+                    {
+                        QuantidadeDias = 99
+                    })
+                    .SingleOrDefault()
+                    .QuantidadeDias;
+
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0392, 002, 0, prazoDeProstesoEmDias.ToString().PadLeft(2, '0'), ' '));                                      //392-393
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0394, 001, 0, "0", ' '));                                       //394-394
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0395, 006, 0, numeroRegistro, '0'));                            //395-400
 
@@ -580,7 +588,7 @@ namespace BoletoNet
                 //detalhe. = reg.NumeroConvenioCobranca;
                 //detalhe. = reg.NumeroControleParticipante;
                 //
-                detalhe.NossoNumeroComDV = reg.NossoNumero+reg.NossoNumeroDV;
+                detalhe.NossoNumeroComDV = reg.NossoNumero + reg.NossoNumeroDV;
                 detalhe.NossoNumero = reg.NossoNumero; //Nosso Número sem o DV!
                 detalhe.DACNossoNumero = reg.NossoNumeroDV;
                 //
@@ -622,7 +630,7 @@ namespace BoletoNet
                 detalhe.JurosMora = (Convert.ToDecimal(reg.JurosMora) / 100);
                 //detalhe.OutrosCreditos = (Convert.ToInt64(reg.OutrosRecebimentos) / 100);
                 //detalhe. = reg.AbatimentoNaoAproveitado;
-                detalhe.ValorPago = (Convert.ToDecimal(reg.ValorRecebido) / 100);                
+                detalhe.ValorPago = (Convert.ToDecimal(reg.ValorRecebido) / 100);
                 //detalhe. = reg.IndicativoDebitoCredito;
                 //detalhe. = reg.IndicadorValor;
                 //detalhe. = reg.ValorAjuste;
