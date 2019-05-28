@@ -331,7 +331,7 @@ namespace BoletoNet
             return D1;
         }
 
-        private int CalculaD2(string chave, int D1)
+        private int CalculaD2(string chave, ref int D1)
         {
             int D2 = 0;
             short peso = 7;
@@ -362,7 +362,7 @@ namespace BoletoNet
                 D1++;
                 if (D1 == 10)
                     D1 = 0;
-                return CalculaD2(chave, D1);
+                return CalculaD2(chave, ref D1);
             }
 
             if (resto > 1)
@@ -405,7 +405,7 @@ namespace BoletoNet
                 string NNNNNNNNCCCCCCCCCCCR021 = string.Concat(NNNNNNNN, CCCCCCCCCCC, R, "021");
 
                 int D1 = CalculaD1(NNNNNNNNCCCCCCCCCCCR021);
-                int D2 = CalculaD2(NNNNNNNNCCCCCCCCCCCR021, D1);
+                int D2 = CalculaD2(NNNNNNNNCCCCCCCCCCCR021, ref D1);
 
                 return string.Concat(NNNNNNNNCCCCCCCCCCCR021, D1, D2);
             }
