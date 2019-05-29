@@ -40,6 +40,47 @@ namespace BoletoNet
 
         #region Métodos de Instância
 
+        private static int Mod11Nordeste(string seq, int b)
+        {
+            /* Variáveis
+             * -------------
+             * d - Dígito
+             * s - Soma
+             * p - Peso
+             * b - Base
+             * r - Resto
+             */
+
+            int d, r, s = 0, p = 2;
+
+
+            for (int i = seq.Length; i > 0; i--)
+            {
+                s = s + (Convert.ToInt32(seq.Mid(i, 1)) * p);
+                if (p == b)
+                    p = 2;
+                else
+                    p = p + 1;
+            }
+
+            r = s % 11;
+
+            // Quando o resto da divisão for 0 ou 1, o dígito verificador será 0
+            if (r == 0 || r == 1)
+            {
+                return 0;
+            }
+
+
+            d = 11 - r;
+
+
+            if ((d > 9) || (d == 0) || (d == 1))
+                d = 1;
+
+            return d;
+        }
+
         /// <summary>
         /// Validações particulares do Bando do Nordeste
         /// </summary>
@@ -59,7 +100,7 @@ namespace BoletoNet
             boleto.Cedente.ContaBancaria.DigitoConta = Utils.FormatCode(boleto.Cedente.ContaBancaria.DigitoConta, 1);
 
             if (string.IsNullOrEmpty(boleto.DigitoNossoNumero))
-                boleto.DigitoNossoNumero = Mod11(boleto.NossoNumero, 8).ToString();
+                boleto.DigitoNossoNumero = Mod11Nordeste(boleto.NossoNumero, 8).ToString();
 
             boleto.DigitoNossoNumero = Utils.FormatCode(boleto.DigitoNossoNumero, 1);
 
