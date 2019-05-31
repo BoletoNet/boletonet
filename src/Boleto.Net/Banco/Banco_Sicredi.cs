@@ -77,10 +77,6 @@ namespace BoletoNet
 
             if (string.IsNullOrEmpty(codigoCedente))
                 throw new BoletoNetException("Código do cedente deve ser informado, " + infoFormatoCodigoCedente);
-            else if (boleto.Cedente.ContaBancaria != null && 
-                (!codigoCedente.StartsWith(boleto.Cedente.ContaBancaria.Agencia) ||
-                (!codigoCedente.EndsWith(boleto.Cedente.ContaBancaria.Conta))))
-                throw new BoletoNetException("Código do cedente deve estar no " + infoFormatoCodigoCedente);
 
             if (string.IsNullOrEmpty(boleto.Carteira))
                 throw new BoletoNetException("Tipo de carteira é obrigatório. " + ObterInformacoesCarteirasDisponiveis());
