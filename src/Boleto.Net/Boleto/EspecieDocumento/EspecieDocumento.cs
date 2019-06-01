@@ -114,6 +114,10 @@ namespace BoletoNet
                         _IEspecieDocumento = new EspecieDocumento_BankBoston(codigoEspecie);
                         break;
                     //422 - Safra
+                    case 422:
+                        _IEspecieDocumento = new EspecieDocumento_Safra(codigoEspecie);
+                        break;
+                    //1 - Banco do Brasil
                     case 1:
                         _IEspecieDocumento = new EspecieDocumento_BancoBrasil(codigoEspecie);
                         break;
@@ -213,6 +217,8 @@ namespace BoletoNet
                         return EspecieDocumento_HSBC.CarregaTodas();
                     case 479:
                         return EspecieDocumento_BankBoston.CarregaTodas();
+                    case 422:
+                        return EspecieDocumento_Safra.CarregaTodas();
                     case 748:
                         return EspecieDocumento_Sicredi.CarregaTodas();
                     case 756:
@@ -286,6 +292,9 @@ namespace BoletoNet
                     case 479:
                         return new EspecieDocumento_BankBoston().getCodigoEspecieBySigla(sigla);
                     //422 - Safra
+                    case 422:
+                        return new EspecieDocumento_Safra().getCodigoEspecieBySigla(sigla);
+                    //1 - Banco do Brasil
                     case 1:
                         return new EspecieDocumento_BancoBrasil().getCodigoEspecieBySigla(sigla);
                     //237 - Bradesco
@@ -353,6 +362,7 @@ namespace BoletoNet
         private static Dictionary<int, AbstractEspecieDocumento> especiesDocumentosBancos = new Dictionary<int, AbstractEspecieDocumento>() {
                 { 341, new EspecieDocumento_Itau       ()  },
                 { 479, new EspecieDocumento_BankBoston ()  },
+                { 422, new EspecieDocumento_Safra ()  },
                 { 1, new EspecieDocumento_BancoBrasil  ()  },
                 { 237, new EspecieDocumento_Bradesco   ()  },
                 { 356, new EspecieDocumento_Real       ()  },

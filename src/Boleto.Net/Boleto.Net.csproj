@@ -117,6 +117,7 @@
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Sicredi.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Banestes.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_CrediSIS.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Safra.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Semear.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Cecred.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Daycoval.cs" />
