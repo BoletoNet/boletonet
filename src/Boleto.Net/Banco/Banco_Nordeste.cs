@@ -138,7 +138,7 @@ namespace BoletoNet
             string digNossN = "";
 
             if (string.IsNullOrEmpty(digNossN))
-                digNossN = Mod11(nossoNumero, 8).ToString();
+                digNossN = Mod11Nordeste(nossoNumero, 8).ToString();
 
             digNossN = Utils.FormatCode(digNossN, 1);
 
