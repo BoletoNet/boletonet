@@ -694,6 +694,8 @@ namespace BoletoNet
                 detalhe.NomeSacado = string.Empty;
                 #endregion
 
+                detalhe.NumeroSequencial = Convert.ToInt32(reg.NumeroSequenciaRegistro);
+
                 return detalhe;
             }
             catch (Exception ex)
