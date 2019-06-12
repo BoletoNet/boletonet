@@ -660,7 +660,10 @@ namespace BoletoNet
                 //
                 int dataOcorrencia = Utils.ToInt32(reg.DataOcorrencia);
                 detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
-                //
+
+                int dataCredito = Utils.ToInt32(reg.DataCredito);
+                detalhe.DataCredito = Utils.ToDateTime(dataCredito.ToString("##-##-##"));
+
                 detalhe.TarifaCobranca = (Convert.ToDecimal(reg.ValorTarifa) / 100);
                 detalhe.OutrasDespesas = (Convert.ToDecimal(reg.OutrasDespesas) / 100);
                 detalhe.ValorOutrasDespesas = (Convert.ToDecimal(reg.JurosDesconto) / 100);

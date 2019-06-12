@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BoletoNet.EDI.Banco
 {
@@ -12,7 +10,7 @@ namespace BoletoNet.EDI.Banco
     public class TRegistroEDI_Banco_Nordeste_Retorno : TRegistroEDI
     {
 
-		#region Atributos e Propriedades
+        #region Atributos e Propriedades
         private string _Identificacao = String.Empty;
 
         public string Identificacao
@@ -466,16 +464,17 @@ namespace BoletoNet.EDI.Banco
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0254, 013, 0, string.Empty, ' ')); //254-266 Valor Recebido
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0267, 013, 0, string.Empty, ' ')); //267-279 Juros de Mora
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0280, 115, 0, string.Empty, ' ')); //280-394 Tabela de Erros
+            this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0296, 006, 0, string.Empty, ' ')); //296-301 poderão conter a data de crédito
             this._CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0395, 006, 0, string.Empty, ' ')); //395-400 Sequencial do Registro
             #endregion
         }
-		
-		/// <summary>
-		/// Aqui iremos atribuir os valores das propriedades em cada campo correspondente do Registro EDI
-		/// e codificaremos a linha para obter uma string formatada com o nosso layout.
-		/// Repare que declarei as propriedades em uma ordem tal que a adição dos objetos TCampoRegistroEDI na propriedade
-		/// _CamposEDI siga a mesma ordem. Portanto, utilizarei o índice na atribuição.
-		/// </summary>
+
+        /// <summary>
+        /// Aqui iremos atribuir os valores das propriedades em cada campo correspondente do Registro EDI
+        /// e codificaremos a linha para obter uma string formatada com o nosso layout.
+        /// Repare que declarei as propriedades em uma ordem tal que a adição dos objetos TCampoRegistroEDI na propriedade
+        /// _CamposEDI siga a mesma ordem. Portanto, utilizarei o índice na atribuição.
+        /// </summary>
         public override void CodificarLinha()
         {
             #region Todos os Campos
@@ -484,17 +483,17 @@ namespace BoletoNet.EDI.Banco
             //
             base.CodificarLinha(); //Aqui que eu chamo efetivamente a rotina de codificação; o resultado será exibido na propriedade LinhaRegistro.
         }
-		
-		/// <summary>
-		/// Agora, faço o inverso da codificação. Decodifico o valor da propriedade LinhaRegistro e separo em cada campo.
-		/// Cada campo é separado na propriedade ValorNatural de cada item da prop. _CamposEDI. Como esta é do tipo object, para atribuir
-		/// nas propriedades do registro é necessário fazer um cast para o tipo de dado adequado. Caso ocorra algum erro na decodificação,
-		/// uma exceção será disparada, provavelmente por causa de impossibilidade de fazer um cast na classe pai. Portanto, o layout deve estar
-		/// correto!
-		/// </summary>
-		public override void DecodificarLinha()
-		{
-			base.DecodificarLinha();
+
+        /// <summary>
+        /// Agora, faço o inverso da codificação. Decodifico o valor da propriedade LinhaRegistro e separo em cada campo.
+        /// Cada campo é separado na propriedade ValorNatural de cada item da prop. _CamposEDI. Como esta é do tipo object, para atribuir
+        /// nas propriedades do registro é necessário fazer um cast para o tipo de dado adequado. Caso ocorra algum erro na decodificação,
+        /// uma exceção será disparada, provavelmente por causa de impossibilidade de fazer um cast na classe pai. Portanto, o layout deve estar
+        /// correto!
+        /// </summary>
+        public override void DecodificarLinha()
+        {
+            base.DecodificarLinha();
             //
             this._Identificacao = (string)this._CamposEDI[0].ValorNatural;
             this._PrefixoAgencia = (string)this._CamposEDI[3].ValorNatural;
@@ -505,8 +504,8 @@ namespace BoletoNet.EDI.Banco
             this._NossoNumeroDV = (string)this._CamposEDI[10].ValorNatural;
             this._Carteira = (string)this._CamposEDI[13].ValorNatural;
 
-            this._Comando = (string)this._CamposEDI[14].ValorNatural;            
-            this._DataOcorrencia = (string)this._CamposEDI[15].ValorNatural;            
+            this._Comando = (string)this._CamposEDI[14].ValorNatural;
+            this._DataOcorrencia = (string)this._CamposEDI[15].ValorNatural;
             this._NumeroTituloCedente = (string)this._CamposEDI[16].ValorNatural;
             this._DataVencimento = (string)this._CamposEDI[20].ValorNatural;
             this._ValorTitulo = (string)this._CamposEDI[21].ValorNatural;
@@ -518,7 +517,9 @@ namespace BoletoNet.EDI.Banco
             this._DescontoConcedido = (string)this._CamposEDI[31].ValorNatural;
             this._ValorRecebido = (string)this._CamposEDI[32].ValorNatural;
             this._JurosMora = (string)this._CamposEDI[33].ValorNatural;
-            this._NumeroSequenciaRegistro = (string)this._CamposEDI[35].ValorNatural;
+            this._DataCredito = (string)this._CamposEDI[35].ValorNatural;
+            this._NumeroSequenciaRegistro = (string)this._CamposEDI[36].ValorNatural;
+
 
             /*
             this._TipoCobranca = (string)this._CamposEDI[10].ValorNatural;
@@ -542,7 +543,7 @@ namespace BoletoNet.EDI.Banco
             this._PrefixoAgenciaRecebedora = (string)this._CamposEDI[28].ValorNatural;
             this._DVPrefixoRecebedora = (string)this._CamposEDI[29].ValorNatural;
             this._EspecieTitulo = (string)this._CamposEDI[30].ValorNatural;
-            this._DataCredito = (string)this._CamposEDI[31].ValorNatural;
+            
             this._ValorTarifa = (string)this._CamposEDI[32].ValorNatural;
             this._OutrasDespesas = (string)this._CamposEDI[33].ValorNatural;
             this._JurosDesconto = (string)this._CamposEDI[34].ValorNatural;
@@ -569,28 +570,28 @@ namespace BoletoNet.EDI.Banco
             this._CanalPagamento = (string)this._CamposEDI[55].ValorNatural;
             this._NumeroSequenciaRegistro = (string)this._CamposEDI[56].ValorNatural;*/
             //
-		}
-	}
+        }
+    }
 
-	/// <summary>
-	/// Classe que irá representar o arquivo EDI em si
-	/// </summary>
+    /// <summary>
+    /// Classe que irá representar o arquivo EDI em si
+    /// </summary>
     public class TArquivoBanco_Nordeste_Retorno_EDI : TEDIFile
-	{
-		/*
+    {
+        /*
 		 * De modo geral, apenas preciso sobreescrever o método de decodificação de linhas,
 		 * pois preciso adicionar um objeto do tipo registro na coleção do arquivo, passar a linha que vem do arquivo
 		 * neste objeto novo, e decodificá-lo para separar nos campos.
 		 * O DecodeLine é chamado a partir do método LoadFromFile() (ou Stream) da classe base.
 		 */
-		protected override void DecodeLine(string Line)
-		{
-			base.DecodeLine(Line);
+        protected override void DecodeLine(string Line)
+        {
+            base.DecodeLine(Line);
             Lines.Add(new TRegistroEDI_Banco_Nordeste_Retorno()); //Adiciono a linha a ser decodificada
-			Lines[Lines.Count - 1].LinhaRegistro = Line; //Atribuo a linha que vem do arquivo
+            Lines[Lines.Count - 1].LinhaRegistro = Line; //Atribuo a linha que vem do arquivo
             Lines[Lines.Count - 1].DecodificarLinha(); //Finalmente, a separação das substrings na linha do arquivo.
-		}
-	}
-	
+        }
+    }
+
 
 }
