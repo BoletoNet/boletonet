@@ -46,7 +46,7 @@ namespace BoletoNet
         private bool _removeSimboloMoedaValorDocumento = false;
         private string _ajustaTamanhoFonteHtml;
         private bool _ajustaFamiliaFonte = false;
-        private string ajustaFamiliaFonteHtml;
+        private string _ajustaFamiliaFonteHtml;
         #endregion Variaveis
 
         #region Propriedades
@@ -323,7 +323,7 @@ namespace BoletoNet
         {
             _ajustaFamiliaFonte = true;
 
-            var html = new StrinBuilder();
+            var html = new StringBuilder();
 
             html.AppendLine("<style>");
             html.AppendFormat(".cp$1 font-family: {0} !important; $2", familiaFonte);
