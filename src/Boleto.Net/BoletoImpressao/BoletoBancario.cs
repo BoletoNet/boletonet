@@ -336,7 +336,7 @@ namespace BoletoNet
             html.AppendFormat(".ctN$1 font-family: {0} !important; $2", familiaFonte);
             html.AppendFormat(".rc6 .t$1 font-family: {0} !important; $2", familiaFonte);
             html.AppendFormat(".rc6 .c$1 font-family: {0} !important; $2", familiaFonte);
-
+            html.Append("</style>");
             _ajustaFamiliaFonteHtml = html.ToString().Replace("$1", "{").Replace("$2", "}");
         }
 
