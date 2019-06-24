@@ -373,6 +373,7 @@ namespace BoletoNet
                 { 748, new EspecieDocumento_Sicredi    ()  },
                 { 41, new EspecieDocumento_Banrisul    ()  },
                 { 85, new EspecieDocumento_Cecred      ()  },
+                { 84, new EspecieDocumento_Uniprime    ()  },
                 { 756, new EspecieDocumento_Sicoob     ()  },
                 { 4, new EspecieDocumento_Nordeste     ()  },
                 { 707, new EspecieDocumento_Daycoval   ()  },

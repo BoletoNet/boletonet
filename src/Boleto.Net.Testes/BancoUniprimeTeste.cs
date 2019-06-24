@@ -1,0 +1,62 @@
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace BoletoNet.Testes
+{
+    [TestClass]
+    public class BancoUniprimeTeste
+    {
+        private BoletoBancario GerarBoletoCarteira1()
+        {
+            var cedente = new Cedente("35.342.670/0001-70", "EMPRESA MODELO S/A", "0001", "9","0079502", "0");
+            cedente.Codigo = "0000001";
+            cedente.DigitoCedente = 0;
+            cedente.Carteira = "09";
+
+            var sacado = new Sacado("35.342.670/0001-70", "JOSE DA SILVA");
+            sacado.Endereco = new Endereco() { End = "AV. DAS ROSAS", Numero = "10", Bairro = "JARDIM FLORIDO", Cidade = "CORNELIO PROCOPIO", CEP = "86300-000", UF = "PR", Email = "teste@boleto.net" };
+            var boleto = new Boleto(DateTime.Today.AddDays(30), 1.00m, "09", "10001000128", cedente);
+            boleto.Sacado = sacado;
+            boleto.ContaBancaria = new ContaBancaria("0001", "0079502");
+            boleto.NumeroDocumento = "DOC 123";
+            boleto.ValorBoleto = 1050;
+            var boletoBancario = new BoletoBancario();
+            boletoBancario.CodigoBanco = 084;
+            boletoBancario.Boleto = boleto;
+            return boletoBancario;
+        }
+
+        [TestMethod]
+        public void Uniprime_Carteira_9_NossoNumero_Digito_N()
+        {
+            var boletoBancario = GerarBoletoCarteira1();
+            boletoBancario.Boleto.Valida();
+            string nossoNumeroValido = "009/10001000128-2";
+            Assert.AreEqual(boletoBancario.Boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido");
+        }
+
+        [TestMethod]
+        public void Uniprime_Carteira_9_NossoNumero_Digito_P()
+        {
+            var boletoBancario = GerarBoletoCarteira1();
+            boletoBancario.Boleto.NossoNumero = "00000000001";
+            boletoBancario.Boleto.Valida();
+            string nossoNumeroValido = "009/00000000001-P";
+            Assert.AreEqual(boletoBancario.Boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido");
+        }
+
+        [TestMethod]
+        public void Uniprime_Carteira_9_LinhaDigitavel()
+        {
+            var boletoBancario = GerarBoletoCarteira1();
+
+            boletoBancario.Boleto.DataVencimento = new DateTime(2018, 09, 25);
+            boletoBancario.Boleto.Valida();
+            var boleto = boletoBancario.MontaHtml();
+
+            string linhaDigitavelValida = "08490.00104 91000.100015 28007.950208 7 76580000105000";
+
+            Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.LinhaDigitavel, linhaDigitavelValida, "Linha digitável inválida");
+        }
+    }
+}
