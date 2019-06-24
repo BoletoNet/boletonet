@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BoletoNet.Testes
@@ -8,8 +9,9 @@ namespace BoletoNet.Testes
     {
         private BoletoBancario GerarBoletoCarteira1()
         {
-            var cedente = new Cedente("35.342.670/0001-70", "EMPRESA MODELO S/A", "0001", "9","0079502", "0");
-            cedente.Codigo = "0000001";
+            var cedente = new Cedente("35.342.670/0001-70", "EMPRESA MODELO S/A", "0001", "9", "0079502", "0");
+            cedente.Codigo = "444601";
+            cedente.Convenio = 444601;
             cedente.DigitoCedente = 0;
             cedente.Carteira = "09";
 
@@ -49,14 +51,22 @@ namespace BoletoNet.Testes
         public void Uniprime_Carteira_9_LinhaDigitavel()
         {
             var boletoBancario = GerarBoletoCarteira1();
-
             boletoBancario.Boleto.DataVencimento = new DateTime(2018, 09, 25);
             boletoBancario.Boleto.Valida();
-            var boleto = boletoBancario.MontaHtml();
-
             string linhaDigitavelValida = "08490.00104 91000.100015 28007.950208 7 76580000105000";
-
             Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.LinhaDigitavel, linhaDigitavelValida, "Linha digitável inválida");
+        }
+
+        [TestMethod]
+        public void Uniprime_GerarRemessa()
+        {
+            var boletoBancario = GerarBoletoCarteira1();
+            var remessa = new ArquivoRemessa(TipoArquivo.CNAB400);
+            var mem = new MemoryStream();
+            var boletos = new Boletos();
+            boletos.Add(boletoBancario.Boleto);
+            remessa.GerarArquivoRemessa(boletoBancario.Cedente.Convenio.ToString(), new Banco(84), boletoBancario.Cedente, boletos, mem, 1);
+            Assert.Inconclusive();
         }
     }
 }

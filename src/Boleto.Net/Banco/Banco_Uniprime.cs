@@ -35,17 +35,10 @@ namespace BoletoNet
         public static long FatorVencimento2000(Boleto boleto)
         {
             var dateBase = new DateTime(2000, 7, 3, 0, 0, 0);
-
-            //Verifica se a data esta dentro do range utilizavel
             var dataAtual = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             long rangeUtilizavel = Utils.DateDiff(DateInterval.Day, dataAtual, boleto.DataVencimento);
-
-            //if (rangeUtilizavel > 5500 || rangeUtilizavel < -3000)
-            //    throw new Exception("Data do vencimento fora do range de utilização proposto pela CENEGESC. Comunicado FEBRABAN de n° 082/2012 de 14/06/2012");
-
             while (boleto.DataVencimento > dateBase.AddDays(9999))
                 dateBase = boleto.DataVencimento.AddDays(-(((Utils.DateDiff(DateInterval.Day, dateBase, boleto.DataVencimento) - 9999) - 1) + 1000));
-
             return Utils.DateDiff(DateInterval.Day, dateBase, boleto.DataVencimento) + 1000;
         }
 
@@ -71,10 +64,8 @@ namespace BoletoNet
         /// </summary>
         public override void FormataLinhaDigitavel(Boleto boleto)
         {
-
             //BBBMC.CCCCD1 CCCCC.CCCCCD2 CCCCC.CCCCCD3 D4 FFFFVVVVVVVVVV
-
-
+            
             #region Campo 1
 
             string Grupo1 = string.Empty;
@@ -191,10 +182,7 @@ namespace BoletoNet
             {
                 throw new NotImplementedException("Carteira ainda não implementada.");
             }
-
-
             _dacBoleto = Mod11(boleto.CodigoBarra.Codigo, 9);
-
             boleto.CodigoBarra.Codigo = Strings.Left(boleto.CodigoBarra.Codigo, 4) + _dacBoleto + Strings.Right(boleto.CodigoBarra.Codigo, 39);
         }
 
@@ -209,10 +197,8 @@ namespace BoletoNet
         ///</summary>
         public string FormataCampoLivre(Boleto boleto)
         {
-
             string FormataCampoLivre = string.Format("{0}{1}{2}{3}{4}", boleto.Cedente.ContaBancaria.Agencia, boleto.Carteira,
                                             boleto.NossoNumero, boleto.Cedente.ContaBancaria.Conta, "0");
-
             return FormataCampoLivre;
         }
 
@@ -221,7 +207,6 @@ namespace BoletoNet
         {
             throw new NotImplementedException("Função ainda não implementada.");
         }
-
 
         public override void FormataNossoNumero(Boleto boleto)
         {
@@ -329,24 +314,8 @@ namespace BoletoNet
                     return "13-Abatimento Cancelado";
                 case "14":
                     return "14-Vencimento Alterado";
-                case "15":
-                    return "15-Liquidação em Cartório";
                 case "17":
                     return "17-Liquidação após baixa ou Título não registrado";
-                case "18":
-                    return "18-Acerto de Depositária";
-                case "19":
-                    return "19-Confirmação Recebimento Instrução de Protesto";
-                case "20":
-                    return "20-Confirmação Recebimento Instrução Sustação de Protesto";
-                case "21":
-                    return "21-Acerto do Controle do Participante";
-                case "23":
-                    return "23-Entrada do Título em Cartório";
-                case "24":
-                    return "24-Entrada rejeitada por CEP Irregular";
-                case "27":
-                    return "27-Baixa Rejeitada";
                 case "28":
                     return "28-Débito de tarifas/custas";
                 case "30":
@@ -355,14 +324,6 @@ namespace BoletoNet
                     return "32-Instrução Rejeitada";
                 case "33":
                     return "33-Confirmação Pedido Alteração Outros Dados";
-                case "34":
-                    return "34-Retirado de Cartório e Manutenção Carteira";
-                case "35":
-                    return "35-Desagendamento ) débito automático";
-                case "68":
-                    return "68-Acerto dos dados ) rateio de Crédito";
-                case "69":
-                    return "69-Cancelamento dos dados ) rateio";
                 default:
                     return "";
             }
@@ -391,6 +352,8 @@ namespace BoletoNet
                     return "09-Nosso número duplicado";
                 case "10":
                     return "10-Carteira inválida";
+                case "13":
+                    return "13-Identificação da emissão do bloqueio inválida";
                 case "16":
                     return "16-Data de vencimento inválida";
                 case "18":
@@ -403,30 +366,20 @@ namespace BoletoNet
                     return "22-Espécie não permitida para a carteira";
                 case "24":
                     return "24-Data de emissão inválida";
-                case "38":
-                    return "38-Prazo para protesto inválido";
+                case "28":
+                    return "28-Código de desconto inválido";
                 case "44":
                     return "44-Agência Cedente não prevista";
-                case "50":
-                    return "50-CEP irregular - Banco Correspondente";
+                case "45":
+                    return "45-Nome do pagador não informado";
+                case "46":
+                    return "46-Tipo/número de inscrição do pagador inválidos";
+                case "47":
+                    return "47-Endereço do pagador não informado";
+                case "48":
+                    return "48-CEP inválido";
                 case "63":
                     return "63-Entrada para Título já cadastrado";
-                case "68":
-                    return "68-Débito não agendado - erro nos dados de remessa";
-                case "69":
-                    return "69-Débito não agendado - Sacado não consta no cadastro de autorizante";
-                case "70":
-                    return "70-Débito não agendado - Cedente não autorizado pelo Sacado";
-                case "71":
-                    return "71-Débito não agendado - Cedente não participa da modalidade de débito automático";
-                case "72":
-                    return "72-Débito não agendado - Código de moeda diferente de R$";
-                case "73":
-                    return "73-Débito não agendado - Data de vencimento inválida";
-                case "74":
-                    return "74-Débito não agendado - Conforme seu pedido, Título não registrado";
-                case "75":
-                    return "75-Débito não agendado - Tipo de número de inscrição do debitado inválido";
                 default:
                     return "";
             }
@@ -692,8 +645,6 @@ namespace BoletoNet
             {
                 throw new Exception("Erro ao processar arquivo de RETORNO - SEGMENTO T.", ex);
             }
-
-
         }
 
         public override DetalheSegmentoURetornoCNAB240 LerDetalheSegmentoURetornoCNAB240(string registro)
@@ -772,7 +723,7 @@ namespace BoletoNet
             }
         }
 
-        #region Seygi gerando remessa
+        #region gerando remessa
         #region HEADER
         /// <summary>
         /// Gera o HEADER do arquivo remessa de acordo com o lay-out informado
@@ -914,25 +865,14 @@ namespace BoletoNet
             {
                 base.GerarDetalheRemessa(boleto, numeroRegistro, tipoArquivo);
 
-                // USO DO BANCO - Identificação da operação no Banco (posição 87 a 107)
-                string identificaOperacaoBanco = new string(' ', 10);
+                // Numero de Controle de Participante
                 string nrDeControle = Utils.FitStringLength(boleto.NumeroDocumento.TrimStart(' '), 25, 25, ' ', 0, true, true, false);
-                string mensagem = new string(' ', 12);
-                string mensagem2 = new string(' ', 60);
 
-                string usoBanco = new string(' ', 10);
                 string _detalhe;
-                //detalhe                           (tamanho,tipo) A= Alfanumerico, N= Numerico
                 _detalhe = "1"; //Identificação do Registro         (1, N)
+                _detalhe += new string(' ', 19);
 
-                //Parte Não Necessaria - Parte de dados do Sacado
-                _detalhe += "00000"; //Agencia de Debito            (5, N) Não Usado
-                _detalhe += " "; //Dig da Agencia                   (1, A) Não Usado
-                _detalhe += "00000"; //Razao da Conta Corrente      (5, N) Não Usado
-                _detalhe += "0000000"; //Conta Corrente             (7, N) Não Usado
-                _detalhe += " "; //Dig da Conta Corrente            (1, A) Não Usado
-
-                //Identificação da Empresa Cedente no Banco (17, A)
+                // Identificacao Empresa Beneficiaria
                 _detalhe += "0";
                 _detalhe += Utils.FitStringLength(boleto.Carteira, 3, 3, '0', 0, true, true, true); // Codigo da carteira (3)
                 _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true); //N da agencia(5)
@@ -941,8 +881,7 @@ namespace BoletoNet
                 //Nº de Controle do Participante - uso livre da empresa (25, A)  //  brancos
                 _detalhe += Utils.FitStringLength(boleto.NumeroControle ?? boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, false);
 
-                //Código do Banco, só deve ser preenchido quando cliente cedente optar por "Débito Automático".
-                _detalhe += "000";
+                _detalhe += "084";
                 //0=sem multa, 2=com multa (1, N)
                 if (boleto.PercMulta > 0)
                 {
@@ -958,32 +897,17 @@ namespace BoletoNet
                 //Identificação do Título no Banco (12, A)
                 _detalhe += Utils.FitStringLength(boleto.NossoNumero, 11, 11, '0', 0, true, true, true); //Nosso Numero (11)
 
-                // Força o NossoNumero a ter 11 dígitos. Alterado por Luiz Ponce 07/07/2012
+                // Identificacao do Titulo no banco
                 _detalhe += Mod11Uniprime(boleto.Carteira + Utils.FitStringLength(boleto.NossoNumero, 11, 11, '0', 0, true, true, true), 7); // Digito de Auto Conferencia do Nosso Número (01)
-                //Desconto Bonificação por dia (10, N)
-                _detalhe += "0000000000";
+                // brancos
+                _detalhe += new string(' ',10);
 
                 // 1 = Banco emite e Processa o registro
                 // 2 = Cliente emite e o Banco somente processa
                 //Condição para Emissão da Papeleta de Cobrança(1, N)
                 _detalhe += boleto.ApenasRegistrar ? "2" : "1";
-                //Ident. se emite papeleta para Débito Automático (1, A)
-                _detalhe += "N";
-                //Identificação da Operação do Banco (10, A) Em Branco
-                _detalhe += identificaOperacaoBanco;
-
-                //Indicador de Rateio de Crédito (1, A)
-                //Somente deverá ser preenchido com a Letra “R”, se a Empresa participa da rotina 
-                // de rateio de crédito, caso não participe, informar Branco.
-                _detalhe += " ";
-
-                //Endereçamento para Aviso do Débito Automático em Conta Corrente (1, N)
-                //1 = emite aviso, e assume o endereço do Sacado constante do Arquivo-Remessa;
-                //2 = não emite aviso;
-                //diferente de 1 ou 2 = emite e assume o endereço do cliente debitado, constante do nosso cadastro.
-                _detalhe += "2";
-
-                _detalhe += "  "; //Branco (2, A)
+                // brancos
+                _detalhe += new string(' ', 15);
 
                 //Identificação ocorrência(2, N)
                 /*
@@ -1018,9 +942,8 @@ namespace BoletoNet
                 //Valor do Título (13, N)
                 _detalhe += Utils.FitStringLength(boleto.ValorBoleto.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
 
-                _detalhe += "000"; //Banco Encarregado da Cobrança (3, N)
-                _detalhe += "00000"; //Agência Depositária (5, N)
-
+                // Brancos
+                _detalhe += new string(' ', 8);
                 /*Espécie de Título (2,N)
                 * 01-Duplicata
                 02-Nota Promissória
@@ -1034,51 +957,11 @@ namespace BoletoNet
                 */
                 //_detalhe += "99";
                 _detalhe += Utils.FitStringLength(boleto.EspecieDocumento.Codigo.ToString(), 2, 2, '0', 0, true, true, true);
-
                 _detalhe += "N"; //Identificação (1, A) A – aceito; N - não aceito
                 _detalhe += boleto.DataProcessamento.ToString("ddMMyy"); //Data da emissão do Título (6, N) DDMMAA
-
-                //Valida se tem instrução no list de instruções, repassa ao arquivo de remessa
-                string vInstrucao1 = "00"; //1ª instrução (2, N) Caso Queira colocar um cod de uma instrução. ver no Manual caso nao coloca 00
-                string vInstrucao2 = "00"; //2ª instrução (2, N) Caso Queira colocar um cod de uma instrução. ver no Manual caso nao coloca 00
-
-                foreach (var instrucao in boleto.Instrucoes)
-                {
-                    switch ((EnumInstrucoes_Uniprime)instrucao.Codigo)
-                    {
-                        case EnumInstrucoes_Uniprime.Protestar:
-                            vInstrucao1 = "06"; //Indicar o código “06” - (Protesto)
-                            vInstrucao2 = Utils.FitStringLength(instrucao.QuantidadeDias.ToString(), 2, 2, '0', 0, true, true, true);
-                            break;
-                        case EnumInstrucoes_Uniprime.NaoProtestar:
-                            vInstrucao1 = "00";
-                            vInstrucao2 = "00";
-                            break;
-                        case EnumInstrucoes_Uniprime.ProtestoFinsFalimentares:
-                            vInstrucao1 = "06"; //Indicar o código “06” - (Protesto)
-                            vInstrucao2 = "00";
-                            break;
-                        case EnumInstrucoes_Uniprime.ProtestarAposNDiasCorridos:
-                            vInstrucao1 = "06"; //Indicar o código “06” - (Protesto)
-                            vInstrucao2 = Utils.FitStringLength(instrucao.QuantidadeDias.ToString(), 2, 2, '0', 0, true, true, true);
-                            break;
-                        case EnumInstrucoes_Uniprime.ProtestarAposNDiasUteis:
-                            vInstrucao1 = "06"; //Indicar o código “06” - (Protesto)
-                            vInstrucao2 = Utils.FitStringLength(instrucao.QuantidadeDias.ToString(), 2, 2, '0', 0, true, true, true);
-                            break;
-                        case EnumInstrucoes_Uniprime.NaoReceberAposNDias:
-                            vInstrucao1 = "00";
-                            vInstrucao2 = "00";
-                            break;
-                        case EnumInstrucoes_Uniprime.DevolverAposNDias:
-                            vInstrucao1 = "00";
-                            vInstrucao2 = "00";
-                            break;
-                    }
-                }
-                _detalhe += vInstrucao1; //posições: 157 a 158 do leiaute
-                _detalhe += vInstrucao2; //posições: 159 a 160 do leiaute
-                //
+                // Zeros
+                _detalhe += "0000";
+                
 
                 // Valor a ser cobrado por Dia de Atraso (13, N)
                 _detalhe += Utils.FitStringLength(boleto.JurosMora.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
@@ -1097,8 +980,8 @@ namespace BoletoNet
                 //Valor do Desconto (13, N)
                 _detalhe += Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
 
-                //Valor do IOF (13, N)
-                _detalhe += Utils.FitStringLength(boleto.IOF.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
+                // Brancos
+                _detalhe += new string(' ', 13);
 
                 //Valor do Abatimento a ser concedido ou cancelado (13, N)
                 _detalhe += Utils.FitStringLength(boleto.Abatimento.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
@@ -1122,21 +1005,18 @@ namespace BoletoNet
 
                 //Nome do Sacado (40, A)
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Nome.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
-
                 //Endereço Completo (40, A)
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.EndComNumero.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
-
-                //1ª Mensagem (12, A)
-                /*Campo livre para uso da Empresa. A mensagem enviada nesse campo será impressa
-                somente no boleto e não será confirmada no Arquivo Retorno.
-                */
-                _detalhe += Utils.FitStringLength(mensagem, 12, 12, ' ', 0, true, true, false);
-
-                //CEP (5, N) + Sufixo do CEP (3, N) Total (8, N)
+                // Brancos
+                _detalhe += Utils.FitStringLength("", 12, 12, ' ', 0, true, true, false);
+                // CEP (5, N) + Sufixo do CEP (3, N) Total (8, N)
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.CEP.Replace("-", ""), 8, 8, '0', 0, true, true, true);
-
-                //Sacador|Avalista ou 2ª Mensagem (60, A)
-                _detalhe += Utils.FitStringLength(mensagem2, 60, 60, ' ', 0, true, true, false);
+                // Bairro
+                _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.Bairro, 20, 20, ' ', 0, true, true, true);
+                // Cidade
+                _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.Cidade, 38, 38, '0', 0, true, true, true);
+                // UF
+                _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.UF, 2, 2, '0', 0, true, true, true);
 
                 //Nº Seqüencial do Registro (06, N)
                 _detalhe += Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true);
