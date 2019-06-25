@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BoletoNet.Testes
@@ -66,7 +68,92 @@ namespace BoletoNet.Testes
             var boletos = new Boletos();
             boletos.Add(boletoBancario.Boleto);
             remessa.GerarArquivoRemessa(boletoBancario.Cedente.Convenio.ToString(), new Banco(84), boletoBancario.Cedente, boletos, mem, 1);
-            Assert.Inconclusive();
+
+            var arquivo = Encoding.ASCII.GetString(mem.ToArray());
+            var arquivoTeste = "01REMESSA01COBRANCA       00000000000000444601EMPRESA MODELO S A            084UNIPRIME       250619        MX0000001                                                                                                                                                                                                                                                                                     000001\r\n"+
+                               "1                   00090000100795020DOC 123                  08400000100010001282          1               01000DOC 1232507190000000105000        02N010101000000000000000000000000000000000000             00000000000000235342670000170JOSE DA SILVA                           AV. DAS ROSAS, 10                                   86300000      JARDIM FLORIDO000000000000000000000CORNELIO PROCOPIOPR000002\r\n"+
+                               "9                                                                                                                                                                                                                                                                                                                                                                                                         000003\r\n";
+            Assert.AreEqual(arquivo, arquivoTeste);
+        }
+
+
+        [TestMethod]
+        public void Uniprime_LerRetorn()
+        {
+            var retorno = new ArquivoRetorno(TipoArquivo.CNAB400);
+            //var mem = new MemoryStream();
+            var mem = new StreamReader(@"c:\temp\Retorno.ret");
+            retorno.LinhaDeArquivoLida += Retorno_LinhaDeArquivoLida;
+            retorno.LerArquivoRetorno(new Banco(84), mem.BaseStream);
+        }
+
+        private void Retorno_LinhaDeArquivoLida(object sender, LinhaDeArquivoLidaArgs e)
+        {
+            var titulo = (DetalheRetorno)e.Detalhe;
+        }
+
+        [TestMethod]
+        public void Uniprime_Homologacao()
+        {
+            var cedente = new Cedente("35.342.670/0001-70", "EMPRESA MODELO S/A", "0001", "9", "0079502", "0");
+            cedente.Codigo = "444601";
+            cedente.Convenio = 444601;
+            cedente.DigitoCedente = 0;
+            cedente.Carteira = "09";
+
+            var sacado = new Sacado("35.342.670/0001-70", "JOSE DA SILVA");
+            sacado.Endereco = new Endereco() { End = "AV. DAS ROSAS", Numero = "10", Bairro = "JARDIM FLORIDO", Cidade = "CORNELIO PROCOPIO", CEP = "86300-000", UF = "PR", Email = "teste@boleto.net" };
+
+            // Gera 5 boletos e salva em PDF na pasta TEMP
+            var bolRemessa = new Boletos();
+            for (int i = 1; i <= 5; i++)
+            {
+                var boleto = new Boleto()
+                {
+                    NumeroDocumento = "DOC " + i.ToString("00000"),
+                    DataVencimento = DateTime.Today.AddDays(i),
+                    ValorBoleto = 200 * i,
+                    NossoNumero = i.ToString("00000000000"),
+                    Carteira = "09",
+                    Cedente = cedente,
+                    Banco = new Banco(084),
+                    Sacado = new Sacado()
+                    {
+                        CPFCNPJ = "35.342.670/0001-70",
+                        Nome = "JOSE DA SILVA",
+                        Endereco = new Endereco()
+                        {
+                            End = "AV. DAS ROSAS",
+                            Numero = "10",
+                            Bairro = "JARDIM FLORIDO",
+                            Cidade = "CORNELIO PROCOPIO",
+                            CEP = "86300-000",
+                            UF = "PR",
+                            Email = "teste@boleto.net"
+                        }
+                    }
+                };
+                bolRemessa.Add(boleto);
+                var boletoBancarioPDF = new BoletoBancario();
+                boletoBancarioPDF.CodigoBanco = 084;
+                boletoBancarioPDF.Boleto = boleto;
+                boletoBancarioPDF.Boleto.Valida();
+                var bytes = boletoBancarioPDF.MontaBytesPDF();
+                var arquivoBoleto = Path.Combine(Path.GetTempPath(), $"Boleto_Uniprime_{i}.pdf");
+                if (File.Exists(arquivoBoleto)) File.Delete(arquivoBoleto);
+                var sw = new FileStream(arquivoBoleto, FileMode.CreateNew);
+                sw.Write(bytes, 0, (int)bytes.Length);
+                sw.Flush();
+                sw.Close();
+                boleto.NossoNumero = i.ToString("00000000000");
+            }
+
+            // Gera Remessa e salva na pasta TEMP
+            var remessa = new ArquivoRemessa(TipoArquivo.CNAB400);
+            var arquivoRemessa = Path.Combine(Path.GetTempPath(), $"Remessa_Uniprime_{DateTime.Today.Day.ToString("00")}{DateTime.Today.Month.ToString("00")}{DateTime.Today.Year.ToString("00")}.REM");
+            if (File.Exists(arquivoRemessa)) File.Delete(arquivoRemessa);
+            var swRemessa = new FileStream(arquivoRemessa, FileMode.CreateNew);
+            remessa.GerarArquivoRemessa(cedente.Convenio.ToString(), new Banco(84), cedente, bolRemessa, swRemessa, 1);
         }
     }
 }

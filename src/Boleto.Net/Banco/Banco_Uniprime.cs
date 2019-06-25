@@ -432,7 +432,7 @@ namespace BoletoNet
 
             if (r == 0)
                 return "0";
-            else if (r == 10)
+            else if (r == 10 || r == 1)
                 return "P";
             else
                 return (11 - r).ToString();
