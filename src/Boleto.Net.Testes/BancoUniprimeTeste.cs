@@ -9,6 +9,7 @@ namespace BoletoNet.Testes
     [TestClass]
     public class BancoUniprimeTeste
     {
+        List<DetalheRetorno> detalheRetorno;
         private BoletoBancario GerarBoletoCarteira1()
         {
             var cedente = new Cedente("35.342.670/0001-70", "EMPRESA MODELO S/A", "0001", "9", "0079502", "0");
@@ -78,18 +79,27 @@ namespace BoletoNet.Testes
 
 
         [TestMethod]
-        public void Uniprime_LerRetorn()
+        public void Uniprime_LerRetorno()
         {
             var retorno = new ArquivoRetorno(TipoArquivo.CNAB400);
-            //var mem = new MemoryStream();
-            var mem = new StreamReader(@"c:\temp\Retorno.ret");
+            detalheRetorno = new List<DetalheRetorno>();
+            var mem = new MemoryStream();
+            var arquivoTeste = "02RETORNO01COBRANCA       00000000000000000001EMPRESA MODELO S/A            084UNIPRIME NORTE 2206190000000007563                                                                                                                                                                                                                                                                          000000         000001\r\n" +
+                               "102023989760001900000009000060097606700000000002              0000000000000000002P          00000000000000090222061900010255190000000000000000002P280719000000000020000000000  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000   000000                 0000000000                                                                  000002\r\n" +
+                               "102023989760001900000009000060097606700000000001              00000000000000000011          000000000000000902220619000102551900000000000000000011280619000000000020000000000  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000   000000                 0000000000                                                                  000003\r\n" +
+                               "9201084          000000020000006860084600000000          00476000065189902000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                                                                                                                                                                              00000000000000000000000         000557\r\n";
+            var buffer = Encoding.ASCII.GetBytes(arquivoTeste);
+            mem.Read(buffer,0,buffer.Length);
+            mem.Seek(0, SeekOrigin.Begin);
             retorno.LinhaDeArquivoLida += Retorno_LinhaDeArquivoLida;
-            retorno.LerArquivoRetorno(new Banco(84), mem.BaseStream);
+            retorno.LerArquivoRetorno(new Banco(84), mem);
+            Assert.AreEqual(detalheRetorno.Count, 2);
         }
 
         private void Retorno_LinhaDeArquivoLida(object sender, LinhaDeArquivoLidaArgs e)
         {
             var titulo = (DetalheRetorno)e.Detalhe;
+            detalheRetorno.Add(titulo);
         }
 
         [TestMethod]
