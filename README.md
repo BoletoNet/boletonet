@@ -24,7 +24,7 @@ Install-Package Boleto.Net
 Se você é novo por aqui, dê uma olhada nos projetos de testes, que contem exemplos de utilização:
 https://github.com/BoletoNet/boletonet/tree/master/src/Boleto.Net.Testes
 
-#### Para build mais atualizados, acesse o MyGet (atualizado a cada Pull Request): 
+#### Para build mais atualizados, acesse o MyGet (atualizado a cada Pull Request):
 https://www.myget.org/gallery/boletonetbuild
 
 Para informações sobre o projeto e bancos implementados, consulte o nosso [Wiki](https://github.com/BoletoNet/boletonet/wiki).
