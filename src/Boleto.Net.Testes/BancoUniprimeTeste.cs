@@ -71,8 +71,11 @@ namespace BoletoNet.Testes
             remessa.GerarArquivoRemessa(boletoBancario.Cedente.Convenio.ToString(), new Banco(84), boletoBancario.Cedente, boletos, mem, 1);
 
             var arquivo = Encoding.ASCII.GetString(mem.ToArray());
-            var arquivoTeste = "01REMESSA01COBRANCA       00000000000000444601EMPRESA MODELO S A            084UNIPRIME       250619        MX0000001                                                                                                                                                                                                                                                                                     000001\r\n"+
-                               "1                   00090000100795020DOC 123                  08400000100010001282          1               01000DOC 1232507190000000105000        02N010101000000000000000000000000000000000000             00000000000000235342670000170JOSE DA SILVA                           AV. DAS ROSAS, 10                                   86300000      JARDIM FLORIDO000000000000000000000CORNELIO PROCOPIOPR000002\r\n"+
+            var dataRemessa = string.Format("{0}{1}{2}", DateTime.Today.Day.ToString("00"), DateTime.Today.Month.ToString("00"), DateTime.Today.ToString("yy"));
+            var dataVencimento = boletoBancario.Boleto.DataVencimento;
+            var dataVencimentoStr = string.Format("{0}{1}{2}", dataVencimento.Day.ToString("00"), dataVencimento.Month.ToString("00"), dataVencimento.ToString("yy"));
+            var arquivoTeste = "01REMESSA01COBRANCA       00000000000000444601EMPRESA MODELO S A            084UNIPRIME       "+dataRemessa+"        MX0000001                                                                                                                                                                                                                                                                                     000001\r\n"+
+                               "1                   00090000100795020DOC 123                  08400000100010001282          1               01000DOC 123"+dataVencimentoStr+"0000000105000        02N010101000000000000000000000000000000000000             00000000000000235342670000170JOSE DA SILVA                           AV. DAS ROSAS, 10                                   86300000      JARDIM FLORIDO000000000000000000000CORNELIO PROCOPIOPR000002\r\n"+
                                "9                                                                                                                                                                                                                                                                                                                                                                                                         000003\r\n";
             Assert.AreEqual(arquivo, arquivoTeste);
         }
@@ -148,7 +151,7 @@ namespace BoletoNet.Testes
                 boletoBancarioPDF.Boleto = boleto;
                 boletoBancarioPDF.Boleto.Valida();
                 var bytes = boletoBancarioPDF.MontaBytesPDF();
-                var arquivoBoleto = Path.Combine(Path.GetTempPath(), string.Format("Boleto_Uniprime_%1.pdf",i));
+                var arquivoBoleto = Path.Combine(Path.GetTempPath(), string.Format("Boleto_Uniprime_{0}.pdf",i));
                 if (File.Exists(arquivoBoleto)) File.Delete(arquivoBoleto);
                 var sw = new FileStream(arquivoBoleto, FileMode.CreateNew);
                 sw.Write(bytes, 0, (int)bytes.Length);
@@ -159,7 +162,7 @@ namespace BoletoNet.Testes
 
             // Gera Remessa e salva na pasta TEMP
             var remessa = new ArquivoRemessa(TipoArquivo.CNAB400);
-            var arquivoRemessa = Path.Combine(Path.GetTempPath(), string.Format("Remessa_Uniprime_%1%2%3.REM",DateTime.Today.Day.ToString("00"),DateTime.Today.Month.ToString("00"),DateTime.Today.Year.ToString("00")));
+            var arquivoRemessa = Path.Combine(Path.GetTempPath(), string.Format("Remessa_Uniprime_{0}{1}{2}.REM",DateTime.Today.Day.ToString("00"),DateTime.Today.Month.ToString("00"),DateTime.Today.ToString("yy")));
             if (File.Exists(arquivoRemessa)) File.Delete(arquivoRemessa);
             var swRemessa = new FileStream(arquivoRemessa, FileMode.CreateNew);
             remessa.GerarArquivoRemessa(cedente.Convenio.ToString(), new Banco(84), cedente, bolRemessa, swRemessa, 1);
