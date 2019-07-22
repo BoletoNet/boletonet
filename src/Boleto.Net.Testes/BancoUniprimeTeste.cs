@@ -148,7 +148,7 @@ namespace BoletoNet.Testes
                 boletoBancarioPDF.Boleto = boleto;
                 boletoBancarioPDF.Boleto.Valida();
                 var bytes = boletoBancarioPDF.MontaBytesPDF();
-                var arquivoBoleto = Path.Combine(Path.GetTempPath(), $"Boleto_Uniprime_{i}.pdf");
+                var arquivoBoleto = Path.Combine(Path.GetTempPath(), string.Format("Boleto_Uniprime_%1.pdf",i));
                 if (File.Exists(arquivoBoleto)) File.Delete(arquivoBoleto);
                 var sw = new FileStream(arquivoBoleto, FileMode.CreateNew);
                 sw.Write(bytes, 0, (int)bytes.Length);
@@ -159,7 +159,7 @@ namespace BoletoNet.Testes
 
             // Gera Remessa e salva na pasta TEMP
             var remessa = new ArquivoRemessa(TipoArquivo.CNAB400);
-            var arquivoRemessa = Path.Combine(Path.GetTempPath(), $"Remessa_Uniprime_{DateTime.Today.Day.ToString("00")}{DateTime.Today.Month.ToString("00")}{DateTime.Today.Year.ToString("00")}.REM");
+            var arquivoRemessa = Path.Combine(Path.GetTempPath(), string.Format("Remessa_Uniprime_%1%2%3.REM",DateTime.Today.Day.ToString("00"),DateTime.Today.Month.ToString("00"),DateTime.Today.Year.ToString("00")));
             if (File.Exists(arquivoRemessa)) File.Delete(arquivoRemessa);
             var swRemessa = new FileStream(arquivoRemessa, FileMode.CreateNew);
             remessa.GerarArquivoRemessa(cedente.Convenio.ToString(), new Banco(84), cedente, bolRemessa, swRemessa, 1);
