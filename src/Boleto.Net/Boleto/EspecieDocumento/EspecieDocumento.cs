@@ -348,6 +348,9 @@ namespace BoletoNet
                     //743 - Semear
                     case 743:
                         return new EspecieDocumento_Semear().getCodigoEspecieBySigla(sigla);
+                    //084 - Uniprime
+                    case 84:
+                        return new EspecieDocumento_Uniprime().getCodigoEspecieBySigla(sigla);
                     default:
                         throw new Exception("Código do banco não implementando: " + codigoBanco);
                 }
@@ -373,6 +376,7 @@ namespace BoletoNet
                 { 748, new EspecieDocumento_Sicredi    ()  },
                 { 41, new EspecieDocumento_Banrisul    ()  },
                 { 85, new EspecieDocumento_Cecred      ()  },
+                { 84, new EspecieDocumento_Uniprime    ()  },
                 { 756, new EspecieDocumento_Sicoob     ()  },
                 { 4, new EspecieDocumento_Nordeste     ()  },
                 { 707, new EspecieDocumento_Daycoval   ()  },
