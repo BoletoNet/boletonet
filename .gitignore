@@ -201,3 +201,4 @@ src/.vs/
 *.config
 src/.vs/config/applicationhost.config
 src/Boleto.Net/Properties/AssemblyInfo.cs
+src/Boleto.Net/Properties/AssemblyInfo.cs

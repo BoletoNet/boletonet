@@ -113,10 +113,12 @@ namespace BoletoNet
                 //Atribui o nome do banco ao local de pagamento
                 if (string.IsNullOrEmpty(boleto.LocalPagamento))
                     boleto.LocalPagamento = "PAGÁVEL PREFERENCIALMENTE NAS AGÊNCIAS DO ITAÚ";
+                else if (boleto.LocalPagamento == "Até o vencimento, preferencialmente no ")
+                    boleto.LocalPagamento += Nome;
 
                 //Verifica se o nosso número é válido
                 if (Utils.ToInt64(boleto.NossoNumero) == 0)
-                    throw new NotImplementedException("Nosso número inválido");
+                throw new NotImplementedException("Nosso número inválido");
 
                 //Verifica se data do processamento é valida
                 //if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
