@@ -150,16 +150,22 @@ namespace BoletoNet
 
                 #region Campo 2
 
-                //Campo 2
+                //Campo 2 - ACCCC.CCCNNd2bb
                 Metade1 = string.Empty;
-                //Metade1 = Cedente.Substring(0, 5);
+
+                //Metade1 
+                // Último dígito da agência, sem o NC
                 string A = boleto.Cedente.ContaBancaria.Agencia.Substring(3, 1);
-                string CCCC = boleto.Cedente.ContaBancaria.Conta.Substring(0, 4);
+
+                // Código do Beneficiário, sem a agência e sem os números de controle
+                string CCCC = boleto.Cedente.Codigo.Substring(4, 4);
                 Metade1 = A + CCCC;
 
                 Metade2 = string.Empty;
-                //Metade2 = Cedente.Substring(5, 2) + NossoNumero.Substring(0, 3);
-                string CCC = boleto.Cedente.ContaBancaria.Conta.Substring(4, 3);
+
+                // Código do Beneficiário, sem a agência e sem os números de controle
+                string CCC = boleto.Cedente.Codigo.Substring(8, 3);
+
                 string NN = NossoNumero.Substring(0, 2);
                 Metade2 = CCC + NN;
                 string d2 = Mod10Banri(Metade1 + Metade2).ToString();
@@ -864,9 +870,7 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0327, 008, 0, boleto.Sacado.Endereco.CEP, '0'));                //327-334
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0335, 015, 0, boleto.Sacado.Endereco.Cidade.ToUpper(), ' '));   //335-349
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0350, 002, 0, boleto.Sacado.Endereco.UF.ToUpper(), ' '));       //350-351
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0352, 004, 1, 0, '0'));                                         //352-355
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0356, 001, 0, string.Empty, ' '));                              //356-356
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0357, 013, 2, 0, '0'));                                         //357-369
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0352, 018, 0, string.Empty, ' '));                              //352-369 - BRANCOS
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0370, 002, 0, vQtdeDiasCodigo_9_ou_15, '0'));                   //370-371
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0372, 023, 0, string.Empty, ' '));                              //372-394
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0395, 006, 0, numeroRegistro, '0'));                            //395-400
