@@ -69,7 +69,8 @@ namespace BoletoNet
             string valorNominal = Utils.FormatCode(boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", ""), 10);//10
             string fixo = "9";//1
             string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo.ToString(), 7);//7
-            string nossoNumero = Utils.FormatCode(boleto.NossoNumero, 12) + Mod11Santander(Utils.FormatCode(boleto.NossoNumero, 12));//13
+            //string nossoNumero = Utils.FormatCode(boleto.NossoNumero, 12) + Mod11Santander(Utils.FormatCode(boleto.NossoNumero, 12));//13
+            string nossoNumero = Utils.FormatCode(boleto.NossoNumero, 12) + CalcularDVSantander(Utils.FormatCode(boleto.NossoNumero, 12));//13
             string IOS = boleto.PercentualIOS.ToString();//1
             string tipoCarteira = boleto.Carteira;//3;
             boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}",
@@ -113,7 +114,8 @@ namespace BoletoNet
         /// </summary>
         public override void FormataLinhaDigitavel(Boleto boleto)
         {
-            string nossoNumero = Utils.FormatCode(boleto.NossoNumero, 12) + Mod11Santander(Utils.FormatCode(boleto.NossoNumero, 12));//13
+            //string nossoNumero = Utils.FormatCode(boleto.NossoNumero, 12) + Mod11Santander(Utils.FormatCode(boleto.NossoNumero, 12));//13
+            string nossoNumero = Utils.FormatCode(boleto.NossoNumero, 12) + CalcularDVSantander(Utils.FormatCode(boleto.NossoNumero, 12));//13
             string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo.ToString(), 7);
             string fatorVencimento = FatorVencimento(boleto).ToString();
             string IOS = boleto.PercentualIOS.ToString();//1
@@ -156,7 +158,8 @@ namespace BoletoNet
             string DVvalorNominal = Utils.FormatCode(boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", ""), 10);//10
             string DVfixo = "9";//1
             string DVcodigoCedente = Utils.FormatCode(boleto.Cedente.Codigo.ToString(), 7).ToString();//7
-            string DVnossoNumero = Utils.FormatCode(boleto.NossoNumero, 12) + Mod11Santander(Utils.FormatCode(boleto.NossoNumero, 12));
+            //string DVnossoNumero = Utils.FormatCode(boleto.NossoNumero, 12) + Mod11Santander(Utils.FormatCode(boleto.NossoNumero, 12));
+            string DVnossoNumero = Utils.FormatCode(boleto.NossoNumero, 12) + CalcularDVSantander(Utils.FormatCode(boleto.NossoNumero, 12));
             string DVtipoCarteira = boleto.Carteira;//3;
 
             string calculoDVcodigo = string.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}",
@@ -183,7 +186,8 @@ namespace BoletoNet
 
         public override void FormataNossoNumero(Boleto boleto)
         {
-            boleto.NossoNumero = string.Format("{0}-{1}", boleto.NossoNumero, Mod11Santander(boleto.NossoNumero));
+            //boleto.NossoNumero = string.Format("{0}-{1}", boleto.NossoNumero, Mod11Santander(boleto.NossoNumero));
+            boleto.NossoNumero = string.Format("{0}-{1}", boleto.NossoNumero, CalcularDVSantander(boleto.NossoNumero));
         }
 
         public override void FormataNumeroDocumento(Boleto boleto)
@@ -263,6 +267,27 @@ namespace BoletoNet
                 digito = 11 - modulo;
             }
 
+            return digito;
+        }
+
+        private static string CalcularDVSantander(string texto)
+        {
+            //Codigo retirado do projeto Boleto2net
+            string digito;
+            int pesoMaximo = 9, soma = 0, peso = 2;
+            for (var i = texto.Length - 1; i >= 0; i--)
+            {
+                soma = soma + Convert.ToInt32(texto.Substring(i, 1)) * peso;
+                if (peso == pesoMaximo)
+                    peso = 2;
+                else
+                    peso = peso + 1;
+            }
+            var resto = soma % 11;
+            if (resto <= 1)
+                digito = "0";
+            else
+                digito = (11 - resto).ToString();
             return digito;
         }
 
@@ -1289,7 +1314,8 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(numeroControle, 25, 25, ' ', 0, true, true, false); //alterado por diegodariolli - 15/03/2018 - estava passando vazio impossibilitando controle interno
 
                 //NossoNumero com DV, pegar os 8 primeiros dígitos, da direita para esquerda ==> 063 - 070
-                string nossoNumero = Utils.FormatCode(boleto.NossoNumero, 12) + Mod11Santander(Utils.FormatCode(boleto.NossoNumero, 12));//13
+                //string nossoNumero = Utils.FormatCode(boleto.NossoNumero, 12) + Mod11Santander(Utils.FormatCode(boleto.NossoNumero, 12));//13
+                string nossoNumero = Utils.FormatCode(boleto.NossoNumero, 12) + CalcularDVSantander(Utils.FormatCode(boleto.NossoNumero, 12));//13
                 _detalhe += Utils.Right(nossoNumero, 8, '0', true);
 
                 //Data do segundo desconto 9(06) ==> 071 - 076

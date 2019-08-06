@@ -421,6 +421,8 @@ namespace BoletoNet
             //Estou deixando também para que se possa personalizar na aplicação caso necessário
             if (string.IsNullOrEmpty(boleto.LocalPagamento))
                 boleto.LocalPagamento = "PREFERENCIALMENTE NAS CASAS LOTÉRICAS ATÉ O VALOR LIMITE";
+            else if (boleto.LocalPagamento == "Até o vencimento, preferencialmente no ")
+                boleto.LocalPagamento += Nome;
 
             /* 
              * Na Carteira Simples não é necessário gerar a impressão do boleto,
@@ -586,7 +588,10 @@ namespace BoletoNet
 
         public override string GerarDetalheSegmentoRRemessa(Boleto boleto, int numeroRegistroDetalhe, TipoArquivo CNAB240)
         {
-            return GerarDetalheSegmentoRRemessaCNAB240(boleto, numeroRegistroDetalhe, CNAB240);
+            if (boleto.Remessa.TipoDocumento.Equals("2") || boleto.Remessa.TipoDocumento.Equals("1"))
+                return GerarDetalheSegmentoRRemessaCNAB240SIGCB(boleto, numeroRegistroDetalhe, CNAB240);
+            else
+                return GerarDetalheSegmentoRRemessaCNAB240(boleto, numeroRegistroDetalhe, CNAB240);
         }
 
         public override string GerarTrailerLoteRemessa(int numeroRegistro, Boleto boletos)
@@ -1013,7 +1018,7 @@ namespace BoletoNet
             }
             catch (Exception e)
             {
-                throw new Exception("Erro ao gerar SEGMENTO Q do arquivo de remessa.", e);
+                throw new Exception("Erro ao gerar SEGMENTO R do arquivo de remessa.", e);
             }
         }
         public string GerarTrailerLoteRemessaCNAB240(int numeroRegistro)
@@ -1339,7 +1344,7 @@ namespace BoletoNet
 				reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0196, 025, 0, boleto.NumeroControle, ' '));                        // posição 196 até 220 (25)- Identificação do Título na Empresa. Informar o Número do Documento - Seu Número (mesmo das posições 63-73 do Segmento P)
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0221, 001, 0, (_protestar ? "1" : "3"), '0'));                       // posição 221 até 221 (1) -  Código para protesto  - ?1? = Protestar. "3" = Não Protestar. "9" = Cancelamento Protesto Automático
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0222, 002, 0, _diasProtesto, '0'));                                  // posição 222 até 223 (2) -  Número de Dias para Protesto                
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0224, 001, 0, (_baixaDevolver ? "1" : "2"), '0'));                   // posição 224 até 224 (1) -  Código para Baixa/Devolução ?1? = Baixar / Devolver. "2" = Não Baixar / Não Devolver
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0224, 001, 0, (_baixaDevolver || !_protestar ? "1" : "2"), '0'));    // posição 224 até 224 (1) -  Código para Baixa/Devolução ?1? = Baixar / Devolver. "2" = Não Baixar / Não Devolver
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0225, 003, 0, _diasDevolucao, '0'));                                 // posição 225 até 227 (3) - Número de Dias para Baixa/Devolução
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0228, 002, 0, "09", '0'));                                          // posição 228 até 229 (2) - Código da Moeda. Informar fixo: ?09? = REAL
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0230, 010, 2, "0", '0'));                                           // posição 230 até 239 (10)- Uso Exclusivo CAIXA                
@@ -1689,7 +1694,7 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0029, 001, 0, '0', ' '));                                       //029-029
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0030, 002, 0, "00", ' '));                                      //030-031
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0032, 025, 0, boleto.NumeroControle, '0'));                     //032-056  //alterado por diegodariolli - 16/03/2018
-                //reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0057, 002, 0, boleto.Carteira, '0'));                           //057-058
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0057, 002, 0, boleto.Carteira, '0'));                           //057-058
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0059, 015, 0, boleto.NossoNumero, '0'));                        //059-073
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0074, 003, 0, string.Empty, ' '));                              //074-076
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0077, 030, 0, string.Empty, ' '));                              //077-106
@@ -1853,7 +1858,6 @@ namespace BoletoNet
                 TRegistroEDI_Caixa_Retorno reg = new TRegistroEDI_Caixa_Retorno { LinhaRegistro = registro };
                 reg.DecodificarLinha();
 
-                //Passa para o detalhe as propriedades de reg;
                 DetalheRetorno detalhe = new DetalheRetorno
                 {
                     NumeroInscricao = reg.NumeroInscricaoEmpresa,
@@ -1869,22 +1873,52 @@ namespace BoletoNet
                             reg.IdentificacaoTituloCaixa_NossoNumero.Length - 1),
                     MotivosRejeicao = reg.CodigoMotivoRejeicao,
                     Carteira = reg.CodigoCarteira,
-                    CodigoOcorrencia = Utils.ToInt32(reg.CodigoOcorrencia),
-                    DataOcorrencia = Utils.ToDateTime(Utils.ToInt32(reg.DataOcorrencia).ToString("##-##-##")),
+                    CodigoOcorrencia = !string.IsNullOrEmpty(reg.CodigoOcorrencia ) ? 
+                        Utils.ToInt32(reg.CodigoOcorrencia) 
+                        : 0,
+                    DataOcorrencia = !string.IsNullOrEmpty(reg.DataOcorrencia) ? 
+                        Utils.ToDateTime(Utils.ToInt32(reg.DataOcorrencia).ToString("##-##-##"))
+                        : DateTime.MinValue,
                     NumeroDocumento = reg.NumeroDocumento,
-                    DataVencimento = Utils.ToDateTime(Utils.ToInt32(reg.DataVencimentoTitulo).ToString("##-##-##")),
-                    ValorTitulo = (Convert.ToDecimal(reg.ValorTitulo) / 100),
-                    CodigoBanco = Utils.ToInt32(reg.CodigoBancoCobrador),
-                    AgenciaCobradora = Utils.ToInt32(reg.CodigoAgenciaCobradora),
-                    ValorDespesa = (Convert.ToDecimal(reg.ValorDespesasCobranca) / 100),
+
+                    DataVencimento = !string.IsNullOrEmpty(reg.DataVencimentoTitulo) ? 
+                        Utils.ToDateTime(Utils.ToInt32(reg.DataVencimentoTitulo).ToString("##-##-##"))
+                        : DateTime.MinValue,
+                    ValorTitulo = !string.IsNullOrEmpty(reg.ValorTitulo) ? 
+                        Convert.ToDecimal(reg.ValorTitulo) /100
+                        : 0,
+                    CodigoBanco = !string.IsNullOrEmpty(reg.CodigoBancoCobrador) ? 
+                        Utils.ToInt32(reg.CodigoBancoCobrador) 
+                        : 0,
+                    AgenciaCobradora = !string.IsNullOrEmpty(reg.CodigoAgenciaCobradora) ? 
+                        Utils.ToInt32(reg.CodigoAgenciaCobradora) 
+                        : 0,
+                    ValorDespesa = !string.IsNullOrEmpty(reg.ValorDespesasCobranca) ? 
+                        (Convert.ToDecimal(reg.ValorDespesasCobranca) / 100)
+                        : 0 ,
                     OrigemPagamento = reg.TipoLiquidacao,
-                    IOF = (Convert.ToDecimal(reg.ValorIOF) / 100),
-                    ValorAbatimento = (Convert.ToDecimal(reg.ValorAbatimentoConcedido) / 100),
-                    Descontos = (Convert.ToDecimal(reg.ValorDescontoConcedido) / 100),
-                    ValorPago = (Convert.ToDecimal(reg.ValorPago) / 100),
-                    JurosMora = (Convert.ToDecimal(reg.ValorJuros) / 100),
-                    TarifaCobranca = (Convert.ToDecimal(reg.ValorDespesasCobranca) / 100),
-                    DataCredito = Utils.ToDateTime(Utils.ToInt32(reg.DataCreditoConta).ToString("##-##-##")),
+                    IOF = !string.IsNullOrEmpty(reg.ValorIOF) ? 
+                        (Convert.ToDecimal(reg.ValorIOF) / 100)
+                        : 0 ,
+                    ValorAbatimento = !string.IsNullOrEmpty(reg.ValorAbatimentoConcedido) ? 
+                        (Convert.ToDecimal(reg.ValorAbatimentoConcedido) / 100)
+                        : 0,
+                    Descontos = !string.IsNullOrEmpty(reg.ValorDescontoConcedido) ? 
+                        (Convert.ToDecimal(reg.ValorDescontoConcedido) / 100)
+                        : 0,
+                    ValorPago = !string.IsNullOrEmpty(reg.ValorPago) ? 
+                        Convert.ToDecimal(reg.ValorPago) / 100
+                        : 0 ,
+                    JurosMora = !string.IsNullOrEmpty(reg.ValorJuros) ? 
+                        (Convert.ToDecimal(reg.ValorJuros) / 100)
+                        : 0,
+                    TarifaCobranca = !string.IsNullOrEmpty(reg.ValorDespesasCobranca) ? 
+                        (Convert.ToDecimal(reg.ValorDespesasCobranca) / 100)
+                        : 0 ,
+                    DataCredito = !string.IsNullOrEmpty(reg.DataCreditoConta) ? 
+                        Utils.ToDateTime(Utils.ToInt32(reg.DataCreditoConta).ToString("##-##-##"))
+                        : DateTime.MinValue,
+
                     NumeroSequencial = Utils.ToInt32(reg.NumeroSequenciaRegistro),
                     NomeSacado = reg.IdentificacaoTituloEmpresa
                 };

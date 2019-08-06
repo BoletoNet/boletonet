@@ -45,6 +45,8 @@ namespace BoletoNet
         private bool _ajustaTamanhoFonte = false;
         private bool _removeSimboloMoedaValorDocumento = false;
         private string _ajustaTamanhoFonteHtml;
+        private bool _ajustaFamiliaFonte = false;
+        private string _ajustaFamiliaFonteHtml;
         #endregion Variaveis
 
         #region Propriedades
@@ -317,6 +319,26 @@ namespace BoletoNet
             _ajustaTamanhoFonteHtml = html.ToString().Replace("$1", "{").Replace("$2", "}");
         }
 
+        public void AjustaFamiliaFonte(String familiaFonte)
+        {
+            _ajustaFamiliaFonte = true;
+
+            var html = new StringBuilder();
+
+            html.AppendLine("<style>");
+            html.AppendFormat(".cp$1 font-family: {0} !important; $2", familiaFonte);
+            html.AppendFormat(".ti$1 font-family: {0} !important; $2", familiaFonte);
+            html.AppendFormat(".ld$1 font-family: {0} !important; $2", familiaFonte);
+            html.AppendFormat(".ct$1 font-family: {0} !important; $2", familiaFonte);
+            html.AppendFormat(".cn$1 font-family: {0} !important; $2", familiaFonte);
+            html.AppendFormat(".bc$1 font-family: {0} !important; $2", familiaFonte);
+            html.AppendFormat(".cpN$1 font-family: {0} !important; $2", familiaFonte);
+            html.AppendFormat(".ctN$1 font-family: {0} !important; $2", familiaFonte);
+            html.AppendFormat(".rc6 .t$1 font-family: {0} !important; $2", familiaFonte);
+            html.AppendFormat(".rc6 .c$1 font-family: {0} !important; $2", familiaFonte);
+            html.Append("</style>");
+            _ajustaFamiliaFonteHtml = html.ToString().Replace("$1", "{").Replace("$2", "}");
+        }
 
         #region Html
         public string GeraHtmlInstrucoes()
@@ -528,6 +550,10 @@ namespace BoletoNet
             if (_ajustaTamanhoFonte)
             {
                 html.Append(_ajustaTamanhoFonteHtml);
+            }
+            if(_ajustaFamiliaFonte)
+            {
+                html.Append(_ajustaFamiliaFonteHtml);
             }
 
             //Oculta o cabeçalho das instruções do boleto

@@ -68,6 +68,7 @@
     <Compile Include="BancoItau\BancoItauTeste.cs" />
     <Compile Include="BancoSantanderTeste.cs" />
     <Compile Include="BancoSemear\BancoSemearTeste.cs" />
+    <Compile Include="BancoUniprimeTeste.cs" />
     <Compile Include="BancoSicoobTeste.cs" />
     <Compile Include="BancoBrasil\BancoBrasil17019Teste.cs" />
     <Compile Include="BancoBrasil\BancoBrasilCarteira18019Teste.cs" />

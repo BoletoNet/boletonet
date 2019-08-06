@@ -113,10 +113,12 @@ namespace BoletoNet
                 //Atribui o nome do banco ao local de pagamento
                 if (string.IsNullOrEmpty(boleto.LocalPagamento))
                     boleto.LocalPagamento = "PAGÁVEL PREFERENCIALMENTE NAS AGÊNCIAS DO ITAÚ";
+                else if (boleto.LocalPagamento == "Até o vencimento, preferencialmente no ")
+                    boleto.LocalPagamento += Nome;
 
                 //Verifica se o nosso número é válido
                 if (Utils.ToInt64(boleto.NossoNumero) == 0)
-                    throw new NotImplementedException("Nosso número inválido");
+                throw new NotImplementedException("Nosso número inválido");
 
                 //Verifica se data do processamento é valida
                 //if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
@@ -1537,7 +1539,9 @@ namespace BoletoNet
                     case TipoArquivo.CNAB240:
                         throw new Exception("Mensagem Variavel nao existe para o tipo CNAB 240.");
                     case TipoArquivo.CNAB400:
-                        _detalhe = GerarMensagemVariavelRemessaCNAB400(boleto, ref numeroRegistro, tipoArquivo);
+                        //Comentado por diego.dariolli pois o registro tipo 2 do itaú é somente referente à multa
+                        //_detalhe = GerarMensagemVariavelRemessaCNAB400(boleto, ref numeroRegistro, tipoArquivo);
+                        _detalhe = string.Empty;
                         break;
                     case TipoArquivo.Outro:
                         throw new Exception("Tipo de arquivo inexistente.");
@@ -1761,6 +1765,91 @@ namespace BoletoNet
         }
         #endregion
 
+        #region ::. Arquivo de Retorno CNAB240 .::
+        public override DetalheSegmentoTRetornoCNAB240 LerDetalheSegmentoTRetornoCNAB240(string registro)
+        {
+            try
+            {
+                DetalheSegmentoTRetornoCNAB240 detalhe = new DetalheSegmentoTRetornoCNAB240(registro);
+
+                if (registro.Substring(13, 1) != "T")
+                    throw new Exception("Registro inválido. O detalhe não possuí as características do segmento T.");
+
+                detalhe.CodigoBanco = Convert.ToInt32(registro.Substring(0, 3));
+                detalhe.idCodigoMovimento = Convert.ToInt32(registro.Substring(15, 2));
+                detalhe.Agencia = Convert.ToInt32(registro.Substring(18, 4));
+                detalhe.DigitoAgencia = "0";
+                detalhe.Conta = Convert.ToInt32(registro.Substring(30, 5));
+                detalhe.DigitoConta = registro.Substring(36, 1);
+                detalhe.NossoNumero = registro.Substring(40, 9);
+                detalhe.CodigoCarteira = Convert.ToInt32(registro.Substring(37, 3));
+                detalhe.NumeroDocumento = registro.Substring(58, 10);
+                int dataVencimento = Convert.ToInt32(registro.Substring(73, 8));
+                detalhe.DataVencimento = Convert.ToDateTime(dataVencimento.ToString("##-##-####"));
+                decimal valorTitulo = Convert.ToInt64(registro.Substring(81, 15));
+                detalhe.ValorTitulo = valorTitulo / 100;
+                detalhe.IdentificacaoTituloEmpresa = registro.Substring(105, 25);
+                detalhe.TipoInscricao = Convert.ToInt32(registro.Substring(132, 1));
+                detalhe.NumeroInscricao = registro.Substring(133, 15);
+                detalhe.NomeSacado = registro.Substring(148, 30);
+                decimal valorTarifas = Convert.ToUInt64(registro.Substring(198, 15));
+                detalhe.ValorTarifas = valorTarifas / 100;
+
+                return detalhe;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao processar arquivo de RETORNO - SEGMENTO T.", ex);
+            }
+
+
+        }
+
+        public override DetalheSegmentoURetornoCNAB240 LerDetalheSegmentoURetornoCNAB240(string registro)
+        {
+            try
+            {
+                DetalheSegmentoURetornoCNAB240 detalhe = new DetalheSegmentoURetornoCNAB240(registro);
+
+                if (registro.Substring(13, 1) != "U")
+                    throw new Exception("Registro inválido. O detalhe não possuí as características do segmento U.");
+
+                detalhe.CodigoOcorrenciaSacado = registro.Substring(15, 2);
+                int DataCredito = Convert.ToInt32(registro.Substring(145, 8));
+                detalhe.DataCredito = (DataCredito > 0) ? Convert.ToDateTime(DataCredito.ToString("##-##-####")) : new DateTime();
+                int DataOcorrencia = Convert.ToInt32(registro.Substring(137, 8));
+                detalhe.DataOcorrencia = (DataOcorrencia > 0) ? Convert.ToDateTime(DataOcorrencia.ToString("##-##-####")) : new DateTime();
+                int DataOcorrenciaSacado = Convert.ToInt32(registro.Substring(157, 8));
+                if (DataOcorrenciaSacado > 0)
+                    detalhe.DataOcorrenciaSacado = Convert.ToDateTime(DataOcorrenciaSacado.ToString("##-##-####"));
+                else
+                    detalhe.DataOcorrenciaSacado = DateTime.Now;
+
+                decimal JurosMultaEncargos = Convert.ToUInt64(registro.Substring(17, 15));
+                detalhe.JurosMultaEncargos = JurosMultaEncargos / 100;
+                decimal ValorDescontoConcedido = Convert.ToUInt64(registro.Substring(32, 15));
+                detalhe.ValorDescontoConcedido = ValorDescontoConcedido / 100;
+                decimal ValorAbatimentoConcedido = Convert.ToUInt64(registro.Substring(47, 15));
+                detalhe.ValorAbatimentoConcedido = ValorAbatimentoConcedido / 100;
+                decimal ValorIOFRecolhido = Convert.ToUInt64(registro.Substring(62, 15));
+                detalhe.ValorIOFRecolhido = ValorIOFRecolhido / 100;
+                decimal ValorPagoPeloSacado = Convert.ToUInt64(registro.Substring(77, 15));
+                detalhe.ValorPagoPeloSacado = ValorPagoPeloSacado / 100;
+                decimal ValorLiquidoASerCreditado = Convert.ToUInt64(registro.Substring(92, 15));
+                detalhe.ValorLiquidoASerCreditado = ValorLiquidoASerCreditado / 100;
+                decimal ValorOutrasDespesas = Convert.ToUInt64(registro.Substring(107, 15));
+                detalhe.ValorOutrasDespesas = ValorOutrasDespesas / 100;
+
+                return detalhe;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao processar arquivo de RETORNO - SEGMENTO U.", ex);
+            }
+
+
+        }
+        #endregion
 
         /// <summary>
         /// Efetua as Validações dentro da classe Boleto, para garantir a geração da remessa

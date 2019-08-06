@@ -10,10 +10,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BoletoNet</RootNamespace>
     <AssemblyName>Boleto.Net</AssemblyName>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -99,6 +103,7 @@
     <Compile Include="Banco\Banco_Cecred.cs" />
     <Compile Include="Banco\Banco_Semear.cs" />
     <Compile Include="Banco\Banco_Sofisa.cs" />
+    <Compile Include="Banco\Banco_Uniprime.cs" />
     <Compile Include="Banco\Banco_Votorantim.cs" />
     <Compile Include="Banco\Carteiras\BancoCarteiraFactory.cs" />
     <Compile Include="Banco\Carteiras\Brasil\Carteira18Brasil.cs" />
@@ -113,10 +118,12 @@
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Sicredi.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Banestes.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_CrediSIS.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Safra.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Semear.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Cecred.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Daycoval.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Nordeste.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Uniprime.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Sicoob.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Sofisa.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Votorantim.cs" />
@@ -183,6 +190,7 @@
     <Compile Include="Boleto\EspecieDocumento\IEspecieDocumento.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspeciesDocumento.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Banrisul.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_Uniprime.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_BRB.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Caixa.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Cecred.cs" />
@@ -355,6 +363,7 @@
     <EmbeddedResource Include="Imagens\743.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Imagens\084.jpg" />
     <Content Include="Imagens\097.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -49,28 +49,32 @@ namespace BoletoNet
                 // Próxima linha (DETALHE)
                 linha = stream.ReadLine();
 
-                switch (banco.Codigo)
+                //tem arquivo de retorno que possui somente cabeçalho
+                if (linha != null)
                 {
-                    // 85 - CECRED - Código de registro detalhe 7 para CECRED
-                    case (int)Bancos.CECRED:
-                        IdsRegistroDetalhe.Add("7");
-                        break;
-                    // 1 - Banco do Brasil- Código de registro detalhe 7 para convênios com 7 posições, e detalhe 1 para convênios com 6 posições(colocado as duas, pois não interferem em cada tipo de arquivo)
-                    case (int)Bancos.BancoBrasil:
-                        IdsRegistroDetalhe.Add("1");//Para convênios de 6 posições
-                        IdsRegistroDetalhe.Add("7");//Para convênios de 7 posições
-                        break;
-                    default:
-                        IdsRegistroDetalhe.Add("1");
-                        break;
-                }
+                    switch (banco.Codigo)
+                    {
+                        // 85 - CECRED - Código de registro detalhe 7 para CECRED
+                        case (int)Bancos.CECRED:
+                            IdsRegistroDetalhe.Add("7");
+                            break;
+                        // 1 - Banco do Brasil- Código de registro detalhe 7 para convênios com 7 posições, e detalhe 1 para convênios com 6 posições(colocado as duas, pois não interferem em cada tipo de arquivo)
+                        case (int)Bancos.BancoBrasil:
+                            IdsRegistroDetalhe.Add("1");//Para convênios de 6 posições
+                            IdsRegistroDetalhe.Add("7");//Para convênios de 7 posições
+                            break;
+                        default:
+                            IdsRegistroDetalhe.Add("1");
+                            break;
+                    }
 
-                while (IdsRegistroDetalhe.Contains(DetalheRetorno.PrimeiroCaracter(linha)))
-                {
-                    DetalheRetorno detalhe = banco.LerDetalheRetornoCNAB400(linha);
-                    ListaDetalhe.Add(detalhe);
-                    OnLinhaLida(detalhe, linha);
-                    linha = stream.ReadLine();
+                    while (IdsRegistroDetalhe.Contains(DetalheRetorno.PrimeiroCaracter(linha)))
+                    {
+                        DetalheRetorno detalhe = banco.LerDetalheRetornoCNAB400(linha);
+                        ListaDetalhe.Add(detalhe);
+                        OnLinhaLida(detalhe, linha);
+                        linha = stream.ReadLine();
+                    }
                 }
 
                 //TODO: Tratar Triller.
