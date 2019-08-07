@@ -73,7 +73,7 @@ namespace BoletoNet
         private string _tipoImpressao = "A";
 		private Remessa _remessa;
 
-		private ObservableCollection<GrupoDemonstrativo> _demonstrativos;
+        private ObservableCollection<GrupoDemonstrativo> _demonstrativos;
 
 		#endregion
 
@@ -623,6 +623,12 @@ namespace BoletoNet
 
         public string TipoDeCobranca { get; set; }
 
+        public DateTime? DataDescontoAntecipacao2 { get; set; }
+        public decimal? ValorDescontoAntecipacao2 { get; set; }
+
+        public DateTime? DataDescontoAntecipacao3 { get; set; }
+        public decimal? ValorDescontoAntecipacao3 { get; set; }
+        
         #endregion Properties
 
         public void Valida()

@@ -1032,32 +1032,64 @@ namespace BoletoNet
 
                 //Código de movimento ==> 016 - 017
                 _segmentoR += ObterCodigoDaOcorrencia(boleto);
-
-                if (boleto.OutrosDescontos > 0)
+                                               
+                //Suelton - 14/12/2018 - Implementação do 2 desconto por antecipação
+                if (boleto.DataDescontoAntecipacao2.HasValue && boleto.ValorDescontoAntecipacao2.HasValue)
                 {
-                    //Código do desconto 2 ==> 018 - 018
-                    _segmentoR += "1";
-
-                    //Data do desconto 2 ==> 019 - 026
-                    _segmentoR += boleto.DataOutrosDescontos.ToString("ddMMyyyy");
-
-                    //Valor/Percentual a ser concedido ==> 027 - 041
-                    _segmentoR += Utils.FitStringLength(boleto.OutrosDescontos.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
+                    _segmentoR += "1" + //'1' = Valor Fixo Até a Data Informada
+                        Utils.FitStringLength(boleto.DataDescontoAntecipacao2.Value.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false) +
+                        Utils.FitStringLength(boleto.ValorDescontoAntecipacao2.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 }
                 else
                 {
-                    //Código do desconto 2 ==> 018 - 018
-                    _segmentoR += "0";
-
-                    //Data do desconto 2 ==> 019 - 026
-                    _segmentoR += "0".PadLeft(8, '0');
-
-                    //Valor/Percentual a ser concedido ==> 027 - 041
-                    _segmentoR += "0".PadLeft(15, '0');
+                    // Desconto 2
+                    _segmentoR += "000000000000000000000000"; //24 zeros
                 }
 
-                //Reservado (uso Banco) ==> 042 – 065
-                _segmentoR += " ".PadLeft(24, ' ');
+                //Suelton - 14/12/2018 - Implementação do 3 desconto por antecipação
+                if (boleto.DataDescontoAntecipacao3.HasValue && boleto.ValorDescontoAntecipacao3.HasValue)
+                {
+                    _segmentoR += "1" + //'1' = Valor Fixo Até a Data Informada
+                        Utils.FitStringLength(boleto.DataDescontoAntecipacao3.Value.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false) +
+                        Utils.FitStringLength(boleto.ValorDescontoAntecipacao3.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
+                }
+                else
+                {
+                    // Desconto 3
+                    _segmentoR += "000000000000000000000000"; //24 zeros
+                }
+
+                #region Deprecado
+                //Com a implementação dos campo descontos 2 e 3 não é mais recomendado utilizar o campo outros descontos
+                //a lógica já foi toda implementada nesses campos
+                //else if (boleto.OutrosDescontos > 0)
+                //{
+                //    //Código do desconto 2 ==> 018 - 018
+                //    _segmentoR += "1";
+
+                //    //Data do desconto 2 ==> 019 - 026
+                //    _segmentoR += boleto.DataOutrosDescontos.ToString("ddMMyyyy");
+
+                //    //Valor/Percentual a ser concedido ==> 027 - 041
+                //    _segmentoR += Utils.FitStringLength(boleto.OutrosDescontos.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
+                //}
+                //else
+                //{
+                //    //Código do desconto 2 ==> 018 - 018
+                //    _segmentoR += "0";
+
+                //    //Data do desconto 2 ==> 019 - 026
+                //    _segmentoR += "0".PadLeft(8, '0');
+
+                //    //Valor/Percentual a ser concedido ==> 027 - 041
+                //    _segmentoR += "0".PadLeft(15, '0');
+
+
+                //}
+
+                ////Reservado (uso Banco) ==> 042 – 065
+                //_segmentoR += " ".PadLeft(24, ' '); 
+                #endregion
 
                 if (boleto.PercMulta > 0)
                 {

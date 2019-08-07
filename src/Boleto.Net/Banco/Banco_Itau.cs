@@ -961,10 +961,32 @@ namespace BoletoNet
                 _segmentoR += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);
                 _segmentoR += "R ";
                 _segmentoR += ObterCodigoDaOcorrencia(boleto);
-                // Desconto 2
-                _segmentoR += "000000000000000000000000"; //24 zeros
-                // Desconto 3
-                _segmentoR += "000000000000000000000000"; //24 zeros
+                
+                //Suelton - 18/12/2018 - Implementação do 2 desconto por antecipação
+                if (boleto.DataDescontoAntecipacao2.HasValue && boleto.ValorDescontoAntecipacao2.HasValue)
+                {
+                    _segmentoR += "1" + //'1' = Valor Fixo Até a Data Informada
+                        Utils.FitStringLength(boleto.DataDescontoAntecipacao2.Value.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false) +
+                        Utils.FitStringLength(boleto.ValorDescontoAntecipacao2.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
+                }
+                else
+                {
+                    // Desconto 2
+                    _segmentoR += "000000000000000000000000"; //24 zeros
+                }
+
+                //Suelton - 18/12/2018 - Implementação do 3 desconto por antecipação
+                if (boleto.DataDescontoAntecipacao3.HasValue && boleto.ValorDescontoAntecipacao3.HasValue)
+                {
+                    _segmentoR += "1" + //'1' = Valor Fixo Até a Data Informada
+                        Utils.FitStringLength(boleto.DataDescontoAntecipacao3.Value.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false) +
+                        Utils.FitStringLength(boleto.ValorDescontoAntecipacao3.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
+                }
+                else
+                {
+                    // Desconto 3
+                    _segmentoR += "000000000000000000000000"; //24 zeros
+                }
 
                 if (boleto.PercMulta > 0)
                 {
@@ -1213,22 +1235,7 @@ namespace BoletoNet
                         _detalhe += Utils.FitStringLength(boleto.Instrucoes[1].Codigo.ToString(), 2, 2, '0', 0, true, true, true);
                         break;
                 }
-
-                //if (boleto.Instrucoes.Count > 1)
-                //    _detalhe += Utils.FitStringLength(boleto.Instrucoes[0].Codigo.ToString(), 2, 2, '0', 0, true, true, true);
-
-                //if (boleto.Instrucoes.Count > 2)
-                //    _detalhe += Utils.FitStringLength(boleto.Instrucoes[1].Codigo.ToString(), 2, 2, '0', 0, true, true, true);
-                //else
-                //_detalhe += "  ";
-                //    _detalhe += "    ";
-
-                // Juros de 1 dia
-                //Se o cliente optar pelo padrão do Banco Itaú ou solicitar o cadastramento permanente na conta corrente, 
-                //não haverá a necessidade de informar esse valor.
-                //Caso seja expresso em moeda variável, deverá ser preenchido com cinco casas decimais.
-
-                //_detalhe += "0000000000000";
+                                
                 _detalhe += Utils.FitStringLength(boleto.JurosMora.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
 
                 // Data limite para desconto
@@ -1251,37 +1258,77 @@ namespace BoletoNet
                 ;
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.Cidade, 15, 15, ' ', 0, true, true, false).ToUpper();
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.UF, 2, 2, ' ', 0, true, true, false).ToUpper();
+                
                 // SACADOR/AVALISTA
                 // Normalmente deve ser preenchido com o nome do sacador/avalista. Alternativamente este campo poderá 
                 // ter dois outros usos:
                 // a) 2o e 3o descontos: para de operar com mais de um desconto(depende de cadastramento prévio do 
                 // indicador 19.0 pelo Banco Itaú, conforme item 5)
                 // b) Mensagens ao sacado: se utilizados as instruções 93 ou 94 (Nota 11), transcrever a mensagem desejada
-                _detalhe += Utils.FitStringLength(boleto.Sacado.Nome, 30, 30, ' ', 0, true, true, false).ToUpper();
-                _detalhe += "    "; // Complemento do registro
-                _detalhe += boleto.DataVencimento.ToString("ddMMyy");
-                // PRAZO - Quantidade de DIAS - ver nota 11(A) - depende das instruções de cobrança 
 
-                if (boleto.Instrucoes.Count > 0)
+                /* Suélton - 18/12/2018 - 2 e 3 desconto por antecipação
+                   Posição 352 a 353 : Brancos
+                   Posição 354 a 359 : Data do 2º desconto (DDMMAA)
+                   Posição 360 a 372 : Valor do 2º desconto
+                   Posição 373 a 378 : Data do 3º desconto (DDMMAA)
+                   Posição 379 a 391 : Valor do 3º desconto
+                   Posição 392 a 394 : Brancos */
+
+                if (boleto.DataDescontoAntecipacao2.HasValue || boleto.DataDescontoAntecipacao3.HasValue)
                 {
-                    for (int i = 0; i < boleto.Instrucoes.Count; i++)
+                    _detalhe += "  "; //352 - 353
+                    if (boleto.DataDescontoAntecipacao2.HasValue)
                     {
-                        if (boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.Protestar || 
-                            boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.ProtestarAposNDiasCorridos ||
-                            boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.ProtestarAposNDiasUteis)
+                        _detalhe += boleto.DataDescontoAntecipacao2.Value.ToString("ddMMyy") + 
+                            Utils.FitStringLength(boleto.ValorDescontoAntecipacao2.Value.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
+                    }
+                    else
+                    {
+                        _detalhe += "0000000000000000000";
+                    }
+
+                    if (boleto.DataDescontoAntecipacao3.HasValue)
+                    {
+                        _detalhe += boleto.DataDescontoAntecipacao3.Value.ToString("ddMMyy") + 
+                            Utils.FitStringLength(boleto.ValorDescontoAntecipacao3.Value.ApenasNumeros(), 13, 13, '0', 0, true, true, true) + "00";
+                    }
+                    else
+                    {
+                        _detalhe += "0000000000000000000";
+                    }
+
+                    _detalhe += "   ";
+                }
+                else
+                {
+                    _detalhe += Utils.FitStringLength(boleto.Sacado.Nome, 30, 30, ' ', 0, true, true, false).ToUpper();
+                    _detalhe += "    "; // Complemento do registro
+                    _detalhe += boleto.DataVencimento.ToString("ddMMyy"); //Data de Mora
+
+                    if (boleto.Instrucoes.Count > 0)
+                    {
+                        for (int i = 0; i < boleto.Instrucoes.Count; i++)
+                        {
+                            if (boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.Protestar ||
+                                boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.ProtestarAposNDiasCorridos ||
+                                boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.ProtestarAposNDiasUteis)
                             {
                                 _detalhe += boleto.Instrucoes[i].QuantidadeDias.ToString("00");
                                 break;
                             }
                             else if (i == boleto.Instrucoes.Count - 1)
                                 _detalhe += "00";
+                        }
                     }
-                }
-                else
-                {
-                    _detalhe += "00";
-                }
-                _detalhe += " "; // Complemento do registro
+                    else
+                    {
+                        _detalhe += "00";
+                    }
+
+                    _detalhe += " "; // Complemento do registro
+                }               
+                
+                
                 _detalhe += Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true);
 
                 _detalhe = Utils.SubstituiCaracteresEspeciais(_detalhe);
