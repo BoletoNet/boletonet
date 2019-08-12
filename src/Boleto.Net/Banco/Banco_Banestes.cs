@@ -623,7 +623,7 @@ namespace BoletoNet
 
                 _detalhe += boleto.Sacado.CPFCNPJ.Length <= 11 ? "01" : "02"; // Tipo de inscrição da empresa. 01 - CPF; 02 - CNPJ.
 
-                string cpfCnpjSacado = boleto.Cedente.CPFCNPJ.Replace("/", "").Replace(".", "").Replace("-", "");
+                string cpfCnpjSacado = boleto.Sacado.CPFCNPJ.Replace("/", "").Replace(".", "").Replace("-", "");
                 _detalhe += Utils.FitStringLength(cpfCnpjSacado, 14, 14, '0', 0, true, true, true); // Número da inscrição da empresa.
 
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Nome.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
