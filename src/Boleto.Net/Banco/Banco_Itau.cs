@@ -1785,7 +1785,12 @@ namespace BoletoNet
                 detalhe.CodigoCarteira = Convert.ToInt32(registro.Substring(37, 3));
                 detalhe.NumeroDocumento = registro.Substring(58, 10);
                 int dataVencimento = Convert.ToInt32(registro.Substring(73, 8));
-                detalhe.DataVencimento = Convert.ToDateTime(dataVencimento.ToString("##-##-####"));
+
+                if (dataVencimento != 0) //Quando vem somente tarifas sobre (ex. Ocorrencia 54 - TARIFA MENSAL DE LIQUIDAÇÕES NA CARTEIRA), este campo vem 0
+                    detalhe.DataVencimento = Convert.ToDateTime(dataVencimento.ToString("##-##-####"));
+                else
+                    detalhe.DataVencimento = DateTime.Now.Date;
+
                 decimal valorTitulo = Convert.ToInt64(registro.Substring(81, 15));
                 detalhe.ValorTitulo = valorTitulo / 100;
                 detalhe.IdentificacaoTituloEmpresa = registro.Substring(105, 25);
