@@ -1744,7 +1744,6 @@ namespace BoletoNet
                 else
                     detalhe.DataVencimento = DateTime.Now.Date;
 
-                detalhe.DataVencimento = Convert.ToDateTime(dataVencimento.ToString("##-##-####"));
                 decimal valorTitulo = Convert.ToInt64(registro.Substring(81, 15));
                 detalhe.ValorTitulo = valorTitulo / 100;
                 detalhe.IdentificacaoTituloEmpresa = registro.Substring(105, 25);
