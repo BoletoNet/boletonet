@@ -50,7 +50,8 @@ namespace BoletoNet.Testes
             boletoBancario.Boleto.Valida();
 
             //string linhaDigitavelValida = "03399.33095 89400.000009 20061.001010 6 55370000270140";
-            string linhaDigitavelValida = "03399.33095 89400.000009 20061.101018 1 55370000270140";
+            //string linhaDigitavelValida = "03399.33095 89400.000009 20061.101018 1 55370000270140";
+            string linhaDigitavelValida = "03399.48457 01310.008748 39724.901011 6 78960000139633";
 
             Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.LinhaDigitavel, linhaDigitavelValida, "Linha digitável inválida");
         }
