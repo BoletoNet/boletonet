@@ -2459,6 +2459,7 @@ namespace BoletoNet
                 detalhe.Especie = Utils.ToInt32(reg.EspecieTitulo);
                 //
                 int dataCredito = Utils.ToInt32(reg.DataCredito);
+                detalhe.DataCredito = Utils.ToDateTime(dataCredito.ToString("##-##-##"));
                 detalhe.DataOcorrencia = Utils.ToDateTime(dataCredito.ToString("##-##-##"));
                 //
                 detalhe.TarifaCobranca = (Convert.ToDecimal(reg.ValorTarifa) / 100);
