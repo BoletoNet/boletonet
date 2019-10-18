@@ -3,6 +3,7 @@ using BoletoNet.Excecoes;
 using BoletoNet.Util;
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Web.UI;
 
 [assembly: WebResource("BoletoNet.Imagens.001.jpg", "image/jpg")]
@@ -2225,24 +2226,13 @@ namespace BoletoNet
                 #region Instruções
                 string vInstrucao1 = "0";
                 string vInstrucao2 = "0";
-                string diasProtesto = string.Empty;
-                switch (boleto.Instrucoes.Count)
+                int quantidadeDeDias = boleto.Instrucoes.FirstOrDefault(x => x.Codigo == (int)EnumInstrucoes_BancoBrasil.ProtestarAposNDiasCorridos)?.QuantidadeDias ?? 0;
+                string diasProtesto = quantidadeDeDias.ToString().PadLeft(2, '0');
+                
+                if (quantidadeDeDias == 0)
                 {
-                    case 1:
-                        vInstrucao1 = boleto.Instrucoes[0].Codigo.ToString();
-                        vInstrucao2 = "0";
-                        diasProtesto = boleto.Instrucoes[0].QuantidadeDias.ToString().PadLeft(2, '0');
-                        break;
-                    case 2:
-                        vInstrucao1 = boleto.Instrucoes[0].Codigo.ToString();
-                        vInstrucao2 = boleto.Instrucoes[1].Codigo.ToString();
-                        diasProtesto = boleto.Instrucoes[0].QuantidadeDias.ToString().PadLeft(2, '0');
-                        break;
-                    case 3:
-                        vInstrucao1 = boleto.Instrucoes[0].Codigo.ToString();
-                        vInstrucao2 = boleto.Instrucoes[1].Codigo.ToString();
-                        diasProtesto = boleto.Instrucoes[0].QuantidadeDias.ToString().PadLeft(2, '0');
-                        break;
+                    // 07 - Não protestar
+                    vInstrucao1 = "07";
                 }
                 #endregion
 

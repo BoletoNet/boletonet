@@ -126,6 +126,7 @@ namespace BoletoNet
                     case EnumInstrucoes_BancoBrasil.ProtestarAposNDiasCorridos:
                         this.Codigo = (int)EnumInstrucoes_BancoBrasil.ProtestarAposNDiasCorridos;
                         this.Descricao = "Protestar no " + nrDias + "º dia corrido após vencimento";
+                        QuantidadeDias = nrDias;
                         break;
                     case EnumInstrucoes_BancoBrasil.ProtestarAposNDiasUteis:
                         this.Codigo = (int)EnumInstrucoes_BancoBrasil.ProtestarAposNDiasUteis;
