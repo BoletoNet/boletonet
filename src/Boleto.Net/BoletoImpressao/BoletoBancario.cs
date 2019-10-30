@@ -42,6 +42,7 @@ namespace BoletoNet
         private string _instrucoesHtml = string.Empty;
         private bool _mostrarCodigoCarteira = false;
         private bool _formatoCarne = false;
+        private bool _formatoPropaganda = false;
         private bool _ajustaTamanhoFonte = false;
         private bool _removeSimboloMoedaValorDocumento = false;
         private string _ajustaTamanhoFonteHtml;
@@ -86,6 +87,15 @@ namespace BoletoNet
         {
             get { return _formatoCarne; }
             set { _formatoCarne = value; }
+        }
+
+        /// <summary>
+        /// exibe o boleto no formato de propaganda
+        /// </summary>
+        [Browsable(true), Description("Formata o boleto no layout de propaganda")]
+        public bool FormatoPropaganda {
+            get { return _formatoPropaganda; }
+            set { _formatoPropaganda = value; }
         }
 
         [Browsable(false)]
@@ -554,6 +564,11 @@ namespace BoletoNet
             if(_ajustaFamiliaFonte)
             {
                 html.Append(_ajustaFamiliaFonteHtml);
+            }
+
+            if (FormatoPropaganda)
+            {
+                html.Append("<img src='http://idevweb.com.br/prop.png' />");
             }
 
             //Oculta o cabeçalho das instruções do boleto

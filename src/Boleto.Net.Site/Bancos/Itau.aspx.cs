@@ -56,5 +56,6 @@ public partial class Bancos_Itau : System.Web.UI.Page
         //boletoBancario.MostrarCodigoCarteira = true;
         boletoBancario.MostrarComprovanteEntrega = (Request.Url.Query == "?show");
         boletoBancario.FormatoCarne = (Request.Url.Query == "?formatocarne");
+        boletoBancario.FormatoPropaganda = (Request.Url.Query == "?formatopropaganda");
     }
 }

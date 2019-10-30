@@ -8,7 +8,8 @@
         <li>Itaú<br />
             <a href="Itau.aspx">Sem Comprovante de Entrega</a><br />
             <a href="Itau.aspx?show">Com Comprovante de Entrega</a><br />
-            <a href="Itau.aspx?formatocarne">Formato Carnê</a></li>
+            <a href="Itau.aspx?formatocarne">Formato Carnê</a><br />
+        <a href="Itau.aspx?formatopropaganda">Formato Propaganda</a></li>
         <li>Banestes<br />
             <a href="Banestes.aspx">Sem Comprovante de Entrega</a><br />
             <a href="Banestes.aspx?show">Com Comprovante de Entrega</a> </li>
