@@ -19,7 +19,7 @@ namespace BoletoNet {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Html {
@@ -347,6 +347,29 @@ namespace BoletoNet {
             get {
                 object obj = ResourceManager.GetObject("ponto", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;table cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+        ///        &lt;tr&gt;
+        ///            &lt;td class=&quot;w240 BB&quot;&gt;&lt;/td&gt;
+        ///            &lt;td class=&quot;w424 BB ld Ar&quot;&gt;@LINHADIGITAVEL&lt;/td&gt;
+        ///        &lt;/tr&gt;
+        ///    &lt;/table&gt;
+        ///    &lt;table cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+        ///        &lt;tr&gt;
+        ///            &lt;td valign=&quot;top&quot;  class=&quot;w430&quot;&gt;
+        ///                &lt;table class=&quot;w430&quot;&gt;
+        ///                    &lt;tr class=&quot;ct h13 At&quot;&gt;
+        ///                        &lt;td class=&quot;w250 &quot;&gt;&lt;/td&gt;
+        ///                        &lt;td class=&quot;w104 BR&quot;&gt;Vencimento&lt;/td&gt;
+        ///                    &lt;/tr&gt;
+        ///       [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Propaganda {
+            get {
+                return ResourceManager.GetString("Propaganda", resourceCulture);
             }
         }
         
