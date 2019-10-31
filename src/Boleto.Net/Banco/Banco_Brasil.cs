@@ -1638,9 +1638,14 @@ namespace BoletoNet
                 else
                     _segmentoQ += "2";
 
+                var enderecoSacadoComNumero = boleto.Sacado.Endereco.End;
+                if (!string.IsNullOrEmpty(boleto.Sacado.Endereco.Numero)) {
+                    enderecoSacadoComNumero += ", " + boleto.Sacado.Endereco.Numero;
+                }
+
                 _segmentoQ += Utils.FitStringLength(boleto.Sacado.CPFCNPJ, 15, 15, '0', 0, true, true, true);
                 _segmentoQ += Utils.FitStringLength(boleto.Sacado.Nome.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
-                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.End.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
+                _segmentoQ += Utils.FitStringLength(enderecoSacadoComNumero.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
                 _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.Bairro.TrimStart(' '), 15, 15, ' ', 0, true, true, false).ToUpper();
                 _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.CEP, 8, 8, ' ', 0, true, true, false).ToUpper(); ;
                 _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.Cidade.TrimStart(' '), 15, 15, ' ', 0, true, true, false).ToUpper();
@@ -2362,7 +2367,7 @@ namespace BoletoNet
                 var enderecoSacadoComNumero = boleto.Sacado.Endereco.End;
                 if (!string.IsNullOrEmpty(boleto.Sacado.Endereco.Numero))
                 {
-                    enderecoSacadoComNumero += " " + boleto.Sacado.Endereco.Numero;
+                    enderecoSacadoComNumero += ", " + boleto.Sacado.Endereco.Numero;
                 }
 
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0275, 040, 0, enderecoSacadoComNumero.ToUpper(), ' '));         //275-314               
