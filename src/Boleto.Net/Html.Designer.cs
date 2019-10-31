@@ -82,7 +82,7 @@ namespace BoletoNet {
         
         /// <summary>
         ///   Looks up a localized string similar to 
-        ///			&lt;table class=&quot;w666&quot;&gt;
+        ///			&lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;rBb&quot;&gt;
         ///						&lt;td class=&quot;Ac ld&quot; colspan=&quot;4&quot;&gt;Demonstrativo&lt;/td&gt;
         ///				&lt;/tr&gt;
@@ -98,8 +98,7 @@ namespace BoletoNet {
         ///				&lt;tr class=&quot;h13&quot;&gt;&lt;td /&gt;&lt;/tr&gt;
         ///				&lt;tr&gt;&lt;td class=&quot;Ar&quot;&gt;Corte na linha pontilhada&lt;/td&gt;&lt;/tr&gt;
         ///				&lt;tr&gt;&lt;td class=&quot;cut&quot; /&gt;&lt;/tr&gt;
-        ///		&lt;/table&gt;				
-        ///		.
+        ///		&lt;/table&gt;		 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CabecalhoTabelaDemonstrativo {
             get {
@@ -186,7 +185,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;ct h13&quot;&gt;
         ///						&lt;td class=&quot;w298&quot;&gt;Pagador&lt;/td&gt;
         ///						&lt;td class=&quot;w126&quot;&gt;Carteira / Nosso Número&lt;/td&gt;
@@ -208,7 +207,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;ct h13&quot;&gt;
         ///						&lt;td class=&quot;w544&quot;&gt;Local de pagamento&lt;/td&gt;
         ///						&lt;td class=&quot;w106&quot;&gt;Data de Processamento&lt;/td&gt;
@@ -226,7 +225,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;ct h13&quot;&gt;
         ///						&lt;td class=&quot;w150&quot;&gt;Recebi(emos) o bloqueto&lt;/td&gt;
         ///						&lt;td class=&quot;w104&quot;&gt;Data&lt;/td&gt;
@@ -250,7 +249,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;ctN&quot;&gt;
         ///						&lt;td class=&quot;w666 pL6&quot;&gt;Motivo de não entrega (para uso da empresa entregadora)&lt;/td&gt;
         ///				&lt;/tr&gt;
@@ -262,7 +261,7 @@ namespace BoletoNet {
         ///												&lt;td class=&quot;w104&quot;&gt;(&amp;nbsp;&amp;nbsp;)&amp;nbsp;Ausente&lt;/td&gt;
         ///												&lt;td&gt;(&amp;nbsp;&amp;nbsp;)&amp;nbsp;Não existe n. indicado&lt;/td&gt;
         ///												&lt;td&gt;(&amp;nbsp;&amp;nbsp;)&amp;nbsp;Recusado&lt;/td&gt;
-        ///												&lt;td class=&quot;w104&quot;&gt;(&amp;nbsp;&amp;nbsp;)&amp;nbsp; [rest of string was truncated]&quot;;.
+        ///												&lt;td class=&quot;w104 [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ComprovanteEntrega7 {
             get {
@@ -271,7 +270,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///	 &lt;tr class=&quot;ctN&quot;&gt;
         ///			&lt;td class=&quot;w666 pL6&quot;&gt;Observações (para uso da empresa entregadora)&lt;/td&gt;
         ///	 &lt;/tr&gt;
@@ -289,8 +288,7 @@ namespace BoletoNet {
         ///							 &lt;td class=&quot;pL6&quot;&gt;&amp;nbsp;&lt;/td&gt;
         ///							 &lt;td&gt;&amp;nbsp;&lt;/td&gt;
         ///							 &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-        ///							 &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-        ///							 &lt;td&gt;&amp;nbsp;&lt;/ [rest of string was truncated]&quot;;.
+        ///							 &lt;td&gt;&amp;nbsp;&lt;/td&gt; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ComprovanteEntrega71 {
             get {
@@ -309,8 +307,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///				&lt;tr class=&quot;ct&quot;&gt;
+        ///   Looks up a localized string similar to 				&lt;tr class=&quot;ct&quot;&gt;
         ///					&lt;td class=&quot;cp&quot;&gt;@DESCRICAOGRUPO&lt;/td&gt;
         ///					&lt;td&gt;@DESCRICAOITEM&lt;/td&gt;
         ///					&lt;td&gt;@REFERENCIAITEM&lt;/td&gt;
@@ -325,7 +322,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;cpN&quot;&gt;
         ///						&lt;td class=&quot;At Ac&quot;&gt;@TITULO&lt;/td&gt;
         ///				&lt;/tr&gt;
@@ -351,21 +348,19 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;margin: auto;&quot;&gt;
         ///        &lt;tr&gt;
         ///            &lt;td class=&quot;w240 BB&quot;&gt;&lt;/td&gt;
         ///            &lt;td class=&quot;w424 BB ld Ar&quot;&gt;@LINHADIGITAVEL&lt;/td&gt;
         ///        &lt;/tr&gt;
         ///    &lt;/table&gt;
-        ///    &lt;table cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+        ///    &lt;table cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;margin: auto;&quot;&gt;
         ///        &lt;tr&gt;
         ///            &lt;td valign=&quot;top&quot;  class=&quot;w430&quot;&gt;
         ///                &lt;table class=&quot;w430&quot;&gt;
         ///                    &lt;tr class=&quot;ct h13 At&quot;&gt;
         ///                        &lt;td class=&quot;w250 &quot;&gt;&lt;/td&gt;
-        ///                        &lt;td class=&quot;w104 BR&quot;&gt;Vencimento&lt;/td&gt;
-        ///                    &lt;/tr&gt;
-        ///       [rest of string was truncated]&quot;;.
+        ///                        &lt;td class=&quot;w104 BR&quot;&gt;Vencim [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Propaganda {
             get {
@@ -374,7 +369,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;ctN w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;ctN w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr&gt;
         ///						&lt;td class=&quot;w666&quot; /&gt;
         ///				&lt;/tr&gt;
@@ -394,7 +389,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;BHead&quot;&gt;
         ///						&lt;td class=&quot;imgLogo Al&quot;&gt;&lt;img src=&quot;@URLIMAGEMLOGO&quot; /&gt;&lt;/td&gt;
         ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
@@ -411,7 +406,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666 ctN&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666 ctN&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr&gt;
         ///						&lt;td class=&quot;pL6  w409&quot;&gt;Sacador / Avalista: @AVALISTA&lt;/td&gt;
         ///						&lt;td class=&quot;w250 Ar&quot;&gt;Autenticação mecânica - &lt;b class=&quot;cpN&quot;&gt;Ficha de Compensação&lt;/b&gt;&lt;/td&gt;
@@ -425,7 +420,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr&gt;
         ///						&lt;td class=&quot;EcdBar Al pL10&quot;&gt;@IMAGEMCODIGOBARRA&lt;/td&gt;
         ///				&lt;/tr&gt;
@@ -438,7 +433,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;ctN w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;ctN w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr&gt;&lt;td class=&quot;Ar&quot;&gt;Corte na linha pontilhada&lt;/td&gt;&lt;/tr&gt;
         ///				&lt;tr&gt;&lt;td class=&quot;cut&quot; /&gt;&lt;/tr&gt;
         ///		&lt;/table&gt;.
@@ -450,7 +445,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///        &lt;tr class=&quot;ct h13&quot;&gt;
         ///            &lt;td class=&quot;w472&quot;&gt;Beneficiário&lt;/td&gt;
         ///            &lt;td class=&quot;w180&quot;&gt;Agência / Código Beneficiário&lt;/td&gt;
@@ -468,7 +463,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;ct h13&quot;&gt;
         ///						&lt;td class=&quot;w472&quot;&gt;Local de pagamento&lt;/td&gt;
         ///						&lt;td class=&quot;w180&quot;&gt;Vencimento&lt;/td&gt;
@@ -486,7 +481,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;ct h13&quot;&gt;
         ///						&lt;td class=&quot;w472&quot;&gt;Beneficiário&lt;/td&gt;
         ///						&lt;td class=&quot;w180&quot;&gt;Agência / Código do Beneficiário&lt;/td&gt;
@@ -504,7 +499,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;ct h13&quot;&gt;
         ///						&lt;td class=&quot;w113&quot;&gt;Data do documento&lt;/td&gt;
         ///						&lt;td class=&quot;w163&quot;&gt;N&lt;u&gt;o&lt;/u&gt; documento&lt;/td&gt;
@@ -518,7 +513,7 @@ namespace BoletoNet {
         ///						&lt;td&gt;@NUMERODOCUMENTO&lt;/td&gt;
         ///						&lt;td&gt;@ESPECIEDOCUMENTO&lt;/td&gt;
         ///						&lt;td&gt;@ACEITE&lt;/td&gt;
-        ///						&lt;td&gt;@DATAPROCESSAMENTO&lt;/t [rest of string was truncated]&quot;;.
+        ///						&lt;td [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReciboCedenteParte4 {
             get {
@@ -527,7 +522,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;ct h13&quot;&gt;
         ///						&lt;td class=&quot;w113&quot;&gt;Uso do banco&lt;/td&gt;
         ///						&lt;td class=&quot;w83&quot;&gt;Carteira&lt;/td&gt;
@@ -542,7 +537,7 @@ namespace BoletoNet {
         ///						&lt;td class=&quot;Al&quot;&gt;@ESPECIE&lt;/td&gt;
         ///						&lt;td&gt;@QUANTIDADE&lt;/td&gt;
         ///						&lt;td&gt;@VALORDOCUMENTO&lt;/td&gt;
-        ///						&lt;td class=&quot;Ar&quot;&gt;@ [rest of string was truncated]&quot;;.
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReciboCedenteParte5 {
             get {
@@ -551,7 +546,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;rc6&quot;&gt;
         ///						&lt;td class=&quot;w478&quot;&gt;
         ///								&lt;div class=&quot;ctN pL10&quot;&gt;Instruções (Texto de responsabilidade do beneficiário)&lt;/div&gt;
@@ -561,7 +556,7 @@ namespace BoletoNet {
         ///								&lt;div class=&quot;t&quot;&gt;(-) Desconto / Abatimentos&lt;/div&gt;
         ///								&lt;div class=&quot;c BB&quot;&gt;@DESCONTOS&lt;/div&gt;
         ///								&lt;div class=&quot;t&quot;&gt;(-) Outras deduções&lt;/div&gt;
-        ///								&lt;div class=&quot;c BB&quot;&gt;@OUTRASDEDUCOES&lt;/div&gt;        /// [rest of string was truncated]&quot;;.
+        ///								&lt;div class=&quot;c BB&quot;&gt; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReciboCedenteParte6 {
             get {
@@ -579,7 +574,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;ct h13&quot;&gt;
         ///						&lt;td class=&quot;w659&quot;&gt;Pagador&lt;/td&gt;
         ///				&lt;/tr&gt;
@@ -595,7 +590,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;rBb&quot;&gt;
         ///						&lt;td class=&quot;w478 BL&quot;&gt;
         ///								&lt;div class=&quot;cpN pL6&quot;&gt;@INFOSACADO&lt;/div&gt;
@@ -613,8 +608,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///			&lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;BHead BT2&quot;&gt;
         ///						&lt;td class=&quot;imgLogo Al&quot;&gt;&lt;img src=&quot;@URLIMAGEMLOGO&quot; /&gt;&lt;/td&gt;
         ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
@@ -626,8 +620,7 @@ namespace BoletoNet {
         ///			&lt;table class=&quot;w666&quot;&gt;
         ///				&lt;tr class=&quot;ct h13&quot;&gt;
         ///						&lt;td&gt;Local de pagamento&lt;/td&gt;
-        ///						&lt;td&gt;&lt;/td&gt;
-        ///				&lt;/tr&gt;			 [rest of string was truncated]&quot;;.
+        ///						&lt;td&gt;&lt;/ [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReciboCedenteRelatorioValores {
             get {
@@ -636,7 +629,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr&gt;
         ///						&lt;td class=&quot;ctN cut&quot; /&gt;
         ///				&lt;/tr&gt;
@@ -652,7 +645,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;ct h13&quot;&gt;
         ///						&lt;td class=&quot;w659&quot;&gt;Beneficiário Endereço / Sacador Avalista: @AVALISTA&lt;/td&gt; 
         ///				&lt;/tr&gt;
@@ -668,7 +661,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;ct h13&quot;&gt;
         ///						&lt;td class=&quot;w659&quot;&gt;Beneficiário Endereço&lt;/td&gt; 
         ///				&lt;/tr&gt;
@@ -684,7 +677,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;BHead&quot;&gt;
         ///						&lt;td class=&quot;imgLogo Al&quot;&gt;&lt;img src=&quot;@URLIMGCEDENTE&quot; /&gt;&lt;/td&gt;
         ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
@@ -701,7 +694,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;ct h13 At&quot;&gt;
         ///						&lt;td class=&quot;w298&quot;&gt;Beneficiário&lt;/td&gt;
         ///						&lt;td class=&quot;w126&quot;&gt;Agência / Código do Beneficiário&lt;/td&gt;
@@ -715,8 +708,7 @@ namespace BoletoNet {
         ///						&lt;td&gt;@ESPECIE&lt;/td&gt;
         ///						&lt;td&gt;@QUANTIDADE&lt;/td&gt;
         ///						&lt;td class=&quot;Ar&quot;&gt;@NOSSONUMERO&lt;/td&gt;
-        ///				&lt;/tr&gt;
-        ///		&lt;/table&gt;.
+        ///				&lt;/tr&gt; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReciboSacadoParte3 {
             get {
@@ -725,7 +717,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;ct h13 At&quot;&gt;
         ///						&lt;td class=&quot;w298&quot;&gt;Beneficiário&lt;/td&gt;
         ///						&lt;td class=&quot;w126&quot;&gt;Agência / Código do Beneficiário&lt;/td&gt;
@@ -740,7 +732,7 @@ namespace BoletoNet {
         ///						&lt;td&gt;@QUANTIDADE&lt;/td&gt;
         ///						&lt;td class=&quot;Ar&quot;&gt;@NOSSONUMERO&lt;/td&gt;
         ///				&lt;/tr&gt;
-        ///		&lt;/table&gt;.
+        ///		&lt;/table [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReciboSacadoParte3SemCarteira {
             get {
@@ -749,7 +741,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;ct h13&quot;&gt;
         ///						&lt;td class=&quot;w192&quot;&gt;Número do documento&lt;/td&gt;
         ///						&lt;td class=&quot;w132&quot;&gt;CPF/CNPJ&lt;/td&gt;
@@ -771,7 +763,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;ct h13&quot;&gt;
         ///						&lt;td class=&quot;w113&quot;&gt;(-) Desconto / Abatimentos&lt;/td&gt;
         ///						&lt;td class=&quot;w112&quot;&gt;(-) Outras deduções&lt;/td&gt;
@@ -784,8 +776,7 @@ namespace BoletoNet {
         ///						&lt;td&gt;@OUTRASDEDUCOES&lt;/td&gt;
         ///						&lt;td&gt;@MORAMULTA&lt;/td&gt;
         ///						&lt;td&gt;@OUTROSACRESCIMOS&lt;/td&gt;
-        ///						&lt;td class=&quot;Ar&quot;&gt;&amp;nbsp;@VALORCOBRADO&lt;/td&gt;
-        ///				&lt;/ [rest of string was truncated]&quot;;.
+        ///						&lt;td class=&quot;Ar&quot;&gt;&amp;nbsp;@VAL [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReciboSacadoParte5 {
             get {
@@ -794,7 +785,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;ct h13&quot;&gt;
         ///						&lt;td class=&quot;w659&quot;&gt;Pagador&lt;/td&gt;
         ///				&lt;/tr&gt;
@@ -813,7 +804,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;ctN h13&quot;&gt;
         ///						&lt;td class=&quot;pL6&quot;&gt;Instruções&lt;/td&gt;
         ///						&lt;td class=&quot;w180 Ar&quot;&gt;Autenticação mecânica&lt;/td&gt;
@@ -831,7 +822,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;ctN w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;ctN w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;h13&quot;&gt;&lt;td /&gt;&lt;/tr&gt;
         ///				&lt;tr class=&quot;h13&quot;&gt;&lt;td /&gt;&lt;/tr&gt;
         ///				&lt;tr&gt;&lt;td class=&quot;Ar&quot;&gt;Corte na linha pontilhada&lt;/td&gt;&lt;/tr&gt;

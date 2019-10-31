@@ -12,6 +12,7 @@ using System.Net.Mime;
 using System.Reflection;
 using System.Text;
 using System.Web.UI;
+using NReco.PdfGenerator;
 
 [assembly: WebResource("BoletoNet.BoletoImpressao.BoletoNet.css", "text/css", PerformSubstitution = true)]
 [assembly: WebResource("BoletoNet.Imagens.barra.gif", "image/gif")]
@@ -1398,6 +1399,7 @@ namespace BoletoNet
         public byte[] MontaBytesPDF(bool convertLinhaDigitavelToImage = false)
         {
             var converter = new NReco.PdfGenerator.HtmlToPdfConverter();
+            converter.Margins = new PageMargins(){ Bottom = 0, Top = 0, Left = 0, Right = 0};
 
             if (!string.IsNullOrWhiteSpace(TempFilesPath))
             {

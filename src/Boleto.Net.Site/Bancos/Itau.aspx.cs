@@ -60,7 +60,15 @@ public partial class Bancos_Itau : System.Web.UI.Page
         boletoBancario.FormatoCarne = (Request.Url.Query == "?formatocarne");
         boletoBancario.OcultarInstrucoes = true;
         boletoBancario.FormatoPropaganda = (Request.Url.Query == "?formatopropaganda");
-        boletoBancario.ImagemPropaganda = GetBase64StringForImage(Server.MapPath("/prop.png"));
+        boletoBancario.ImagemPropaganda = GetBase64StringForImage(Server.MapPath("/prop.jpg"));
+
+        var bytes = boletoBancario.MontaBytesPDF();
+        Response.Clear();
+        Response.ContentType = "application/pdf";
+        Response.AddHeader("Content-Disposition", "attachment;filename=\"FileName.pdf\"");
+        Response.BinaryWrite(bytes);
+        Response.Flush();
+        Response.End();
     }
 
     protected static string GetBase64StringForImage(string imgPath)
