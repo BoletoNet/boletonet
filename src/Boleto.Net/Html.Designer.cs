@@ -356,11 +356,11 @@ namespace BoletoNet {
         ///    &lt;/table&gt;
         ///&lt;table class=&quot;w666&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;margin: auto;&quot;&gt;
         ///        &lt;tr&gt;
-        ///            &lt;td valign=&quot;top&quot;  class=&quot;w430&quot;&gt;
-        ///                &lt;table class=&quot;w430&quot;&gt;
+        ///            &lt;td valign=&quot;top&quot;  class=&quot;w60p&quot;&gt;
+        ///                &lt;table class=&quot;w100p&quot;&gt;
         ///                    &lt;tr class=&quot;ct h13 At&quot;&gt;
-        ///                        &lt;td class=&quot;w250 &quot;&gt;&lt;/td&gt;
-        ///                        &lt;td  [rest of string was truncated]&quot;;.
+        ///                        &lt;td class=&quot;w70p &quot;&gt;&lt;/td&gt;
+        ///                        &lt;td [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Propaganda {
             get {
