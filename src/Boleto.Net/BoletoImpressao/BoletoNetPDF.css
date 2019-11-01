@@ -81,8 +81,8 @@ img { border: 0; }
 .w544 { width: 544px; }
 .w564 { width: 564px; }
 .w659 { width: 659px; }
-.w666 { width: 666px; }
-.w667 { width: 667px; }
+.w666 { width: 95%; }
+.w667 { width: 95%; }
 .BHead td { border-bottom: solid 2px #000; }
 .EcdBar { height: 50px; vertical-align: bottom; }
 .rc6 td { vertical-align: top; border-bottom: solid 1px #000; border-left: solid 1px #000; }

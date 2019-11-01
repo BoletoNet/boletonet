@@ -831,13 +831,13 @@
 		&lt;/table&gt;</value>
   </data>
   <data name="Propaganda" xml:space="preserve">
-    <value>&lt;table cellpadding="0" cellspacing="0" style="margin: auto;"&gt;
+    <value>&lt;table class="w666" cellpadding="0" cellspacing="0" style="margin: auto;"&gt;
         &lt;tr&gt;
             &lt;td class="w240 BB"&gt;&lt;/td&gt;
             &lt;td class="w424 BB ld Ar"&gt;@LINHADIGITAVEL&lt;/td&gt;
         &lt;/tr&gt;
     &lt;/table&gt;
-    &lt;table cellpadding="0" cellspacing="0" style="margin: auto;"&gt;
+&lt;table class="w666" cellpadding="0" cellspacing="0" style="margin: auto;"&gt;
         &lt;tr&gt;
             &lt;td valign="top"  class="w430"&gt;
                 &lt;table class="w430"&gt;
@@ -891,7 +891,7 @@
             &lt;/td&gt;
         &lt;/tr&gt;
     &lt;/table&gt;
-    &lt;table cellpadding="0" cellspacing="0" style="margin: auto;"&gt;
+&lt;table class="w666" cellpadding="0" cellspacing="0" style="margin: auto;"&gt;
         &lt;tr&gt;
             &lt;td valign="top"&gt;
                 &lt;table class="w666"&gt;
