@@ -45,9 +45,16 @@ public partial class Bancos_Caixa : System.Web.UI.Page
         b.DataProcessamento = DateTime.Now;
         b.DataDocumento = DateTime.Now;
         boletoBancario.Boleto = b;
-        boletoBancario.Boleto.Valida();
+        //boletoBancario.Boleto.Valida();
         //lblCodigoBarras.Text = b.CodigoBarra.Codigo.ToString();
 
         boletoBancario.MostrarComprovanteEntrega = (Request.Url.Query == "?show");
+        var bytes = boletoBancario.MontaBytesPDF();
+        Response.Clear();
+        Response.ContentType = "application/pdf";
+        Response.AddHeader("Content-Disposition", "attachment;filename=\"FileName.pdf\"");
+        Response.BinaryWrite(bytes);
+        Response.Flush();
+        Response.End();
     }
 }

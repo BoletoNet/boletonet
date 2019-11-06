@@ -8,7 +8,8 @@
         <li>Itaú<br />
             <a href="Itau.aspx">Sem Comprovante de Entrega</a><br />
             <a href="Itau.aspx?show">Com Comprovante de Entrega</a><br />
-            <a href="Itau.aspx?formatocarne">Formato Carnê</a></li>
+            <a href="Itau.aspx?formatocarne">Formato Carnê</a><br />
+        <a href="Itau.aspx?formatopropaganda">Formato Propaganda</a></li>
         <li>Banestes<br />
             <a href="Banestes.aspx">Sem Comprovante de Entrega</a><br />
             <a href="Banestes.aspx?show">Com Comprovante de Entrega</a> </li>
@@ -61,7 +62,8 @@
                 </ul>
             </p>
             <a href="BancodoBrasil.aspx">Sem Comprovante de Entrega</a><br />
-            <a href="BancodoBrasil.aspx?show">Com Comprovante de Entrega</a> </li>
+            <a href="BancodoBrasil.aspx?show">Com Comprovante de Entrega</a> <br/>
+            <a href="BancodoBrasil.aspx?formatopropaganda">Formato Propaganda</a> </li>
         <li>Basa<br />
             <a href="Basa.aspx">Sem Comprovante de Entrega</a><br />
             <a href="Basa.aspx?show">Com Comprovante de Entrega</a> </li>

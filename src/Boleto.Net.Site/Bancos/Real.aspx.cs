@@ -31,5 +31,13 @@ public partial class Bancos_Real : System.Web.UI.Page
         real.Boleto.Valida();
 
         real.MostrarComprovanteEntrega = (Request.Url.Query == "?show");
+
+        var bytes = real.MontaBytesPDF();
+        Response.Clear();
+        Response.ContentType = "application/pdf";
+        Response.AddHeader("Content-Disposition", "attachment;filename=\"FileName.pdf\"");
+        Response.BinaryWrite(bytes);
+        Response.Flush();
+        Response.End();
     }
 }

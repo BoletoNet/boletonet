@@ -1,4 +1,6 @@
 using System;
+using System.Drawing;
+using System.IO;
 using BoletoNet;
 
 public partial class Bancos_Itau : System.Web.UI.Page
@@ -56,5 +58,23 @@ public partial class Bancos_Itau : System.Web.UI.Page
         //boletoBancario.MostrarCodigoCarteira = true;
         boletoBancario.MostrarComprovanteEntrega = (Request.Url.Query == "?show");
         boletoBancario.FormatoCarne = (Request.Url.Query == "?formatocarne");
+        boletoBancario.OcultarInstrucoes = true;
+        boletoBancario.FormatoPropaganda = (Request.Url.Query == "?formatopropaganda");
+        boletoBancario.ImagemPropaganda = GetBase64StringForImage(Server.MapPath("/prop.jpg"));
+
+        var bytes = boletoBancario.MontaBytesPDF();
+        Response.Clear();
+        Response.ContentType = "application/pdf";
+        Response.AddHeader("Content-Disposition", "attachment;filename=\"FileName.pdf\"");
+        Response.BinaryWrite(bytes);
+        Response.Flush();
+        Response.End();
+    }
+
+    protected static string GetBase64StringForImage(string imgPath)
+    {
+        byte[] imageBytes = System.IO.File.ReadAllBytes(imgPath);
+        string base64String = Convert.ToBase64String(imageBytes);
+        return base64String;
     }
 }
