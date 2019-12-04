@@ -8,7 +8,7 @@ using System.Web.UI;
 namespace BoletoNet
 {
     /// <summary>
-    /// CTeEntrada referente ao banco Itaú
+    /// Classe referente ao banco Itaú
     /// </summary>
     internal class Banco_Itau : AbstractBanco, IBanco
     {
@@ -1810,7 +1810,7 @@ namespace BoletoNet
         #endregion
 
         /// <summary>
-        /// Efetua as Validações dentro da CTeEntrada Boleto, para garantir a geração da remessa
+        /// Efetua as Validações dentro da Classe Boleto, para garantir a geração da remessa
         /// </summary>
         public override bool ValidarRemessa(TipoArquivo tipoArquivo, string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, int numeroArquivoRemessa, out string mensagem)
         {
