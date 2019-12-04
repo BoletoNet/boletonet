@@ -2233,6 +2233,10 @@ namespace BoletoNet
                 {
                     // 07 - Não protestar
                     vInstrucao1 = "07";
+                } 
+                else
+                {
+                    vInstrucao1 = "88";
                 }
                 #endregion
 
