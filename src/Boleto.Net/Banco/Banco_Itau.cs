@@ -8,7 +8,7 @@ using System.Web.UI;
 namespace BoletoNet
 {
     /// <summary>
-    /// Classe referente ao banco Itaú
+    /// CTeEntrada referente ao banco Itaú
     /// </summary>
     internal class Banco_Itau : AbstractBanco, IBanco
     {
@@ -925,13 +925,13 @@ namespace BoletoNet
                 _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.CEP, 8, 8, ' ', 0, true, true, false).ToUpper(); ;
                 _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.Cidade.TrimStart(' '), 15, 15, ' ', 0, true, true, false).ToUpper();
                 _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.UF, 2, 2, ' ', 0, true, true, false).ToUpper();
-                if (boleto.Sacado.CPFCNPJ.Length <= 11)
+                if (boleto.Cedente.CPFCNPJ.Length <= 11)
                     _segmentoQ += "1";
                 else
                     _segmentoQ += "2";
 
-                _segmentoQ += Utils.FitStringLength(boleto.Sacado.CPFCNPJ, 15, 15, '0', 0, true, true, true);
-                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Nome.TrimStart(' '), 30, 30, ' ', 0, true, true, false).ToUpper();
+                _segmentoQ += Utils.FitStringLength(boleto.Cedente.CPFCNPJ, 15, 15, '0', 0, true, true, true);
+                _segmentoQ += Utils.FitStringLength(boleto.Cedente.Nome.TrimStart(' '), 30, 30, ' ', 0, true, true, false).ToUpper();
                 _segmentoQ += _brancos10;
                 _segmentoQ += "000";
                 _segmentoQ += _brancos28;
@@ -1810,7 +1810,7 @@ namespace BoletoNet
         #endregion
 
         /// <summary>
-        /// Efetua as Validações dentro da classe Boleto, para garantir a geração da remessa
+        /// Efetua as Validações dentro da CTeEntrada Boleto, para garantir a geração da remessa
         /// </summary>
         public override bool ValidarRemessa(TipoArquivo tipoArquivo, string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, int numeroArquivoRemessa, out string mensagem)
         {
