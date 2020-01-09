@@ -271,7 +271,7 @@
 						&lt;td class="w500 Ar ld" valign="bottom"&gt;RECIBO DO SACADO&lt;/td&gt;
 				&lt;/tr&gt;
 			&lt;/table&gt;				
-			&lt;table class="w666"&gt;
+			&lt;table class="w666" style="margin: auto;"&gt;
 				&lt;tr class="ct h13"&gt;
 						&lt;td&gt;Local de pagamento&lt;/td&gt;
 						&lt;td&gt;&lt;/td&gt;
@@ -305,7 +305,7 @@
 					@ITENSDEMONSTRATIVO
 			&lt;/tr&gt;							
 		&lt;/table class="rBb td"&gt;	
-		&lt;table class="ctN w666"&gt;
+		&lt;table class="ctN w666" style="margin: auto;"&gt;
 				&lt;tr class="h13"&gt;&lt;td /&gt;&lt;/tr&gt;
 				&lt;tr&gt;&lt;td class="Ar"&gt;Corte na linha pontilhada&lt;/td&gt;&lt;/tr&gt;
 				&lt;tr&gt;&lt;td class="cut" /&gt;&lt;/tr&gt;
