@@ -125,14 +125,14 @@
     <value>imagens\barrainterna.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ComprovanteEntrega1" xml:space="preserve">
-    <value>&lt;table class="w666"&gt;
+    <value>&lt;table class="w666"  style="margin: auto;"&gt;
 				&lt;tr&gt;
 						&lt;td class="cpN BT1 Ar"&gt;Comprovante de Entrega&lt;/td&gt;
 				&lt;/tr&gt;
 		&lt;/table&gt;</value>
   </data>
   <data name="ComprovanteEntrega2" xml:space="preserve">
-    <value>&lt;table class="w666"&gt;
+    <value>&lt;table class="w666"  style="margin: auto;"&gt;
 				&lt;tr class="BHead"&gt;
 						&lt;td class="imgLogo Al"&gt;&lt;img src="@URLIMAGEMLOGO" /&gt;&lt;/td&gt;
 						&lt;td class="barra"&gt;&lt;img src="@URLIMAGEMBARRA" /&gt;&lt;/td&gt;
@@ -143,7 +143,7 @@
 		&lt;/table&gt;</value>
   </data>
   <data name="ComprovanteEntrega3" xml:space="preserve">
-    <value>&lt;table class="w666"&gt;
+    <value>&lt;table class="w666"   style="margin: auto;"&gt;
 				&lt;tr class="ct h13"&gt;
 						&lt;td class="w298"&gt;Beneficiário&lt;/td&gt;
 						&lt;td class="w126"&gt;Agência / Código do Cedente&lt;/td&gt;

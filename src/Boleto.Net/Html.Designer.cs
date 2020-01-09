@@ -133,7 +133,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;  style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr&gt;
         ///						&lt;td class=&quot;cpN BT1 Ar&quot;&gt;Comprovante de Entrega&lt;/td&gt;
         ///				&lt;/tr&gt;
@@ -146,7 +146,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;  style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;BHead&quot;&gt;
         ///						&lt;td class=&quot;imgLogo Al&quot;&gt;&lt;img src=&quot;@URLIMAGEMLOGO&quot; /&gt;&lt;/td&gt;
         ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
@@ -163,7 +163,7 @@ namespace BoletoNet {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;&gt;
+        ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot;   style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;ct h13&quot;&gt;
         ///						&lt;td class=&quot;w298&quot;&gt;Beneficiário&lt;/td&gt;
         ///						&lt;td class=&quot;w126&quot;&gt;Agência / Código do Cedente&lt;/td&gt;
