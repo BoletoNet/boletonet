@@ -19,7 +19,7 @@ namespace BoletoNet {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Html {
@@ -94,11 +94,10 @@ namespace BoletoNet {
         ///					@ITENSDEMONSTRATIVO
         ///			&lt;/tr&gt;							
         ///		&lt;/table class=&quot;rBb td&quot;&gt;	
-        ///		&lt;table class=&quot;ctN w666&quot;&gt;
+        ///		&lt;table class=&quot;ctN w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;h13&quot;&gt;&lt;td /&gt;&lt;/tr&gt;
         ///				&lt;tr&gt;&lt;td class=&quot;Ar&quot;&gt;Corte na linha pontilhada&lt;/td&gt;&lt;/tr&gt;
-        ///				&lt;tr&gt;&lt;td class=&quot;cut&quot; /&gt;&lt;/tr&gt;
-        ///		&lt;/table&gt;		 [rest of string was truncated]&quot;;.
+        ///				&lt;tr&gt;&lt;td class=&quot;cut&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CabecalhoTabelaDemonstrativo {
             get {
@@ -617,10 +616,9 @@ namespace BoletoNet {
         ///						&lt;td class=&quot;w500 Ar ld&quot; valign=&quot;bottom&quot;&gt;RECIBO DO SACADO&lt;/td&gt;
         ///				&lt;/tr&gt;
         ///			&lt;/table&gt;				
-        ///			&lt;table class=&quot;w666&quot;&gt;
+        ///			&lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;ct h13&quot;&gt;
-        ///						&lt;td&gt;Local de pagamento&lt;/td&gt;
-        ///						&lt;td&gt;&lt;/ [rest of string was truncated]&quot;;.
+        ///						&lt;td&gt;Local de pagame [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReciboCedenteRelatorioValores {
             get {
