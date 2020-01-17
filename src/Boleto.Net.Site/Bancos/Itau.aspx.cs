@@ -58,9 +58,9 @@ public partial class Bancos_Itau : System.Web.UI.Page
         //boletoBancario.MostrarCodigoCarteira = true;
         boletoBancario.MostrarComprovanteEntrega = (Request.Url.Query == "?show");
         boletoBancario.FormatoCarne = (Request.Url.Query == "?formatocarne");
-        boletoBancario.OcultarInstrucoes = true;
-        boletoBancario.FormatoPropaganda = (Request.Url.Query == "?formatopropaganda");
-        boletoBancario.ImagemPropaganda = GetBase64StringForImage(Server.MapPath("/prop.jpg"));
+        //boletoBancario.OcultarInstrucoes = true;
+        //boletoBancario.FormatoPropaganda = (Request.Url.Query == "?formatopropaganda");
+        //boletoBancario.ImagemPropaganda = GetBase64StringForImage(Server.MapPath("/prop.jpg"));
 
         var bytes = boletoBancario.MontaBytesPDF();
         Response.Clear();
