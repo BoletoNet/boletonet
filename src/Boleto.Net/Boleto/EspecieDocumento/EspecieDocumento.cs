@@ -382,7 +382,9 @@ namespace BoletoNet
                 { 707, new EspecieDocumento_Daycoval   ()  },
                 { 637, new EspecieDocumento_Sofisa     ()  },
                 { 743, new EspecieDocumento_Semear     ()  },
-                { 21, new EspecieDocumento_Banestes    ()  }
+                { 21, new EspecieDocumento_Banestes    ()  },
+                { 136, new EspecieDocumento_Unicred    ()  }
+
         };
     }
 }
