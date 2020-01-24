@@ -13,7 +13,7 @@ namespace BoletoNet
     /// </Author>
     internal class Banco_Unicred : AbstractBanco, IBanco
     {
-       private HeaderRetorno header;
+        private HeaderRetorno header;
 
         /// <author>
         /// Classe responsavel em criar os campos do Banco Unicred.
@@ -65,7 +65,7 @@ namespace BoletoNet
 
             //Verifica se o nosso número é válido
             var Length_NN = boleto.NossoNumero.Length;
-            if(Length_NN > 11) throw new NotImplementedException("Nosso número inválido");
+            if (Length_NN > 11) throw new NotImplementedException("Nosso número inválido");
 
             FormataCodigoBarra(boleto);
             //if (boleto.CodigoBarra.Codigo.Length != 44)
@@ -82,7 +82,7 @@ namespace BoletoNet
 
             if (nossoNumero == null || nossoNumero.Length != 10)
             {
-                throw new Exception("Erro ao tentar formatar nosso número, verifique o tamanho do campo: "+ nossoNumero.Length);
+                throw new Exception("Erro ao tentar formatar nosso número, verifique o tamanho do campo: " + nossoNumero.Length);
             }
 
             try
@@ -131,12 +131,9 @@ namespace BoletoNet
             string valorBoleto = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
             valorBoleto = Utils.FormatCode(valorBoleto, 10);
 
-            var codigoCobranca = 1; //Código de cobrança com registro
-            string cmp_livre =
-                codigoCobranca +
-                boleto.Carteira +
-                Utils.FormatCode(boleto.NossoNumero, 9) +
-                Utils.FormatCode(boleto.Cedente.Codigo, 11) + "10";
+            string cmp_livre = Utils.FormatCode(boleto.Cedente.ContaBancaria.Agencia, 4) +
+                                                Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 10) +
+                                                Utils.FormatCode(boleto.NossoNumero, 9);
 
             string dv_cmpLivre = digUnicred(cmp_livre).ToString();
 
@@ -300,7 +297,7 @@ namespace BoletoNet
                 if (string.IsNullOrEmpty(boleto.Cedente.ContaBancaria.OperacaConta))
                     throw new Exception("O código do posto beneficiário não foi informado.");
 
-                codigoCedente = string.Concat(boleto.Cedente.ContaBancaria.Agencia, boleto.Cedente.ContaBancaria.OperacaConta, boleto.Cedente.Codigo); 
+                codigoCedente = string.Concat(boleto.Cedente.ContaBancaria.Agencia, boleto.Cedente.ContaBancaria.OperacaConta, boleto.Cedente.Codigo);
             }
             else
                 codigoCedente = boleto.Cedente.Codigo;
