@@ -1082,18 +1082,27 @@ namespace BoletoNet
                     _segmentoR += "000000000000000000000000"; //24 zeros
                 }
 
+                _segmentoR += "                        "; //24 zeros - comentário abaixo
+
+                #region ::. Deprecado .::
+
+                //Adriano - 06/02/2020
+                //De acordo com validação com o Santander, este campo deve ter 24 posições em branco
+
                 //Suelton - 14/12/2018 - Implementação do 3 desconto por antecipação
-                if (boleto.DataDescontoAntecipacao3.HasValue && boleto.ValorDescontoAntecipacao3.HasValue)
-                {
-                    _segmentoR += "1" + //'1' = Valor Fixo Até a Data Informada
-                        Utils.FitStringLength(boleto.DataDescontoAntecipacao3.Value.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false) +
-                        Utils.FitStringLength(boleto.ValorDescontoAntecipacao3.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
-                }
-                else
-                {
-                    // Desconto 3
-                    _segmentoR += "000000000000000000000000"; //24 zeros
-                }
+                //if (boleto.DataDescontoAntecipacao3.HasValue && boleto.ValorDescontoAntecipacao3.HasValue)
+                //{
+                //    _segmentoR += "1" + //'1' = Valor Fixo Até a Data Informada
+                //                  Utils.FitStringLength(boleto.DataDescontoAntecipacao3.Value.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false) +
+                //                  Utils.FitStringLength(boleto.ValorDescontoAntecipacao3.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
+                //}
+                //else
+                //{
+                //    // Desconto 3
+                //    _segmentoR += "000000000000000000000000"; //24 zeros
+                //}
+
+                #endregion
 
                 #region Deprecado
                 //Com a implementação dos campo descontos 2 e 3 não é mais recomendado utilizar o campo outros descontos
