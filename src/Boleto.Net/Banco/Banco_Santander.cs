@@ -193,10 +193,12 @@ namespace BoletoNet
 
         public override void ValidaBoleto(Boleto boleto)
         {
-            //throw new NotImplementedException("Função não implementada.");
-            if (!((boleto.Carteira == "102") || (boleto.Carteira == "101") || (boleto.Carteira == "201")))
+            var carteirasImplementadas = new string[] { "101", "102", "104", "201" };
+            
+            if (!carteirasImplementadas.Contains(boleto.Carteira))
             {
-                string exceptionMessage = String.Format("A carteira '{0}' não foi implementada. Carteiras válidas: 101, 102 e 201.", boleto.Carteira);
+                string exceptionMessage = string.Format("A carteira '{0}' não foi implementada. Carteiras válidas: {1}.", boleto.Carteira, string.Join(",", carteirasImplementadas));
+
                 throw new NotImplementedException(exceptionMessage);
             }
 
@@ -216,7 +218,7 @@ namespace BoletoNet
 
             if (this.Codigo == 33)
             {
-                if (boleto.NossoNumero.Length < 12 && (boleto.Carteira.Equals("101") || boleto.Carteira.Equals("102")))
+                if (boleto.NossoNumero.Length < 12 && (boleto.Carteira.Equals("101") || boleto.Carteira.Equals("104") || boleto.Carteira.Equals("102")))
                     boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, "0", 12, true);
 
                 if (boleto.NossoNumero.Length != 12)
@@ -1292,6 +1294,7 @@ namespace BoletoNet
                 string carteira;
                 switch (boleto.Carteira)
                 {
+                    case "104":
                     case "101": //Carteira 101 (Rápida com registro - impressão pelo beneficiário)
                         carteira = "5";
                         break;
