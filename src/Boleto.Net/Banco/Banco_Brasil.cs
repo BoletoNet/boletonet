@@ -2480,7 +2480,12 @@ namespace BoletoNet
                 //detalhe. = reg.Zeros8;
                 //detalhe. = reg.Brancos5;
                 //detalhe. = reg.CanalPagamento;
-                //detalhe. = reg.NumeroSequenciaRegistro;
+
+                if (int.TryParse(reg.NumeroSequenciaRegistro, out int numeroSequencial))
+                {
+                    detalhe.NumeroSequencial = numeroSequencial;
+                }
+
                 #region NAO RETORNADOS PELO BANCO
                 detalhe.MotivoCodigoOcorrencia = string.Empty;
                 detalhe.MotivosRejeicao = string.Empty;
