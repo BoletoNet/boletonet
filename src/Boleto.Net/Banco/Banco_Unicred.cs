@@ -87,12 +87,39 @@ namespace BoletoNet
 
             try
             {
-                boleto.NossoNumero = string.Format("{0}-{1}", nossoNumero, Mod11(nossoNumero));
+                boleto.NossoNumero = string.Format("{0}-{1}", nossoNumero, Mod11UniCred(nossoNumero));
             }
             catch (Exception ex)
             {
                 throw new Exception("Erro ao formatar nosso número", ex);
             }
+        }
+
+        protected static int Mod11UniCred(string seq)
+        {
+            /* Variáveis
+             * -------------
+             * d - Dígito
+             * s - Soma
+             * p - Peso
+             * b - Base
+             * r - Resto
+             */
+            int[] mult = new[] {3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
+
+            int d, s = 0, p = 2, b = 9, i = 0;
+
+            foreach (char c in seq)
+            {
+                var mul = mult[i];
+                s = s + (int.Parse(c.ToString()) * mul);
+                i++;
+            }
+
+            d = 11 - (s % 11);
+            if (d  == 0 || d== 10)
+                d = 0;
+            return d;
         }
 
         public override void FormataNumeroDocumento(Boleto boleto)
