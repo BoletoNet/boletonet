@@ -201,8 +201,8 @@ namespace BoletoNet
 
         public override void ValidaBoleto(Boleto boleto)
         {
-            //throw new NotImplementedException("Função não implementada.");
-            if (!((boleto.Carteira == "102") || (boleto.Carteira == "101") || (boleto.Carteira == "201") || (boleto.Carteira == "501")))
+            var CarteirasValidas = new System.Collections.Generic.HashSet<string>{ "101", "102", "201", "501" };
+            if (!CarteirasValidas.Contains(boleto.Carteira))
             {
                 string exceptionMessage = String.Format("A carteira '{0}' não foi implementada. Carteiras válidas: 101, 102, 201 e 501.", boleto.Carteira);
                 throw new NotImplementedException(exceptionMessage);
