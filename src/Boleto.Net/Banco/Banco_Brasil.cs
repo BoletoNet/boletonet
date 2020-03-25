@@ -2224,20 +2224,12 @@ namespace BoletoNet
                 #endregion
 
                 #region Instruções
-                string vInstrucao1 = "0";
                 string vInstrucao2 = "0";
                 int quantidadeDeDias = boleto.Instrucoes.FirstOrDefault(x => x.Codigo == (int)EnumInstrucoes_BancoBrasil.ProtestarAposNDiasCorridos)?.QuantidadeDias ?? 0;
                 string diasProtesto = quantidadeDeDias.ToString().PadLeft(2, '0');
                 
-                if (quantidadeDeDias == 0)
-                {
-                    // 07 - Não protestar
-                    vInstrucao1 = "07";
-                } 
-                else
-                {
-                    vInstrucao1 = "88";
-                }
+                string vInstrucao1 = DecifraInstrucao1(quantidadeDeDias);
+
                 #endregion
 
                 #region Carteira
@@ -2374,6 +2366,40 @@ namespace BoletoNet
             catch (Exception ex)
             {
                 throw new Exception("Erro ao gerar DETALHE do arquivo CNAB400.", ex);
+            }
+        }
+
+        /// <summary>
+        /// Vide https://www.bb.com.br/docs/pub/emp/empl/dwn/Doc2627CBR641Pos7.pdf
+        /// Nota número 9 - a) Para Comando 01 - Registro de Título (posição 109-110).
+        /// </summary>
+        /// <param name="quantidadeDeDias"></param>
+        /// <returns></returns>
+        private string DecifraInstrucao1(int quantidadeDeDias)
+        {
+            if ((quantidadeDeDias >= 6 && quantidadeDeDias <= 29)
+                || (quantidadeDeDias == 35 || quantidadeDeDias == 40))
+            {
+                // Indica Protesto em dias corridos. Informar nos campos 392 a 393 o prazo de protesto desejado: 6 a 29, 35 ou 40 dias(nota 34).
+                return "06";
+            }
+
+            switch (quantidadeDeDias)
+            {
+                case 0:
+                    return "07"; // Não protestar
+                case 3:  // Protestar no 3º dia útil após vencido
+                case 4:  // Protestar no 4º dia útil após vencido
+                case 5:  // Protestar no 5º dia útil após vencido
+                case 10: // Protestar no 10º dia corrido após vencido
+                case 15: // Protestar no 15º dia corrido após vencido
+                case 20: // Protestar no 20º dia corrido após vencido
+                case 25: // Protestar no 25º dia corrido após vencido
+                case 30: // Protestar no 30º dia corrido após vencido
+                case 45: // Protestar no 45º dia corrido após vencido
+                    return quantidadeDeDias.ToString().PadLeft(2, '0');
+                default:
+                    return "00"; // Ausência de instruções
             }
         }
 
