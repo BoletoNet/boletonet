@@ -1850,7 +1850,6 @@ namespace BoletoNet
                     ValorTitulo = (Convert.ToDecimal(reg.ValorTitulo) / 100),
                     CodigoBanco = Utils.ToInt32(reg.CodigoBancoCobrador),
                     AgenciaCobradora = Utils.ToInt32(reg.CodigoAgenciaCobradora),
-                    ValorDespesa = (Convert.ToDecimal(reg.ValorDespesasCobranca) / 100),
                     OrigemPagamento = reg.TipoLiquidacao,
                     IOF = (Convert.ToDecimal(reg.ValorIOF) / 100),
                     ValorAbatimento = (Convert.ToDecimal(reg.ValorAbatimentoConcedido) / 100),
