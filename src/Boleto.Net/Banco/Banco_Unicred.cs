@@ -95,32 +95,7 @@ namespace BoletoNet
             }
         }
 
-        protected static int Mod11UniCred(string seq)
-        {
-            /* Variáveis
-             * -------------
-             * d - Dígito
-             * s - Soma
-             * p - Peso
-             * b - Base
-             * r - Resto
-             */
-            int[] mult = new[] {3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
-
-            int d, s = 0, p = 2, b = 9, i = 0;
-
-            foreach (char c in seq)
-            {
-                var mul = mult[i];
-                s = s + (int.Parse(c.ToString()) * mul);
-                i++;
-            }
-
-            d = 11 - (s % 11);
-            if (d  == 0 || d== 10)
-                d = 0;
-            return d;
-        }
+        
 
         public override void FormataNumeroDocumento(Boleto boleto)
         {
@@ -158,13 +133,14 @@ namespace BoletoNet
             string valorBoleto = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
             valorBoleto = Utils.FormatCode(valorBoleto, 10);
 
+            var nossoNumero = string.Format("{0}{1}", boleto.NossoNumero, Mod11UniCred(boleto.NossoNumero));
             string cmp_livre = Utils.FormatCode(boleto.Cedente.ContaBancaria.Agencia, 4) +
                                                 Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 10) +
-                                                Utils.FormatCode(boleto.NossoNumero, 9);
+                                                Utils.FormatCode(nossoNumero, 11);
 
             string dv_cmpLivre = digUnicred(cmp_livre).ToString();
 
-            var codigoTemp = GerarCodigoDeBarras(boleto, valorBoleto, cmp_livre, dv_cmpLivre);
+            var codigoTemp = GerarCodigoDeBarras(boleto, valorBoleto, cmp_livre, string.Empty);
 
             boleto.CodigoBarra.CampoLivre = cmp_livre;
             boleto.CodigoBarra.FatorVencimento = FatorVencimento(boleto);
@@ -287,11 +263,38 @@ namespace BoletoNet
             return d1 + d2;
         }
 
-        public int digUnicred(string seq)
+        protected static int Mod11UniCred(string seq)
         {
-            /* VariÃ¡veis
+            /* Variáveis
              * -------------
-             * d - DÃ­gito
+             * d - Dígito
+             * s - Soma
+             * p - Peso
+             * b - Base
+             * r - Resto
+             */
+            int[] mult = new[] { 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+
+            int d, s = 0, p = 2, b = 9, i = 0;
+
+            foreach (char c in seq)
+            {
+                var mul = mult[i];
+                s = s + (int.Parse(c.ToString()) * mul);
+                i++;
+            }
+
+            d = 11 - (s % 11);
+            if (d == 0 || d == 10)
+                d = 0;
+            return d;
+        }
+
+        public int digUnicredBase2(string seq)
+        {
+            /* Variáveis
+             * -------------
+             * d - Dígito
              * s - Soma
              * p - Peso
              * b - Base
@@ -312,6 +315,34 @@ namespace BoletoNet
             d = 11 - (s % 11);
             if (d > 9)
                 d = 0;
+            return d;
+        }
+
+        public int digUnicred(string seq)
+        {
+            /* Variáveis
+              * -------------
+              * d - Dígito
+              * s - Soma
+              * p - Peso
+              * b - Base
+              * r - Resto
+              */
+            int[] mult = seq.Length == 25 ? new[] { 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 } :
+                new[] { 4,3,2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+
+            int d, s = 0, p = 2, b = 9, i = 0;
+
+            foreach (char c in seq)
+            {
+                var mul = mult[i];
+                s = s + (int.Parse(c.ToString()) * mul);
+                i++;
+            }
+
+            d = 11 - (s % 11);
+            if (d == 0 || d == 1|| d == 10)
+                d = 1;
             return d;
         }
 
