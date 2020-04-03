@@ -36,19 +36,22 @@ namespace BoletoNet
                 boleto.Cedente.ContaBancaria.Conta = Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 5);
 
             //Atribui o nome do banco ao local de pagamento
-            if (boleto.LocalPagamento == "Ate o vencimento, preferencialmente no ")
-                boleto.LocalPagamento += Nome;
-            else boleto.LocalPagamento = "Pagável em qualquer banco mesmo após o vencimento";
 
-            //Verifica se data do processamento eh valida
+            if (boleto.LocalPagamento == "AtÃ© o vencimento, preferencialmente no ")
+                boleto.LocalPagamento += Nome;
+            else 
+                boleto.LocalPagamento = "Pagável em qualquer banco mesmo após o vencimento";
+
+            //Verifica se data do processamento Ã© valida
             if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 boleto.DataProcessamento = DateTime.Now;
 
-            //Verifica se data do documento eh valida
+            //Verifica se data do documento Ã© valida
             if (boleto.DataDocumento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 boleto.DataDocumento = DateTime.Now;
 
-            string infoFormatoCodigoCedente = "formato AAAAPPCCCCC, onde: AAAA = Numero da agencia, PP = Posto do beneficiario, CCCCC = Codigo do beneficiario";
+            string infoFormatoCodigoCedente = "formato AAAAPPCCCCC, onde: AAAA = NÃºmero da agÃªncia, PP = Posto do beneficiÃ¡rio, CCCCC = CÃ³digo do beneficiÃ¡rio";
+
 
             var codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo, 11);
 
@@ -59,6 +62,7 @@ namespace BoletoNet
             if (boleto.Cedente.ContaBancaria != null &&
                 (!codigoCedente.StartsWith(boleto.Cedente.ContaBancaria.Agencia) ||
                  !(codigoCedente.EndsWith(conta) || codigoCedente.EndsWith(conta.Substring(0, conta.Length - 1)))))
+
                 //throw new BoletoNetException("Codigo do cedente deve estar no " + infoFormatoCodigoCedente);
                 boleto.Cedente.Codigo = string.Format("{0}{1}{2}", boleto.Cedente.ContaBancaria.Agencia, boleto.Cedente.ContaBancaria.OperacaConta, boleto.Cedente.Codigo);
 
@@ -71,6 +75,7 @@ namespace BoletoNet
             //if (boleto.CodigoBarra.Codigo.Length != 44)
             //    throw new BoletoNetException("Codigo de barras eh invalido");
 
+
             FormataLinhaDigitavel(boleto);
             FormataNossoNumero(boleto);
         }
@@ -82,7 +87,9 @@ namespace BoletoNet
 
             if (nossoNumero == null || nossoNumero.Length != 10)
             {
+
                 throw new Exception("Erro ao tentar formatar nosso numero, verifique o tamanho do campo: " + nossoNumero.Length);
+
             }
 
             try
@@ -91,6 +98,7 @@ namespace BoletoNet
             }
             catch (Exception ex)
             {
+
                 throw new Exception("Erro ao formatar nosso numero", ex);
             }
         }
@@ -179,10 +187,12 @@ namespace BoletoNet
         public string GerarDetalheRemessaCNAB240(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
         {
             throw new BoletoNetException("Nao implantado");
+
         }
 
         public override string GerarHeaderRemessa(Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
         {
+
             throw new BoletoNetException("Nao implantado");
         }
 
@@ -227,9 +237,9 @@ namespace BoletoNet
 
         public int Mod10Unicred(string seq)
         {
-            /* VariÃ¡veis
+            /* Variaveis
              * -------------
-             * d - DÃ­gito
+             * d - Digito
              * s - Soma
              * p - Peso
              * b - Base
@@ -294,7 +304,7 @@ namespace BoletoNet
         {
             /* Variaveis
              * -------------
-             * d - Dígito
+             * d - Digito
              * s - Soma
              * p - Peso
              * b - Base
@@ -390,7 +400,7 @@ namespace BoletoNet
 
 
         /// <summary>
-        /// Efetua as Validações dentro da classe Boleto, para garantir a geração da remessa
+        /// Efetua as ValidaÃ§Ãµes dentro da classe Boleto, para garantir a geraÃ§Ã£o da remessa
         /// </summary>
         public override bool ValidarRemessa(TipoArquivo tipoArquivo, string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, int numeroArquivoRemessa, out string mensagem)
         {
