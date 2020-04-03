@@ -9,7 +9,7 @@ using System.Web.UI;
 namespace BoletoNet
 {
     /// <Author>
-    /// Ivan Teles (ivan@idevweb.com.br)- Uniced
+    /// Ivan Teles (ivan@idevweb.com.br)- Unicred
     /// </Author>
     internal class Banco_Unicred : AbstractBanco, IBanco
     {
@@ -36,19 +36,19 @@ namespace BoletoNet
                 boleto.Cedente.ContaBancaria.Conta = Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 5);
 
             //Atribui o nome do banco ao local de pagamento
-            if (boleto.LocalPagamento == "AtÃ© o vencimento, preferencialmente no ")
+            if (boleto.LocalPagamento == "Ate o vencimento, preferencialmente no ")
                 boleto.LocalPagamento += Nome;
-            else boleto.LocalPagamento = "PAGÃVEL PREFERENCIALMENTE NA UNICRED";
+            else boleto.LocalPagamento = "Pagável em qualquer banco mesmo após o vencimento";
 
-            //Verifica se data do processamento Ã© valida
+            //Verifica se data do processamento eh valida
             if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 boleto.DataProcessamento = DateTime.Now;
 
-            //Verifica se data do documento Ã© valida
+            //Verifica se data do documento eh valida
             if (boleto.DataDocumento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 boleto.DataDocumento = DateTime.Now;
 
-            string infoFormatoCodigoCedente = "formato AAAAPPCCCCC, onde: AAAA = NÃºmero da agÃªncia, PP = Posto do beneficiÃ¡rio, CCCCC = CÃ³digo do beneficiÃ¡rio";
+            string infoFormatoCodigoCedente = "formato AAAAPPCCCCC, onde: AAAA = Numero da agencia, PP = Posto do beneficiario, CCCCC = Codigo do beneficiario";
 
             var codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo, 11);
 
@@ -59,17 +59,17 @@ namespace BoletoNet
             if (boleto.Cedente.ContaBancaria != null &&
                 (!codigoCedente.StartsWith(boleto.Cedente.ContaBancaria.Agencia) ||
                  !(codigoCedente.EndsWith(conta) || codigoCedente.EndsWith(conta.Substring(0, conta.Length - 1)))))
-                //throw new BoletoNetException("CÃ³digo do cedente deve estar no " + infoFormatoCodigoCedente);
+                //throw new BoletoNetException("Codigo do cedente deve estar no " + infoFormatoCodigoCedente);
                 boleto.Cedente.Codigo = string.Format("{0}{1}{2}", boleto.Cedente.ContaBancaria.Agencia, boleto.Cedente.ContaBancaria.OperacaConta, boleto.Cedente.Codigo);
 
 
-            //Verifica se o nosso nÃºmero Ã© vÃ¡lido
+            //Verifica se o nosso numero eh valido
             var Length_NN = boleto.NossoNumero.Length;
-            if (Length_NN > 11) throw new NotImplementedException("Nosso nÃºmero invÃ¡lido");
+            if (Length_NN > 11) throw new NotImplementedException("Nosso numero invalido");
 
             FormataCodigoBarra(boleto);
             //if (boleto.CodigoBarra.Codigo.Length != 44)
-            //    throw new BoletoNetException("CÃ³digo de barras Ã© invÃ¡lido");
+            //    throw new BoletoNetException("Codigo de barras eh invalido");
 
             FormataLinhaDigitavel(boleto);
             FormataNossoNumero(boleto);
@@ -82,7 +82,7 @@ namespace BoletoNet
 
             if (nossoNumero == null || nossoNumero.Length != 10)
             {
-                throw new Exception("Erro ao tentar formatar nosso nÃºmero, verifique o tamanho do campo: " + nossoNumero.Length);
+                throw new Exception("Erro ao tentar formatar nosso numero, verifique o tamanho do campo: " + nossoNumero.Length);
             }
 
             try
@@ -91,7 +91,7 @@ namespace BoletoNet
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro ao formatar nosso nÃºmero", ex);
+                throw new Exception("Erro ao formatar nosso numero", ex);
             }
         }
 
@@ -99,7 +99,7 @@ namespace BoletoNet
 
         public override void FormataNumeroDocumento(Boleto boleto)
         {
-            throw new BoletoNetException("NÃ£o implantado");
+            throw new BoletoNetException("Nao implantado");
         }
         public override void FormataLinhaDigitavel(Boleto boleto)
         {
@@ -170,25 +170,25 @@ namespace BoletoNet
         #region MÃ©todos de GeraÃ§Ã£o do Arquivo de Remessa
         public override string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
         {
-            throw new BoletoNetException("NÃ£o implantado");
+            throw new BoletoNetException("Nao implantado");
         }
         public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos)
         {
-            throw new BoletoNetException("NÃ£o implantado");
+            throw new BoletoNetException("Nao implantado");
         }
         public string GerarDetalheRemessaCNAB240(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
         {
-            throw new BoletoNetException("NÃ£o implantado");
+            throw new BoletoNetException("Nao implantado");
         }
 
         public override string GerarHeaderRemessa(Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
         {
-            throw new BoletoNetException("NÃ£o implantado");
+            throw new BoletoNetException("Nao implantado");
         }
 
         public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
         {
-            throw new BoletoNetException("NÃ£o implantado");
+            throw new BoletoNetException("Nao implantado");
         }
 
         private string GerarHeaderLoteRemessaCNAB240(Cedente cedente, int numeroArquivoRemessa)
@@ -205,22 +205,22 @@ namespace BoletoNet
 
         public override string GerarHeaderLoteRemessa(string numeroConvenio, Cedente cedente, int numeroArquivoRemessa, TipoArquivo tipoArquivo)
         {
-            throw new BoletoNetException("NÃ£o implantado");
+            throw new BoletoNetException("Nao implantado");
         }
 
         public string GerarHeaderRemessaCNAB240(Cedente cedente)
         {
-            throw new BoletoNetException("NÃ£o implantado");
+            throw new BoletoNetException("Nao implantado");
         }
 
         public override string GerarTrailerRemessa(int numeroRegistro, TipoArquivo tipoArquivo, Cedente cedente, decimal vltitulostotal)
         {
-            throw new BoletoNetException("NÃ£o implantado");
+            throw new BoletoNetException("Nao implantado");
         }
 
         public string GerarTrailerRemessa240(int numeroRegistro)
         {
-            throw new BoletoNetException("NÃ£o implantado");
+            throw new BoletoNetException("Nao implantado");
         }
 
         #endregion
@@ -265,7 +265,7 @@ namespace BoletoNet
 
         protected static int Mod11UniCred(string seq)
         {
-            /* Variáveis
+            /* Variaveis
              * -------------
              * d - Dígito
              * s - Soma
@@ -292,7 +292,7 @@ namespace BoletoNet
 
         public int digUnicredBase2(string seq)
         {
-            /* Variáveis
+            /* Variaveis
              * -------------
              * d - Dígito
              * s - Soma
@@ -320,7 +320,7 @@ namespace BoletoNet
 
         public int digUnicred(string seq)
         {
-            /* Variáveis
+            /* Variaveis
               * -------------
               * d - Dígito
               * s - Soma
@@ -348,19 +348,19 @@ namespace BoletoNet
 
         public string DigNossoNumero(Boleto boleto, bool arquivoRemessa = false)
         {
-            //Adicionado por diego.dariolli pois ao gerar remessa o dÃ­gito saÃ­a errado pois faltava agÃªncia e posto no cÃ³digo do cedente
-            string codigoCedente = ""; //cÃ³digo do beneficiÃ¡rio aaaappccccc
+            //Adicionado por diego.dariolli pois ao gerar remessa o digito saia errado pois faltava agencia e posto no codigo do cedente
+            string codigoCedente = ""; //codigo do beneficiario aaaappccccc
             if (arquivoRemessa)
             {
                 if (string.IsNullOrEmpty(boleto.Cedente.ContaBancaria.OperacaConta))
-                    throw new Exception("O cÃ³digo do posto beneficiÃ¡rio nÃ£o foi informado.");
+                    throw new Exception("O codigo do posto beneficiario nao foi informado.");
 
                 codigoCedente = string.Concat(boleto.Cedente.ContaBancaria.Agencia, boleto.Cedente.ContaBancaria.OperacaConta, boleto.Cedente.Codigo);
             }
             else
                 codigoCedente = boleto.Cedente.Codigo;
 
-            string nossoNumero = boleto.NossoNumero; //ano atual (yy), indicador de geraÃ§Ã£o do nosso nÃºmero (b) e o nÃºmero seqÃ¼encial do beneficiÃ¡rio (nnnnn);
+            string nossoNumero = boleto.NossoNumero; //ano atual (yy), indicador de geracao do nosso numero (b) e o numero sequencial do beneficiario (nnnnn);
 
             string seq = string.Concat(codigoCedente, nossoNumero); // = aaaappcccccyybnnnnn
             /* VariÃ¡veis
@@ -394,7 +394,7 @@ namespace BoletoNet
         /// </summary>
         public override bool ValidarRemessa(TipoArquivo tipoArquivo, string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, int numeroArquivoRemessa, out string mensagem)
         {
-            throw new BoletoNetException("NÃ£o implantado");
+            throw new BoletoNetException("Nao implantado");
         }
     }
 }
