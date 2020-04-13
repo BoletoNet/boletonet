@@ -37,7 +37,7 @@ namespace BoletoNet
 
             //Atribui o nome do banco ao local de pagamento
 
-            if (boleto.LocalPagamento == "AtÃ© o vencimento, preferencialmente no ")
+            if (boleto.LocalPagamento == "Ate o vencimento, preferencialmente no ")
                 boleto.LocalPagamento += Nome;
             else 
                 boleto.LocalPagamento = "Pagável em qualquer banco mesmo após o vencimento";
@@ -146,7 +146,7 @@ namespace BoletoNet
                                                 Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 10) +
                                                 Utils.FormatCode(nossoNumero, 11);
 
-            string dv_cmpLivre = digUnicred(cmp_livre).ToString();
+            string dv_cmpLivre = DigUnicred(cmp_livre).ToString();
 
             var codigoTemp = GerarCodigoDeBarras(boleto, valorBoleto, cmp_livre, string.Empty);
 
@@ -155,7 +155,7 @@ namespace BoletoNet
             boleto.CodigoBarra.Moeda = 9;
             boleto.CodigoBarra.ValorDocumento = valorBoleto;
 
-            int _dacBoleto = digUnicred(codigoTemp);
+            int _dacBoleto = DigUnicred(codigoTemp);
 
             if (_dacBoleto == 0 || _dacBoleto > 9)
                 _dacBoleto = 1;
@@ -285,7 +285,7 @@ namespace BoletoNet
              */
             int[] mult = new[] { 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
 
-            int d, s = 0, p = 2, b = 9, i = 0;
+            int d, s = 0, i = 0;
 
             foreach (char c in seq)
             {
@@ -300,7 +300,7 @@ namespace BoletoNet
             return d;
         }
 
-        public int digUnicred(string seq)
+        public int DigUnicred(string seq)
         {
             /* Variaveis
               * -------------
@@ -311,14 +311,18 @@ namespace BoletoNet
               * r - Resto
               */
             int[] mult = seq.Length == 25 ? new[] { 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 } :
-                new[] { 4,3,2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+                new[] { 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7 };
 
-            int d, s = 0, p = 2, b = 9, i = 0;
+            int d, s = 0, i = 0;
 
             foreach (char c in seq)
             {
+                if (seq.Length > mult.Length)
+                {
+                    throw new BoletoNetException("Tamanho da sequencia maior que o limite");
+                }
                 var mul = mult[i];
-                s = s + (int.Parse(c.ToString()) * mul);
+                s += (int.Parse(c.ToString()) * mul);
                 i++;
             }
 
