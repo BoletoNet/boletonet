@@ -27,36 +27,36 @@ namespace BoletoNet
 
         public override void ValidaBoleto(Boleto boleto)
         {
-            //Formata o tamanho do nÃºmero da agÃªncia
+            //Formata o tamanho do numero da agencia
             if (boleto.Cedente.ContaBancaria.Agencia.Length < 4)
                 boleto.Cedente.ContaBancaria.Agencia = Utils.FormatCode(boleto.Cedente.ContaBancaria.Agencia, 4);
 
-            //Formata o tamanho do nÃºmero da conta corrente
+            //Formata o tamanho do numero da conta corrente
             if (boleto.Cedente.ContaBancaria.Conta.Length < 5)
                 boleto.Cedente.ContaBancaria.Conta = Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 5);
 
             //Atribui o nome do banco ao local de pagamento
 
-            if (boleto.LocalPagamento == "AtÃ© o vencimento, preferencialmente no ")
+            if (boleto.LocalPagamento == "Ate o vencimento, preferencialmente no ")
                 boleto.LocalPagamento += Nome;
             else 
                 boleto.LocalPagamento = "Pagável em qualquer banco mesmo após o vencimento";
 
-            //Verifica se data do processamento Ã© valida
-            if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
+            //Verifica se data do processamento eh valida
+            if (boleto.DataProcessamento == DateTime.MinValue) 
                 boleto.DataProcessamento = DateTime.Now;
 
             //Verifica se data do documento Ã© valida
-            if (boleto.DataDocumento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
+            if (boleto.DataDocumento == DateTime.MinValue) 
                 boleto.DataDocumento = DateTime.Now;
 
-            string infoFormatoCodigoCedente = "formato AAAAPPCCCCC, onde: AAAA = NÃºmero da agÃªncia, PP = Posto do beneficiÃ¡rio, CCCCC = CÃ³digo do beneficiÃ¡rio";
+            string infoFormatoCodigoCedente = "formato AAAAPPCCCCC, onde: AAAA = Numero da agencia, PP = Posto do beneficiario, CCCCC = Codigo do beneficiario";
 
 
             var codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo, 11);
 
             if (string.IsNullOrEmpty(codigoCedente))
-                throw new BoletoNetException("CÃ³digo do cedente deve ser informado, " + infoFormatoCodigoCedente);
+                throw new BoletoNetException("Codigo do cedente deve ser informado, " + infoFormatoCodigoCedente);
 
             var conta = boleto.Cedente.ContaBancaria.Conta;
             if (boleto.Cedente.ContaBancaria != null &&
@@ -146,7 +146,7 @@ namespace BoletoNet
                                                 Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 10) +
                                                 Utils.FormatCode(nossoNumero, 11);
 
-            string dv_cmpLivre = digUnicred(cmp_livre).ToString();
+            string dv_cmpLivre = DigUnicred(cmp_livre).ToString();
 
             var codigoTemp = GerarCodigoDeBarras(boleto, valorBoleto, cmp_livre, string.Empty);
 
@@ -155,7 +155,7 @@ namespace BoletoNet
             boleto.CodigoBarra.Moeda = 9;
             boleto.CodigoBarra.ValorDocumento = valorBoleto;
 
-            int _dacBoleto = digUnicred(codigoTemp);
+            int _dacBoleto = DigUnicred(codigoTemp);
 
             if (_dacBoleto == 0 || _dacBoleto > 9)
                 _dacBoleto = 1;
@@ -175,7 +175,7 @@ namespace BoletoNet
                 dv_cmpLivre);
         }
 
-        #region MÃ©todos de GeraÃ§Ã£o do Arquivo de Remessa
+        #region Metodos de Geracao do Arquivo de Remessa
         public override string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
         {
             throw new BoletoNetException("Nao implantado");
@@ -285,7 +285,7 @@ namespace BoletoNet
              */
             int[] mult = new[] { 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
 
-            int d, s = 0, p = 2, b = 9, i = 0;
+            int d, s = 0, i = 0;
 
             foreach (char c in seq)
             {
@@ -300,35 +300,7 @@ namespace BoletoNet
             return d;
         }
 
-        public int digUnicredBase2(string seq)
-        {
-            /* Variaveis
-             * -------------
-             * d - Digito
-             * s - Soma
-             * p - Peso
-             * b - Base
-             * r - Resto
-             */
-
-            int d, s = 0, p = 2, b = 9;
-
-            for (int i = seq.Length - 1; i >= 0; i--)
-            {
-                s = s + (Convert.ToInt32(seq.Substring(i, 1)) * p);
-                if (p < b)
-                    p = p + 1;
-                else
-                    p = 2;
-            }
-
-            d = 11 - (s % 11);
-            if (d > 9)
-                d = 0;
-            return d;
-        }
-
-        public int digUnicred(string seq)
+        public int DigUnicred(string seq)
         {
             /* Variaveis
               * -------------
@@ -339,14 +311,18 @@ namespace BoletoNet
               * r - Resto
               */
             int[] mult = seq.Length == 25 ? new[] { 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 } :
-                new[] { 4,3,2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+                new[] { 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7 };
 
-            int d, s = 0, p = 2, b = 9, i = 0;
+            int d, s = 0, i = 0;
 
             foreach (char c in seq)
             {
+                if (seq.Length > mult.Length)
+                {
+                    throw new BoletoNetException("Tamanho da sequencia maior que o limite");
+                }
                 var mul = mult[i];
-                s = s + (int.Parse(c.ToString()) * mul);
+                s += (int.Parse(c.ToString()) * mul);
                 i++;
             }
 
@@ -356,51 +332,8 @@ namespace BoletoNet
             return d;
         }
 
-        public string DigNossoNumero(Boleto boleto, bool arquivoRemessa = false)
-        {
-            //Adicionado por diego.dariolli pois ao gerar remessa o digito saia errado pois faltava agencia e posto no codigo do cedente
-            string codigoCedente = ""; //codigo do beneficiario aaaappccccc
-            if (arquivoRemessa)
-            {
-                if (string.IsNullOrEmpty(boleto.Cedente.ContaBancaria.OperacaConta))
-                    throw new Exception("O codigo do posto beneficiario nao foi informado.");
-
-                codigoCedente = string.Concat(boleto.Cedente.ContaBancaria.Agencia, boleto.Cedente.ContaBancaria.OperacaConta, boleto.Cedente.Codigo);
-            }
-            else
-                codigoCedente = boleto.Cedente.Codigo;
-
-            string nossoNumero = boleto.NossoNumero; //ano atual (yy), indicador de geracao do nosso numero (b) e o numero sequencial do beneficiario (nnnnn);
-
-            string seq = string.Concat(codigoCedente, nossoNumero); // = aaaappcccccyybnnnnn
-            /* VariÃ¡veis
-             * -------------
-             * d - DÃ­gito
-             * s - Soma
-             * p - Peso
-             * b - Base
-             * r - Resto
-             */
-
-            int d, s = 0, p = 2, b = 9;
-            //Atribui os pesos de {2..9}
-            for (int i = seq.Length - 1; i >= 0; i--)
-            {
-                s = s + (Convert.ToInt32(seq.Substring(i, 1)) * p);
-                if (p < b)
-                    p = p + 1;
-                else
-                    p = 2;
-            }
-            d = 11 - (s % 11);//Calcula o MÃ³dulo 11;
-            if (d > 9)
-                d = 0;
-            return d.ToString();
-        }
-
-
         /// <summary>
-        /// Efetua as ValidaÃ§Ãµes dentro da classe Boleto, para garantir a geraÃ§Ã£o da remessa
+        /// Efetua as Validacoes dentro da classe Boleto, para garantir a geracao da remessa
         /// </summary>
         public override bool ValidarRemessa(TipoArquivo tipoArquivo, string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, int numeroArquivoRemessa, out string mensagem)
         {
