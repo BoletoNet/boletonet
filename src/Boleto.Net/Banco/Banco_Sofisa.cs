@@ -171,6 +171,9 @@ namespace BoletoNet
 			var dataVencimento = Utils.ToInt32(registro.Substring(146, 6));
 			detalheRetorno.DataVencimento = Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
 
+			var dataCredito = Utils.ToInt32(registro.Substring(385, 6));
+			detalheRetorno.DataCredito = Utils.ToDateTime(dataCredito.ToString("##-##-##"));
+
 			decimal valorTitulo = Convert.ToInt64(registro.Substring(152, 13));
 			detalheRetorno.ValorTitulo = valorTitulo / 100;
 
@@ -181,13 +184,13 @@ namespace BoletoNet
 			decimal valorDespesa = Convert.ToUInt64(registro.Substring(175, 13));
 			detalheRetorno.ValorDespesa = valorDespesa / 100;
 
-			decimal valorIof = Convert.ToUInt64(registro.Substring(214, 11));
+			decimal valorIof = Convert.ToUInt64(registro.Substring(214, 13));
 			detalheRetorno.IOF = valorIof / 100;
 
-			decimal valorAbatimento = Convert.ToUInt64(registro.Substring(227, 11));
+			decimal valorAbatimento = Convert.ToUInt64(registro.Substring(227, 13));
 			detalheRetorno.ValorAbatimento = valorAbatimento / 100;
 
-			decimal valorDesconto = Convert.ToUInt64(registro.Substring(240, 11));
+			decimal valorDesconto = Convert.ToUInt64(registro.Substring(240, 13));
 			detalheRetorno.Descontos = valorDesconto / 100;
 
 			decimal valorPago = Convert.ToUInt64(registro.Substring(253, 13));
