@@ -47,7 +47,9 @@ namespace BoletoNet
         public override void ValidaBoleto(Boleto boleto)
         {
             if (string.IsNullOrEmpty(boleto.Carteira))
+            {
                 throw new NotImplementedException("Carteira não informada. Utilize a carteira 11, 16, 17, 17-019, 17-027, 17-051, 18, 18-019, 18-027, 18-035, 18-140, 17-159, 17-140, 17-067 ou 31.");
+            }
 
             //Verifica as carteiras implementadas
             if (!boleto.Carteira.Equals("11") &
@@ -67,11 +69,15 @@ namespace BoletoNet
                 !boleto.Carteira.Equals("18-035") &
                 !boleto.Carteira.Equals("18-140") &
                 !boleto.Carteira.Equals("31"))
+            {
                 throw new NotImplementedException("Carteira não informada. Utilize a carteira 11, 16, 17, 17-019, 17-027, 17-051, 18, 18-019, 18-027, 18-035, 18-140, 17-159, 17-140, 17-067 ou 31.");
+            }
 
             //Verifica se o nosso número é válido
             if (Utils.ToString(boleto.NossoNumero) == string.Empty)
+            {
                 throw new NotImplementedException("Nosso número inválido");
+            }
 
 
             #region Carteira 11
@@ -81,17 +87,25 @@ namespace BoletoNet
                 if (!boleto.TipoModalidade.Equals("21"))
                 {
                     if (boleto.NossoNumero.Length > 11)
+                    {
                         throw new NotImplementedException(string.Format("Para a carteira {0}, a quantidade máxima são de 11 de posições para o nosso número", boleto.Carteira));
+                    }
 
                     if (boleto.Cedente.Convenio.ToString().Length == 6)
+                    {
                         boleto.NossoNumero = string.Format("{0}{1}", boleto.Cedente.Convenio, Utils.FormatCode(boleto.NossoNumero, 11));
+                    }
                     else
+                    {
                         boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 11);
+                    }
                 }
                 else
                 {
                     if (boleto.Cedente.Convenio.ToString().Length != 6)
+                    {
                         throw new NotImplementedException(string.Format("Para a carteira {0} e o tipo da modalidade 21, o número do convênio são de 6 posições", boleto.Carteira));
+                    }
 
                     boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 17);
                 }
