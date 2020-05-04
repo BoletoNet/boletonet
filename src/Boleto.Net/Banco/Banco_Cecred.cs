@@ -532,11 +532,16 @@ namespace BoletoNet {
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAAAA_________, 0110, 008, 0, boleto.DataDocumento, '0'));                          // posição 110-117 (008) - Data da Emissão do Título
 
                 #region Código de juros
-                string CodJurosMora;
-                if (boleto.JurosMora == 0 && boleto.PercJurosMora == 0)
-                    CodJurosMora = "3"; //  Isento
-                else
-                    CodJurosMora = "1"; // Valor por Dia
+                // Se foi definido explicitamente não recalcula o código de juros/mora.
+                string CodJurosMora = boleto.CodJurosMora;
+                if (string.IsNullOrEmpty(CodJurosMora))
+                {
+                    if (boleto.JurosMora == 0 && boleto.PercJurosMora == 0)
+                        CodJurosMora = "3"; //  Isento
+                    else
+                        CodJurosMora = "1"; // Valor por Dia
+                }
+
                 #endregion
 
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0118, 001, 0, CodJurosMora, '0'));                                  // posição 118-118 (001) - Código do Juros de Mora
