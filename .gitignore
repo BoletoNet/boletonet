@@ -198,3 +198,7 @@ src/.vs/config/applicationhost.config
 src/.vs/Boleto.Net.sqlite
 src/.vs/
 /wiki/specs/santander/Santander-CNAB400-2012-02-01-v1.1-Padrao-356-2.pdf
+*.config
+src/.vs/config/applicationhost.config
+src/Boleto.Net/Properties/AssemblyInfo.cs
+src/Boleto.Net/Properties/AssemblyInfo.cs

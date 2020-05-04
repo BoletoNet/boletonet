@@ -69,7 +69,7 @@ namespace Boleto.Net.Testes.BancoSicredi
             boleto.DataDocumento = DateTime.Now.AddDays(-15);
             boleto.DataProcessamento = DateTime.Now;
 
-            boleto.Remessa = new Remessa(TipoOcorrenciaRemessa.EntradaDeTitulos);
+            boleto.Remessa = new BoletoNet.Remessa(TipoOcorrenciaRemessa.EntradaDeTitulos);
             //boleto.EspecieDocumento = new EspecieDocumento_Sicredi("A");
 
             boleto.Sacado = new Sacado("87425264188", "Sacado teste", new Endereco()

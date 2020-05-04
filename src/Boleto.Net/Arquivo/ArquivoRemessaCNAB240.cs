@@ -7,6 +7,10 @@ namespace BoletoNet
 {
     internal class ArquivoRemessaCNAB240 : AbstractArquivoRemessa, IArquivoRemessa
     {
+        /// <summary>
+        /// Para transmissão de arquivo remessa de testes, favor incluir a informação 'TS' na posição 51-52 do header de arquivo e na posição 52-53 do header de lote do arquivo. 
+        /// </summary>
+        public virtual bool ModoTeste { get; internal set; }
 
         #region Construtores
 
@@ -62,7 +66,8 @@ namespace BoletoNet
 
                 numeroRegistro++;
 
-                //
+                if(ModoTeste)
+                    strline = strline.Remove(50, 2).Insert(50, "TS");
                 incluiLinha.WriteLine(strline);
                 OnLinhaGerada(null, strline, EnumTipodeLinha.HeaderDeArquivo);
                 if (banco.Codigo == 104)//quando é caixa verifica o modelo de leiatue que é está em boletos.remssa.tipodocumento
@@ -72,6 +77,8 @@ namespace BoletoNet
 
                 if (strline != "")
                 {
+                    if (ModoTeste)
+                        strline = strline.Remove(51, 2).Insert(51, "TS");
                     incluiLinha.WriteLine(strline);
                     OnLinhaGerada(null, strline, EnumTipodeLinha.HeaderDeLote);
                     numeroRegistro++;

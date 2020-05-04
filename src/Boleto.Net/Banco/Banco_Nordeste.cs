@@ -373,9 +373,31 @@ namespace BoletoNet
         }
         #endregion
 
-        internal static string Mod11BancoNordeste(string value)
+        
+        protected static int Mod11Nordeste(string seq, int b)
         {
-            throw new NotImplementedException("Função não implementada.");
+            //Suélton - 05/07/2018 - Implementação do cálculo do DV do nosso número para o Banco do Nordeste
+
+            int soma = 0, peso = 2;
+
+            //Multiplica - se, da direita para a esquerda, cada algarismo do NOSSO NÚMERO pelos pesos ‘2’ a ‘8’;
+            for (var i = seq.Length; i > 0; i--)
+            {
+                soma = soma + (Convert.ToInt32(seq.Mid(i, 1)) * peso);
+                if (peso == b)
+                    peso = 2;
+                else
+                    peso = peso + 1;
+            }
+
+            var modulo = (soma % 11);
+
+            //Se o módulo da divisão anterior for igual a ‘0’ (Zero) ou ‘1’ (um) o dígito verificador será ‘0’ (zero), para
+            //qualquer outro valor Subtrair o módulo do número 11 para obter o dígito verificador.
+            if ((modulo == 0) || (modulo == 1))
+                return 0;
+
+            return (11 - modulo);
         }
 
         //Carteira para Codigo de Operacao
@@ -506,14 +528,28 @@ namespace BoletoNet
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0063, 007, 0, nossoNumero.Split('-')[0], '0'));                 //063-069
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0070, 001, 0, nossoNumero.Split('-')[1], '0'));                 //070-070
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0071, 010, 0, "0000000000", '0'));                              //071-080
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0081, 006, 0, "000000", '0'));                                  //081-086
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0087, 013, 0, "0000000000000", '0'));                           //087-099
+
+                //Suélton - 18/12/2018 - Implementação do 2 desconto por antecipação
+                if (boleto.DataDescontoAntecipacao2.HasValue)
+                {
+                    reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0081, 006, 0, boleto.DataDescontoAntecipacao2.Value.ToString("ddMMyy"), '0'));                                  //081-086
+                    reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0087, 013, 0, boleto.ValorDescontoAntecipacao2.Value, '0'));                           //087-099
+                }
+                else
+                {
+                    reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0081, 006, 0, "000000", '0'));                                  //081-086
+                    reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0087, 013, 0, "0000000000000", '0'));                           //087-099
+                }
+                
+                
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0100, 008, 0, string.Empty, ' '));                              //100-107
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0108, 001, 0, boleto.Carteira, '0'));                           //108-108
+
                 if (boleto.Remessa == null || string.IsNullOrEmpty(boleto.Remessa.CodigoOcorrencia))
                     reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0109, 002, 0, "01", '0'));                                  //109-110
                 else
                     reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0109, 002, 0, boleto.Remessa.CodigoOcorrencia, '0'));       //109-110
+
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliDireita______, 0111, 010, 0, boleto.NumeroDocumento, ' '));                    //111-120
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAA___________, 0121, 006, 0, boleto.DataVencimento, ' '));                     //121-126
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0127, 013, 2, boleto.ValorBoleto, '0'));                        //127-139
@@ -532,6 +568,7 @@ namespace BoletoNet
                     vInstrucao = boleto.Instrucoes[0].Codigo.ToString();
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0157, 004, 0, vInstrucao, '0'));                               //157-160
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0161, 013, 2, boleto.JurosMora, '0'));                         //161-173
+                
                 //Suélton - 09/04/2018 - Implementação do desconto por antecipação
                 if (boleto.ValorDesconto > 0)
                 {
@@ -645,6 +682,7 @@ namespace BoletoNet
                 //detalhe. = reg.Brancos1;
                 detalhe.Carteira = reg.Carteira;
                 detalhe.CodigoOcorrencia = Utils.ToInt32(reg.Comando);
+                detalhe.DescricaoOcorrencia = new CodigoMovimento(4, detalhe.CodigoOcorrencia).Descricao;
                 //
                 detalhe.NumeroDocumento = reg.NumeroTituloCedente;
                 //detalhe. = reg.Brancos2;

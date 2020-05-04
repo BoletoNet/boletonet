@@ -20,8 +20,9 @@ namespace BoletoNet
         LiquidacaoAposBaixa = 17,                                     //17 Liquidação após baixa
         ConfirmacaoDeRecebimentoDeInstrucaoDeProtesto = 19,           //19 Confirmação de recebimento de instrução de protesto
         ConfirmacaoDeRecebimentoDeInstrucaoDeSustacaoDeProtesto = 20, //20 Confirmação de recebimento de instrução de sustação de protesto
-        EntradaDeTituloEmCartorio = 23,                               //23 Entrada de título em cartório
+        EntradaDeTituloEmCartorio = 23,                               //23 Entrada de título em cartório        
         EntradaRejeitadaPorCEPIrregular = 24,                         //24 Entrada rejeitada por CEP irregular
+        ProtestadoEBaixado = 25,                                      //25 Protestado e Baixado (Baixa por Ter Sido Protestado)
         BaixaRejeitada = 27,                                          //27 Baixa rejeitada
         Tarifa = 28,                                                  //28 Tarifa
         RejeicaoDoPagador = 29,                                       //29 Rejeição do pagador
@@ -94,7 +95,8 @@ namespace BoletoNet
             { EnumCodigoMovimento_Sicoob.InstrucaoRejeitada                                     ,TipoOcorrenciaRetorno.InstrucaoRejeitada },
             { EnumCodigoMovimento_Sicoob.ConfirmacaoDePedidoDeAlteracaoDeOutrosDados            ,TipoOcorrenciaRetorno.ConfirmacaoDaAlteracaoDosDadosDoRateioDeCredito },
             { EnumCodigoMovimento_Sicoob.RetiradoDeCartorioEManutencaoEmCarteira                ,TipoOcorrenciaRetorno.ConfirmacaoDoCancelamentoDosDadosDoRateioDeCredito },
-            { EnumCodigoMovimento_Sicoob.TituloEmSer                                            ,TipoOcorrenciaRetorno.TitulosEmCarteira }
+            { EnumCodigoMovimento_Sicoob.TituloEmSer                                            ,TipoOcorrenciaRetorno.TitulosEmCarteira },
+            { EnumCodigoMovimento_Sicoob.ProtestadoEBaixado                                     ,TipoOcorrenciaRetorno.ProtestadoEBaixado},
         };
 
         private Dictionary<EnumCodigoMovimento_Sicoob, string> descricoes = new Dictionary<EnumCodigoMovimento_Sicoob, string>()
@@ -113,6 +115,7 @@ namespace BoletoNet
             { EnumCodigoMovimento_Sicoob.ConfirmacaoDeRecebimentoDeInstrucaoDeSustacaoDeProtesto , "Confirmação de recebimento de instrução de sustação de protesto"},
             { EnumCodigoMovimento_Sicoob.EntradaDeTituloEmCartorio                               , "Entrada de título em cartório"                                  },
             { EnumCodigoMovimento_Sicoob.EntradaRejeitadaPorCEPIrregular                         , "Entrada rejeitada por CEP irregular"                            },
+            { EnumCodigoMovimento_Sicoob.ProtestadoEBaixado                                      , "Protestado e Baixado (Baixa por Ter Sido Protestado)"           },
             { EnumCodigoMovimento_Sicoob.BaixaRejeitada                                          , "Baixa rejeitada"                                                },
             { EnumCodigoMovimento_Sicoob.Tarifa                                                  , "Tarifa"                                                         },
             { EnumCodigoMovimento_Sicoob.RejeicaoDoPagador                                       , "Rejeição do pagador"                                            },

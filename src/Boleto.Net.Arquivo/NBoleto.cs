@@ -44,7 +44,10 @@ namespace BoletoNet.Arquivo
             StringBuilder html = new StringBuilder();
             foreach (BoletoBancario o in boletos)
             {
-                html.Append(o.MontaHtml());
+                string logoPath = Application.StartupPath + @"\logoBoleto.jpg";
+                if (!File.Exists(logoPath))
+                    logoPath = "";
+                html.Append(o.MontaHtml(null,logoPath));
                 html.Append("</br></br></br></br></br></br></br></br></br></br>");
             }
 
@@ -471,9 +474,17 @@ namespace BoletoNet.Arquivo
 
                 bb = new BoletoBancario();
                 bb.CodigoBanco = _codigoBanco;
-
+                bb.MostrarEnderecoCedente = true;            
+                //bb.ExibirDemonstrativo = true;
+           
                 DateTime vencimento = DateTime.Now.AddDays(10);
                 Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "1234", "5", "12345678", "9");
+                c.Endereco = new Endereco();
+                c.Endereco.End = "Rua teste";
+                c.Endereco.Bairro = "Jd. teste";
+                c.Endereco.CEP = "13211-478";
+                c.Endereco.Cidade = "Cidade Teste";
+                c.Endereco.UF = "SP";
 
                 c.Codigo = "00000000504";
                 Boleto b = new Boleto(vencimento, 45.50m, "11", "12345678901", c);                
@@ -496,7 +507,13 @@ namespace BoletoNet.Arquivo
                 item = new Instrucao_BancoBrasil(81, 15);
                 b.Instrucoes.Add(item);
 
+                ////DEMONSTRATIVO
+                //DemonstrativoValoresBoleto.GrupoDemonstrativo d = new DemonstrativoValoresBoleto.GrupoDemonstrativo();
+                //d.Descricao = "Demonstrativo teste";
+                //b.Demonstrativos.Add(d);
+
                 b.NumeroDocumento = "12345678901";
+                b.LocalPagamento = "Pagável em qualquer banco.";
 
                 bb.Boleto = b;
                 bb.Boleto.Valida();

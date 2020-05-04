@@ -48,7 +48,7 @@ namespace BoletoNet
             try
             {
                 //Carteiras válidas
-                int[] cv = new int[] { 175, 176, 178, 109, 198, 107, 122, 142, 143, 196, 126, 131, 146, 150, 169, 121, 112 };//MarcielTorres - adicionado a carteira 112
+                int[] cv = new int[] { 175, 176, 178, 109, 198, 107, 122, 142, 143, 196, 126, 131, 146, 150, 169, 121, 112, 104 };//MarcielTorres - adicionado a carteira 112
                 bool valida = false;
 
                 foreach (int c in cv)
@@ -97,7 +97,7 @@ namespace BoletoNet
 
                 // Calcula o DAC do Nosso Número a maioria das carteiras
                 // agencia/conta/carteira/nosso numero
-                if (boleto.Carteira == "112")
+                if (boleto.Carteira == "104" || boleto.Carteira == "112")
                     _dacNossoNumero = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta + boleto.Carteira + boleto.NossoNumero);
                 else if (boleto.Carteira != "126" && boleto.Carteira != "131"
                     && boleto.Carteira != "146" && boleto.Carteira != "150"
@@ -113,10 +113,12 @@ namespace BoletoNet
                 //Atribui o nome do banco ao local de pagamento
                 if (string.IsNullOrEmpty(boleto.LocalPagamento))
                     boleto.LocalPagamento = "PAGÁVEL PREFERENCIALMENTE NAS AGÊNCIAS DO ITAÚ";
+                else if (boleto.LocalPagamento == "Até o vencimento, preferencialmente no ")
+                    boleto.LocalPagamento += Nome;
 
                 //Verifica se o nosso número é válido
                 if (Utils.ToInt64(boleto.NossoNumero) == 0)
-                    throw new NotImplementedException("Nosso número inválido");
+                throw new NotImplementedException("Nosso número inválido");
 
                 //Verifica se data do processamento é valida
                 //if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
@@ -153,7 +155,7 @@ namespace BoletoNet
                 string numeroDocumento = Utils.FormatCode(boleto.NumeroDocumento.ToString(), 7);
                 string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo.ToString(), 5);
 
-                if (boleto.Carteira == "175" || boleto.Carteira == "176" || boleto.Carteira == "178" || boleto.Carteira == "109" || boleto.Carteira == "121" || boleto.Carteira == "112")//MarcielTorres - adicionado a carteira 112
+                if (boleto.Carteira == "175" || boleto.Carteira == "176" || boleto.Carteira == "178" || boleto.Carteira == "109" || boleto.Carteira == "121" || boleto.Carteira == "112" || boleto.Carteira == "104")//MarcielTorres - adicionado a carteira 112
                 {
                     boleto.CodigoBarra.Codigo =
                         string.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}000", Codigo, boleto.Moeda,
@@ -222,7 +224,7 @@ namespace BoletoNet
 
                 #endregion UUUUVVVVVVVVVV
 
-                if (boleto.Carteira == "175" || boleto.Carteira == "176" || boleto.Carteira == "178" || boleto.Carteira == "109" || boleto.Carteira == "121" || boleto.Carteira == "112")//MarcielTorres - adicionado a carteira 112
+                if (boleto.Carteira == "175" || boleto.Carteira == "176" || boleto.Carteira == "178" || boleto.Carteira == "109" || boleto.Carteira == "121" || boleto.Carteira == "112" || boleto.Carteira == "104")//MarcielTorres - adicionado a carteira 112
                 {
                     #region Definições
                     /* AAABC.CCDDX.DDDDD.DEFFFY.FGGGG.GGHHHZ.K.UUUUVVVVVVVVVV
@@ -923,13 +925,14 @@ namespace BoletoNet
                 _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.CEP, 8, 8, ' ', 0, true, true, false).ToUpper(); ;
                 _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.Cidade.TrimStart(' '), 15, 15, ' ', 0, true, true, false).ToUpper();
                 _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.UF, 2, 2, ' ', 0, true, true, false).ToUpper();
-                if (boleto.Sacado.CPFCNPJ.Length <= 11)
+
+                if (boleto.Cedente.CPFCNPJ.Length <= 11)
                     _segmentoQ += "1";
                 else
                     _segmentoQ += "2";
 
-                _segmentoQ += Utils.FitStringLength(boleto.Sacado.CPFCNPJ, 15, 15, '0', 0, true, true, true);
-                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Nome.TrimStart(' '), 30, 30, ' ', 0, true, true, false).ToUpper();
+                _segmentoQ += Utils.FitStringLength(boleto.Cedente.CPFCNPJ, 15, 15, '0', 0, true, true, true);
+                _segmentoQ += Utils.FitStringLength(boleto.Cedente.Nome.TrimStart(' '), 30, 30, ' ', 0, true, true, false).ToUpper();
                 _segmentoQ += _brancos10;
                 _segmentoQ += "000";
                 _segmentoQ += _brancos28;
@@ -959,10 +962,32 @@ namespace BoletoNet
                 _segmentoR += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);
                 _segmentoR += "R ";
                 _segmentoR += ObterCodigoDaOcorrencia(boleto);
-                // Desconto 2
-                _segmentoR += "000000000000000000000000"; //24 zeros
-                // Desconto 3
-                _segmentoR += "000000000000000000000000"; //24 zeros
+                
+                //Suelton - 18/12/2018 - Implementação do 2 desconto por antecipação
+                if (boleto.DataDescontoAntecipacao2.HasValue && boleto.ValorDescontoAntecipacao2.HasValue)
+                {
+                    _segmentoR += "1" + //'1' = Valor Fixo Até a Data Informada
+                        Utils.FitStringLength(boleto.DataDescontoAntecipacao2.Value.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false) +
+                        Utils.FitStringLength(boleto.ValorDescontoAntecipacao2.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
+                }
+                else
+                {
+                    // Desconto 2
+                    _segmentoR += "000000000000000000000000"; //24 zeros
+                }
+
+                //Suelton - 18/12/2018 - Implementação do 3 desconto por antecipação
+                if (boleto.DataDescontoAntecipacao3.HasValue && boleto.ValorDescontoAntecipacao3.HasValue)
+                {
+                    _segmentoR += "1" + //'1' = Valor Fixo Até a Data Informada
+                        Utils.FitStringLength(boleto.DataDescontoAntecipacao3.Value.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false) +
+                        Utils.FitStringLength(boleto.ValorDescontoAntecipacao3.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
+                }
+                else
+                {
+                    // Desconto 3
+                    _segmentoR += "000000000000000000000000"; //24 zeros
+                }
 
                 if (boleto.PercMulta > 0)
                 {
@@ -1211,22 +1236,7 @@ namespace BoletoNet
                         _detalhe += Utils.FitStringLength(boleto.Instrucoes[1].Codigo.ToString(), 2, 2, '0', 0, true, true, true);
                         break;
                 }
-
-                //if (boleto.Instrucoes.Count > 1)
-                //    _detalhe += Utils.FitStringLength(boleto.Instrucoes[0].Codigo.ToString(), 2, 2, '0', 0, true, true, true);
-
-                //if (boleto.Instrucoes.Count > 2)
-                //    _detalhe += Utils.FitStringLength(boleto.Instrucoes[1].Codigo.ToString(), 2, 2, '0', 0, true, true, true);
-                //else
-                //_detalhe += "  ";
-                //    _detalhe += "    ";
-
-                // Juros de 1 dia
-                //Se o cliente optar pelo padrão do Banco Itaú ou solicitar o cadastramento permanente na conta corrente, 
-                //não haverá a necessidade de informar esse valor.
-                //Caso seja expresso em moeda variável, deverá ser preenchido com cinco casas decimais.
-
-                //_detalhe += "0000000000000";
+                                
                 _detalhe += Utils.FitStringLength(boleto.JurosMora.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
 
                 // Data limite para desconto
@@ -1249,37 +1259,77 @@ namespace BoletoNet
                 ;
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.Cidade, 15, 15, ' ', 0, true, true, false).ToUpper();
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.UF, 2, 2, ' ', 0, true, true, false).ToUpper();
+                
                 // SACADOR/AVALISTA
                 // Normalmente deve ser preenchido com o nome do sacador/avalista. Alternativamente este campo poderá 
                 // ter dois outros usos:
                 // a) 2o e 3o descontos: para de operar com mais de um desconto(depende de cadastramento prévio do 
                 // indicador 19.0 pelo Banco Itaú, conforme item 5)
                 // b) Mensagens ao sacado: se utilizados as instruções 93 ou 94 (Nota 11), transcrever a mensagem desejada
-                _detalhe += Utils.FitStringLength(boleto.Sacado.Nome, 30, 30, ' ', 0, true, true, false).ToUpper();
-                _detalhe += "    "; // Complemento do registro
-                _detalhe += boleto.DataVencimento.ToString("ddMMyy");
-                // PRAZO - Quantidade de DIAS - ver nota 11(A) - depende das instruções de cobrança 
 
-                if (boleto.Instrucoes.Count > 0)
+                /* Suélton - 18/12/2018 - 2 e 3 desconto por antecipação
+                   Posição 352 a 353 : Brancos
+                   Posição 354 a 359 : Data do 2º desconto (DDMMAA)
+                   Posição 360 a 372 : Valor do 2º desconto
+                   Posição 373 a 378 : Data do 3º desconto (DDMMAA)
+                   Posição 379 a 391 : Valor do 3º desconto
+                   Posição 392 a 394 : Brancos */
+
+                if (boleto.DataDescontoAntecipacao2.HasValue || boleto.DataDescontoAntecipacao3.HasValue)
                 {
-                    for (int i = 0; i < boleto.Instrucoes.Count; i++)
+                    _detalhe += "  "; //352 - 353
+                    if (boleto.DataDescontoAntecipacao2.HasValue)
                     {
-                        if (boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.Protestar || 
-                            boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.ProtestarAposNDiasCorridos ||
-                            boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.ProtestarAposNDiasUteis)
+                        _detalhe += boleto.DataDescontoAntecipacao2.Value.ToString("ddMMyy") + 
+                            Utils.FitStringLength(boleto.ValorDescontoAntecipacao2.Value.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
+                    }
+                    else
+                    {
+                        _detalhe += "0000000000000000000";
+                    }
+
+                    if (boleto.DataDescontoAntecipacao3.HasValue)
+                    {
+                        _detalhe += boleto.DataDescontoAntecipacao3.Value.ToString("ddMMyy") + 
+                            Utils.FitStringLength(boleto.ValorDescontoAntecipacao3.Value.ApenasNumeros(), 13, 13, '0', 0, true, true, true) + "00";
+                    }
+                    else
+                    {
+                        _detalhe += "0000000000000000000";
+                    }
+
+                    _detalhe += "   ";
+                }
+                else
+                {
+                    _detalhe += Utils.FitStringLength(boleto.Sacado.Nome, 30, 30, ' ', 0, true, true, false).ToUpper();
+                    _detalhe += "    "; // Complemento do registro
+                    _detalhe += boleto.DataVencimento.ToString("ddMMyy"); //Data de Mora
+
+                    if (boleto.Instrucoes.Count > 0)
+                    {
+                        for (int i = 0; i < boleto.Instrucoes.Count; i++)
+                        {
+                            if (boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.Protestar ||
+                                boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.ProtestarAposNDiasCorridos ||
+                                boleto.Instrucoes[i].Codigo == (int)EnumInstrucoes_Itau.ProtestarAposNDiasUteis)
                             {
                                 _detalhe += boleto.Instrucoes[i].QuantidadeDias.ToString("00");
                                 break;
                             }
                             else if (i == boleto.Instrucoes.Count - 1)
                                 _detalhe += "00";
+                        }
                     }
-                }
-                else
-                {
-                    _detalhe += "00";
-                }
-                _detalhe += " "; // Complemento do registro
+                    else
+                    {
+                        _detalhe += "00";
+                    }
+
+                    _detalhe += " "; // Complemento do registro
+                }               
+                
+                
                 _detalhe += Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true);
 
                 _detalhe = Utils.SubstituiCaracteresEspeciais(_detalhe);
@@ -1490,7 +1540,9 @@ namespace BoletoNet
                     case TipoArquivo.CNAB240:
                         throw new Exception("Mensagem Variavel nao existe para o tipo CNAB 240.");
                     case TipoArquivo.CNAB400:
-                        _detalhe = GerarMensagemVariavelRemessaCNAB400(boleto, ref numeroRegistro, tipoArquivo);
+                        //Comentado por diego.dariolli pois o registro tipo 2 do itaú é somente referente à multa
+                        //_detalhe = GerarMensagemVariavelRemessaCNAB400(boleto, ref numeroRegistro, tipoArquivo);
+                        _detalhe = string.Empty;
                         break;
                     case TipoArquivo.Outro:
                         throw new Exception("Tipo de arquivo inexistente.");
@@ -1714,6 +1766,96 @@ namespace BoletoNet
         }
         #endregion
 
+        #region ::. Arquivo de Retorno CNAB240 .::
+        public override DetalheSegmentoTRetornoCNAB240 LerDetalheSegmentoTRetornoCNAB240(string registro)
+        {
+            try
+            {
+                DetalheSegmentoTRetornoCNAB240 detalhe = new DetalheSegmentoTRetornoCNAB240(registro);
+
+                if (registro.Substring(13, 1) != "T")
+                    throw new Exception("Registro inválido. O detalhe não possuí as características do segmento T.");
+
+                detalhe.CodigoBanco = Convert.ToInt32(registro.Substring(0, 3));
+                detalhe.idCodigoMovimento = Convert.ToInt32(registro.Substring(15, 2));
+                detalhe.Agencia = Convert.ToInt32(registro.Substring(18, 4));
+                detalhe.DigitoAgencia = "0";
+                detalhe.Conta = Convert.ToInt32(registro.Substring(30, 5));
+                detalhe.DigitoConta = registro.Substring(36, 1);
+                detalhe.NossoNumero = registro.Substring(40, 9);
+                detalhe.CodigoCarteira = Convert.ToInt32(registro.Substring(37, 3));
+                detalhe.NumeroDocumento = registro.Substring(58, 10);
+                int dataVencimento = Convert.ToInt32(registro.Substring(73, 8));
+
+                if (dataVencimento != 0) //Quando vem somente tarifas sobre (ex. Ocorrencia 54 - TARIFA MENSAL DE LIQUIDAÇÕES NA CARTEIRA), este campo vem 0
+                    detalhe.DataVencimento = Convert.ToDateTime(dataVencimento.ToString("##-##-####"));
+                else
+                    detalhe.DataVencimento = DateTime.Now.Date;
+
+                decimal valorTitulo = Convert.ToInt64(registro.Substring(81, 15));
+                detalhe.ValorTitulo = valorTitulo / 100;
+                detalhe.IdentificacaoTituloEmpresa = registro.Substring(105, 25);
+                detalhe.TipoInscricao = Convert.ToInt32(registro.Substring(132, 1));
+                detalhe.NumeroInscricao = registro.Substring(133, 15);
+                detalhe.NomeSacado = registro.Substring(148, 30);
+                decimal valorTarifas = Convert.ToUInt64(registro.Substring(198, 15));
+                detalhe.ValorTarifas = valorTarifas / 100;
+
+                return detalhe;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao processar arquivo de RETORNO - SEGMENTO T.", ex);
+            }
+
+
+        }
+
+        public override DetalheSegmentoURetornoCNAB240 LerDetalheSegmentoURetornoCNAB240(string registro)
+        {
+            try
+            {
+                DetalheSegmentoURetornoCNAB240 detalhe = new DetalheSegmentoURetornoCNAB240(registro);
+
+                if (registro.Substring(13, 1) != "U")
+                    throw new Exception("Registro inválido. O detalhe não possuí as características do segmento U.");
+
+                detalhe.CodigoOcorrenciaSacado = registro.Substring(15, 2);
+                int DataCredito = Convert.ToInt32(registro.Substring(145, 8));
+                detalhe.DataCredito = (DataCredito > 0) ? Convert.ToDateTime(DataCredito.ToString("##-##-####")) : new DateTime();
+                int DataOcorrencia = Convert.ToInt32(registro.Substring(137, 8));
+                detalhe.DataOcorrencia = (DataOcorrencia > 0) ? Convert.ToDateTime(DataOcorrencia.ToString("##-##-####")) : new DateTime();
+                int DataOcorrenciaSacado = Convert.ToInt32(registro.Substring(157, 8));
+                if (DataOcorrenciaSacado > 0)
+                    detalhe.DataOcorrenciaSacado = Convert.ToDateTime(DataOcorrenciaSacado.ToString("##-##-####"));
+                else
+                    detalhe.DataOcorrenciaSacado = DateTime.Now;
+
+                decimal JurosMultaEncargos = Convert.ToUInt64(registro.Substring(17, 15));
+                detalhe.JurosMultaEncargos = JurosMultaEncargos / 100;
+                decimal ValorDescontoConcedido = Convert.ToUInt64(registro.Substring(32, 15));
+                detalhe.ValorDescontoConcedido = ValorDescontoConcedido / 100;
+                decimal ValorAbatimentoConcedido = Convert.ToUInt64(registro.Substring(47, 15));
+                detalhe.ValorAbatimentoConcedido = ValorAbatimentoConcedido / 100;
+                decimal ValorIOFRecolhido = Convert.ToUInt64(registro.Substring(62, 15));
+                detalhe.ValorIOFRecolhido = ValorIOFRecolhido / 100;
+                decimal ValorPagoPeloSacado = Convert.ToUInt64(registro.Substring(77, 15));
+                detalhe.ValorPagoPeloSacado = ValorPagoPeloSacado / 100;
+                decimal ValorLiquidoASerCreditado = Convert.ToUInt64(registro.Substring(92, 15));
+                detalhe.ValorLiquidoASerCreditado = ValorLiquidoASerCreditado / 100;
+                decimal ValorOutrasDespesas = Convert.ToUInt64(registro.Substring(107, 15));
+                detalhe.ValorOutrasDespesas = ValorOutrasDespesas / 100;
+
+                return detalhe;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao processar arquivo de RETORNO - SEGMENTO U.", ex);
+            }
+
+
+        }
+        #endregion
 
         /// <summary>
         /// Efetua as Validações dentro da classe Boleto, para garantir a geração da remessa

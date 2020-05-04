@@ -151,7 +151,7 @@ namespace BoletoNet
             var valorBoleto = valor.ToString("N2").Replace(",", "").Replace(".", "");
             valorBoleto = Utils.FormatCode(valorBoleto, 10);
 
-            if (boleto.Carteira == "02" || boleto.Carteira == "03" || boleto.Carteira == "09" || boleto.Carteira == "19" || boleto.Carteira == "26") // Com registro
+            if (boleto.Carteira == "02" || boleto.Carteira == "03" || boleto.Carteira == "04" || boleto.Carteira == "09" || boleto.Carteira == "19" || boleto.Carteira == "26") // Com registro
             {
                 boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}", Codigo.ToString(), boleto.Moeda,
                 FatorVencimento(boleto), valorBoleto, FormataCampoLivre(boleto));
@@ -218,8 +218,8 @@ namespace BoletoNet
 
         public override void ValidaBoleto(Boleto boleto)
         {
-            if (boleto.Carteira != "02" && boleto.Carteira != "03" && boleto.Carteira != "06" && boleto.Carteira != "09" && boleto.Carteira != "16" && boleto.Carteira != "19" && boleto.Carteira != "25" && boleto.Carteira != "26")
-                throw new NotImplementedException("Carteira não implementada. Carteiras implementadas 02, 03, 06, 09, 16, 19, 25, 26.");
+            if (boleto.Carteira != "02" && boleto.Carteira != "03" && boleto.Carteira != "04" && boleto.Carteira != "06" && boleto.Carteira != "09" && boleto.Carteira != "16" && boleto.Carteira != "19" && boleto.Carteira != "25" && boleto.Carteira != "26")
+                throw new NotImplementedException("Carteira não implementada. Carteiras implementadas 02, 03, 04, 06, 09, 16, 19, 25, 26.");
 
             //O valor é obrigatório para a carteira 03
             if (boleto.Carteira == "03")
@@ -275,7 +275,8 @@ namespace BoletoNet
             // Atribui o nome do banco ao local de pagamento
             if (string.IsNullOrEmpty(boleto.LocalPagamento))
                 boleto.LocalPagamento = "PAGÁVEL PREFERENCIALMENTE NAS AGÊNCIAS DO BRADESCO";
-
+            else if (boleto.LocalPagamento == "Até o vencimento, preferencialmente no ")
+                boleto.LocalPagamento += Nome;
 
             // Calcula o DAC do Nosso Número
             _dacNossoNumero = CalcularDigitoNossoNumero(boleto);
@@ -1027,13 +1028,13 @@ namespace BoletoNet
                 string vInstrucao1 = "00"; //1ª instrução (2, N) Caso Queira colocar um cod de uma instrução. ver no Manual caso nao coloca 00
                 string vInstrucao2 = "00"; //2ª instrução (2, N) Caso Queira colocar um cod de uma instrução. ver no Manual caso nao coloca 00
 
-                foreach (Instrucao_Bradesco instrucao in boleto.Instrucoes)
+                foreach (var instrucao in boleto.Instrucoes)
                 {
                     switch ((EnumInstrucoes_Bradesco)instrucao.Codigo)
                     {
                         case EnumInstrucoes_Bradesco.Protestar:
                             vInstrucao1 = "06"; //Indicar o código “06” - (Protesto)
-                            vInstrucao2 = "00";
+                            vInstrucao2 = Utils.FitStringLength(instrucao.QuantidadeDias.ToString(), 2, 2, '0', 0, true, true, true);
                             break;
                         case EnumInstrucoes_Bradesco.NaoProtestar:
                             vInstrucao1 = "00";
@@ -1238,16 +1239,16 @@ namespace BoletoNet
                 }
 
                 //Data limite para concessão de Desconto 2 ==> 322 a 327
-                _detalhe += new string(' ', 6);
+                _detalhe += new string('0', 6);
 
                 //Valor do Desconto - 328 a 340
-                _detalhe += new string(' ', 13);
+                _detalhe += new string('0', 13);
 
                 //Data limite para concessão de Desconto 3 - 341 a 346
-                _detalhe += new string(' ', 6);
+                _detalhe += new string('0', 6);
 
                 //Valor do Desconto - 347 a 359
-                _detalhe += new string(' ', 13);
+                _detalhe += new string('0', 13);
 
                 //Reserva - 360 a 366
                 _detalhe += new string(' ', 7);

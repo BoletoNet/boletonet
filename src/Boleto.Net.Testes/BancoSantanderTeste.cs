@@ -36,6 +36,7 @@ namespace BoletoNet.Testes
 
             boletoBancario.Boleto.Valida();
 
+            //string nossoNumeroValido = "000000020061-0";
             string nossoNumeroValido = "000000020061-1";
 
             Assert.AreEqual(boletoBancario.Boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido");
@@ -48,6 +49,8 @@ namespace BoletoNet.Testes
 
             boletoBancario.Boleto.Valida();
 
+            //string linhaDigitavelValida = "03399.33095 89400.000009 20061.001010 6 55370000270140";
+            //string linhaDigitavelValida = "03399.33095 89400.000009 20061.101018 1 55370000270140";
             string linhaDigitavelValida = "03399.33095 89400.000009 20061.101018 1 55370000270140";
 
             Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.LinhaDigitavel, linhaDigitavelValida, "Linha digitável inválida");
@@ -97,6 +100,8 @@ namespace BoletoNet.Testes
 
             boletoBancario.Boleto.Valida();
 
+            //string linhaDigitavelValida = "03399.37807 45700.000024 52084.181016 3 56770000105250";
+            //string linhaDigitavelValida = "03399.37807 45700.000024 52084.281014 8 56770000105250";
             string linhaDigitavelValida = "03399.37807 45700.000024 52084.281014 8 56770000105250";
 
             Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.LinhaDigitavel, linhaDigitavelValida, "Linha digitável inválida");
@@ -109,6 +114,7 @@ namespace BoletoNet.Testes
 
             boletoBancario.Boleto.Valida();
 
+            //string codigoBarra = "03393567700001052509378045700000025208418101";
             string codigoBarra = "03398567700001052509378045700000025208428101";
 
             Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.Codigo, codigoBarra, "Código de Barra inválido");

@@ -45,7 +45,7 @@ namespace BoletoNet
             switch (especie)
             {
                 case EnumEspecieDocumento_Banestes.DuplicataMercantil:
-                    return "2";
+                    return "1";
                 case EnumEspecieDocumento_Banestes.Outros:
                     return "99";
                 default:
@@ -64,6 +64,16 @@ namespace BoletoNet
                     return EnumEspecieDocumento_Banestes.Outros;
                 default:
                     return EnumEspecieDocumento_Banestes.Outros;
+            }
+        }
+
+        public override string getCodigoEspecieBySigla(string sigla)
+        {
+            switch (sigla)
+            {
+                case "DM": return "1";
+                case "OU": return "99";
+                default: return "1";
             }
         }
 

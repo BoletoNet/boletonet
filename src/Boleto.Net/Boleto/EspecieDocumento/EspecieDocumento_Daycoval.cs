@@ -45,11 +45,46 @@ namespace BoletoNet
 			Outros = 99
 		}
 
-		#endregion
+        #endregion
 
-		#region Methods
+        #region Methods
 
-		private void carregar(string idCodigo)
+        private string RetornaCodigoEspecie(EnumEspecieDocumento_Daycoval especie)
+        {
+            return ((int)especie).ToString().PadLeft(2, '0');
+        }
+
+        private EnumEspecieDocumento_Daycoval RetornaEnumPorCodigo(string codigo)
+        {
+            switch (codigo)
+            {
+                case "01":
+                    return EnumEspecieDocumento_Daycoval.DuplicataMercantil;
+                case "05":
+                    return EnumEspecieDocumento_Daycoval.Recibo;
+                case "12":
+                    return EnumEspecieDocumento_Daycoval.DuplicataServico;
+                case "99":
+                    return EnumEspecieDocumento_Daycoval.Outros;
+
+                default:
+                    return EnumEspecieDocumento_Daycoval.DuplicataMercantil;
+            }
+        }
+
+        public override string getCodigoEspecieBySigla(string sigla)
+        {
+            switch (sigla)
+            {
+                case "DM": return "01";
+                case "RC": return "05";
+                case "DS": return "12";
+                case "OU": return "99";
+                default: return "01";
+            }
+        }
+
+        private void carregar(string idCodigo)
 		{
 			try
 			{
@@ -65,7 +100,7 @@ namespace BoletoNet
 					case EnumEspecieDocumento_Daycoval.Recibo:
 						this.Codigo = this.RetornaCodigoEspecie(EnumEspecieDocumento_Daycoval.Recibo);
 						this.Especie = "Recibo";
-						this.Sigla = "RE";
+						this.Sigla = "RC";
 						break;
 					case EnumEspecieDocumento_Daycoval.DuplicataServico:
 						this.Codigo = this.RetornaCodigoEspecie(EnumEspecieDocumento_Daycoval.DuplicataServico);
@@ -87,30 +122,7 @@ namespace BoletoNet
 			{
 				throw new Exception("Erro ao carregar objeto", ex);
 			}
-		}
-
-		private string RetornaCodigoEspecie(EnumEspecieDocumento_Daycoval especie)
-		{
-			return ((int)especie).ToString().PadLeft(2, '0');
-		}
-
-		private EnumEspecieDocumento_Daycoval RetornaEnumPorCodigo(string codigo)
-		{
-			switch (codigo)
-			{
-				case "01":
-					return EnumEspecieDocumento_Daycoval.DuplicataMercantil;
-				case "05":
-					return EnumEspecieDocumento_Daycoval.Recibo;
-				case "12":
-					return EnumEspecieDocumento_Daycoval.DuplicataServico;
-				case "99":
-					return EnumEspecieDocumento_Daycoval.Outros;
-
-				default:
-					return EnumEspecieDocumento_Daycoval.DuplicataMercantil;
-			}
-		}
+		}	
 
         public override IEspecieDocumento DuplicataMercantil()
         {

@@ -156,6 +156,10 @@ namespace BoletoNet
 					case 85:
 						_IBanco = new Banco_Cecred();
 						break;
+                    //136 - Unicred
+					case 136:
+						_IBanco = new Banco_Unicred();
+						break;
                     //655 - Votorantim
                     case 655:
                         _IBanco = new Banco_Votorantim();
@@ -168,6 +172,12 @@ namespace BoletoNet
 						break;
                     case 743:
                         _IBanco = new Banco_Semear();
+                        break;
+                    case 084:
+                        _IBanco = new Banco_Uniprime();
+                        break;
+                    case ((int)Enums.Bancos.Maxima):
+                        _IBanco = new Banco_Maxima();
                         break;
 					default:
 						throw new Exception("Código do banco não implementando: " + codigoBanco);

@@ -68,6 +68,7 @@
     <Compile Include="BancoItau\BancoItauTeste.cs" />
     <Compile Include="BancoSantanderTeste.cs" />
     <Compile Include="BancoSemear\BancoSemearTeste.cs" />
+    <Compile Include="BancoUniprimeTeste.cs" />
     <Compile Include="BancoSicoobTeste.cs" />
     <Compile Include="BancoBrasil\BancoBrasil17019Teste.cs" />
     <Compile Include="BancoBrasil\BancoBrasilCarteira18019Teste.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="CecredTeste.cs" />
     <Compile Include="FatorVencimentoTeste.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Remessa\RemessaCnab240Teste.cs" />
     <Compile Include="Retorno\ArquivoRetornoCrb643Teste.cs" />
     <Compile Include="EnumExtensionTeste.cs" />
     <Compile Include="AbstractBancoTeste.cs" />
