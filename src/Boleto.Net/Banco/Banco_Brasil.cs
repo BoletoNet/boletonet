@@ -2557,7 +2557,8 @@ namespace BoletoNet
                 //detalhe. = reg.Brancos5;
                 //detalhe. = reg.CanalPagamento;
 
-                if (int.TryParse(reg.NumeroSequenciaRegistro, out int numeroSequencial))
+                int numeroSequencial;
+                if (int.TryParse(reg.NumeroSequenciaRegistro, out numeroSequencial))
                 {
                     detalhe.NumeroSequencial = numeroSequencial;
                 }
