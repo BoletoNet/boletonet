@@ -2255,7 +2255,14 @@ namespace BoletoNet
 
                 #region Instruções
                 string vInstrucao2 = "0";
-                int quantidadeDeDias = boleto.Instrucoes.FirstOrDefault(x => x.Codigo == (int)EnumInstrucoes_BancoBrasil.ProtestarAposNDiasCorridos)?.QuantidadeDias ?? 0;
+                int quantidadeDeDias = 0;
+                var instrucaoProtestarAposNDiasCorridos = boleto.Instrucoes.FirstOrDefault(x => x.Codigo == (int)EnumInstrucoes_BancoBrasil.ProtestarAposNDiasCorridos);
+                if (instrucaoProtestarAposNDiasCorridos != null)
+                {
+                    quantidadeDeDias = instrucaoProtestarAposNDiasCorridos.QuantidadeDias;
+                }
+
+
                 string diasProtesto = quantidadeDeDias.ToString().PadLeft(2, '0');
                 
                 string vInstrucao1 = DecifraInstrucao1(quantidadeDeDias);
