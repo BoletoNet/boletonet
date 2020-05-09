@@ -160,7 +160,9 @@ namespace BoletoNet
             if (_dacBoleto == 0 || _dacBoleto > 9)
                 _dacBoleto = 1;
 
-            boleto.CodigoBarra.Codigo = GerarCodigoDeBarras(boleto, valorBoleto, cmp_livre, dv_cmpLivre, _dacBoleto);
+            //Estava gerando com 46 digitos ao invés de 44, então tirei o dv_cmpLivre para corrigir.
+            //boleto.CodigoBarra.Codigo = GerarCodigoDeBarras(boleto, valorBoleto, cmp_livre, dv_cmpLivre, _dacBoleto);
+            boleto.CodigoBarra.Codigo = GerarCodigoDeBarras(boleto, valorBoleto, cmp_livre, string.Empty, _dacBoleto);
         }
 
         private string GerarCodigoDeBarras(Boleto boleto, string valorBoleto, string cmp_livre, string dv_cmpLivre, int? dv_geral = null)
