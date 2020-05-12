@@ -94,7 +94,7 @@ namespace BoletoNet
 
             try
             {
-                boleto.NossoNumero = string.Format("{0}-{1}", nossoNumero, Mod11UniCred(nossoNumero));
+                boleto.NossoNumero = string.Format("{0}-{1}", nossoNumero, Mod11UniCred(nossoNumero, false));
             }
             catch (Exception ex)
             {
@@ -141,7 +141,7 @@ namespace BoletoNet
             string valorBoleto = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
             valorBoleto = Utils.FormatCode(valorBoleto, 10);
 
-            var nossoNumero = string.Format("{0}{1}", boleto.NossoNumero, Mod11UniCred(boleto.NossoNumero));
+            var nossoNumero = string.Format("{0}{1}", boleto.NossoNumero, Mod11UniCred(boleto.NossoNumero, true));
             string cmp_livre = Utils.FormatCode(boleto.Cedente.ContaBancaria.Agencia, 4) +
                                                 Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 10) +
                                                 Utils.FormatCode(nossoNumero, 11);
@@ -275,7 +275,7 @@ namespace BoletoNet
             return d1 + d2;
         }
 
-        protected static int Mod11UniCred(string seq)
+        protected static int Mod11UniCred(string seq, bool ehBarcode)
         {
             /* Variaveis
              * -------------
@@ -297,8 +297,17 @@ namespace BoletoNet
             }
 
             d = 11 - (s % 11);
-            if (d == 0 || d == 10)
-                d = 0;
+            if (ehBarcode)
+            {
+                if (d == 0 || d >= 10)
+                    d = 1;
+            }
+            else
+            {
+                if (d == 0 || d >= 10)
+                    d = 0;
+            }
+
             return d;
         }
 
