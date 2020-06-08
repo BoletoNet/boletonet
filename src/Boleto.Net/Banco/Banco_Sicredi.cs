@@ -575,23 +575,14 @@ namespace BoletoNet
             return d;
         }
 
-        public string DigNossoNumeroSicredi(Boleto boleto, bool arquivoRemessa = false)
+        public string DigNossoNumeroSicredi(Boleto boleto)
         {
-            //Adicionado por diego.dariolli pois ao gerar remessa o dígito saía errado pois faltava agência e posto no código do cedente
-            string codigoCedente = ""; //código do beneficiário aaaappccccc
-            if (arquivoRemessa)
-            {
-                if (string.IsNullOrEmpty(boleto.Cedente.ContaBancaria.OperacaConta))
-                    throw new Exception("O código do posto beneficiário não foi informado.");
+            var codigoCedente = boleto.Cedente.Codigo.PadLeft(5, '0');
+            var nossoNumero = boleto.NossoNumero; //ano atual (yy), indicador de geração do nosso número (b) e o número seqüencial do beneficiário (nnnnn);
+            var agencia = boleto.Cedente.ContaBancaria.Agencia;
+            var operacaoConta = boleto.Cedente.ContaBancaria.OperacaConta;
 
-                codigoCedente = string.Concat(boleto.Cedente.ContaBancaria.Agencia, boleto.Cedente.ContaBancaria.OperacaConta, boleto.Cedente.Codigo);
-            }
-            else
-                codigoCedente = boleto.Cedente.Codigo;
-
-            string nossoNumero = boleto.NossoNumero; //ano atual (yy), indicador de geração do nosso número (b) e o número seqüencial do beneficiário (nnnnn);
-
-            string seq = string.Concat(codigoCedente, nossoNumero); // = aaaappcccccyybnnnnn
+            string seq = $"{agencia}{operacaoConta}{codigoCedente}{nossoNumero}";
             /* Variáveis
              * -------------
              * d - Dígito
@@ -819,7 +810,7 @@ namespace BoletoNet
                 string vAuxNossoNumeroComDV = boleto.NossoNumero;
                 if (string.IsNullOrEmpty(boleto.DigitoNossoNumero) || boleto.NossoNumero.Length < 9)
                 {
-                    boleto.DigitoNossoNumero = DigNossoNumeroSicredi(boleto, arquivoRemessa: true);
+                    boleto.DigitoNossoNumero = DigNossoNumeroSicredi(boleto);
                     vAuxNossoNumeroComDV = boleto.NossoNumero + boleto.DigitoNossoNumero;
                 }
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0048, 009, 0, vAuxNossoNumeroComDV, '0'));                      //048-056
