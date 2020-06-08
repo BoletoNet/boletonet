@@ -577,7 +577,6 @@ namespace BoletoNet
 
         public string DigNossoNumeroSicredi(Boleto boleto)
         {
-            //Adicionado por diego.dariolli pois ao gerar remessa o dígito saía errado pois faltava agência e posto no código do cedente
             var codigoCedente = boleto.Cedente.Codigo.PadLeft(5, '0');
             var nossoNumero = boleto.NossoNumero; //ano atual (yy), indicador de geração do nosso número (b) e o número seqüencial do beneficiário (nnnnn);
             var agencia = boleto.Cedente.ContaBancaria.Agencia;
