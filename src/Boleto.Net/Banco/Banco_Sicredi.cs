@@ -88,7 +88,6 @@ namespace BoletoNet
                 throw new BoletoNetException("Código de barras é inválido");
 
             FormataLinhaDigitavel(boleto);
-            //FormataNossoNumero(boleto);
         }
 
         private string ObterInformacoesCarteirasDisponiveis()
@@ -132,7 +131,7 @@ namespace BoletoNet
             int d3 = Mod10Sicredi(campo3);
             campo3 = FormataCampoLD(campo3) + d3.ToString();
 
-            string campo4 = boleto.CodigoBarra.DigitoVerificador;
+            string campo4 = boleto.CodigoBarra.Codigo.Substring(boleto.CodigoBarra.Codigo.Length - 1, 1);
 
             string campo5 = boleto.CodigoBarra.FatorVencimento.ToString() + boleto.CodigoBarra.ValorDocumento;
 
