@@ -57,13 +57,14 @@ namespace Boleto.Net.Testes.BancoSicredi
             Thread.Sleep(500);
             DateTime vencimento = DateTime.Now.AddDays(5);
 
-            var agencia = "811";
+            var agencia = "0914";
             var conta = "81111";
 
             var cedente = new Cedente("35.683.343/0001-82", "Empresa Teste", agencia, string.Empty, conta, "0");
-            cedente.Codigo = "08111081111";
+            cedente.Codigo = "00214";
+            cedente.ContaBancaria.OperacaConta = "16";
 
-            BoletoNet.Boleto boleto = new BoletoNet.Boleto(vencimento, GerarValor(), "1", GerarNossoNumero(), cedente);
+            BoletoNet.Boleto boleto = new BoletoNet.Boleto(vencimento, GerarValor(), "1", "200123", cedente);
 
             boleto.NumeroDocumento = GerarNumero();
             boleto.DataDocumento = DateTime.Now.AddDays(-15);

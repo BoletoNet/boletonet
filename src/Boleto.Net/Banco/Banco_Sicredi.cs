@@ -120,23 +120,23 @@ namespace BoletoNet
         {
             //041M2.1AAAd1  CCCCC.CCNNNd2  NNNNN.041XXd3  V FFFF9999999999
 
-            string campo1 = "7489" + boleto.CodigoBarra.Codigo.Substring(19,5);
+            string campo1 = "7489" + boleto.CodigoBarra.CampoLivre.Substring(0, 5);
             int d1 = Mod10Sicredi(campo1);
-            campo1 = FormataCampoLD(campo1)+d1.ToString();
+            campo1 = FormataCampoLD(campo1) + d1.ToString();
 
-            string campo2 = boleto.CodigoBarra.Codigo.Substring(24, 10);
+            string campo2 = boleto.CodigoBarra.CampoLivre.Substring(5, 10);
             int d2 = Mod10Sicredi(campo2);
-            campo2 = FormataCampoLD(campo2)+d2.ToString();
+            campo2 = FormataCampoLD(campo2) + d2.ToString();
 
-            string campo3 = boleto.CodigoBarra.Codigo.Substring(34, 10);
+            string campo3 = boleto.CodigoBarra.CampoLivre.Substring(15, 10);
             int d3 = Mod10Sicredi(campo3);
-            campo3 = FormataCampoLD(campo3)+d3.ToString();
+            campo3 = FormataCampoLD(campo3) + d3.ToString();
 
-            string campo4 = boleto.CodigoBarra.Codigo.Substring(4, 1);
+            string campo4 = boleto.CodigoBarra.DigitoVerificador;
 
-            string campo5 = boleto.CodigoBarra.Codigo.Substring(5, 14);
+            string campo5 = boleto.CodigoBarra.FatorVencimento.ToString() + boleto.CodigoBarra.ValorDocumento;
 
-            boleto.CodigoBarra.LinhaDigitavel = campo1 + "  " + campo2 + "  " + campo3 + "  " + campo4 + "  " + campo5;
+            boleto.CodigoBarra.LinhaDigitavel = campo1 + " " + campo2 + " " + campo3 + " " + campo4 + " " + campo5;
         }
         private string FormataCampoLD(string campo)
         {
@@ -152,53 +152,42 @@ namespace BoletoNet
             string cmp_livre =
                 codigoCobranca +
                 boleto.Carteira +
-                Utils.FormatCode(boleto.NossoNumero, 9) +
-                Utils.FormatCode(boleto.Cedente.Codigo, 11) + "10";
+                boleto.NossoNumero +
+                boleto.Cedente.ContaBancaria.Agencia.PadLeft(4, '0') +
+                boleto.Cedente.ContaBancaria.OperacaConta.PadLeft(2, '0') +
+                boleto.Cedente.Codigo.PadLeft(5, '0') +
+                "1" + 
+                "0";
 
             string dv_cmpLivre = digSicredi(cmp_livre).ToString();
 
-            var codigoTemp = GerarCodigoDeBarras(boleto, valorBoleto, cmp_livre, dv_cmpLivre);
-
-            boleto.CodigoBarra.CampoLivre = cmp_livre;
+            boleto.CodigoBarra.CampoLivre = cmp_livre + dv_cmpLivre;
             boleto.CodigoBarra.FatorVencimento = FatorVencimento(boleto);
             boleto.CodigoBarra.Moeda = 9;
             boleto.CodigoBarra.ValorDocumento = valorBoleto;
 
-            int _dacBoleto = digSicredi(codigoTemp);
-            
-            if (_dacBoleto == 0 || _dacBoleto > 9)
-                _dacBoleto = 1;
+            var codigoSemDv = GerarCodigoDeBarras(boleto, valorBoleto, cmp_livre, dv_cmpLivre);
 
-            boleto.CodigoBarra.Codigo = GerarCodigoDeBarras(boleto, valorBoleto, cmp_livre, dv_cmpLivre, _dacBoleto);
+            int dvGeral = digSicredi(codigoSemDv, digitoGeral: true);
+
+            boleto.CodigoBarra.Codigo = $"{codigoSemDv}{dvGeral}";
         }
 
         private string GerarCodigoDeBarras(Boleto boleto, string valorBoleto, string cmp_livre, string dv_cmpLivre, int? dv_geral = null)
         {
+            var idBanco = Utils.FormatCode(Codigo.ToString(), 3);
+
+            var digitoVerficiadorGeradl = dv_geral.HasValue ? dv_geral.Value.ToString() : string.Empty;
+            var fatorVencimento = FatorVencimento(boleto);
             return string.Format("{0}{1}{2}{3}{4}{5}{6}",
-                Utils.FormatCode(Codigo.ToString(), 3),
+                idBanco,
                 boleto.Moeda,
-                dv_geral.HasValue ? dv_geral.Value.ToString() : string.Empty,
-                FatorVencimento(boleto),
+                digitoVerficiadorGeradl,
+                fatorVencimento.ToString().PadLeft(4, '0'),
                 valorBoleto,
                 cmp_livre,
                 dv_cmpLivre);
         }
-
-        //public bool RegistroByCarteira(Boleto boleto)
-        //{
-        //    bool valida = false;
-        //    if (boleto.Carteira == "112"
-        //        || boleto.Carteira == "115"
-        //        || boleto.Carteira == "104"
-        //        || boleto.Carteira == "147"
-        //        || boleto.Carteira == "188"
-        //        || boleto.Carteira == "108"
-        //        || boleto.Carteira == "109"
-        //        || boleto.Carteira == "150"
-        //        || boleto.Carteira == "121")
-        //        valida = true;
-        //    return valida;
-        //}
 
         #region Métodos de Geração do Arquivo de Remessa
         public override string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
@@ -444,71 +433,6 @@ namespace BoletoNet
 
         #endregion
 
-        #region Métodos de Leitura do Arquivo de Retorno
-        /*
-         * Substituído Método de Leitura do Retorno pelo Interpretador de EDI;
-        public override DetalheRetorno LerDetalheRetornoCNAB400(string registro)
-        {
-            try
-            {
-                DetalheRetorno detalhe = new DetalheRetorno(registro);
-
-                int idRegistro = Utils.ToInt32(registro.Substring(0, 1));
-                detalhe.IdentificacaoDoRegistro = idRegistro;
-
-                detalhe.NossoNumero = registro.Substring(47, 15);
-
-                int codigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2));
-                detalhe.CodigoOcorrencia = codigoOcorrencia;
-
-                //Data Ocorrência no Banco
-                int dataOcorrencia = Utils.ToInt32(registro.Substring(110, 6));
-                detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
-
-                detalhe.SeuNumero = registro.Substring(116, 10);
-
-                int dataVencimento = Utils.ToInt32(registro.Substring(146, 6));
-                detalhe.DataVencimento = Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
-
-                decimal valorTitulo = Convert.ToUInt64(registro.Substring(152, 13));
-                detalhe.ValorTitulo = valorTitulo / 100;
-
-                detalhe.EspecieTitulo = registro.Substring(174, 1);
-
-                decimal despeasaDeCobranca = Convert.ToUInt64(registro.Substring(175, 13));
-                detalhe.DespeasaDeCobranca = despeasaDeCobranca / 100;
-
-                decimal outrasDespesas = Convert.ToUInt64(registro.Substring(188, 13));
-                detalhe.OutrasDespesas = outrasDespesas / 100;
-
-                decimal abatimentoConcedido = Convert.ToUInt64(registro.Substring(227, 13));
-                detalhe.Abatimentos = abatimentoConcedido / 100;
-
-                decimal descontoConcedido = Convert.ToUInt64(registro.Substring(240, 13));
-                detalhe.Descontos = descontoConcedido / 100;
-
-                decimal valorPago = Convert.ToUInt64(registro.Substring(253, 13));
-                detalhe.ValorPago = valorPago / 100;
-
-                decimal jurosMora = Convert.ToUInt64(registro.Substring(266, 13));
-                detalhe.JurosMora = jurosMora / 100;
-
-                int dataCredito = Utils.ToInt32(registro.Substring(328, 8));
-                detalhe.DataCredito = Utils.ToDateTime(dataCredito.ToString("####-##-##"));
-
-                detalhe.MotivosRejeicao = registro.Substring(318, 10);
-
-                detalhe.NomeSacado = registro.Substring(19, 5);
-                return detalhe;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Erro ao ler detalhe do arquivo de RETORNO / CNAB 400.", ex);
-            }
-        }
-        */
-        #endregion Métodos de Leitura do Arquivo de Retorno
-
         public int Mod10Sicredi(string seq)
         {
             /* Variáveis
@@ -547,7 +471,7 @@ namespace BoletoNet
             return d1 + d2;
         }
 
-        public int digSicredi(string seq)
+        public int digSicredi(string seq, bool digitoGeral = false)
         {
             /* Variáveis
              * -------------
@@ -569,9 +493,15 @@ namespace BoletoNet
                     p = 2;
             }
 
-            d = 11 - (s % 11);
-            if (d > 9)
-                d = 0;
+            var resto = (s % 11);
+
+            if (!digitoGeral && resto <= 1)
+                return 0;
+
+            d = 11 - resto;
+            if (d <= 1 || d > 9)
+                return 1;
+
             return d;
         }
 
