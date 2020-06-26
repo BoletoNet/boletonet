@@ -14,7 +14,7 @@ namespace BoletoNet
         public event EventHandler<LinhaDeArquivoGeradaArgs> LinhaDeArquivoGerada;
 
         #region Variáveis
-        private IArquivoRemessa _arquivoRemessa;
+        private readonly IArquivoRemessa _arquivoRemessa;
         #endregion
 
         #region Construtores

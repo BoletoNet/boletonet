@@ -17,7 +17,7 @@ namespace BoletoNet.Arquivo
         private short _codigoBanco = 0;
         private Progresso _progresso;
         string _arquivo = string.Empty;
-        private ImpressaoBoleto _impressaoBoleto = new ImpressaoBoleto();
+        private readonly ImpressaoBoleto _impressaoBoleto = new ImpressaoBoleto();
 
         public short CodigoBanco
         {

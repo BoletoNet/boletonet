@@ -7,7 +7,7 @@ namespace BoletoNet
 {
     public class ArquivoRetornoCNAB240 : AbstractArquivoRetorno, IArquivoRetorno
     {
-        private Stream _streamArquivo;
+        private readonly Stream _streamArquivo;
         //private string _caminhoArquivo;
         private List<DetalheRetornoCNAB240> _listaDetalhes = new List<DetalheRetornoCNAB240>();
 

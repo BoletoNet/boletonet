@@ -285,7 +285,7 @@ namespace BoletoNet
             return ObterCorrespondenteFebraban(correspondentesFebraban, (EnumCodigoMovimento_BancoBrasil)Codigo);
         }
 
-        private Dictionary<EnumCodigoMovimento_BancoBrasil, TipoOcorrenciaRetorno> correspondentesFebraban = new Dictionary<EnumCodigoMovimento_BancoBrasil, TipoOcorrenciaRetorno>()
+        private readonly Dictionary<EnumCodigoMovimento_BancoBrasil, TipoOcorrenciaRetorno> correspondentesFebraban = new Dictionary<EnumCodigoMovimento_BancoBrasil, TipoOcorrenciaRetorno>()
         {
             { EnumCodigoMovimento_BancoBrasil.EntradaConfirmada, TipoOcorrenciaRetorno.EntradaConfirmada },
             { EnumCodigoMovimento_BancoBrasil.EntradaRejeitada                                     , TipoOcorrenciaRetorno.EntradaRejeitada                                       },

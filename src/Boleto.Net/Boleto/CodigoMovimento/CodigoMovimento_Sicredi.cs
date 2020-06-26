@@ -73,7 +73,7 @@ namespace BoletoNet
         }
 
         #region Dicionários
-        private Dictionary<EnumCodigoMovimento_Sicredi, TipoOcorrenciaRetorno> correspondentesFebraban = new Dictionary<EnumCodigoMovimento_Sicredi, TipoOcorrenciaRetorno>()
+        private readonly Dictionary<EnumCodigoMovimento_Sicredi, TipoOcorrenciaRetorno> correspondentesFebraban = new Dictionary<EnumCodigoMovimento_Sicredi, TipoOcorrenciaRetorno>()
         {
             { EnumCodigoMovimento_Sicredi.EntradaConfirmada                                      ,TipoOcorrenciaRetorno.EntradaConfirmada },
             { EnumCodigoMovimento_Sicredi.EntradaRejeitada                                       ,TipoOcorrenciaRetorno.EntradaRejeitada },
@@ -95,7 +95,7 @@ namespace BoletoNet
             { EnumCodigoMovimento_Sicredi.RetiradoDeCartorioEManutencaoEmCarteira                ,TipoOcorrenciaRetorno.ConfirmacaoDoCancelamentoDosDadosDoRateioDeCredito }
         };
 
-        private Dictionary<EnumCodigoMovimento_Sicredi, string> descricoes = new Dictionary<EnumCodigoMovimento_Sicredi, string>()
+        private readonly Dictionary<EnumCodigoMovimento_Sicredi, string> descricoes = new Dictionary<EnumCodigoMovimento_Sicredi, string>()
         {
             { EnumCodigoMovimento_Sicredi.EntradaConfirmada                                       , "Entrada confirmada"                                             },
             { EnumCodigoMovimento_Sicredi.EntradaRejeitada                                        , "Entrada rejeitada"                                              },

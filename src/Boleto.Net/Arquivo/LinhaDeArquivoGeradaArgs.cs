@@ -18,9 +18,9 @@ namespace BoletoNet
     
     public class LinhaDeArquivoGeradaArgs : EventArgs
     {
-        private string _linha;
-        private Boleto _boleto;
-        private EnumTipodeLinha _tipoLinha;
+        private readonly string _linha;
+        private readonly Boleto _boleto;
+        private readonly EnumTipodeLinha _tipoLinha;
 
         public LinhaDeArquivoGeradaArgs(Boleto boleto, string linha, EnumTipodeLinha tipoLinha)
         {
