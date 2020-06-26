@@ -255,7 +255,7 @@ namespace BoletoNet
             return ObterCorrespondenteFebraban(correspondentesFebraban, (EnumCodigoMovimento_Nordeste)Codigo);
         }
 
-        private Dictionary<EnumCodigoMovimento_Nordeste, TipoOcorrenciaRetorno> correspondentesFebraban = new Dictionary<EnumCodigoMovimento_Nordeste, TipoOcorrenciaRetorno>()
+        private readonly Dictionary<EnumCodigoMovimento_Nordeste, TipoOcorrenciaRetorno> correspondentesFebraban = new Dictionary<EnumCodigoMovimento_Nordeste, TipoOcorrenciaRetorno>()
         {
             {EnumCodigoMovimento_Nordeste.EntradaConfirmada, TipoOcorrenciaRetorno.EntradaConfirmada},
             {EnumCodigoMovimento_Nordeste.EntradaRejeitada, TipoOcorrenciaRetorno.EntradaRejeitada},

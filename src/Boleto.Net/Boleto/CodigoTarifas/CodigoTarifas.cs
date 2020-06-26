@@ -9,7 +9,7 @@ namespace BoletoNet
 
         #region Variaveis
 
-        private ICodigoTarifas _ICodigoTarifas = null;
+        private readonly ICodigoTarifas _ICodigoTarifas = null;
 
         #endregion
 

@@ -13,7 +13,7 @@ namespace BoletoNet
     /// </Author>
     internal class Banco_Sicredi : AbstractBanco, IBanco
     {
-        private static Dictionary<int, string> carteirasDisponiveis = new Dictionary<int, string>() {
+        private static readonly Dictionary<int, string> carteirasDisponiveis = new Dictionary<int, string>() {
             { 1, "Com Registro" },
             { 3, "Sem Registro" }
         };

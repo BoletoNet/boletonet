@@ -8,7 +8,7 @@ namespace BoletoNet.Testes
     public class BancoVotorantimTeste
     {
         const int CODIGO_BANCO = 655;
-        private List<MassaTestes> massaTestes;
+        private readonly List<MassaTestes> massaTestes;
 
         public BancoVotorantimTeste()
         {

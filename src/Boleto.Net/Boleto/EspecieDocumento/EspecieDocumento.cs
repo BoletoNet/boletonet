@@ -362,7 +362,7 @@ namespace BoletoNet
         
         }
 
-        private static Dictionary<int, AbstractEspecieDocumento> especiesDocumentosBancos = new Dictionary<int, AbstractEspecieDocumento>() {
+        private static readonly Dictionary<int, AbstractEspecieDocumento> especiesDocumentosBancos = new Dictionary<int, AbstractEspecieDocumento>() {
                 { 341, new EspecieDocumento_Itau       ()  },
                 { 479, new EspecieDocumento_BankBoston ()  },
                 { 422, new EspecieDocumento_Safra ()  },
