@@ -507,7 +507,7 @@ namespace BoletoNet
                 mult = mult + 1;
                 I = I - 1;
             }
-            if (Codigo == 41 | Codigo == 33 | Codigo == 353)
+            if (Codigo == 41 || Codigo == 33 || Codigo == 353)
             {
                 return soma;
                 // calcula no retorno pois tem umas exceções
