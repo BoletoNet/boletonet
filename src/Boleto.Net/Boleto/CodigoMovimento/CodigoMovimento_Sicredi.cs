@@ -28,7 +28,16 @@ namespace BoletoNet
         InstrucaoRejeitada = 32,                                      //32 Instrução rejeitada
         ConfirmacaoDePedidoDeAlteracaoDeOutrosDados = 33,             //33 Confirmação de pedido de alteração de outros dados
         RetiradoDeCartorioEManutencaoEmCarteira = 34,                 //34 Retirado de cartório e manutenção em carteira
-        AceiteDoPagador = 35                                          //35 Aceite do pagador
+        AceiteDoPagador = 35,                                         //35 Aceite do pagador
+        ConfirmacaoRecibimentoPedidoNegativacao = 78,                 //78 Confirmação de recebimento de pedido de negativação
+        ConfirmacaoRecebimentoPedidoExclusaoNegativacao = 79,         //79 Confirmação de recebimento de pedido de exclusão de negativação
+        ConfirmacaoEntradaNegativacao = 80,                           //80 Confirmação de entrada de negativação
+        EntradaNegativacaoRejeitada = 81,                             //81 Entrada de negativação rejeitada
+        ConfirmacaoExclusaoNegativacao = 82,                          //82 Confirmação de exclusão de negativação
+        ExclusaoNegativacaoRejeitada = 83,                            //83 Exclusão de negativação rejeitada
+        ExclusaoNegativacaoOutros = 84,                               //84 Exclusão de negativação por outros motivos
+        OcorrenciaInformacionalOutros = 85,                           //85 Ocorrência informacional por outros motivos
+
     }
 
     public class CodigoMovimento_Sicredi : AbstractCodigoMovimento, ICodigoMovimento
@@ -118,7 +127,15 @@ namespace BoletoNet
             { EnumCodigoMovimento_Sicredi.InstrucaoRejeitada                                      , "Instrução rejeitada"                                            },
             { EnumCodigoMovimento_Sicredi.ConfirmacaoDePedidoDeAlteracaoDeOutrosDados             , "Confirmação de pedido de alteração de outros dados"             },
             { EnumCodigoMovimento_Sicredi.RetiradoDeCartorioEManutencaoEmCarteira                 , "Retirado de cartório e manutenção em carteira"                  },
-            { EnumCodigoMovimento_Sicredi.AceiteDoPagador                                         , "Aceite do pagador" }
+            { EnumCodigoMovimento_Sicredi.AceiteDoPagador                                         , "Aceite do pagador"                                              },
+            { EnumCodigoMovimento_Sicredi.ConfirmacaoRecibimentoPedidoNegativacao                 , "Confirmação de recebimento de pedido de negativação"            },
+            { EnumCodigoMovimento_Sicredi.ConfirmacaoRecebimentoPedidoExclusaoNegativacao         , "Confirmação de recebimento de pedido de exclusão de negativação"},
+            { EnumCodigoMovimento_Sicredi.ConfirmacaoEntradaNegativacao                           , "Confirmação de entrada de negativação"                          },
+            { EnumCodigoMovimento_Sicredi.EntradaNegativacaoRejeitada                             , "Entrada de negativação rejeitada"                               },
+            { EnumCodigoMovimento_Sicredi.ConfirmacaoExclusaoNegativacao                          , "Confirmação de exclusão de negativação"                         },
+            { EnumCodigoMovimento_Sicredi.ExclusaoNegativacaoRejeitada                            , "Exclusão de negativação rejeitada"                              },
+            { EnumCodigoMovimento_Sicredi.ExclusaoNegativacaoOutros                               , "Exclusão de negativação por outros motivos"                     },
+            { EnumCodigoMovimento_Sicredi.OcorrenciaInformacionalOutros                           , "Ocorrência informacional por outros motivos"                    }
         }; 
         #endregion
     }
