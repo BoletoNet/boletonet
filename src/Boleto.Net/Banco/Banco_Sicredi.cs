@@ -711,12 +711,12 @@ namespace BoletoNet
                         //      C2 = 'C' - SICREDI sem Registro Pedido de bloquetos pré-impressos
                         // ** Isso porque são tratados 3 leiautes de escrita diferentes para o Detail da remessa;
 
-                        vMsg += String.Concat("Boleto: ", boleto.NumeroDocumento, "; Remessa: Informe o Tipo Documento!", Environment.NewLine);
+                        vMsg += String.Concat("Boleto: ", boleto.NumeroDocumento.Trim(), "; Remessa: Informe o Tipo Documento!", Environment.NewLine);
                         vRetorno = false;
                     }
                     else if (!boleto.Remessa.TipoDocumento.Equals("A") && !boleto.Remessa.TipoDocumento.Equals("C1") && !boleto.Remessa.TipoDocumento.Equals("C2"))
                     {
-                        vMsg += String.Concat("Boleto: ", boleto.NumeroDocumento, "; Remessa: Tipo de Documento Inválido! Deverão ser: A = SICREDI com Registro; C1 = SICREDI sem Registro Impressão Completa pelo Sicredi;  C2 = SICREDI sem Registro Pedido de bloquetos pré-impressos", Environment.NewLine);
+                        vMsg += String.Concat("Boleto: ", boleto.NumeroDocumento.Trim(), "; Remessa: Tipo de Documento Inválido! Deverão ser: A = SICREDI com Registro; C1 = SICREDI sem Registro Impressão Completa pelo Sicredi;  C2 = SICREDI sem Registro Pedido de bloquetos pré-impressos", Environment.NewLine);
                         vRetorno = false;
                     }
                     //else if (boleto.Remessa.TipoDocumento.Equals("06") && !String.IsNullOrEmpty(boleto.NossoNumero))
@@ -739,23 +739,26 @@ namespace BoletoNet
                              !boleto.EspecieDocumento.Codigo.Equals("K") //K – Outros.
                             )
                     {
-                        vMsg += String.Concat("Boleto: ", boleto.NumeroDocumento, "; Remessa: Informe o Código da EspécieDocumento! São Aceitas:{A,B,C,D,E,F,H,I,J,O,K}", Environment.NewLine);
+                        vMsg += String.Concat("Boleto: ", boleto.NumeroDocumento.Trim(), "; Remessa: Informe o Código da EspécieDocumento! São Aceitas:{A,B,C,D,E,F,H,I,J,O,K}", Environment.NewLine);
                         vRetorno = false;
                     }
                     else if (!boleto.Sacado.CPFCNPJ.Length.Equals(11) && !boleto.Sacado.CPFCNPJ.Length.Equals(14))
                     {
-                        vMsg += String.Concat("Boleto: ", boleto.NumeroDocumento, "; Remessa: Cpf/Cnpj diferente de 11/14 caracteres!", Environment.NewLine);
+                        vMsg += String.Concat("Boleto: ", boleto.NumeroDocumento.Trim(), "; Remessa: Cpf/Cnpj diferente de 11/14 caracteres!", Environment.NewLine);
                         vRetorno = false;
                     }
                     else if (!boleto.NossoNumero.Length.Equals(8))
                     {
                         //sidnei.klein: Segundo definição recebida pelo Sicredi-RS, o Nosso Número sempre terá somente 8 caracteres sem o DV que está no boleto.DigitoNossoNumero
-                        vMsg += String.Concat("Boleto: ", boleto.NumeroDocumento, "; Remessa: O Nosso Número diferente de 8 caracteres!", Environment.NewLine);
+                        vMsg += String.Concat("Boleto: ", boleto.NumeroDocumento.Trim(), "; Remessa: O Nosso Número diferente de 8 caracteres!", Environment.NewLine);
                         vRetorno = false;
                     }
                     else if (!boleto.TipoImpressao.Equals("A") && !boleto.TipoImpressao.Equals("B"))
                     {
-                        vMsg += String.Concat("Boleto: ", boleto.NumeroDocumento, "; Tipo de Impressão deve conter A - Normal ou B - Carnê", Environment.NewLine);
+                        vMsg += String.Concat("Boleto: ", boleto.NumeroDocumento.Trim(), "; Tipo de Impressão deve conter A - Normal ou B - Carnê", Environment.NewLine);
+                        vRetorno = false;
+                    } else if (string.IsNullOrEmpty(boleto.Sacado.Endereco.CEP)) {
+                        vMsg += String.Concat("Boleto: ", boleto.NumeroDocumento.Trim(), "; CEP do Sacado inválido!", Environment.NewLine);
                         vRetorno = false;
                     }
                     #endregion
