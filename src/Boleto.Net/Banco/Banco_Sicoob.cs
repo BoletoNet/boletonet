@@ -266,15 +266,36 @@ namespace BoletoNet
 
         public override void ValidaBoleto(Boleto boleto)
         {
+            //Verifica se cedente foi informado 
+            if (string.IsNullOrEmpty(boleto.Cedente.Codigo))
+                throw new NotImplementedException("Cedente não informado.");
+            //Verificar se cedente tem apenas numeros
+            if (!Utils.IsNumber(boleto.Cedente.Codigo))
+                throw new NotImplementedException("Cedente deve conter apenas numeros.");
+            //Verifica se cedente tem 6 caracteres
+            if (!string.IsNullOrEmpty(boleto.Cedente.Codigo) && boleto.Cedente.Codigo.Length != 6)
+                throw new NotImplementedException("Cedente deve ter 6 caracteres.");
+            //Verifica se o digito do cedente foi informado (o default -1 vai falhar)
+            if (boleto.Cedente.DigitoCedente==-1)
+                throw new NotImplementedException("DigitoCedente não informado.");
+            //Verifica se cedente foi informado
+            if (string.IsNullOrEmpty(boleto.Cedente.Carteira))
+                throw new NotImplementedException("Carteira do Cedente não informada.");
+            //Verifica se cedente foi informado
+            if (string.IsNullOrEmpty(boleto.TipoModalidade))
+                throw new NotImplementedException("TipoModalidade não informada.");
+            //Verifica se cedente foi informado
+            if (!string.IsNullOrEmpty(boleto.NossoNumero) && boleto.NossoNumero.Length>7)
+                throw new NotImplementedException("NossoNumero deve ter 7 ou menos caracteres");
+            
+
             //Atribui o nome do banco ao local de pagamento
             boleto.LocalPagamento += Nome + "";
-
 
             //Verifica se data do processamento é valida
 			//if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
 			if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 boleto.DataProcessamento = DateTime.Now;
-
 
             //Verifica se data do documento é valida
 			//if (boleto.DataDocumento.ToString("dd/MM/yyyy") == "01/01/0001")
@@ -315,10 +336,10 @@ namespace BoletoNet
                 {
 
                     case TipoArquivo.CNAB240:
-                        _header = GerarHeaderRemessaCNAB240(int.Parse(numeroConvenio), cedente, numeroArquivoRemessa);
+                        _header = GerarHeaderRemessaCNAB240(cedente, numeroArquivoRemessa);
                         break;
                     case TipoArquivo.CNAB400:
-                        _header = GerarHeaderRemessaCNAB400(int.Parse(numeroConvenio), cedente, numeroArquivoRemessa);
+                        _header = GerarHeaderRemessaCNAB400(cedente, numeroArquivoRemessa);
                         break;
                     case TipoArquivo.Outro:
                         throw new Exception("Tipo de arquivo inexistente.");
@@ -361,7 +382,7 @@ namespace BoletoNet
             }
         }
 
-        private string GerarHeaderRemessaCNAB240(int numeroConvenio, Cedente cedente, int numeroArquivoRemessa)
+        private string GerarHeaderRemessaCNAB240(Cedente cedente, int numeroArquivoRemessa)
         {
             //Variaveis
             try
@@ -399,7 +420,7 @@ namespace BoletoNet
             }
         }
 
-        private string GerarHeaderRemessaCNAB400(int numeroConvenio, Cedente cedente, int numeroArquivoRemessa)
+        private string GerarHeaderRemessaCNAB400(Cedente cedente, int numeroArquivoRemessa)
         {
             //Variaveis
             StringBuilder _header = new StringBuilder();
