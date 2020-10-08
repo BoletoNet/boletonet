@@ -109,32 +109,36 @@ namespace BoletoNet
         {
             throw new BoletoNetException("Nao implantado");
         }
-        public override void FormataLinhaDigitavel(Boleto boleto)
+         public override void FormataLinhaDigitavel(Boleto boleto)
         {
             //041M2.1AAAd1  CCCCC.CCNNNd2  NNNNN.041XXd3  V FFFF9999999999
+            var CampoLivre = boleto.CodigoBarra.Codigo.Substring(19, 25);
 
-            string campo1 = "1369" + boleto.CodigoBarra.Codigo.Substring(19, 5);
+            string campo1 = "1369" + CampoLivre.Substring(0, 5);
             int d1 = Mod10Unicred(campo1);
             campo1 = FormataCampoLD(campo1) + d1.ToString();
 
-            string campo2 = boleto.CodigoBarra.Codigo.Substring(24, 10);
+            string campo2 = CampoLivre.Substring(5, 10);
             int d2 = Mod10Unicred(campo2);
             campo2 = FormataCampoLD(campo2) + d2.ToString();
 
-            string NossoNumLinhaDigitavel = string.Format("{0}{1}", boleto.NossoNumero, Mod11UniCred(boleto.NossoNumero, false));
-            string campo3 = NossoNumLinhaDigitavel.Substring(NossoNumLinhaDigitavel.Length-10, 10);
+            //string NossoNumLinhaDigitavel = string.Format("{0}{1}", boleto.NossoNumero, Mod11UniCred(boleto.NossoNumero, false));
+            //string campo3 = NossoNumLinhaDigitavel.Substring(NossoNumLinhaDigitavel.Length-10, 10);
             //A linha digitável nao pode usar a regra de cálculo do DV do barcode pois lá o nosso numero usa uma regra diferente para o DV
             //string campo3 = boleto.CodigoBarra.Codigo.Substring(34, 10);
+
+            string campo3 = CampoLivre.Substring(15, 10);
             int d3 = Mod10Unicred(campo3);
             campo3 = FormataCampoLD(campo3) + d3.ToString();
 
-            string cmp_livre = Utils.FormatCode(boleto.Cedente.ContaBancaria.Agencia, 4) +
-                                    Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 10) +
-                                    Utils.FormatCode(NossoNumLinhaDigitavel, 11);
-            string campo4 = DigUnicred(cmp_livre).ToString();
+            //string cmp_livre = Utils.FormatCode(boleto.Cedente.ContaBancaria.Agencia, 4) +
+            //                        Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 10) +
+            //                        Utils.FormatCode(NossoNumLinhaDigitavel, 11);
+            //string campo4 = DigUnicred(cmp_livre).ToString();
             //A linha digitável nao pode usar a regra de cálculo do DV do barcode pois lá o nosso numero usa uma regra diferente para o DV
-            //string campo4 = boleto.CodigoBarra.Codigo.Substring(4, 1);
-            
+            string campo4 = boleto.CodigoBarra.Codigo.Substring(4, 1);
+
+            // Composto pelo fator de vencimento com 4 (quatro) caracteres e o valor do documento com 10(dez) caracteres, sem separadores e sem edição, posição 6ª a 19ª do código de barras.
             string campo5 = boleto.CodigoBarra.Codigo.Substring(5, 14);
 
             boleto.CodigoBarra.LinhaDigitavel = campo1 + "  " + campo2 + "  " + campo3 + "  " + campo4 + "  " + campo5;
