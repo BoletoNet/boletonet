@@ -147,7 +147,7 @@ namespace BoletoNet
                         break;
                     case EnumInstrucoes_Sicredi.PedidoProtesto:
                         this.Codigo = (int)EnumInstrucoes_Sicredi.PedidoProtesto;
-                        this.Descricao = "  - PROTESTAR APÓS " + nrDias + " DIAS ÚTEIS DO VENCIMENTO";
+                        this.Descricao = "  - PROTESTAR APÓS " + nrDias + " DIAS CORRIDOS DO VENCIMENTO";
                         break;
                     case EnumInstrucoes_Sicredi.SustarProtestoBaixarTitulo:
                         this.Codigo = (int)EnumInstrucoes_Sicredi.SustarProtestoBaixarTitulo;
