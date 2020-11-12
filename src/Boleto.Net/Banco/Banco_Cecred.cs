@@ -548,8 +548,50 @@ namespace BoletoNet {
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0166, 015, 2, boleto.IOF, '0'));                                    // posição 166-180 (015)- Valor do IOF a ser concedido
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0181, 015, 2, boleto.Abatimento, '0'));                             // posição 181-195 (015)- Valor do Abatimento
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0196, 025, 0, boleto.NumeroDocumento, ' '));                        // posição 196-220 (025)- Identificação do Título na Empresa. Informar o Número do Documento - Seu Número (mesmo das posições 63-73 do Segmento P)                
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0221, 001, 0, "3", '0'));                                           // posição 221-221 (001) -  Código para protesto  - ‘1’ = Protestar. "3" = Não Protestar. "9" = Cancelamento Protesto Automático
-                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0222, 002, 0, "00", '0'));                                          // posição 222-223 (002) -  Número de Dias para Protesto                
+
+                #region Instruções
+                string vInstrucao1 = "00"; //1ª instrução (2, N) Caso Queira colocar um cod de uma instrução. ver no Manual caso nao coloca 00
+                string vInstrucao2 = "00"; //2ª instrução (2, N) Caso Queira colocar um cod de uma instrução. ver no Manual caso nao coloca 00
+                foreach (IInstrucao instrucao in boleto.Instrucoes) {
+                    switch ((EnumInstrucoes_Cecred)instrucao.Codigo) {
+                        case EnumInstrucoes_Cecred.CadastroDeTitulo:
+                            break;
+                        case EnumInstrucoes_Cecred.PedidoBaixa:
+                            break;
+                        case EnumInstrucoes_Cecred.ConcessaoAbatimento:
+                            break;
+                        case EnumInstrucoes_Cecred.CancelamentoAbatimentoConcedido:
+                            break;
+                        case EnumInstrucoes_Cecred.AlteracaoVencimento:
+                            break;
+                        case EnumInstrucoes_Cecred.PedidoProtesto:
+                            // '1' = Protestar Dias Corridos (No Sistema Ailos o prazo para protesto é de 05 a 15).
+                            // '2' = Negativação de boletos via Serasa (No Sistema Ailos o prazo para protesto é de 05 a 15).
+                            vInstrucao1 = "2"; 
+                            vInstrucao2 = Utils.FitStringLength(instrucao.QuantidadeDias.ToString(), 2, 2, '0', 0, true, true, true);
+                            break;
+                        case EnumInstrucoes_Cecred.SustarProtestoBaixarTitulo:
+                            break;
+                        case EnumInstrucoes_Cecred.AlteracaoNomeEnderecoPagador:
+                            break;
+                        case EnumInstrucoes_Cecred.LiquidacaoDeTituloNaoRegristroOuPagamentoEmDuplicidade:
+                            break;
+                        case EnumInstrucoes_Cecred.ConcederDesconto:
+                            break;
+                        case EnumInstrucoes_Cecred.NaoConcederDesconto:
+                            break;
+                        default:
+                            // '3' = Não Protestar / Não Negativar
+                            vInstrucao1 = "3";
+                            vInstrucao2 = "00";
+                            break;
+                    }
+                }
+
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0221, 001, 0, vInstrucao1, '0'));                                   // posição 221-221 (001) -  Código para protesto  - ‘1’ = Protestar. "3" = Não Protestar. "9" = Cancelamento Protesto Automático
+                reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0222, 002, 0, vInstrucao2, '0'));                                   // posição 222-223 (002) -  Número de Dias para Protesto                
+                #endregion
+
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0224, 001, 0, "2", '0'));                                           // posição 224-224 (001) -  Código para Baixa/Devolução ‘1’ = Baixar / Devolver. "2" = Não Baixar / Não Devolver
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediAlphaAliEsquerda_____, 0225, 003, 0, "   ", ' '));                                         // posição 225-227 (003) - Número de Dias para Baixa/Devolução
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0228, 002, 0, "09", '0'));                                          // posição 228-229 (002) - Código da Moeda. Informar fixo: ‘09’ = REAL

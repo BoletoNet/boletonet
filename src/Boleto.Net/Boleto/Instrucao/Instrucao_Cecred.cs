@@ -30,31 +30,135 @@ namespace BoletoNet {
         AlteracaoNomeEnderecoPagador = 12,
         LiquidacaoDeTituloNaoRegristroOuPagamentoEmDuplicidade = 17,
         ConcederDesconto = 31,
-        NaoConcederDesconto = 32
+        NaoConcederDesconto = 32,
+
+        OutrasInstrucoes_ExibeMensagem_MoraDiaria = 900,
+        OutrasInstrucoes_ExibeMensagem_MultaVencimento = 901
+
 
     }
 
     public class Instrucao_Cecred : AbstractInstrucao, IInstrucao {
 
+        #region Construtores 
         public Instrucao_Cecred() {
             try {
-                this.Banco = new Banco_Cecred();
+                this.Banco = new Banco(85);
             } catch (Exception ex) {
                 throw new Exception("Erro ao carregar objeto", ex);
             }
         }
 
         public Instrucao_Cecred(int codigo) {
+            this.carregar(codigo, 0);
+        }
+
+        public Instrucao_Cecred(int codigo, int nrDias) {
+            this.carregar(codigo, nrDias);
+        }
+        public Instrucao_Cecred(int codigo, double valor) {
+            this.carregar(codigo, valor);
+        }
+
+        public Instrucao_Cecred(int codigo, double valor, EnumTipoValor tipoValor) {
+            this.carregar(codigo, valor, tipoValor);
+        }
+        #endregion
+
+        #region Metodos Privados
+
+
+        private void carregar(int idInstrucao, double valor, EnumTipoValor tipoValor = EnumTipoValor.Percentual) {
             try {
+                this.Banco = new Banco(85);
+                this.Valida();
 
-                this.Banco = new Banco_Cecred();
-
-                this.Codigo = codigo;
-                // TODO Implementar descricao do código de remessa para cecred
-
+                switch ((EnumInstrucoes_Cecred)idInstrucao) {
+                    //case EnumInstrucoes_Cecred.OutrasInstrucoes_ExibeMensagem_MoraDiaria:
+                    //    this.Codigo = (int)EnumInstrucoes_Cecred.AlteracaoOutrosDados;
+                    //    this.Descricao = String.Format("  - APÓS VENCIMENTO COBRAR JUROS DE {0} {1} POR DIA DE ATRASO",
+                    //        (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("F2")),
+                    //        (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
+                    //    break;
+                    //case EnumInstrucoes_Cecred.OutrasInstrucoes_ExibeMensagem_MultaVencimento:
+                    //    this.Codigo = (int)EnumInstrucoes_Cecred.AlteracaoOutrosDados;
+                    //    this.Descricao = String.Format("  - APÓS VENCIMENTO COBRAR MULTA DE {0} {1}",
+                    //        (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("F2")),
+                    //        (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
+                    //    break;
+                    //case EnumInstrucoes_Cecred.AlteracaoOutrosDados_Desconto:
+                    //    this.Codigo = (int)EnumInstrucoes_Cecred.AlteracaoOutrosDados;
+                    //    this.Descricao = "  - CONCEDER DESCONTO DE R$ " + valor;
+                    //    break;
+                    //case EnumInstrucoes_Cecred.AlteracaoOutrosDados_DescontoAntecipacao:
+                    //    this.Codigo = (int)EnumInstrucoes_Cecred.AlteracaoOutrosDados;
+                    //    this.Descricao = "  - CONCEDER DESCONTO DE R$ " + valor + "POR DIA DE ANTECIPAÇÃO";
+                    //    break;
+                    //case EnumInstrucoes_Cecred.AlteracaoOutrosDados_JuroDia:
+                    //    this.Codigo = (int)EnumInstrucoes_Cecred.AlteracaoOutrosDados;
+                    //    this.Descricao = "  - APÓS VENCIMENTO COBRAR JURO DE " + valor + "% POR DIA DE ATRASO";
+                    //    break;
+                    default:
+                        this.Codigo = 0;
+                        this.Descricao = " (Selecione) ";
+                        break;
+                }
             } catch (Exception ex) {
                 throw new Exception("Erro ao carregar objeto", ex);
             }
         }
+
+        private void carregar(int idInstrucao, int nrDias) {
+            try {
+                this.Banco = new Banco_Cecred();
+                this.Valida();
+
+                switch ((EnumInstrucoes_Cecred)idInstrucao) {
+                    case EnumInstrucoes_Cecred.CadastroDeTitulo:
+                        this.Codigo = (int)EnumInstrucoes_Cecred.CadastroDeTitulo;
+                        this.Descricao = "";
+                        break;
+                    case EnumInstrucoes_Cecred.PedidoBaixa:
+                        this.Codigo = (int)EnumInstrucoes_Cecred.PedidoBaixa;
+                        this.Descricao = "";
+                        break;
+                    case EnumInstrucoes_Cecred.ConcessaoAbatimento:
+                        this.Codigo = (int)EnumInstrucoes_Cecred.ConcessaoAbatimento;
+                        this.Descricao = "";
+                        break;
+                    case EnumInstrucoes_Cecred.CancelamentoAbatimentoConcedido:
+                        this.Codigo = (int)EnumInstrucoes_Cecred.CancelamentoAbatimentoConcedido;
+                        this.Descricao = "";
+                        break;
+                    case EnumInstrucoes_Cecred.AlteracaoVencimento:
+                        this.Codigo = (int)EnumInstrucoes_Cecred.AlteracaoVencimento;
+                        this.Descricao = "";
+                        break;
+                    case EnumInstrucoes_Cecred.PedidoProtesto:
+                        this.Codigo = (int)EnumInstrucoes_Cecred.PedidoProtesto;
+                        this.Descricao = "  - PROTESTAR APÓS " + nrDias + " DIAS CORRIDOS DO VENCIMENTO";
+                        break;
+                    case EnumInstrucoes_Cecred.SustarProtestoBaixarTitulo:
+                        this.Codigo = (int)EnumInstrucoes_Cecred.SustarProtestoBaixarTitulo;
+                        this.Descricao = "";
+                        break;
+                    default:
+                        this.Codigo = 0;
+                        this.Descricao = " (Selecione) ";
+                        break;
+                }
+
+                this.QuantidadeDias = nrDias;
+            } catch (Exception ex) {
+                throw new Exception("Erro ao carregar objeto", ex);
+            }
+        }
+
+
+        public override void Valida() {
+            //base.Valida();
+        }
+
+        #endregion
     }
 }
