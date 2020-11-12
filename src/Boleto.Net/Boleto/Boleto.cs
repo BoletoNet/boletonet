@@ -63,7 +63,8 @@ namespace BoletoNet
 		private DateTime _dataDesconto;
 		private DateTime _dataOutrosAcrescimos;
 		private DateTime _dataOutrosDescontos;
-		private short _percentualIOS;
+        private DateTime _dataLimitePagamento;
+        private short _percentualIOS;
         private short _modalidadeCobranca = 0;
         private short _numeroDiasBaixa = 0;
 		private string _numeroControle;
@@ -548,10 +549,18 @@ namespace BoletoNet
 			set { this._dataOutrosDescontos = value; }
 		}
 
-		/// <summary> 
-		/// Retorna o tipo da modalidade
-		/// </summary>
-		public string TipoModalidade
+        /// <summary> 
+        /// Data de Outros Descontos
+        /// </summary>  
+        public DateTime DataLimitePagamento {
+            get { return _dataLimitePagamento; }
+            set { _dataLimitePagamento = value; }
+        }
+
+        /// <summary> 
+        /// Retorna o tipo da modalidade
+        /// </summary>
+        public string TipoModalidade
 		{
 			get { return this._tipoModalidade; }
 			set { this._tipoModalidade = value; }
@@ -612,6 +621,12 @@ namespace BoletoNet
         public IBancoCarteira BancoCarteira { get; set; }
 
         public string TipoDeCobranca { get; set; }
+
+        public DateTime? DataDescontoAntecipacao2 { get; set; }
+        public decimal? ValorDescontoAntecipacao2 { get; set; }
+
+        public DateTime? DataDescontoAntecipacao3 { get; set; }
+        public decimal? ValorDescontoAntecipacao3 { get; set; }
 
         #endregion Properties
 
