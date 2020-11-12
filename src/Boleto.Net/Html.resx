@@ -441,7 +441,7 @@
 								&lt;div class="c BB"&gt;@DESCONTOS&lt;/div&gt;
 								&lt;div class="t"&gt;(-) Outras deduções&lt;/div&gt;
 								&lt;div class="c BB"&gt;@OUTRASDEDUCOES&lt;/div&gt;
-								&lt;div class="t"&gt;(+) Mora / Multa&lt;/div&gt;
+								&lt;div class="t"&gt;(+) Mora / Multa / Juros&lt;/div&gt;
 								&lt;div class="c BB"&gt;@MORAMULTA&lt;/div&gt;
 								&lt;div class="t"&gt;(+) Outros acréscimos&lt;/div&gt;
 								&lt;div class="c BB"&gt;@OUTROSACRESCIMOS&lt;/div&gt;
@@ -536,7 +536,7 @@
 				&lt;tr class="ct h13"&gt;
 						&lt;td class="w113"&gt;(-) Desconto / Abatimentos&lt;/td&gt;
 						&lt;td class="w112"&gt;(-) Outras deduções&lt;/td&gt;
-						&lt;td class="w113"&gt;(+) Mora / Multa&lt;/td&gt;
+						&lt;td class="w113"&gt;(+) Mora / Multa / Juros&lt;/td&gt;
 						&lt;td class="w113"&gt;(+) Outros acréscimos&lt;/td&gt;
 						&lt;td class="w180"&gt;(=) Valor cobrado&lt;/td&gt;
 				&lt;/tr&gt;
@@ -703,7 +703,7 @@
 										&lt;table class="w150"&gt;
 												&lt;tr class="ct h13"&gt;
 														&lt;td class="w113"&gt;
-																(+) Mora / Multa
+																(+) Mora / Multa / Juros
 														&lt;/td&gt;
 												&lt;/tr&gt;
 												&lt;tr class="cp h12 rBb Ab"&gt;
