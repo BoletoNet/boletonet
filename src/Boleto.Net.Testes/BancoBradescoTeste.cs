@@ -65,7 +65,7 @@ namespace BoletoNet.Testes
 
         private BoletoBancario GerarBoletoCarteira09()
         {
-            DateTime vencimento = new DateTime(2012, 6, 8);
+            DateTime vencimento = new DateTime(2020, 6, 8);
 
             var cedente = new Cedente("00.000.000/0000-00", "Empresa Teste", "0539", "8", "0032463", "9");
 
@@ -84,7 +84,7 @@ namespace BoletoNet.Testes
 
         private BoletoBancario GerarBoletoComValorCobradoCarteira09()
         {
-            var vencimento = new DateTime(2012, 6, 8);
+            var vencimento = new DateTime(2020, 6, 8);
             var cedente = new Cedente("00.000.000/0000-00", "Empresa Teste", "0539", "8", "0032463", "9");
 
             var boleto = new Boleto(vencimento, 5000, "09", "18194", cedente);
@@ -117,7 +117,7 @@ namespace BoletoNet.Testes
 
             boletoBancario.Boleto.Valida();
 
-            string linhaDigitavelValida = "23790.53909 90000.001819 94003.246306 3 53580000762000";
+            string linhaDigitavelValida = "23790.53909 90000.001819 94003.246306 8 82800000762000";
 
             Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.LinhaDigitavel, linhaDigitavelValida, "Linha digitável inválida");
         }
@@ -129,7 +129,7 @@ namespace BoletoNet.Testes
 
             boletoBancario.Boleto.Valida();
 
-            var linhaDigitavelValida = "23790.53909 90000.001819 94003.246306 1 53580000510000";
+            var linhaDigitavelValida = "23790.53909 90000.001819 94003.246306 5 82800000510000";
 
             Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.LinhaDigitavel, linhaDigitavelValida, "Linha digitável inválida");
         }
@@ -141,7 +141,7 @@ namespace BoletoNet.Testes
 
             boletoBancario.Boleto.Valida();
 
-            string codigoBarraValida = "23793535800007620000539090000001819400324630";
+            string codigoBarraValida = "23798828000007620000539090000001819400324630";
 
             Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.Codigo, codigoBarraValida, "Código de Barra inválido");
         }
@@ -153,7 +153,7 @@ namespace BoletoNet.Testes
 
             boletoBancario.Boleto.Valida();
 
-            var codigoBarraValida = "23791535800005100000539090000001819400324630";
+            var codigoBarraValida = "23795828000005100000539090000001819400324630";
 
             Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.Codigo, codigoBarraValida, "Código de Barra inválido");
         }
