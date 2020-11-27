@@ -692,6 +692,8 @@ namespace BoletoNet
 
         public string GerarDetalheRemessaCNAB400(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
         {
+            boleto.Valida(); //Adicionado por Bruno Guelere (para validar o boleto e gerar o Didito Verificador do NossoNumero
+
             try
             {
                 base.GerarDetalheRemessa(boleto, numeroRegistro, tipoArquivo);
