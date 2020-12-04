@@ -660,7 +660,7 @@ namespace BoletoNet
             try
             {
                 string header = "341";
-                header += "0001";
+                header += "0000";
                 header += "0";
                 header += Utils.FormatCode("", " ", 9);
                 header += (cedente.CPFCNPJ.Length == 11 ? "1" : "2");
@@ -855,6 +855,9 @@ namespace BoletoNet
                 _segmentoP += Utils.FormatCode(String.IsNullOrEmpty(boleto.Cedente.ContaBancaria.DigitoConta) ? " " : boleto.Cedente.ContaBancaria.DigitoConta, " ", 1, true);
                 _segmentoP += Utils.FitStringLength(boleto.Carteira, 3, 3, '0', 0, true, true, true);
                 _segmentoP += Utils.FitStringLength(boleto.NossoNumero, 8, 8, '0', 0, true, true, true);
+
+                ValidaBoleto(boleto);
+
                 _segmentoP += Utils.FitStringLength(boleto.DigitoNossoNumero, 1, 1, '0', 1, true, true, true);
                 _segmentoP += "        ";
                 _segmentoP += "00000";
@@ -863,7 +866,7 @@ namespace BoletoNet
                 _segmentoP += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
                 _segmentoP += Utils.FitStringLength(boleto.ValorBoleto.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 _segmentoP += "00000";
-                _segmentoP += " ";
+                _segmentoP += "0";
                 _segmentoP += "01";
                 _segmentoP += "A";
                 _segmentoP += Utils.FitStringLength(boleto.DataDocumento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
@@ -1155,6 +1158,8 @@ namespace BoletoNet
                 string usoBanco = new string(' ', 10);
                 string nrDocumento = new string(' ', 25);
                 string _detalhe;
+                string codOcorrencia = ObterCodigoDaOcorrencia(boleto);
+                bool alteracaoDados = codOcorrencia == "31";
 
                 _detalhe = "1";
 
@@ -1206,21 +1211,20 @@ namespace BoletoNet
                 if (boleto.Moeda == 9)
                     _detalhe += "I"; //O código da carteira só muda para dois tipos, quando a cobrança for em dólar
 
-                _detalhe += ObterCodigoDaOcorrencia(boleto);
+                _detalhe += codOcorrencia;
 
                 _detalhe += Utils.FitStringLength(boleto.NumeroDocumento, 10, 10, ' ', 0, true, true, false);
-                _detalhe += boleto.DataVencimento.ToString("ddMMyy");
+                _detalhe += (boleto.DataVencimento != DateTime.MinValue) ? boleto.DataVencimento.ToString("ddMMyy"): "000000";
                 _detalhe += Utils.FitStringLength(boleto.ValorBoleto.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
                 _detalhe += "341";
                 _detalhe += "00000"; // Agência onde o título será cobrado - no arquivo de remessa, preencher com ZEROS
-
                 _detalhe += Utils.FitStringLength(EspecieDocumento.ValidaCodigo(boleto.EspecieDocumento).ToString(), 2, 2, '0', 0, true, true, true);
                 _detalhe += Utils.FitStringLength(boleto.Aceite, 1, 1, ' ', 0, true, true, false); // Identificação de título, Aceito ou Não aceito
-
+              
                 //A data informada neste campo deve ser a mesma data de emissão do título de crédito 
                 //(Duplicata de Serviço / Duplicata Mercantil / Nota Fiscal, etc), que deu origem a esta Cobrança. 
                 //Existindo divergência, na existência de protesto, a documentação poderá não ser aceita pelo Cartório.
-                _detalhe += boleto.DataDocumento.ToString("ddMMyy");
+                _detalhe += (boleto.DataDocumento != DateTime.MinValue) ? boleto.DataDocumento.ToString("ddMMyy"): "000000";
 
                 switch (boleto.Instrucoes.Count)
                 {
@@ -1240,7 +1244,11 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.JurosMora.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
 
                 // Data limite para desconto
-                _detalhe += boleto.DataDesconto == DateTime.MinValue ? boleto.DataVencimento.ToString("ddMMyy") : boleto.DataDesconto.ToString("ddMMyy");
+                if (boleto.DataVencimento != DateTime.MinValue | boleto.DataDesconto != DateTime.MinValue)
+                    _detalhe += boleto.DataDesconto == DateTime.MinValue ? boleto.DataVencimento.ToString("ddMMyy") : boleto.DataDesconto.ToString("ddMMyy");
+                else
+                    _detalhe += "000000";
+
                 _detalhe += Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 13, 13, '0', 0, true, true, true);
                 _detalhe += "0000000000000"; // Valor do IOF
                 _detalhe += "0000000000000"; // Valor do Abatimento
@@ -1255,11 +1263,10 @@ namespace BoletoNet
                 _detalhe += usoBanco;
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.EndComNumeroEComplemento.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.Bairro.TrimStart(' '), 12, 12, ' ', 0, true, true, false).ToUpper();
-                _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.CEP, 8, 8, ' ', 0, true, true, false).ToUpper();
-                ;
+                _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.CEP, 8, 8, ' ', 0, true, true, false).ToUpper();                
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.Cidade, 15, 15, ' ', 0, true, true, false).ToUpper();
                 _detalhe += Utils.FitStringLength(boleto.Sacado.Endereco.UF, 2, 2, ' ', 0, true, true, false).ToUpper();
-                
+                        
                 // SACADOR/AVALISTA
                 // Normalmente deve ser preenchido com o nome do sacador/avalista. Alternativamente este campo poderá 
                 // ter dois outros usos:
@@ -1302,9 +1309,9 @@ namespace BoletoNet
                 }
                 else
                 {
-                    _detalhe += Utils.FitStringLength(boleto.Avalista.Nome, 30, 30, ' ', 0, true, true, false).ToUpper();
+                    _detalhe += Utils.FitStringLength(boleto.Avalista != null ? boleto.Avalista.Nome : "", 30, 30, ' ', 0, true, true, false).ToUpper();
                     _detalhe += "    "; // Complemento do registro
-                    _detalhe += boleto.DataVencimento.ToString("ddMMyy"); //Data de Mora
+                    _detalhe += (boleto.DataVencimento != DateTime.MinValue) ? boleto.DataVencimento.ToString("ddMMyy") : "000000"; //Data de Mora
 
                     if (boleto.Instrucoes.Count > 0)
                     {
@@ -1393,7 +1400,7 @@ namespace BoletoNet
                 header += Utils.FormatCode("", "0", 17);                                                // Valor total títulos em cobrança vinculada - 053-069 9(15)V9(02) - Nota 24
 
                 header += Utils.FormatCode("", "0", 46);                                                // Complemento de Registro - 070-115 X(08) - Zeros
-                header += Utils.FormatCode("", " ", 8);                                                 // Referência do Aviso bancário - 116-123 X(08) - Nota 25
+                header += Utils.FormatCode("", "0", 8);                                                 // Referência do Aviso bancário - 116-123 X(08) - Nota 25
                 header += Utils.FormatCode("", " ", 117);                                               // Complemento de Registro - 124-240 X(117) - Brancos
 
                 return header;

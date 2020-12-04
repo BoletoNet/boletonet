@@ -75,70 +75,131 @@ namespace BoletoNet.Arquivo
         //
         public void GeraDadosItau(TipoArquivo tipoArquivo)
         {
-            DateTime vencimento = new DateTime(2007, 9, 10);
-
-            Instrucao_Itau item1 = new Instrucao_Itau(9, 5);
-            Instrucao_Itau item2 = new Instrucao_Itau(81, 10);
-            Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "0542", "13000");
-            //Na carteira 198 o código do Cedente é a conta bancária
-            c.Codigo = "13000";
-
-            Boleto b = new Boleto(vencimento, 1642, "198", "92082835", c);
-            b.NumeroDocumento = "1008073";
-
-            b.DataVencimento = Convert.ToDateTime("12-12-12");
-
-            b.Sacado = new Sacado("000.000.000-00", "Fulano de Silva");
-            b.Sacado.Endereco.End = "SSS 154 Bloco J Casa 23";
-            b.Sacado.Endereco.Bairro = "Testando";
-            b.Sacado.Endereco.Cidade = "Testelândia";
-            b.Sacado.Endereco.CEP = "70000000";
-            b.Sacado.Endereco.UF = "DF";
-
-            item2.Descricao += item2.QuantidadeDias.ToString() + " dias corridos do vencimento.";
-            b.Instrucoes.Add(item1);
-            b.Instrucoes.Add(item2);
-            b.Cedente.ContaBancaria.DigitoAgencia = "1";
-            b.Cedente.ContaBancaria.DigitoAgencia = "2";
-
-            b.Banco = new Banco(341);
 
             Boletos boletos = new Boletos();
-            boletos.Add(b);
+            Cedente c = new Cedente("00.000.000/0000-00", "Empresa de Atacado", "0542", "13000-7");
 
-            Boleto b2 = new Boleto(vencimento, 1642, "198", "92082835", c);
-            b2.NumeroDocumento = "1008073";
+            string conta;
+            string digitoConta;
 
-            b2.DataVencimento = Convert.ToDateTime("12-12-12");
-
-            b2.Sacado = new Sacado("000.000.000-00", "Fulano de Silva");
-            b2.Sacado.Endereco.End = "SSS 154 Bloco J Casa 23";
-            b2.Sacado.Endereco.Bairro = "Testando";
-            b2.Sacado.Endereco.Cidade = "Testelândia";
-            b2.Sacado.Endereco.CEP = "70000000";
-            b2.Sacado.Endereco.UF = "DF";
-
-            item2.Descricao += item2.QuantidadeDias.ToString() + " dias corridos do vencimento.";
-            b2.Instrucoes.Add(item1);
-            b2.Instrucoes.Add(item2);
-            b2.Cedente.ContaBancaria.DigitoAgencia = "1";
-            b2.Cedente.ContaBancaria.DigitoAgencia = "2";
-
-            b2.Banco = new Banco(341);
-
-            boletos.Add(b2);
-
-            switch (tipoArquivo)
+            if (c.ContaBancaria.Conta.Contains("-"))
             {
-                case TipoArquivo.CNAB240:
-                    GeraArquivoCNAB240(b2.Banco, c, boletos);
-                    break;
-                case TipoArquivo.CNAB400:
-                    GeraArquivoCNAB400(b2.Banco, c, boletos);
-                    break;             
-                default:
-                    break;
-            }            
+                conta = c.ContaBancaria.Conta.Substring(0, 5);
+                digitoConta = c.ContaBancaria.Conta.Substring(6, 1);
+
+                c.ContaBancaria.Conta = conta;
+                c.ContaBancaria.DigitoConta = digitoConta;
+            }
+
+            bool testeAlteracaoDados = false;
+
+            if (!testeAlteracaoDados)
+            {
+
+                DateTime vencimento = new DateTime(2007, 9, 10);
+
+                Instrucao_Itau item1 = new Instrucao_Itau(9, 5);
+                Instrucao_Itau item2 = new Instrucao_Itau(81, 10);
+               
+                //Na carteira 198 o código do Cedente é a conta bancária
+                c.Codigo = "13000";
+
+                Boleto b = new Boleto(vencimento, 1642, "198", "92082835", c);
+                b.NumeroDocumento = "1008073";
+
+                b.DataVencimento = Convert.ToDateTime("12-12-12");
+
+                b.Sacado = new Sacado("000.000.000-00", "Fulano de Silva");
+                b.Sacado.Endereco.End = "SSS 154 Bloco J Casa 23";
+                b.Sacado.Endereco.Bairro = "Testando";
+                b.Sacado.Endereco.Cidade = "Testelândia";
+                b.Sacado.Endereco.CEP = "70000000";
+                b.Sacado.Endereco.UF = "DF";
+
+                item2.Descricao += item2.QuantidadeDias.ToString() + " dias corridos do vencimento.";
+                b.Instrucoes.Add(item1);
+                b.Instrucoes.Add(item2);
+                b.Cedente.ContaBancaria.DigitoAgencia = "1";
+                b.Cedente.ContaBancaria.DigitoAgencia = "2";
+
+                b.Banco = new Banco(341);
+             
+                boletos.Add(b);
+
+                Boleto b2 = new Boleto(vencimento, 1642, "198", "92082835", c);
+                b2.NumeroDocumento = "1008073";
+
+                b2.DataVencimento = Convert.ToDateTime("12-12-12");
+
+                b2.Sacado = new Sacado("000.000.000-00", "Fulano de Silva");
+                b2.Sacado.Endereco.End = "SSS 154 Bloco J Casa 23";
+                b2.Sacado.Endereco.Bairro = "Testando";
+                b2.Sacado.Endereco.Cidade = "Testelândia";
+                b2.Sacado.Endereco.CEP = "70000000";
+                b2.Sacado.Endereco.UF = "DF";
+
+                item2.Descricao += item2.QuantidadeDias.ToString() + " dias corridos do vencimento.";
+                b2.Instrucoes.Add(item1);
+                b2.Instrucoes.Add(item2);
+                b2.Cedente.ContaBancaria.DigitoAgencia = "1";
+                b2.Cedente.ContaBancaria.DigitoAgencia = "2";
+
+                b2.Banco = new Banco(341);
+
+                boletos.Add(b2);
+
+                switch (tipoArquivo)
+                {
+                    case TipoArquivo.CNAB240:
+                        GeraArquivoCNAB240(b2.Banco, c, boletos);
+                        break;
+                    case TipoArquivo.CNAB400:
+                        GeraArquivoCNAB400(b2.Banco, c, boletos);
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+            else //teste de alteração de dados > valor
+            {
+                         
+                Boleto b = new Boleto(1642, "109", "92082835", c);
+
+                b.Sacado = new Sacado("000.000.000-00", "Fulano de Silva");
+                b.Sacado.Endereco.End = "SSS 154 Bloco J Casa 23";
+                b.Sacado.Endereco.Bairro = "Testando";
+                b.Sacado.Endereco.Cidade = "Testelândia";
+                b.Sacado.Endereco.CEP = "70000000";
+                b.Sacado.Endereco.UF = "DF";
+
+                b.ValorBoleto = 1700;
+
+                b.Banco = new Banco(341);
+
+                Remessa remessa = new Remessa(TipoOcorrenciaRemessa.AlteracaoDeOutrosDados);
+
+                remessa.Ambiente = Remessa.TipoAmbiente.Producao;
+                remessa.CodigoOcorrencia = "31";
+                remessa.NumeroLote = 1;
+
+                b.Remessa = remessa;
+
+                boletos.Add(b);
+
+                switch (tipoArquivo)
+                {
+                    case TipoArquivo.CNAB240:
+                        GeraArquivoCNAB240(b.Banco, c, boletos);
+                        break;
+                    case TipoArquivo.CNAB400:
+                        GeraArquivoCNAB400(b.Banco, c, boletos);
+                        break;
+                    default:
+                        break;
+                }
+
+            }      
                 
         }
         public void GeraDadosBanrisul()
