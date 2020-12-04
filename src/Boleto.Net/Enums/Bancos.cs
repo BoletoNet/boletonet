@@ -10,6 +10,7 @@ namespace BoletoNet.Enums
         Banrisul = 041,
         Bradesco = 237,
         Caixa = 104,
+        Uniprime = 84,
         CECRED = 85,
         HSBC = 399,
         Itau = 341,
