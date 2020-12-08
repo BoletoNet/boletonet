@@ -904,7 +904,7 @@ namespace BoletoNet
                         Boleto.Avalista != null ? Boleto.Avalista.CPFCNPJ : string.Empty))
                 .Replace("Ar\">R$", RemoveSimboloMoedaValorDocumento ? "Ar\">" : "Ar\">R$")
                 .Replace("@PARCELATOTAL", Boleto.NumeroParcela != 0 && Boleto.TotalParcela != 0 ? Boleto.NumeroParcela + " / " + Boleto.TotalParcela : string.Empty)
-                .Replace("@DADOSCEDENTE", MostrarEnderecoCedentenoRecibo ? Cedente.Nome + " " + cpfCnpj + " " + enderecoCedente : "");
+                .Replace("@DADOSCEDENTE", MostrarEnderecoCedentenoRecibo ? Cedente.Nome + " - " + cpfCnpj + "</br>" + enderecoCedente : "");
         }
 
         private string FormataDescricaoCarteira()

@@ -769,7 +769,7 @@ namespace BoletoNet
                 }
 
 
-                _detalhe += Utils.Right(boleto.NumeroDocumento, 10, '0', true); //Nº do Documento (10, A)
+                _detalhe += Utils.Right(boleto.NumeroDocumento, 10, ' ', true); //Nº do Documento (10, A)
                 _detalhe += boleto.DataVencimento.ToString("ddMMyy"); //Data do Vencimento do Título (10, N) DDMMAA
 
                 //Valor do Título (13, N)
