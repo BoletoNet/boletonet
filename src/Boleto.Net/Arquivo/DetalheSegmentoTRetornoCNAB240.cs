@@ -111,11 +111,15 @@ namespace BoletoNet
             set { _dacAgConta = value; }
         }
 
-        public string NossoNumero
-        {
-            get { return _nossoNumero; }
-            set { _nossoNumero = value; }
-        }
+        public string NossoNumero { get; set; }
+
+        public string NossoNumeroDv { get; set; }
+
+        public int NumeroParcela { get; set; }
+
+        public short? ModalidadeCobranca { get; set; }
+
+        public short? TipoFormulario { get; set; }
 
         public int CodigoCarteira
         {
