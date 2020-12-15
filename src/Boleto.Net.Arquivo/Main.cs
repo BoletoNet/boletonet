@@ -456,10 +456,10 @@ namespace BoletoNet.Arquivo
 				   "11234",
 				   "1"
 				   );
-			objCEDENTE.Codigo = "123456";
-			objCEDENTE.Convenio = 9;
+            objCEDENTE.Codigo = "123456";
+            objCEDENTE.Convenio = 9;
 
-			Instrucao_Bradesco item1 = new Instrucao_Bradesco(9, 5);
+            Instrucao_Bradesco item1 = new Instrucao_Bradesco(9, 5);
 
 			//Instancia de Boleto
 			Boleto objBOLETO = new Boleto();
@@ -510,7 +510,7 @@ namespace BoletoNet.Arquivo
 					//GeraArquivoCNAB240(b2.Banco, c, boletos);
 					break;
 				case TipoArquivo.CNAB400:
-					GeraArquivoCNAB400(objBOLETO.Banco, objCEDENTE, objBOLETOS, "09");
+                    GeraArquivoCNAB400(objBOLETO.Banco, objCEDENTE, objBOLETOS, objCEDENTE.Codigo); //"09");
 					break;
 				default:
 					break;
