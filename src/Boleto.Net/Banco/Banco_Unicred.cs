@@ -1,8 +1,7 @@
 using BoletoNet.EDI.Banco;
 using BoletoNet.Excecoes;
+using BoletoNet.Util;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.UI;
 
 [assembly: WebResource("BoletoNet.Imagens.136.jpg", "image/jpg")]
@@ -94,7 +93,7 @@ namespace BoletoNet
 
             try
             {
-                boleto.NossoNumero = string.Format("{0}-{1}", nossoNumero, Mod11UniCred(nossoNumero, false));
+                boleto.NossoNumero = string.Format("{0}{1}", nossoNumero, Mod11UniCred(nossoNumero, false));
             }
             catch (Exception ex)
             {
@@ -186,84 +185,260 @@ namespace BoletoNet
         }
 
         #region Metodos de Geracao do Arquivo de Remessa
-        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos)
+        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
         {
             try
             {
-                try
-                {
-                    string complemento = new string(' ', 277);
-                    string _header;
-                    
-                    _header = "01REMESSA01COBRANCA       ";
-                    _header += Utils.FitStringLength(cedente.Codigo.ToString(), 20, 20, '0', 0, true, true, true);
-                    _header += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false).ToUpper();
-                    _header += "084";
-                    _header += "UNIPRIME       ";
-                    _header += DateTime.Now.ToString("ddMMyy");
-                    _header += "        ";
-                    _header += "MX";
-                    _header += Utils.FitStringLength(numeroArquivoRemessa.ToString(), 7, 7, '0', 0, true, true, true);
-                    _header += complemento;
-                    _header += "000001";
-
-                    _header = Utils.SubstituiCaracteresEspeciais(_header);
-
-                    return _header;
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception("Erro ao gerar HEADER do arquivo de remessa do CNAB400.", ex);
-                }
+                string _headerLote;
+                _headerLote = "13600000         ";
+                if (cedente.CPFCNPJ.Length <= 11)
+                    _headerLote += "1";
+                else
+                    _headerLote += "2";
+                _headerLote += Utils.FitStringLength(cedente.CPFCNPJ, 14, 14, '0', 0, true, true, true);
+                _headerLote += new string(' ', 20);
+                _headerLote += Utils.FitStringLength(cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true);
+                _headerLote += Utils.FitStringLength(cedente.ContaBancaria.DigitoAgencia, 1, 1, '0', 0, true, true, true);
+                _headerLote += Utils.FitStringLength(cedente.ContaBancaria.Conta, 12, 12, '0', 0, true, true, true);
+                _headerLote += Utils.FitStringLength(cedente.ContaBancaria.DigitoConta, 1, 1, '0', 0, true, true, true);
+                _headerLote += " ";
+                _headerLote += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false);
+                _headerLote += Utils.FitStringLength("UNICRED", 30, 30, ' ', 0, true, true, false);
+                _headerLote += new string(' ', 10);
+                _headerLote += "1";
+                _headerLote += DateTime.Now.ToString("ddMMyyyy");
+                _headerLote += "000000";// DateTime.Now.ToString("HHmmss");
+                _headerLote += numeroArquivoRemessa.ToString("000000");
+                _headerLote += "085";
+                _headerLote += "00000";
+                _headerLote += Utils.FitStringLength(cedente.CodigoTransmissao, 3, 3, '0', 0, true, true, true);
+                _headerLote += new string(' ', 66);
+                return _headerLote;
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro durante a geração do HEADER do arquivo de REMESSA.", ex);
-            }
-        }
-
-        public override string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
-        {
-            throw new BoletoNetException("Nao implantado");
-        }
-        public string GerarDetalheRemessaCNAB240(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
-        {
-            throw new BoletoNetException("Nao implantado");
-
-        }
-
-        private string GerarHeaderLoteRemessaCNAB240(Cedente cedente, int numeroArquivoRemessa)
-        {
-            try
-            {
-                return GerarHeaderRemessaCNAB240(cedente);
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Erro ao gerar HEADER DO LOTE do arquivo de remessa.", e);
+                throw new Exception("Erro ao gerar HEADER do arquivo de remessa do CNAB400.", ex);
             }
         }
 
         public override string GerarHeaderLoteRemessa(string numeroConvenio, Cedente cedente, int numeroArquivoRemessa, TipoArquivo tipoArquivo)
         {
-            throw new BoletoNetException("Nao implantado");
+            string _headerLote;
+            _headerLote = "13600011R01  044 ";
+            if (cedente.CPFCNPJ.Length <= 11)
+                _headerLote += "1";
+            else
+                _headerLote += "2";
+            _headerLote += Utils.FitStringLength(cedente.CPFCNPJ, 15, 15, '0', 0, true, true, true);
+            _headerLote += new string(' ', 20);
+            _headerLote += Utils.FitStringLength(cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true);
+            _headerLote += Utils.FitStringLength(cedente.ContaBancaria.DigitoAgencia, 1, 1, '0', 0, true, true, true);
+            _headerLote += Utils.FitStringLength(cedente.ContaBancaria.Conta, 12, 12, '0', 0, true, true, true);
+            _headerLote += Utils.FitStringLength(cedente.ContaBancaria.DigitoConta, 1, 1, '0', 0, true, true, true);
+            _headerLote += " ";
+            _headerLote += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false);
+            _headerLote += new string(' ', 40);
+            _headerLote += new string(' ', 40);
+            _headerLote += numeroArquivoRemessa.ToString("00000000");
+            _headerLote += DateTime.Now.ToString("ddMMyyyy");
+            _headerLote += new string(' ', 8);
+            _headerLote += new string(' ', 33);
+            return _headerLote;
         }
 
-        public string GerarHeaderRemessaCNAB240(Cedente cedente)
+        public override string GerarDetalheSegmentoPRemessa(Boleto boleto, int numeroRegistro, string numeroConvenio)
         {
-            throw new BoletoNetException("Nao implantado");
+            try
+            {
+                string _segmentoP;
+                string _nossoNumero;
+
+                _segmentoP = "13600013";
+                _segmentoP += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);
+                _segmentoP += "P ";
+                _segmentoP += ObterCodigoDaOcorrencia(boleto);
+                _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true);
+                _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoAgencia, 1, 1, '0', 0, true, true, true);
+                _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 12, 12, '0', 0, true, true, true);
+                _segmentoP += Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoConta, 1, 1, '0', 0, true, true, true);
+                _segmentoP += "0";
+                _segmentoP += Utils.FitStringLength(boleto.NossoNumero, 11, 11, ' ', 0, true, true, false);
+                _segmentoP += new string(' ', 8);
+                _segmentoP += Utils.FitStringLength(boleto.Carteira, 2, 2, ' ', 0, true, true, false);
+                _segmentoP += new string(' ', 4);
+                _segmentoP += Utils.FitStringLength(boleto.NumeroDocumento, 15, 15, ' ', 0, true, true, false);
+                _segmentoP += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
+                _segmentoP += Utils.FitStringLength(boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", ""), 15, 15, '0', 0, true, true, true);
+                _segmentoP += new string(' ', 8);
+                _segmentoP += "N";
+                _segmentoP += Utils.FitStringLength(boleto.DataDocumento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
+
+                if (boleto.JurosMora > 0)
+                {
+                    _segmentoP += "1";
+                    _segmentoP += "00000000";
+                    _segmentoP += Utils.FitStringLength(boleto.JurosMora.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
+                }
+                else
+                {
+                    _segmentoP += "3";
+                    _segmentoP += "00000000";
+                    _segmentoP += "000000000000000";
+                }
+
+                if (boleto.ValorDesconto > 0)
+                {
+                    _segmentoP += "1";
+                    _segmentoP +=
+                        Utils.FitStringLength(
+                            boleto.DataDesconto == DateTime.MinValue
+                                ? boleto.DataVencimento.ToString("ddMMyyyy")
+                                : boleto.DataDesconto.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
+                    _segmentoP += Utils.FitStringLength(boleto.ValorDesconto.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
+                }
+                else
+                    _segmentoP += "000000000000000000000000";
+                _segmentoP += "000000000000000";
+                _segmentoP += "000000000000000";
+                _segmentoP += Utils.FitStringLength(boleto.NumeroControle ?? boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, false); //alterado por diegodariolli - 15/03/2018
+                _segmentoP += " ";
+                _segmentoP += "  ";
+                _segmentoP += "0";
+                _segmentoP += "   ";
+                _segmentoP += "  ";
+                _segmentoP += "0000000000";
+                _segmentoP += " ";
+                _segmentoP = Utils.SubstituiCaracteresEspeciais(_segmentoP.ToUpper());
+                return _segmentoP;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do SEGMENTO P DO DETALHE do arquivo de REMESSA.", ex);
+            }
         }
 
-        public override string GerarTrailerRemessa(int numeroRegistro, TipoArquivo tipoArquivo, Cedente cedente, decimal vltitulostotal)
+        public override string GerarDetalheSegmentoQRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
         {
-            throw new BoletoNetException("Nao implantado");
-        }
+            try
+            {
+                string _segmentoQ;
 
-        public string GerarTrailerRemessa240(int numeroRegistro)
+                _segmentoQ = "13600013";
+                _segmentoQ += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);
+                _segmentoQ += "Q ";
+                _segmentoQ += ObterCodigoDaOcorrencia(boleto);
+
+                if (boleto.Sacado.CPFCNPJ.Length <= 11)
+                    _segmentoQ += "1";
+                else
+                    _segmentoQ += "2";
+
+                var enderecoSacadoComNumero = boleto.Sacado.Endereco.End;
+                if (!string.IsNullOrEmpty(boleto.Sacado.Endereco.Numero))
+                {
+                    enderecoSacadoComNumero += ", " + boleto.Sacado.Endereco.Numero;
+                }
+
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.CPFCNPJ, 15, 15, '0', 0, true, true, true);
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Nome.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
+                _segmentoQ += Utils.FitStringLength(enderecoSacadoComNumero.TrimStart(' '), 40, 40, ' ', 0, true, true, false).ToUpper();
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.Bairro.TrimStart(' '), 15, 15, ' ', 0, true, true, false).ToUpper();
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.CEP, 8, 8, ' ', 0, true, true, false).ToUpper(); ;
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.Cidade.TrimStart(' '), 15, 15, ' ', 0, true, true, false).ToUpper();
+                _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.UF, 2, 2, ' ', 0, true, true, false).ToUpper();
+
+                if (boleto.Avalista != null)
+                {
+                    if (boleto.Avalista.CPFCNPJ.Length <= 11)
+                        _segmentoQ += "1";
+                    else
+                        _segmentoQ += "2";
+                    _segmentoQ += Utils.FitStringLength(boleto.Avalista.CPFCNPJ, 15, 15, '0', 0, true, true, true);
+                    _segmentoQ += Utils.FitStringLength(boleto.Avalista.Nome, 40, 40, '0', 0, true, true, true);
+                }
+                else
+                {
+                    _segmentoQ += "1";
+                    _segmentoQ += new string('0', 15);
+                    _segmentoQ += new string(' ', 40);
+                }
+                _segmentoQ += "000";
+                _segmentoQ += new string(' ', 28);
+                _segmentoQ = Utils.SubstituiCaracteresEspeciais(_segmentoQ);
+
+                return _segmentoQ;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do SEGMENTO Q DO DETALHE do arquivo de REMESSA.", ex);
+            }
+        }
+        public override string GerarDetalheSegmentoRRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
         {
-            throw new BoletoNetException("Nao implantado");
+            try
+            {
+                string _segmentoR;
+
+                _segmentoR = "13600013";
+                _segmentoR += Utils.FitStringLength(numeroRegistro.ToString(), 5, 5, '0', 0, true, true, true);
+                _segmentoR += "R ";
+                _segmentoR += ObterCodigoDaOcorrencia(boleto);
+                _segmentoR += new string('0', 44);
+                _segmentoR += " ";
+                _segmentoR += new string('0', 21);
+                _segmentoR += new string(' ', 10);
+
+                for (int i = 0; i < 2; i++)
+                {
+                    if (boleto.Instrucoes.Count > i)
+                        _segmentoR += Utils.FitStringLength(boleto.Instrucoes[i].Descricao, 40, 40, ' ', 0, true, true, false);
+                    else
+                        _segmentoR += new string(' ', 40);
+                }
+
+                _segmentoR += new string(' ', 20);
+                _segmentoR += new string('0', 32);
+                _segmentoR += new string(' ', 9);
+                _segmentoR = Utils.SubstituiCaracteresEspeciais(_segmentoR);
+
+                return _segmentoR;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do SEGMENTO R DO DETALHE do arquivo de REMESSA.", ex);
+            }
         }
 
+        public override string GerarTrailerLoteRemessa(int numeroRegistro)
+        {
+            string _trailer = "";
+            _trailer += "13600015";
+            _trailer += new string(' ', 9);
+            _trailer += numeroRegistro.ToString("000000");
+            _trailer += "000000";
+            _trailer += "00000000000000000";
+            _trailer += "000000";
+            _trailer += "00000000000000000";
+            _trailer += "000000";
+            _trailer += "00000000000000000";
+            _trailer += "000000";
+            _trailer += "00000000000000000";
+            _trailer += new string(' ', 8);
+            _trailer += new string(' ', 117);
+            return _trailer;
+
+        }
+        public override string GerarTrailerArquivoRemessa(int numeroRegistro)
+        {
+            string _trailer = "";
+            _trailer += "13699999";
+            _trailer += new string(' ', 9);
+            _trailer += numeroRegistro.ToString("000000");
+            _trailer += (numeroRegistro + 4).ToString("000000");
+            _trailer += "000000";
+            _trailer += new string(' ', 205);
+            return _trailer;
+        }
         #endregion
 
         public int Mod10Unicred(string seq)
@@ -377,7 +552,12 @@ namespace BoletoNet
         /// </summary>
         public override bool ValidarRemessa(TipoArquivo tipoArquivo, string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, int numeroArquivoRemessa, out string mensagem)
         {
-            throw new BoletoNetException("Nao implantado");
+            bool vRetorno = true;
+            string vMsg = string.Empty;
+            ////IMPLEMENTACAO PENDENTE...
+            mensagem = vMsg;
+            return vRetorno;
+
         }
     }
 }
