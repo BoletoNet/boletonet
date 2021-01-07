@@ -186,11 +186,43 @@ namespace BoletoNet
         }
 
         #region Metodos de Geracao do Arquivo de Remessa
-        public override string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
-        {
-            throw new BoletoNetException("Nao implantado");
-        }
         public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa, Boleto boletos)
+        {
+            try
+            {
+                try
+                {
+                    string complemento = new string(' ', 277);
+                    string _header;
+                    
+                    _header = "01REMESSA01COBRANCA       ";
+                    _header += Utils.FitStringLength(cedente.Codigo.ToString(), 20, 20, '0', 0, true, true, true);
+                    _header += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false).ToUpper();
+                    _header += "084";
+                    _header += "UNIPRIME       ";
+                    _header += DateTime.Now.ToString("ddMMyy");
+                    _header += "        ";
+                    _header += "MX";
+                    _header += Utils.FitStringLength(numeroArquivoRemessa.ToString(), 7, 7, '0', 0, true, true, true);
+                    _header += complemento;
+                    _header += "000001";
+
+                    _header = Utils.SubstituiCaracteresEspeciais(_header);
+
+                    return _header;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Erro ao gerar HEADER do arquivo de remessa do CNAB400.", ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro durante a geração do HEADER do arquivo de REMESSA.", ex);
+            }
+        }
+
+        public override string GerarDetalheRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
         {
             throw new BoletoNetException("Nao implantado");
         }
@@ -198,17 +230,6 @@ namespace BoletoNet
         {
             throw new BoletoNetException("Nao implantado");
 
-        }
-
-        public override string GerarHeaderRemessa(Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
-        {
-
-            throw new BoletoNetException("Nao implantado");
-        }
-
-        public override string GerarHeaderRemessa(string numeroConvenio, Cedente cedente, TipoArquivo tipoArquivo, int numeroArquivoRemessa)
-        {
-            throw new BoletoNetException("Nao implantado");
         }
 
         private string GerarHeaderLoteRemessaCNAB240(Cedente cedente, int numeroArquivoRemessa)
