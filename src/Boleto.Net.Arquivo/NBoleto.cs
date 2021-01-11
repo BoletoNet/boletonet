@@ -138,7 +138,7 @@ namespace BoletoNet.Arquivo
                 bb.CodigoBanco = _codigoBanco;
                 bb.MostrarEnderecoCedente = true;                
                 bb.FormatoCarne = true;
-                bb.OcultarInstrucoes = true;
+                bb.OcultarInstrucoesImpressao = true;
                 DateTime vencimento = DateTime.Now.AddDays(10);
 
                 Instrucao_Sicredi item1 = new Instrucao_Sicredi((int)EnumInstrucoes_Sicredi.AlteracaoOutrosDados_Desconto, (Double)50.90, AbstractInstrucao.EnumTipoValor.Reais);
@@ -200,6 +200,8 @@ namespace BoletoNet.Arquivo
                 bb = new BoletoBancario();
                 bb.CodigoBanco = _codigoBanco;
 
+                bb.OcultarInstrucoesImpressao = true;
+
                 DateTime vencimento = DateTime.Now.AddDays(10);
 
                 Instrucao_Itau item1 = new Instrucao_Itau(9, 5);
@@ -230,6 +232,19 @@ namespace BoletoNet.Arquivo
                     item3.Descricao += ("1,00 por dia de antecipação.");
                     b.Instrucoes.Add(item3);
                 }
+
+               
+                // Demonstrativo
+                DemonstrativoValoresBoleto.GrupoDemonstrativo demonstrativoNet = new DemonstrativoValoresBoleto.GrupoDemonstrativo();
+                demonstrativoNet.Descricao = "Detalhamento";
+
+                RelatorioValoresBoleto.ItemDemonstrativo itemDemonstrativo = new RelatorioValoresBoleto.ItemDemonstrativo();
+
+                itemDemonstrativo.Descricao = "Referente a nota fiscal 123456";
+
+                demonstrativoNet.Itens.Add(itemDemonstrativo);
+
+                b.Demonstrativos.Add(demonstrativoNet);
 
                 bb.Boleto = b;
                 bb.Boleto.Valida();
