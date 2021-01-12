@@ -523,6 +523,30 @@ namespace BoletoNet {
         /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr class=&quot;ct h13&quot;&gt;
+        ///						&lt;td class=&quot;w113&quot;&gt;Uso do banco&lt;/td&gt;
+        ///						&lt;td class=&quot;w83&quot;&gt;Carteira&lt;/td&gt;
+        ///						&lt;td class=&quot;w53&quot;&gt;Espécie&lt;/td&gt;
+        ///						&lt;td class=&quot;w123&quot;&gt;Quantidade&lt;/td&gt;
+        ///						&lt;td class=&quot;w72&quot;&gt;(x) Valor&lt;/td&gt;
+        ///						&lt;td class=&quot;w180&quot;&gt;(=) Valor documento&lt;/td&gt;
+        ///				&lt;/tr&gt;
+        ///				&lt;tr class=&quot;cp h12 rBb&quot;&gt;
+        ///						&lt;td&gt;&lt;/td&gt;
+        ///						&lt;td class=&quot;Al&quot;&gt;@CARTEIRA&lt;/td&gt;
+        ///						&lt;td class=&quot;Al&quot;&gt;@ESPECIE&lt;/td&gt;
+        ///						&lt;td&gt;@QUANTIDADE&lt;/td&gt;
+        ///						&lt;td&gt;@VALORDOCUMENTO&lt;/td&gt;
+        ///						&lt;td c [o restante da cadeia de caracteres foi truncado]&quot;;.
+        /// </summary>
+        internal static string ReciboCedenteParte5 {
+            get {
+                return ResourceManager.GetString("ReciboCedenteParte5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
+        ///				&lt;tr class=&quot;ct h13&quot;&gt;
         ///						&lt;td class=&quot;w113&quot;&gt;Data do Documento&lt;/td&gt;
         ///						&lt;td class=&quot;w83&quot;&gt;Carteira&lt;/td&gt;
         ///						&lt;td class=&quot;w53&quot;&gt;Espécie&lt;/td&gt;
@@ -537,9 +561,9 @@ namespace BoletoNet {
         ///						&lt;td&gt;@QUANTIDADE&lt;/td&gt;
         ///						&lt;td&gt;@VALORDOCUMENT [o restante da cadeia de caracteres foi truncado]&quot;;.
         /// </summary>
-        internal static string ReciboCedenteParte5 {
+        internal static string ReciboCedenteParte52 {
             get {
-                return ResourceManager.GetString("ReciboCedenteParte5", resourceCulture);
+                return ResourceManager.GetString("ReciboCedenteParte52", resourceCulture);
             }
         }
         
@@ -622,6 +646,26 @@ namespace BoletoNet {
         internal static string ReciboCedenteRelatorioValores {
             get {
                 return ResourceManager.GetString("ReciboCedenteRelatorioValores", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
+        ///				&lt;tr class=&quot;BHead BT2&quot;&gt;
+        ///						&lt;td class=&quot;imgLogo Al&quot;&gt;&lt;img src=&quot;@URLIMAGEMLOGO&quot; /&gt;&lt;/td&gt;
+        ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
+        ///						&lt;td class=&quot;w65 Ab bc Ac&quot;&gt;@CODIGOBANCO-@DIGITOBANCO&lt;/td&gt;
+        ///						&lt;td class=&quot;barra&quot;&gt;&lt;img src=&quot;@URLIMAGEMBARRA&quot; /&gt;&lt;/td&gt;
+        ///						&lt;td class=&quot;w500 Ar ld&quot; valign=&quot;bottom&quot;&gt;RECIBO DO SACADO&lt;/td&gt;
+        ///				&lt;/tr&gt;
+        ///			&lt;/table&gt;				
+        ///			&lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
+        ///				&lt;tr class=&quot;ct h13&quot;&gt;
+        ///						&lt;td&gt;Local de pagame [o restante da cadeia de caracteres foi truncado]&quot;;.
+        /// </summary>
+        internal static string ReciboCedenteRelatorioValores2 {
+            get {
+                return ResourceManager.GetString("ReciboCedenteRelatorioValores2", resourceCulture);
             }
         }
         
