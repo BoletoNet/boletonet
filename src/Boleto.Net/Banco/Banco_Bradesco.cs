@@ -778,7 +778,7 @@ namespace BoletoNet
                         _header = GerarHeaderRemessaCNAB240();
                         break;
                     case TipoArquivo.CNAB400:
-                        _header = GerarHeaderRemessaCNAB400(int.Parse(numeroConvenio), cedente, numeroArquivoRemessa);
+                        _header = GerarHeaderRemessaCNAB400(cedente, numeroArquivoRemessa);
                         break;
                     case TipoArquivo.Outro:
                         throw new Exception("Tipo de arquivo inexistente.");
@@ -798,7 +798,7 @@ namespace BoletoNet
             throw new NotImplementedException("Função não implementada.");
         }
 
-        public string GerarHeaderRemessaCNAB400(int numeroConvenio, Cedente cedente, int numeroArquivoRemessa)
+        public string GerarHeaderRemessaCNAB400(Cedente cedente, int numeroArquivoRemessa)
         {
             try
             {

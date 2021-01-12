@@ -196,7 +196,7 @@ namespace BoletoNet
         }
 
         [Browsable(true), Description("Oculta as intruções do boleto")]
-        public bool OcultarInstrucoes
+        public bool OcultarInstrucoesImpressao
         {
             get { return Utils.ToBool(ViewState["4"]); }
             set { ViewState["4"] = value; }
@@ -252,6 +252,12 @@ namespace BoletoNet
             set { ViewState["11"] = value; }
         }
 
+        [Browsable(true), Description("Gerar Recibo do Cedente no Demonstrativo Modelo2")]
+        public bool GerarReciboCedenteDemonstrativoModelo2
+        {
+            get { return Utils.ToBool(ViewState["12"]); }
+            set { ViewState["12"] = value; }
+        }
 
         #endregion Propriedades
 
@@ -362,7 +368,7 @@ namespace BoletoNet
         }
 
         #region Html
-        public string GeraHtmlInstrucoes()
+        public string GeraHtmlInstrucoesImpressao()
         {
             try
             {
@@ -517,6 +523,7 @@ namespace BoletoNet
             }
         }
 
+       
         private void MontaInstrucaoCaixa()
         {
             //Suelton - 12/03/2018
@@ -593,14 +600,22 @@ namespace BoletoNet
             }
 
             //Oculta o cabeçalho das instruções do boleto
-            if (!OcultarInstrucoes)
-                html.Append(GeraHtmlInstrucoes());
+            if (!OcultarInstrucoesImpressao)
+                html.Append(GeraHtmlInstrucoesImpressao());
 
             if (this.ExibirDemonstrativo && this.Boleto.Demonstrativos.Any())
             {
-                html.Append(Html.ReciboCedenteRelatorioValores);
-                html.Append(Html.ReciboCedenteParte5);
-
+                if (GerarReciboCedenteDemonstrativoModelo2)
+                {
+                    html.Append(Html.ReciboCedenteRelatorioValores2);
+                    html.Append(Html.ReciboCedenteParte52);
+                }
+                else
+                {
+                    html.Append(Html.ReciboCedenteRelatorioValores);
+                    html.Append(Html.ReciboCedenteParte5);
+                }
+                
                 html.Append(Html.CabecalhoTabelaDemonstrativo);
 
                 var grupoDemonstrativo = new StringBuilder();

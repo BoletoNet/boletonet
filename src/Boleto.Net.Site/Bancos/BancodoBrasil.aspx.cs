@@ -93,7 +93,7 @@ public partial class Bancos_BancodoBrasil : System.Web.UI.Page
         boletoBancario.AjustaTamanhoFonte(12, tamanhoFonteInstrucaoImpressao:14);
 
         boletoBancario.MostrarComprovanteEntrega = (Request.Url.Query == "?show");
-        boletoBancario.OcultarInstrucoes = true;
+        boletoBancario.OcultarInstrucoesImpressao = true;
         boletoBancario.FormatoPropaganda = (Request.Url.Query == "?formatopropaganda");
         boletoBancario.ImagemPropaganda = GetBase64StringForImage(Server.MapPath("/prop.jpg"));
 
