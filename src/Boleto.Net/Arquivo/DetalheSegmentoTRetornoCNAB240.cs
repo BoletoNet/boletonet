@@ -115,6 +115,8 @@ namespace BoletoNet
 
         public string NossoNumeroDv { get; set; }
 
+        public string NumeroTitulo { get; set; }
+
         public int NumeroParcela { get; set; }
 
         public short? ModalidadeCobranca { get; set; }

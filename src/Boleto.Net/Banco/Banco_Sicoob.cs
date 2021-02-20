@@ -1058,8 +1058,9 @@ namespace BoletoNet
 
                 #region Nosso Numero
                 var nossoNumeroCompleto = registro.Substring(37, 20);
-            
-                detalhe.NossoNumero = nossoNumeroCompleto.Substring(0, 9);
+
+                detalhe.NossoNumero = nossoNumeroCompleto;
+                detalhe.NumeroTitulo = nossoNumeroCompleto.Substring(0, 9);
                 detalhe.NossoNumeroDv = nossoNumeroCompleto.Substring(9, 1);
                 detalhe.NumeroParcela = Convert.ToInt32(nossoNumeroCompleto.Substring(10, 2));
                 detalhe.ModalidadeCobranca = Convert.ToInt16(nossoNumeroCompleto.Substring(12, 2));
