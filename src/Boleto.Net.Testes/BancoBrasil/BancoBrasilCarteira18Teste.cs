@@ -14,7 +14,7 @@ namespace Boleto.Net.Testes.BancoBrasil
         [TestInitialize]
         public void TestInitialize()
         {
-            DateTime vencimento = new DateTime(2012, 12, 3);
+            DateTime vencimento = new DateTime(2021, 12, 3);
 
             var cedente = new Cedente("00.000.000/0000-00", "Empresa Teste", "0131", "7", "00045110", "X")
             {
@@ -43,7 +43,7 @@ namespace Boleto.Net.Testes.BancoBrasil
 
             const string NOSSO_NUMERO_VALIDO = "0001002852";
 
-            Assert.AreEqual(NOSSO_NUMERO_VALIDO, boletoBancario.Boleto.NossoNumero, "Nosso número inválido");
+            Assert.AreEqual(NOSSO_NUMERO_VALIDO, boletoBancario.Boleto.NossoNumero, "Nosso nï¿½mero invï¿½lido");
         }
 
         [TestMethod, ExpectedException(typeof(Exception))]
@@ -62,7 +62,7 @@ namespace Boleto.Net.Testes.BancoBrasil
             boletoBancario.Boleto.Valida();
 
             string linhaDigitavelValida = boletoBancario.Boleto.CodigoBarra.LinhaDigitavelFormatada;
-            Assert.AreEqual(linhaDigitavelValida, boletoBancario.Boleto.CodigoBarra.LinhaDigitavel, "Linha digitável inválida");
+            Assert.AreEqual(linhaDigitavelValida, boletoBancario.Boleto.CodigoBarra.LinhaDigitavel, "Linha digitï¿½vel invï¿½lida");
         }
 
         [TestMethod]
@@ -84,7 +84,7 @@ namespace Boleto.Net.Testes.BancoBrasil
             var modulo11 = codigo.Modulo11(9);
             string codigoBarraValida = string.Format("{0}{1}{2}", codigo.Substring(0, 4), modulo11, codigo.Substring(4));
 
-            Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.Codigo, codigoBarraValida, "Código de Barra inválido");
+            Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.Codigo, codigoBarraValida, "Cï¿½digo de Barra invï¿½lido");
         }
     }
 }
