@@ -21,7 +21,6 @@ namespace BoletoNet
     {
         private string _dacNossoNumero = string.Empty;
         private int _dacContaCorrente = 0;
-        private int _dacBoleto = 0;
         private int _numeroArquivoRemessa;
 
         /// <summary>
