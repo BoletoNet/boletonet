@@ -80,9 +80,7 @@ namespace Boleto.Net.Testes.BancoBrasil
             var nn = "0010028528";
             var carteira = "18";
 
-            var codigo = string.Format("{0}{1}{2}{3}000000{4}{5}{6}", codigoBanco, moeda, fatorVencimento, valor, cedente, nn, carteira);
-            var modulo11 = codigo.Modulo11(9);
-            string codigoBarraValida = string.Format("{0}{1}{2}", codigo.Substring(0, 4), modulo11, codigo.Substring(4));
+            string codigoBarraValida = "00196882300008420000000001220950001002852818";
 
             Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.Codigo, codigoBarraValida, "C�digo de Barra inv�lido");
         }
