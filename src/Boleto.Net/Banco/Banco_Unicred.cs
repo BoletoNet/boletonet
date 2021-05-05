@@ -221,7 +221,7 @@ namespace BoletoNet
                 _headerLote += "1";
                 _headerLote += DateTime.Now.ToString("ddMMyyyy");
                 //_headerLote += "000000";// DateTime.Now.ToString("HHmmss");
-                _headerLote += DateTime.Now.ToString("HHmmss");
+                _headerLote += DateTime.Now.ToString("HHmm")+"00";
                 _headerLote += numeroArquivoRemessa.ToString("000000");
                 _headerLote += "085";
                 _headerLote += "00000";
@@ -285,7 +285,7 @@ namespace BoletoNet
                 _segmentoP += "0"; //Filler 37 37 1 
                 //_segmentoP += Utils.FitStringLength(boleto.NossoNumero, 11, 11, ' ', 0, true, true, false); //Identificação do Título no Banco 38 48 11
                 _segmentoP += Utils.FitStringLength(boleto.NossoNumero, 10, 10, ' ', 0, true, true, false);
-                _segmentoP += Utils.FitStringLength(Mod11UniCred(boleto.NossoNumero, false).ToString(), 1, 1, ' ', 0, true, true, false);
+                _segmentoP += Utils.FitStringLength(Mod11UniCred(boleto.NossoNumero.Substring(0, 10), false).ToString(), 1, 1, ' ', 0, true, true, false);
                 _segmentoP += new string(' ', 8);
                 _segmentoP += Utils.FitStringLength(boleto.Carteira, 2, 2, ' ', 0, true, true, false);
                 _segmentoP += new string(' ', 4);
