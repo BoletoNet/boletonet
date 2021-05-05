@@ -10,7 +10,7 @@ namespace BoletoNet.Testes
 
         private BoletoBancario GerarBoletoCarteira101()
         {
-            DateTime vencimento = new DateTime(2012, 12, 4);
+            DateTime vencimento = new DateTime(2022, 12, 4);
 
             var cedente = new Cedente("00.000.000/0000-00", "Empresa Teste", "3265", "3309894", "4");
 
@@ -49,9 +49,7 @@ namespace BoletoNet.Testes
 
             boletoBancario.Boleto.Valida();
 
-            //string linhaDigitavelValida = "03399.33095 89400.000009 20061.001010 6 55370000270140";
-            //string linhaDigitavelValida = "03399.33095 89400.000009 20061.101018 1 55370000270140";
-            string linhaDigitavelValida = "03399.33095 89400.000009 20061.101018 1 55370000270140";
+            string linhaDigitavelValida = "03399.33095 89400.000009 20061.101018 1 91890000270140";
 
             Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.LinhaDigitavel, linhaDigitavelValida, "Linha digitável inválida");
         }

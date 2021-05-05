@@ -42,19 +42,17 @@ namespace BoletoNet.Testes
 
             var arquivo = Encoding.ASCII.GetString(mem.ToArray());
             var dataRemessa = string.Format("{0}{1}{2}", DateTime.Today.Day.ToString("00"), DateTime.Today.Month.ToString("00"), DateTime.Today.ToString("yyyy"));
+            var horaRemessa = string.Format("{0}{1}00", DateTime.Now.Hour.ToString("00"), DateTime.Now.Minute.ToString("00"));
             var dataVencimento = boletoBancario.Boleto.DataVencimento;
             var dataVencimentoStr = string.Format("{0}{1}{2}", dataVencimento.Day.ToString("00"), dataVencimento.Month.ToString("00"), dataVencimento.ToString("yyyy"));
             var dataProcessamentoStr = string.Format("{0}{1}{2}", DateTime.Today.Day.ToString("00"), DateTime.Today.Month.ToString("00"), DateTime.Today.ToString("yyyy"));
-            var arquivoTeste = "13600000         235342670000170                    0000190000000795020 EMPRESA MODELO S/A            UNICRED                                 1"+dataRemessa+ "00000000000108500000001                                                                  \r\n" +
-                               "13600011R01  044 2035342670000170                    0000190000000795020 EMPRESA MODELO S/A                                                                                            00000001"+dataRemessa+"                                         \r\n" +
-                               "1360001300001P 010000190000000795020000000000000        09    DOC 123        "+dataVencimentoStr+"000000000105000        N"+dataProcessamentoStr+"300000000000000000000000000000000000000000000000000000000000000000000000000000DOC 123                     0     0000000000 \r\n" +
-                               "1360001300002Q 012035342670000170JOSE DA SILVA                           AV. DAS ROSAS, 10                       JARDIM FLORIDO 86300000CORNELIO PROCOPPR1000000000000000                                        000                            \r\n" +
-                               "13600015         00000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                                                                                                                             \r\n" +
-                               "13699999         000006000010000000                                                                                                                                                                                                             \r\n";
+            var arquivoTeste = "13600000         235342670000170                    00001900000000000010EMPRESA MODELO S/A            UNICRED                                 1" + dataRemessa + horaRemessa + "00000108500000000                                                                  \r\n" +
+                               "13600011R01  044 2035342670000170                    00001900000000795020EMPRESA MODELO S/A                                                                                            00000001" + dataRemessa + "        00                               \r\n" +
+                               "1360001300001P 010000190000000795020000000000000        09    DOC 123        " + dataVencimentoStr + "000000000105000      N N" + dataProcessamentoStr + "5        000000000000000000000000000000000000000               000000000000000DOC 123                  000    090000000000 \r\n" +
+                               "1360001300002Q 012035342670000170JOSE DA SILVA                           AV. DAS ROSAS, 10                       JARDIM FLORIDO 86300000CORNELIO PROCOPPR1000000000000000                                                                       \r\n" +
+                               "13600015         0000040000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                                                                                                                     \r\n" +
+                               "13699999         000001000006000000                                                                                                                                                                                                             \r\n";
             Assert.AreEqual(arquivoTeste, arquivo);
         }
-
-
-        
     }
 }
