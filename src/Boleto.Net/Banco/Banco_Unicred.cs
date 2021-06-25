@@ -93,7 +93,7 @@ namespace BoletoNet
 
             try
             {
-                boleto.NossoNumero = string.Format("{0}{1}", nossoNumero, Mod11UniCred(nossoNumero, false));
+                boleto.NossoNumero = string.Format("{0}{1}", nossoNumero, Mod11UniCred(nossoNumero));
             }
             catch (Exception ex)
             {
@@ -120,7 +120,7 @@ namespace BoletoNet
             int d2 = Mod10Unicred(campo2);
             campo2 = FormataCampoLD(campo2) + d2.ToString();
 
-            string NossoNumLinhaDigitavel = string.Format("{0}{1}", boleto.NossoNumero, Mod11UniCred(boleto.NossoNumero, false));
+            string NossoNumLinhaDigitavel = string.Format("{0}{1}", boleto.NossoNumero, Mod11UniCred(boleto.NossoNumero));
             string campo3 = NossoNumLinhaDigitavel.Substring(NossoNumLinhaDigitavel.Length - 10, 10);
             //A linha digitável nao pode usar a regra de cálculo do DV do barcode pois lá o nosso numero usa uma regra diferente para o DV
             //string campo3 = boleto.CodigoBarra.Codigo.Substring(34, 10);
@@ -152,7 +152,7 @@ namespace BoletoNet
             string valorBoleto = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
             valorBoleto = Utils.FormatCode(valorBoleto, 10);
 
-            var nossoNumero = string.Format("{0}{1}", boleto.NossoNumero, Mod11UniCred(boleto.NossoNumero, false));
+            var nossoNumero = string.Format("{0}{1}", boleto.NossoNumero, Mod11UniCred(boleto.NossoNumero));
             string cmp_livre = Utils.FormatCode(boleto.Cedente.ContaBancaria.Agencia, 4) +
                                Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta, 10) +
                                Utils.FormatCode(nossoNumero, 11);
@@ -285,7 +285,7 @@ namespace BoletoNet
                 _segmentoP += "0"; //Filler 37 37 1 
                 //_segmentoP += Utils.FitStringLength(boleto.NossoNumero, 11, 11, ' ', 0, true, true, false); //Identificação do Título no Banco 38 48 11
                 _segmentoP += Utils.FitStringLength(boleto.NossoNumero, 10, 10, ' ', 0, true, true, false);
-                _segmentoP += Utils.FitStringLength(Mod11UniCred(boleto.NossoNumero.Substring(0, 10), false).ToString(), 1, 1, ' ', 0, true, true, false);
+                _segmentoP += Utils.FitStringLength(Mod11UniCred(boleto.NossoNumero.Substring(0, 10)).ToString(), 1, 1, ' ', 0, true, true, false);
                 _segmentoP += new string(' ', 8);
                 _segmentoP += Utils.FitStringLength(boleto.Carteira, 2, 2, ' ', 0, true, true, false);
                 _segmentoP += new string(' ', 4);
@@ -521,7 +521,7 @@ namespace BoletoNet
             return d1 + d2;
         }
 
-        protected static int Mod11UniCred(string seq, bool ehBarcode)
+        protected static int Mod11UniCred(string seq)
         {
             /* Variaveis
              * -------------
@@ -543,16 +543,10 @@ namespace BoletoNet
             }
 
             d = 11 - (s % 11);
-            if (ehBarcode)
-            {
-                if (d == 0 || d >= 10)
-                    d = 1;
-            }
-            else
-            {
-                if (d == 0 || d >= 10)
-                    d = 0;
-            }
+
+
+            if (d == 0 || d >= 10)
+                d = 0;
 
             return d;
         }
@@ -584,7 +578,7 @@ namespace BoletoNet
 
             d = 11 - (s % 11);
             if (d == 0 || d == 11 || d == 10)
-                d = 0;
+                d = 1;
             return d;
         }
 
