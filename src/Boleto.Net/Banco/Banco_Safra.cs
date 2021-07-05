@@ -474,17 +474,17 @@ namespace BoletoNet
             switch (codigoEspecie)
             {
                 case "01":
-                    return 02;
+                    return 1;
                 case "02":
-                    return 12;
+                    return 2;
                 case "03":
-                    return 16;
+                    return 3;
                 case "05":
-                    return 17;
+                    return 5;
                 case "09":
-                    return 04;
+                    return 9;
                 default:
-                    return 99;
+                    return 1;
             }
         }
 
