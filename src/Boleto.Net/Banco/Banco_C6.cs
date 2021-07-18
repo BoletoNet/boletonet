@@ -40,13 +40,13 @@ namespace BoletoNet
                 throw new ArgumentException("Carteira não informada ou inválida.");
 
             if (!carteirasImplementadas.Contains(carteiraInt))
-                throw new ArgumentException($"Carteira {carteiraInt} não implementada (Carteiras disponíveis: {string.Join(",", carteirasImplementadas)}).");
+                throw new ArgumentException(string.Format("Carteira {0} não implementada (Carteiras disponíveis: {1}).", carteiraInt, string.Join(",", carteirasImplementadas)));
 
             if (string.IsNullOrEmpty(boleto.TipoModalidade) || !int.TryParse(boleto.TipoModalidade, out int tipoModalidadeInt))
-                throw new ArgumentException($"{nameof(boleto.TipoModalidade)} não informada ou inválida para o boleto (Corresponde ao IdentificadorLayout para o C6 Bank).");
+                throw new ArgumentException(string.Format("{0} não informada ou inválida para o boleto (Corresponde ao IdentificadorLayout para o C6 Bank).", nameof(boleto.TipoModalidade)));
 
             if (!possiveisModalidadesIdentificadorLayout.Contains(tipoModalidadeInt))
-                throw new ArgumentException($"Modalidade informada {tipoModalidadeInt} é inválida (Modalidades disponíveis: {string.Join(",", possiveisModalidadesIdentificadorLayout)}).");
+                throw new ArgumentException(string.Format("Modalidade informada {0} é inválida (Modalidades disponíveis: {1}).", tipoModalidadeInt, string.Join(",", possiveisModalidadesIdentificadorLayout)));
 
             if (boleto.NossoNumero.Length != 10)
                 throw new ArgumentException("Nosso número deve possuir 10 posições");
