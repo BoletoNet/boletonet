@@ -83,6 +83,7 @@
     <Compile Include="EnumExtensionTeste.cs" />
     <Compile Include="AbstractBancoTeste.cs" />
     <Compile Include="Retorno\NossoNumeroRetornoTeste.cs" />
+    <Compile Include="BancoC6Teste.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Boleto.Net\Boleto.Net.csproj">
