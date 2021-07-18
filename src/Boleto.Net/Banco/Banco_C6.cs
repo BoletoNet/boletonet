@@ -36,13 +36,16 @@ namespace BoletoNet
             var carteirasImplementadas = new int[] { 10, 20, 21, 22, 23, 24 };
             var possiveisModalidadesIdentificadorLayout = new int[] { 3, 4 };
 
-            if (string.IsNullOrEmpty(boleto.Carteira) || !int.TryParse(boleto.Carteira, out int carteiraInt))
+            int carteiraInt;
+            int tipoModalidadeInt;
+
+            if (string.IsNullOrEmpty(boleto.Carteira) || !int.TryParse(boleto.Carteira, out carteiraInt))
                 throw new ArgumentException("Carteira não informada ou inválida.");
 
             if (!carteirasImplementadas.Contains(carteiraInt))
                 throw new ArgumentException(string.Format("Carteira {0} não implementada (Carteiras disponíveis: {1}).", carteiraInt, string.Join(",", carteirasImplementadas)));
 
-            if (string.IsNullOrEmpty(boleto.TipoModalidade) || !int.TryParse(boleto.TipoModalidade, out int tipoModalidadeInt))
+            if (string.IsNullOrEmpty(boleto.TipoModalidade) || !int.TryParse(boleto.TipoModalidade, out tipoModalidadeInt))
                 throw new ArgumentException(string.Format("{0} não informada ou inválida para o boleto (Corresponde ao IdentificadorLayout para o C6 Bank).", nameof(boleto.TipoModalidade)));
 
             if (!possiveisModalidadesIdentificadorLayout.Contains(tipoModalidadeInt))
