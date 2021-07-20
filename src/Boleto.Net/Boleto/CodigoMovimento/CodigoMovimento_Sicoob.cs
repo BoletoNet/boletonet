@@ -23,11 +23,11 @@ namespace BoletoNet
         EntradaDeTituloEmCartorio = 23,                               //23 Entrada de título em cartório        
         EntradaRejeitadaPorCEPIrregular = 24,                         //24 Entrada rejeitada por CEP irregular
         ProtestadoEBaixado = 25,                                      //25 Protestado e Baixado (Baixa por Ter Sido Protestado)
+        InstrucaoRejeitada = 26,                                      //26 instrucao rejeitada
         BaixaRejeitada = 27,                                          //27 Baixa rejeitada
         Tarifa = 28,                                                  //28 Tarifa
         RejeicaoDoPagador = 29,                                       //29 Rejeição do pagador
         AlteracaoRejeitada = 30,                                      //30 Alteração rejeitada
-        InstrucaoRejeitada = 32,                                      //32 Instrução rejeitada
         ConfirmacaoDePedidoDeAlteracaoDeOutrosDados = 33,             //33 Confirmação de pedido de alteração de outros dados
         RetiradoDeCartorioEManutencaoEmCarteira = 34,                 //34 Retirado de cartório e manutenção em carteira
         AceiteDoPagador = 35                                          //35 Aceite do pagador
