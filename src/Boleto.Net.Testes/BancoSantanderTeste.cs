@@ -70,7 +70,7 @@ namespace BoletoNet.Testes
         #region Carteira 102
         private BoletoBancario GerarBoletoCarteira101_Com_IOS_8()
         {
-            DateTime vencimento = new DateTime(2013, 4, 23);
+            DateTime vencimento = new DateTime(2021, 8, 20);
 
             var cedente = new Cedente("00.000.000/0000-00", "Empresa Teste", "3719", "", "") { Codigo = "3780457" };
 
@@ -78,7 +78,7 @@ namespace BoletoNet.Testes
 
             boleto.PercentualIOS = 8;
 
-            boleto.DataProcessamento = new DateTime(2013, 4, 15);
+            boleto.DataProcessamento = new DateTime(2021, 7, 20);
 
             //boleto.NumeroDocumento = "20061";
 
@@ -98,9 +98,7 @@ namespace BoletoNet.Testes
 
             boletoBancario.Boleto.Valida();
 
-            //string linhaDigitavelValida = "03399.37807 45700.000024 52084.181016 3 56770000105250";
-            //string linhaDigitavelValida = "03399.37807 45700.000024 52084.281014 8 56770000105250";
-            string linhaDigitavelValida = "03399.37807 45700.000024 52084.281014 8 56770000105250";
+            string linhaDigitavelValida = "03399.37807 45700.000024 52084.281014 8 87180000105250";
 
             Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.LinhaDigitavel, linhaDigitavelValida, "Linha digitável inválida");
         }
@@ -112,8 +110,7 @@ namespace BoletoNet.Testes
 
             boletoBancario.Boleto.Valida();
 
-            //string codigoBarra = "03393567700001052509378045700000025208418101";
-            string codigoBarra = "03398567700001052509378045700000025208428101";
+            string codigoBarra = "03398871800001052509378045700000025208428101";
 
             Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.Codigo, codigoBarra, "Código de Barra inválido");
         }
