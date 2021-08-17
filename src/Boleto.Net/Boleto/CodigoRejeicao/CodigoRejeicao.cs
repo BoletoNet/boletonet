@@ -9,7 +9,7 @@ namespace BoletoNet
 
         #region Variaveis
 
-        private ICodigoRejeicao _ICodigoRejeicao = null;
+        private readonly ICodigoRejeicao _ICodigoRejeicao = null;
 
         #endregion
 

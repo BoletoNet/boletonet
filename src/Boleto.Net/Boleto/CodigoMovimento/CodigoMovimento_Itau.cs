@@ -116,7 +116,7 @@ namespace BoletoNet
             return ObterCorrespondenteFebraban(correspondentesFebraban, (EnumCodigoMovimento_Itau)Codigo);
         }
 
-        private static Dictionary<EnumCodigoMovimento_Itau, string> descricoes = new Dictionary<EnumCodigoMovimento_Itau, string>()
+        private static readonly Dictionary<EnumCodigoMovimento_Itau, string> descricoes = new Dictionary<EnumCodigoMovimento_Itau, string>()
         {
             { EnumCodigoMovimento_Itau.EntradaConfirmadaComPossibilidadeDeMensagem                               , "Entrada Confirmada Com Possibilidade De Mensagem" },
             { EnumCodigoMovimento_Itau.EntradaRejeitada                                                          , "Entrada Rejeitada" },
@@ -193,7 +193,7 @@ namespace BoletoNet
             { EnumCodigoMovimento_Itau.ConfirmaRecebimentoInstrucaoNaoNegativar                                  , "Confirma Recebimento de instrução de não negativar" }
         };
 
-        private static Dictionary<EnumCodigoMovimento_Itau, TipoOcorrenciaRetorno> correspondentesFebraban = new Dictionary<EnumCodigoMovimento_Itau, TipoOcorrenciaRetorno>()
+        private static readonly Dictionary<EnumCodigoMovimento_Itau, TipoOcorrenciaRetorno> correspondentesFebraban = new Dictionary<EnumCodigoMovimento_Itau, TipoOcorrenciaRetorno>()
         {
             { EnumCodigoMovimento_Itau.EntradaConfirmadaComPossibilidadeDeMensagem, TipoOcorrenciaRetorno.EntradaConfirmada },
             { EnumCodigoMovimento_Itau.EntradaRejeitada                           , TipoOcorrenciaRetorno.EntradaRejeitada },

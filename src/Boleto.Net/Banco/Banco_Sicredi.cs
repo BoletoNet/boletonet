@@ -13,7 +13,7 @@ namespace BoletoNet
     /// </Author>
     internal class Banco_Sicredi : AbstractBanco, IBanco
     {
-        private static Dictionary<int, string> carteirasDisponiveis = new Dictionary<int, string>() {
+        private static readonly Dictionary<int, string> carteirasDisponiveis = new Dictionary<int, string>() {
             { 1, "Com Registro" },
             { 3, "Sem Registro" }
         };
@@ -65,7 +65,7 @@ namespace BoletoNet
                 (!codigoCedente.StartsWith(boleto.Cedente.ContaBancaria.Agencia) ||
                  !(codigoCedente.EndsWith(conta) || codigoCedente.EndsWith(conta.Substring(0, conta.Length - 1)))))
                 //throw new BoletoNetException("Código do cedente deve estar no " + infoFormatoCodigoCedente);
-                boleto.Cedente.Codigo = string.Format("{0}{1}{2}", boleto.Cedente.ContaBancaria.Agencia, boleto.Cedente.ContaBancaria.OperacaConta, boleto.Cedente.Codigo);
+                boleto.Cedente.Codigo = string.Format("{0}{1}{2}", boleto.Cedente.ContaBancaria.Agencia, boleto.Cedente.ContaBancaria.OperacaConta, Utils.Right((boleto.Cedente.Codigo + boleto.Cedente.DigitoCedente), 5, '0', true));
 
             if (string.IsNullOrEmpty(boleto.Carteira))
                 throw new BoletoNetException("Tipo de carteira é obrigatório. " + ObterInformacoesCarteirasDisponiveis());
@@ -1144,6 +1144,34 @@ namespace BoletoNet
             return rejeicao;
         }
 
+        // 7.3 Tabela de Motivos da Ocorrência “28 – Tarifas” Maio 2020 v1.6
+        private string LerMotivoRejeicaoTarifas(string codigorejeicao) {
+            var rejeicao = String.Empty;
+
+            if (codigorejeicao.Length >= 2) {
+                #region LISTA DE MOTIVOS
+                List<String> ocorrencias = new List<string>();
+
+                ocorrencias.Add("03-Tarifa de sustação");
+                ocorrencias.Add("04-Tarifa de protesto");
+                ocorrencias.Add("08-Tarifa de custas de protesto");
+                ocorrencias.Add("A9-Tarifa de manutenção de título vencido");
+                ocorrencias.Add("B1-Tarifa de baixa da carteira");
+                ocorrencias.Add("B3-Tarifa de registro de entrada do título");
+                ocorrencias.Add("F5-Tarifa de entrada na rede Sicredi");
+                ocorrencias.Add("S4-Tarifa de Inclusão Negativação");
+                ocorrencias.Add("S5-Tarifa de Exclusão Negativação");
+                #endregion
+
+                var ocorrencia = (from s in ocorrencias where s.Substring(0, 2) == codigorejeicao.Substring(0, 2) select s).FirstOrDefault();
+
+                if (ocorrencia != null)
+                    rejeicao = ocorrencia;
+            }
+
+            return rejeicao;
+        }
+
         public override DetalheRetorno LerDetalheRetornoCNAB400(string registro)
         {
             try
@@ -1228,7 +1256,12 @@ namespace BoletoNet
                 //
                 detalhe.IOF = 0;
                 //Motivos das Rejeições para os Códigos de Ocorrência
-                detalhe.MotivosRejeicao = LerMotivoRejeicao(detalhe.MotivoCodigoOcorrencia);
+                if (detalhe.CodigoOcorrencia == 28) {
+                    detalhe.MotivosRejeicao = LerMotivoRejeicaoTarifas(detalhe.MotivoCodigoOcorrencia);
+                } else {
+                    detalhe.MotivosRejeicao = LerMotivoRejeicao(detalhe.MotivoCodigoOcorrencia);
+                }
+                
                 //Número do Cartório
                 detalhe.NumeroCartorio = 0;
                 //Número do Protocolo

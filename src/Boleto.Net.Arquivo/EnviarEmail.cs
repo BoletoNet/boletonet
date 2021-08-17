@@ -11,7 +11,7 @@ namespace BoletoNet.Arquivo
 {
     public partial class EnviarEmail : Form
     {
-        private string _fileName;
+        private readonly string _fileName;
 
         public EnviarEmail(string fileName)
         {

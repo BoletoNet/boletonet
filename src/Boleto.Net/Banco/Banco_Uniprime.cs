@@ -692,6 +692,8 @@ namespace BoletoNet
 
         public string GerarDetalheRemessaCNAB400(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
         {
+            boleto.Valida(); //Adicionado por Bruno Guelere (para validar o boleto e gerar o Didito Verificador do NossoNumero
+
             try
             {
                 base.GerarDetalheRemessa(boleto, numeroRegistro, tipoArquivo);
@@ -726,10 +728,10 @@ namespace BoletoNet
                 }
 
                 //Identificação do Título no Banco (12, A)
-                _detalhe += Utils.FitStringLength(boleto.NossoNumero, 11, 11, '0', 0, true, true, true); //Nosso Numero (11)
+                _detalhe += Utils.FitStringLength(boleto.NossoNumero, 11, 11, '0', 4, true, true, true); //Nosso Numero (11) - Alterado por Bruno Guelere (27/11/2020)
 
                 // Identificacao do Titulo no banco
-                _detalhe += Mod11Uniprime(boleto.Carteira + Utils.FitStringLength(boleto.NossoNumero, 11, 11, '0', 0, true, true, true), 7); // Digito de Auto Conferencia do Nosso Número (01)
+                _detalhe += boleto.DigitoNossoNumero; //Alterado por Bruno Guelere (27/11/2020) 
                 // brancos
                 _detalhe += new string(' ',10);
 
@@ -767,7 +769,7 @@ namespace BoletoNet
                 }
 
 
-                _detalhe += Utils.Right(boleto.NumeroDocumento, 10, '0', true); //Nº do Documento (10, A)
+                _detalhe += Utils.Right(boleto.NumeroDocumento, 10, ' ', true); //Nº do Documento (10, A)
                 _detalhe += boleto.DataVencimento.ToString("ddMMyy"); //Data do Vencimento do Título (10, N) DDMMAA
 
                 //Valor do Título (13, N)
@@ -988,10 +990,10 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(boleto.Cedente.ContaBancaria.DigitoConta, 1, 1, '0', 0, true, true, true);//D da conta(1)
 
                 //Nosso Número - 383 a 393
-                _detalhe += Utils.FitStringLength(boleto.NossoNumero, 11, 11, '0', 0, true, true, true); //Nosso Numero (11)
+                _detalhe += Utils.FitStringLength(boleto.NossoNumero, 11, 11, '0', 4, true, true, true); //Nosso Numero (11) - Alterado por Bruno Guelere (27/11/2020)
 
                 // Força o NossoNumero a ter 11 dígitos. Alterado por Luiz Ponce 07/07/2012 - 394 a 394
-                _detalhe += Utils.FitStringLength(CalcularDigitoNossoNumero(boleto), 1, 1, '0', 0, true, true, true); //DAC Nosso Número (1, A)
+                _detalhe += boleto.DigitoNossoNumero; //DAC Nosso Número (1, A) - Alterado por Bruno Guelere (27/11/2020)
 
                 //Número sequêncial do registro no arquivo ==> 395 a 400
 

@@ -1,26 +1,59 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 
 namespace BoletoNet.Testes
 {
     [TestClass]
-    public class BancoVotorantimTeste
+    public class BancoC6Teste
     {
-        const int CODIGO_BANCO = 655;
+        private const int CODIGO_BANCO = (int)Enums.Bancos.C6Bank;
         private readonly List<MassaTestes> massaTestes;
 
-        public BancoVotorantimTeste()
+        public BancoC6Teste()
         {
-            massaTestes = new List<MassaTestes>();
+            massaTestes = new List<MassaTestes>()
+            {
+                new MassaTestes
+                {
+                    Cedente = new MassaTestes.CedenteTeste
+                    {
+                        Agencia = "0001",
+                        ContaCorrente = "000000000001"
+                    },
+                    Boleto = new MassaTestes.BoletoTeste
+                    {
+                        Carteira = "21",
+                        Vcto = new DateTime(2020, 4, 25),
+                        Valor = 420.00m,
+                        NossoNumero = "0000113522",
+                        CodigoBarrasEsperado = "33691823600000420000000000000010000113522213",
+                        LinhaDigitavelEsperada = "33690.00009 00000.010009 01135.222139 1 82360000042000"
+                    }
+                },
 
-            //insere testes
-            massaTestes.Add(new MassaTestes { Cedente = new MassaTestes.CedenteTeste { Agencia = "0001", ContaCorrente = "0000000400" }, Boleto = new MassaTestes.BoletoTeste { Carteira = "500", Vcto = new DateTime(2017, 8, 18), Valor = 2820.12m, NossoNumero = "0000003158", CodigoBarrasEsperado = "65591725500002820120000000400500000000315800", LinhaDigitavelEsperada = "65590.00002 00400.500005 00003.158003 1 72550000282012" } });
-            massaTestes.Add(new MassaTestes { Cedente = new MassaTestes.CedenteTeste { Agencia = "0001", ContaCorrente = "0000000078" }, Boleto = new MassaTestes.BoletoTeste { Carteira = "500", Vcto = new DateTime(2017, 8, 14), Valor = 15.20m, NossoNumero = "0000021226", CodigoBarrasEsperado = "65594725100000015200000000078500000002122600", LinhaDigitavelEsperada = "65590.00002 00078.500006 00021.226006 4 72510000001520" } });
-            massaTestes.Add(new MassaTestes { Cedente = new MassaTestes.CedenteTeste { Agencia = "0001", ContaCorrente = "0000000116" }, Boleto = new MassaTestes.BoletoTeste { Carteira = "500", Vcto = new DateTime(2017, 8, 14), Valor = 10.20m, NossoNumero = "0000021226", CodigoBarrasEsperado = "65591725100000010200000000116500000002122600", LinhaDigitavelEsperada = "65590.00002 00116.500000 00021.226006 1 72510000001020" } });
+                new MassaTestes
+                {
+                    Cedente = new MassaTestes.CedenteTeste
+                    {
+                        Agencia = "0001",
+                        ContaCorrente = "000000000002"
+                    },
+                    Boleto = new MassaTestes.BoletoTeste
+                    {
+                        Carteira = "24",
+                        Vcto = new DateTime(2021, 7, 29),
+                        Valor = 456.12m,
+                        NossoNumero = "0000000002",
+                        CodigoBarrasEsperado = "33691869600000456120000000000020000000002243",
+                        LinhaDigitavelEsperada = "33690.00009 00000.020008 00000.022434 1 86960000045612"
+                    }
+                }
+            };
         }
 
         #region Classe para representar massa de testes de boletos a serem testados
+
         private class MassaTestes
         {
             public CedenteTeste Cedente { get; set; }
@@ -48,17 +81,18 @@ namespace BoletoNet.Testes
                 public string LinhaDigitavelEsperada { get; set; }
             }
         }
-        #endregion
 
+        #endregion Classe para representar massa de testes de boletos a serem testados
 
         private BoletoBancario GerarBoletoCarteira500(MassaTestes item)
         {
             var cedente = new Cedente("00.000.000/0000-00", "Empresa Teste", item.Cedente.Agencia, item.Cedente.ContaCorrente);
-            cedente.Convenio = Convert.ToInt64(item.Cedente.ContaCorrente);
+            cedente.Codigo = item.Cedente.ContaCorrente;
 
             Boleto boleto = new Boleto(item.Boleto.Vcto, item.Boleto.Valor, item.Boleto.Carteira, item.Boleto.NossoNumero, cedente);
 
-            //boleto.NumeroDocumento = "20061";
+            const int modalidadeIdentificadorLayoutEmissaoBanco = 3;
+            boleto.TipoModalidade = modalidadeIdentificadorLayoutEmissaoBanco.ToString();
 
             var boletoBancario = new BoletoBancario();
             boletoBancario.CodigoBanco = CODIGO_BANCO;
@@ -68,9 +102,8 @@ namespace BoletoNet.Testes
         }
 
         [TestMethod]
-        public void Votorantim_Carteira_500_NossoNumero()
+        public void NossoNumeroTest()
         {
-
             foreach (MassaTestes item in massaTestes)
             {
                 var boletoBancario = GerarBoletoCarteira500(item);
@@ -80,11 +113,10 @@ namespace BoletoNet.Testes
 
                 Assert.AreEqual(boletoBancario.Boleto.NossoNumero, nossoNumeroValido, "Nosso número inválido");
             }
-
         }
 
         [TestMethod]
-        public void Votorantim_Carteira_500_LinhaDigitavel()
+        public void LinhaDigitavelTest()
         {
             foreach (MassaTestes item in massaTestes)
             {
@@ -95,11 +127,10 @@ namespace BoletoNet.Testes
 
                 Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.LinhaDigitavel, linhaDigitavelValida, "Linha digitável inválida");
             }
-
         }
 
         [TestMethod]
-        public void Votorantim_Carteira_500_CodigoBarra()
+        public void CodigoBarraTest()
         {
             foreach (MassaTestes item in massaTestes)
             {
@@ -110,8 +141,6 @@ namespace BoletoNet.Testes
 
                 Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.Codigo, codigoBarraValida, "Código de Barras inválido");
             }
-             
         }
-
     }
 }

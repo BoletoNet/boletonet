@@ -13,7 +13,7 @@ namespace BoletoNet
         private IBanco _banco;
         private TipoArquivo _tipoArquivo;
         private DetalheRetorno _detalheRetorno;
-        private IArquivoRetorno _arquivoRetorno;
+        private readonly IArquivoRetorno _arquivoRetorno;
 
         #endregion
 

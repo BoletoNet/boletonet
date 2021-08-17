@@ -75,7 +75,7 @@ namespace BoletoNet
         }
 
         #region Dicionários
-        private Dictionary<EnumCodigoMovimento_Sicoob, TipoOcorrenciaRetorno> correspondentesFebraban = new Dictionary<EnumCodigoMovimento_Sicoob, TipoOcorrenciaRetorno>()
+        private readonly Dictionary<EnumCodigoMovimento_Sicoob, TipoOcorrenciaRetorno> correspondentesFebraban = new Dictionary<EnumCodigoMovimento_Sicoob, TipoOcorrenciaRetorno>()
         {
             { EnumCodigoMovimento_Sicoob.EntradaConfirmada                                      ,TipoOcorrenciaRetorno.EntradaConfirmada },
             { EnumCodigoMovimento_Sicoob.EntradaRejeitada                                       ,TipoOcorrenciaRetorno.EntradaRejeitada },
@@ -99,7 +99,7 @@ namespace BoletoNet
             { EnumCodigoMovimento_Sicoob.ProtestadoEBaixado                                     ,TipoOcorrenciaRetorno.ProtestadoEBaixado},
         };
 
-        private Dictionary<EnumCodigoMovimento_Sicoob, string> descricoes = new Dictionary<EnumCodigoMovimento_Sicoob, string>()
+        private readonly Dictionary<EnumCodigoMovimento_Sicoob, string> descricoes = new Dictionary<EnumCodigoMovimento_Sicoob, string>()
         {
             { EnumCodigoMovimento_Sicoob.EntradaConfirmada                                       , "Entrada confirmada"                                             },
             { EnumCodigoMovimento_Sicoob.EntradaRejeitada                                        , "Entrada rejeitada"                                              },
