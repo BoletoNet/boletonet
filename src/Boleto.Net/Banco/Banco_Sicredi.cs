@@ -65,7 +65,7 @@ namespace BoletoNet
                 (!codigoCedente.StartsWith(boleto.Cedente.ContaBancaria.Agencia) ||
                  !(codigoCedente.EndsWith(conta) || codigoCedente.EndsWith(conta.Substring(0, conta.Length - 1)))))
                 //throw new BoletoNetException("Código do cedente deve estar no " + infoFormatoCodigoCedente);
-                boleto.Cedente.Codigo = string.Format("{0}{1}{2}", boleto.Cedente.ContaBancaria.Agencia, boleto.Cedente.ContaBancaria.OperacaConta, boleto.Cedente.Codigo);
+                boleto.Cedente.Codigo = string.Format("{0}{1}{2}", boleto.Cedente.ContaBancaria.Agencia, boleto.Cedente.ContaBancaria.OperacaConta, (boleto.Cedente.Codigo.Length >= 5 ? Utils.Right(boleto.Cedente.Codigo, 5, '0', true) : Utils.Right((boleto.Cedente.Codigo + boleto.Cedente.DigitoCedente), 5, '0', true)));
 
             if (string.IsNullOrEmpty(boleto.Carteira))
                 throw new BoletoNetException("Tipo de carteira é obrigatório. " + ObterInformacoesCarteirasDisponiveis());

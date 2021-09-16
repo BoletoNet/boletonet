@@ -181,6 +181,9 @@ namespace BoletoNet
                     case 21:
                         _IEspecieDocumento = new EspecieDocumento_Banestes(codigoEspecie);
                         break;
+                    case ((int)Enums.Bancos.C6Bank):
+                        _IEspecieDocumento = new EspecieDocumento_C6(codigoEspecie);
+                        break;
                     default:
                         throw new Exception("Código do banco não implementando: " + codigoBanco);
                 }
@@ -229,6 +232,8 @@ namespace BoletoNet
                         return EspecieDocumento_Nordeste.CarregaTodas();
                     case 97:
                         return EspecieDocumento_CrediSIS.CarregaTodas();
+                    case (int) Enums.Bancos.C6Bank:
+                        return EspecieDocumento_C6.CarregaTodas();
                     default:
                         throw new Exception("Espécies do Documento não implementado para o banco : " + codigoBanco);
                 }
