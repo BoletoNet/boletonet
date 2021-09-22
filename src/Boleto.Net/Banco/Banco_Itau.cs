@@ -48,7 +48,7 @@ namespace BoletoNet
             try
             {
                 //Carteiras válidas
-                int[] cv = new int[] { 175, 176, 178, 109, 198, 107, 122, 142, 143, 196, 126, 131, 146, 150, 169, 121, 112, 104 };//MarcielTorres - adicionado a carteira 112
+                int[] cv = new int[] { 175, 176, 178, 109, 198, 107, 122, 142, 143, 196, 126, 131, 146, 150, 169, 121, 112, 104, 138 };//MarcielTorres - adicionado a carteira 112
                 bool valida = false;
 
                 foreach (int c in cv)
@@ -101,10 +101,10 @@ namespace BoletoNet
                     _dacNossoNumero = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta + boleto.Carteira + boleto.NossoNumero);
                 else if (boleto.Carteira != "126" && boleto.Carteira != "131"
                     && boleto.Carteira != "146" && boleto.Carteira != "150"
-                    && boleto.Carteira != "168")
+                    && boleto.Carteira != "168" && boleto.Carteira != "138")
                     _dacNossoNumero = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta + boleto.Carteira + boleto.NossoNumero);
                 else
-                    // Excessão 126 - 131 - 146 - 150 - 168
+                    // Excessão 126 - 131 - 146 - 150 - 168 - 138
                     // carteira/nosso numero
                     _dacNossoNumero = Mod10(boleto.Carteira + boleto.NossoNumero);
 
@@ -155,7 +155,7 @@ namespace BoletoNet
                 string numeroDocumento = Utils.FormatCode(boleto.NumeroDocumento.ToString(), 7);
                 string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo.ToString(), 5);
 
-                if (boleto.Carteira == "175" || boleto.Carteira == "176" || boleto.Carteira == "178" || boleto.Carteira == "109" || boleto.Carteira == "121" || boleto.Carteira == "112" || boleto.Carteira == "104")//MarcielTorres - adicionado a carteira 112
+                if (boleto.Carteira == "175" || boleto.Carteira == "176" || boleto.Carteira == "178" || boleto.Carteira == "109" || boleto.Carteira == "121" || boleto.Carteira == "112" || boleto.Carteira == "104" || boleto.Carteira == "138")//MarcielTorres - adicionado a carteira 112
                 {
                     boleto.CodigoBarra.Codigo =
                         string.Format("{0}{1}{2}{3}{4}{5}{6}{7}{8}{9}000", Codigo, boleto.Moeda,
@@ -224,7 +224,7 @@ namespace BoletoNet
 
                 #endregion UUUUVVVVVVVVVV
 
-                if (boleto.Carteira == "175" || boleto.Carteira == "176" || boleto.Carteira == "178" || boleto.Carteira == "109" || boleto.Carteira == "121" || boleto.Carteira == "112" || boleto.Carteira == "104")//MarcielTorres - adicionado a carteira 112
+                if (boleto.Carteira == "175" || boleto.Carteira == "176" || boleto.Carteira == "178" || boleto.Carteira == "109" || boleto.Carteira == "121" || boleto.Carteira == "112" || boleto.Carteira == "104" || boleto.Carteira == "138")//MarcielTorres - adicionado a carteira 112
                 {
                     #region Definições
                     /* AAABC.CCDDX.DDDDD.DEFFFY.FGGGG.GGHHHZ.K.UUUUVVVVVVVVVV
