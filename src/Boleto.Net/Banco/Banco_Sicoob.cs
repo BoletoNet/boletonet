@@ -264,10 +264,10 @@ namespace BoletoNet
             if (!Utils.IsNumber(boleto.Cedente.Codigo))
                 throw new NotImplementedException("Cedente deve conter apenas numeros.");
             //Verifica se cedente tem 6 caracteres
-            if (!string.IsNullOrEmpty(boleto.Cedente.Codigo) && boleto.Cedente.Codigo.Length != 6)
-                throw new NotImplementedException("Cedente deve ter 6 caracteres.");
+            if (string.IsNullOrEmpty(boleto.Cedente.Codigo) || (boleto.Cedente.Codigo.Length != 6 && boleto.Cedente.Codigo.Length != 7))
+                throw new NotImplementedException("Cedente deve ter 6 ou 7 caracteres (se considerar o dígito).");
             //Verifica se o digito do cedente foi informado (o default -1 vai falhar)
-            if (boleto.Cedente.DigitoCedente==-1)
+            if (boleto.Cedente.Codigo.Length == 6 && boleto.Cedente.DigitoCedente==-1)
                 throw new NotImplementedException("DigitoCedente não informado.");
             //Verifica se cedente foi informado
             if (string.IsNullOrEmpty(boleto.Cedente.Carteira))
