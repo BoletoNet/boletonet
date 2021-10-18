@@ -1,6 +1,7 @@
 using BoletoNet.Util;
 using System;
 using System.Web.UI;
+using BoletoNet.Enums;
 
 [assembly: WebResource("BoletoNet.Imagens.021.jpg", "image/jpg")]
 namespace BoletoNet
@@ -574,7 +575,7 @@ namespace BoletoNet
 
                 var pracaDeCobranca = "00000";
 
-                if (boleto.ApenasRegistrar)
+                if (boleto.TipoEmissao == TipoEmissao.EmissaoPeloCedente)
                 {
                     pracaDeCobranca = "00501";
                 }

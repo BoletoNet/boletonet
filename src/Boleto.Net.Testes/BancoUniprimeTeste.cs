@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using BoletoNet.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BoletoNet.Testes
@@ -25,6 +26,7 @@ namespace BoletoNet.Testes
             boleto.ContaBancaria = new ContaBancaria("0001", "0079502");
             boleto.NumeroDocumento = "DOC 123";
             boleto.ValorBoleto = 1050;
+            boleto.TipoEmissao = TipoEmissao.EmissaoPeloBanco;
             var boletoBancario = new BoletoBancario();
             boletoBancario.CodigoBanco = 084;
             boletoBancario.Boleto = boleto;

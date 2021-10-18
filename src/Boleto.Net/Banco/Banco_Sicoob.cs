@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Web.UI;
+using BoletoNet.Enums;
 using BoletoNet.Util;
 
 [assembly: WebResource("BoletoNet.Imagens.756.jpg", "image/jpg")]
@@ -553,7 +554,7 @@ namespace BoletoNet
 
                 // Tipo de emissão"Tipo de Emissão: 1 - Cooperativa 2 - Cliente"
                 var tipoDeEmissao = "1";
-                if (boleto.ApenasRegistrar)
+                if (boleto.TipoEmissao == TipoEmissao.EmissaoPeloCedente)
                     tipoDeEmissao = "2";
 
                 _detalhe.Append(Utils.FitStringLength(tipoDeEmissao, 1, 1, '0', 0, true, true, true)); // Posição 106 a 106

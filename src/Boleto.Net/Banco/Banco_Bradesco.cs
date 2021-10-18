@@ -1,6 +1,7 @@
 using BoletoNet.Util;
 using System;
 using System.Web.UI;
+using BoletoNet.Enums;
 
 [assembly: WebResource("BoletoNet.Imagens.237.jpg", "image/jpg")]
 
@@ -952,7 +953,7 @@ namespace BoletoNet
                 // 1 = Banco emite e Processa o registro
                 // 2 = Cliente emite e o Banco somente processa
                 //Condição para Emissão da Papeleta de Cobrança(1, N)
-                _detalhe += boleto.ApenasRegistrar ? "2" : "1";
+                _detalhe += boleto.TipoEmissao == TipoEmissao.EmissaoPeloCedente ? "2" : "1";
                 //Ident. se emite papeleta para Débito Automático (1, A)
                 _detalhe += "N";
                 //Identificação da Operação do Banco (10, A) Em Branco
