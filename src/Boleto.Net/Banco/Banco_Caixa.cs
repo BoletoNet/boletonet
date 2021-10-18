@@ -3,6 +3,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Web.UI;
+using BoletoNet.Enums;
 
 [assembly: WebResource("BoletoNet.Imagens.104.jpg", "image/jpg")]
 
@@ -128,7 +129,7 @@ namespace BoletoNet
                     string segundaParteNossoNumero = boleto.NossoNumero.Substring(5, 3);
 
                     // Posição 34
-                    string segundaConstante = "4";// 4 => emissão do boleto pelo cedente
+                    string segundaConstante = boleto.TipoEmissao == TipoEmissao.EmissaoPeloCedente ?  "4" : "1";// 4 => Emissão do boleto pelo cedente, 1 => Emissão pelo banco
 
                     //Posição 35 - 43
                     //De acordo com documentaçao, posição 9 a 17 do nosso numero
