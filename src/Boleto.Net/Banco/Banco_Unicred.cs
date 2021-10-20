@@ -216,7 +216,7 @@ namespace BoletoNet
                 _headerLote += Utils.FitStringLength(cedente.Codigo, 14, 14, '0', 0, true, true, true);
                 //_headerLote += " ";
                 _headerLote += Utils.FitStringLength(cedente.Nome, 30, 30, ' ', 0, true, true, false);
-                _headerLote += Utils.FitStringLength("UNICRED", 30, 30, ' ', 0, true, true, false);
+                _headerLote += Utils.FitStringLength("UNICRED DO BRASIL", 30, 30, ' ', 0, true, true, false);
                 _headerLote += new string(' ', 10);
                 _headerLote += "1";
                 _headerLote += DateTime.Now.ToString("ddMMyyyy");
@@ -335,7 +335,7 @@ namespace BoletoNet
                 _segmentoP += Utils.FitStringLength(boleto.NumeroControle ?? boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, false); //alterado por diegodariolli - 15/03/2018 //Identificação do Título na Empresa 196 220 25 - Alfa
                 //_segmentoP += " ";
                 //_segmentoP += "  ";
-                _segmentoP += new string('0', 1); //Código para Protesto 221 221 1 - Num Zeros
+                _segmentoP += new string('3', 1); //Código para Protesto 221 221 1 - Num Zeros / '3' = Não Protestar
                 //_segmentoP += "0";
                 _segmentoP += new string('0', 2); //Número de Dias para Protesto 222 223 2 - Num 
                 //_segmentoP += "   ";
@@ -395,7 +395,7 @@ namespace BoletoNet
                 }
                 else
                 {
-                    _segmentoQ += "1";
+                    _segmentoQ += "0"; //Tipo de Inscrição = '0' sigfinica que não possui sacador avalista
                     _segmentoQ += new string('0', 15);
                     _segmentoQ += new string(' ', 40);
                 }
