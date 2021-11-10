@@ -50,6 +50,7 @@ namespace BoletoNet
         private string _ajustaTamanhoFonteHtml;
         private bool _ajustaFamiliaFonte = false;
         private string _ajustaFamiliaFonteHtml;
+        private int _tamanhoLarguraBarcode = 1;
         #endregion Variaveis
 
         #region Propriedades
@@ -360,7 +361,16 @@ namespace BoletoNet
             html.Append("</style>");
             _ajustaFamiliaFonteHtml = html.ToString().Replace("$1", "{").Replace("$2", "}");
         }
-
+	
+        /// <summary>
+        /// Ajusta a largura de cada barra do barcode.
+        /// </summary>
+        /// <param name="tamanhoLarguraBarcode">Padrão 1</param>
+        public void AjustaTamanhoLarguraBarcode(int tamanhoLarguraBarcode = 1)
+        {
+            _tamanhoLarguraBarcode = tamanhoLarguraBarcode;
+        }
+	
         #region Html
         public string GeraHtmlInstrucoes()
         {
@@ -1152,7 +1162,7 @@ namespace BoletoNet
             lrImagemBarra = new LinkedResource(ms, MediaTypeNames.Image.Gif);
             lrImagemBarra.ContentId = "barra" + randomSufix; ;
 
-            C2of5i cb = new C2of5i(Boleto.CodigoBarra.Codigo, 1, 50, Boleto.CodigoBarra.Codigo.Length);
+            C2of5i cb = new C2of5i(Boleto.CodigoBarra.Codigo, _tamanhoLarguraBarcode, 50, Boleto.CodigoBarra.Codigo.Length);
             ms = new MemoryStream(Utils.ConvertImageToByte(cb.ToBitmap()));
 
             lrImagemCodigoBarra = new LinkedResource(ms, MediaTypeNames.Image.Gif);
@@ -1229,7 +1239,7 @@ namespace BoletoNet
             }
 
             string fnCodigoBarras = System.IO.Path.GetTempFileName();
-            C2of5i cb = new C2of5i(Boleto.CodigoBarra.Codigo, 1, 50, Boleto.CodigoBarra.Codigo.Length);
+            C2of5i cb = new C2of5i(Boleto.CodigoBarra.Codigo, _tamanhoLarguraBarcode, 50, Boleto.CodigoBarra.Codigo.Length);
             cb.ToBitmap().Save(fnCodigoBarras);
 
             //return HtmlOffLine(fnCorte, fnLogo, fnBarra, fnPonto, fnBarraInterna, fnCodigoBarras).ToString();
@@ -1338,7 +1348,7 @@ namespace BoletoNet
             //Prepara o arquivo do código de barras para ser usado no html
             string fnCodigoBarrasUrl = string.Format("{0}{1}_codigoBarras.jpg", url, fileName);
 
-            C2of5i cb = new C2of5i(Boleto.CodigoBarra.Codigo, 1, 50, Boleto.CodigoBarra.Codigo.Length);
+            C2of5i cb = new C2of5i(Boleto.CodigoBarra.Codigo, _tamanhoLarguraBarcode, 50, Boleto.CodigoBarra.Codigo.Length);
 
             //Salva o arquivo conforme o fileName
             cb.ToBitmap().Save(fnCodigoBarras);
@@ -1373,7 +1383,7 @@ namespace BoletoNet
                 string base64Barra = Convert.ToBase64String(new BinaryReader(streamBarra).ReadBytes((int)streamBarra.Length));
                 string fnBarra = string.Format("data:image/gif;base64,{0}", base64Barra);
 
-                var cb = new C2of5i(Boleto.CodigoBarra.Codigo, 1, 50, Boleto.CodigoBarra.Codigo.Length);
+                var cb = new C2of5i(Boleto.CodigoBarra.Codigo, _tamanhoLarguraBarcode, 50, Boleto.CodigoBarra.Codigo.Length);
                 string base64CodigoBarras = Convert.ToBase64String(cb.ToByte());
                 string fnCodigoBarras = string.Format("data:image/gif;base64,{0}", base64CodigoBarras);
 
@@ -1491,7 +1501,7 @@ namespace BoletoNet
 
         public System.Drawing.Image GeraImagemCodigoBarras(Boleto boleto)
         {
-            C2of5i cb = new C2of5i(boleto.CodigoBarra.Codigo, 1, 50, boleto.CodigoBarra.Codigo.Length);
+            C2of5i cb = new C2of5i(boleto.CodigoBarra.Codigo, _tamanhoLarguraBarcode, 50, boleto.CodigoBarra.Codigo.Length);
             return cb.ToBitmap();
         }
 
