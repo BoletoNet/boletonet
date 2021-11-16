@@ -895,7 +895,8 @@ namespace BoletoNet
                 .Replace(
                     "@VALORCOBRADO",
                     (Boleto.ValorCobrado == 0 ? "" : Boleto.ValorCobrado.ToString("C", CultureInfo.GetCultureInfo("PT-BR"))))
-                .Replace("@OUTROSACRESCIMOS", "")
+                .Replace("@OUTROSACRESCIMOS",
+                    (Boleto.OutrosAcrescimos == 0 ? "" : Boleto.OutrosAcrescimos.ToString("C", CultureInfo.GetCultureInfo("PT-BR"))))
                 .Replace("@OUTRASDEDUCOES", "")
                 .Replace(
                     "@DESCONTOS",
