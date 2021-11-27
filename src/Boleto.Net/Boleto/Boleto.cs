@@ -202,6 +202,19 @@ namespace BoletoNet
 			set { this._valorCobrado = value; }
 		}
 
+
+		/// <summary> 
+		/// Retorna o valor impresso no cod. de barras 
+		/// </summary>
+		/// <remarks>
+		/// Se o valor ValorCobrado estiver preenchido retorna o valor cobrado,
+        /// caso contrário retorna o ValorBoleto.
+		/// </remarks>
+		public decimal ValorCodBarra
+        {
+            get { return (this.ValorCobrado > 0) ? this.ValorCobrado : this.ValorBoleto; }
+        }
+
 		/// <summary> 
 		/// Retorna o campo para a 1 linha da instrucao.
 		/// </summary>
