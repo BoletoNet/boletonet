@@ -53,8 +53,7 @@ namespace BoletoNet
             long fatorVencimento = FatorVencimento(boleto);
 
             // Posição 10 - 19     
-            var valor = boleto.ValorCobrado > boleto.ValorBoleto ? boleto.ValorCobrado : boleto.ValorBoleto;
-            string valorDocumento = valor.ToString("f").Replace(",", "").Replace(".", "");
+            string valorDocumento = boleto.ValorCodBarra.ToString("f").Replace(",", "").Replace(".", "");
             valorDocumento = Utils.FormatCode(valorDocumento, 10);
 
 
@@ -328,7 +327,7 @@ namespace BoletoNet
 
                 long FFFF = FatorVencimento(boleto);
 
-                string VVVVVVVVVV = boleto.ValorBoleto.ToString("f").Replace(",", "").Replace(".", "");
+                string VVVVVVVVVV = boleto.ValorCodBarra.ToString("f").Replace(",", "").Replace(".", "");
                 VVVVVVVVVV = Utils.FormatCode(VVVVVVVVVV, 10);
 
                 if (Utils.ToInt64(VVVVVVVVVV) == 0)

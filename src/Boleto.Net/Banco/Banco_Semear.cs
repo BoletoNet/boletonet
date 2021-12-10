@@ -100,8 +100,7 @@ namespace BoletoNet
 
             string fatorVencimento = FatorVencimento(boleto).ToString();
 
-            var valor = boleto.ValorCobrado > boleto.ValorBoleto ? boleto.ValorCobrado : boleto.ValorBoleto;
-            string valorFormatado = valor.ToString("N2").Replace(",", "").Replace(".", "");
+            string valorFormatado = boleto.ValorCodBarra.ToString("N2").Replace(",", "").Replace(".", "");
             valorFormatado = Utils.FormatCode(valorFormatado, 10);
 
             Grupo5 = string.Format("{0}{1}", fatorVencimento, valorFormatado);
@@ -129,8 +128,7 @@ namespace BoletoNet
         /// 
         public override void FormataCodigoBarra(Boleto boleto)
         {
-            var valor = boleto.ValorCobrado > boleto.ValorBoleto ? boleto.ValorCobrado : boleto.ValorBoleto;
-            var valorBoleto = valor.ToString("N2").Replace(",", "").Replace(".", "");
+            var valorBoleto = boleto.ValorCodBarra.ToString("N2").Replace(",", "").Replace(".", "");
             valorBoleto = Utils.FormatCode(valorBoleto, 10);
 
             if (boleto.Carteira == "02") // Com registro
