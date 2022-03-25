@@ -724,12 +724,16 @@ namespace BoletoNet
 
                 if (Sacado.Endereco.End != string.Empty && enderecoSacado != string.Empty)
                 {
-                    string Numero = !string.IsNullOrEmpty(Sacado.Endereco.Numero) ? ", " + Sacado.Endereco.Numero : "";
+                    var numCpl = "";
+
+                    numCpl += (string.IsNullOrEmpty(Sacado.Endereco.Numero) ? "" : (numCpl == "" ? "" : ", ") + Sacado.Endereco.Numero);
+                    numCpl += (string.IsNullOrEmpty(Sacado.Endereco.Complemento) ? "" : (numCpl == "" ? "" : ", ") + Sacado.Endereco.Complemento);
+                    numCpl = ((numCpl == "" ? "" : ", ") + numCpl);
 
                     if (infoSacado == string.Empty)
-                        infoSacado += InfoSacado.Render(Sacado.Endereco.End + Numero, enderecoSacado, false);
+                        infoSacado += InfoSacado.Render(Sacado.Endereco.End + numCpl, enderecoSacado, false);
                     else
-                        infoSacado += InfoSacado.Render(Sacado.Endereco.End + Numero, enderecoSacado, true);
+                        infoSacado += InfoSacado.Render(Sacado.Endereco.End + numCpl, enderecoSacado, true);
                 }
                 //"Informações do Sacado" foi introduzido para possibilitar que o boleto na informe somente o endereço do sacado
                 //como em outras situaçoes onde se imprime matriculas, codigos e etc, sobre o sacado.
