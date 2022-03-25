@@ -1,6 +1,7 @@
 using BoletoNet.Util;
 using System;
 using System.Web.UI;
+using BoletoNet.Enums;
 
 [assembly: WebResource("BoletoNet.Imagens.237.jpg", "image/jpg")]
 
@@ -108,19 +109,11 @@ namespace BoletoNet
 
             string Grupo5 = string.Empty;
 
-            //string FFFF = boleto.CodigoBarra.Codigo.Substring(5, 4);//FatorVencimento(boleto).ToString() ;
             string FFFF = FatorVencimento(boleto).ToString();
-
-            //if (boleto.Carteira == "06" && !Utils.DataValida(boleto.DataVencimento))
-            //    FFFF = "0000";
-
-            var valor = boleto.ValorCobrado > boleto.ValorBoleto ? boleto.ValorCobrado : boleto.ValorBoleto;
-            string VVVVVVVVVV = valor.ToString("N2").Replace(",", "").Replace(".", "");
+            
+            string VVVVVVVVVV = boleto.ValorCodBarra.ToString("N2").Replace(",", "").Replace(".", "");
             VVVVVVVVVV = Utils.FormatCode(VVVVVVVVVV, 10);
-
-            //if (Utils.ToInt64(VVVVVVVVVV) == 0)
-            //    VVVVVVVVVV = "000";
-
+            
             Grupo5 = string.Format("{0}{1}", FFFF, VVVVVVVVVV);
 
             #endregion Campo 5
@@ -147,8 +140,7 @@ namespace BoletoNet
         /// 
         public override void FormataCodigoBarra(Boleto boleto)
         {
-            var valor = boleto.ValorCobrado > boleto.ValorBoleto ? boleto.ValorCobrado : boleto.ValorBoleto;
-            var valorBoleto = valor.ToString("N2").Replace(",", "").Replace(".", "");
+            var valorBoleto = boleto.ValorCodBarra.ToString("N2").Replace(",", "").Replace(".", "");
             valorBoleto = Utils.FormatCode(valorBoleto, 10);
 
             if (boleto.Carteira == "02" || boleto.Carteira == "03" || boleto.Carteira == "04" || boleto.Carteira == "09" || boleto.Carteira == "19" || boleto.Carteira == "26") // Com registro
@@ -952,7 +944,7 @@ namespace BoletoNet
                 // 1 = Banco emite e Processa o registro
                 // 2 = Cliente emite e o Banco somente processa
                 //Condição para Emissão da Papeleta de Cobrança(1, N)
-                _detalhe += boleto.ApenasRegistrar ? "2" : "1";
+                _detalhe += boleto.TipoEmissao == TipoEmissao.EmissaoPeloCedente ? "2" : "1";
                 //Ident. se emite papeleta para Débito Automático (1, A)
                 _detalhe += "N";
                 //Identificação da Operação do Banco (10, A) Em Branco

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Web.UI;
+using BoletoNet.Enums;
 using BoletoNet.Util;
 
 [assembly: WebResource("BoletoNet.Imagens.756.jpg", "image/jpg")]
@@ -117,16 +118,7 @@ namespace BoletoNet
             if (boleto.NumeroParcela <= 0)
                 boleto.NumeroParcela = 1;
 
-            //Variaveis
-            StringBuilder novoNumero = new StringBuilder();
- 
-            //Formatando
-            for (int i = 0; i < (3 - boleto.NumeroParcela.ToString().Length); i++)
-            {
-                novoNumero.Append("0");
-            }
-            novoNumero.Append(boleto.NumeroParcela.ToString());
-            return novoNumero.ToString();
+            return boleto.NumeroParcela.ToString().PadLeft(3,'0');
         }
 
         public static long FatorVencimento2000(Boleto boleto)
@@ -266,15 +258,38 @@ namespace BoletoNet
 
         public override void ValidaBoleto(Boleto boleto)
         {
+            //Verifica se cedente foi informado 
+            if (string.IsNullOrEmpty(boleto.Cedente.Codigo))
+                throw new NotImplementedException("Cedente não informado.");
+            //Verificar se cedente tem apenas numeros
+            if (!Utils.IsNumber(boleto.Cedente.Codigo))
+                throw new NotImplementedException("Cedente deve conter apenas numeros.");
+            //Verifica se cedente tem 6 caracteres
+            if (string.IsNullOrEmpty(boleto.Cedente.Codigo) || (boleto.Cedente.Codigo.Length != 6 && boleto.Cedente.Codigo.Length != 7))
+                throw new NotImplementedException("Cedente deve ter 6 ou 7 caracteres (se considerar o dígito).");
+            //Verifica se o digito do cedente foi informado (o default -1 vai falhar)
+            if (boleto.Cedente.Codigo.Length == 6 && boleto.Cedente.DigitoCedente==-1)
+                throw new NotImplementedException("DigitoCedente não informado.");
+            //Verifica se cedente foi informado
+            if (string.IsNullOrEmpty(boleto.Cedente.Carteira))
+                throw new NotImplementedException("Carteira do Cedente não informada.");
+            if (boleto.Cedente.Carteira.Length>1)
+                throw new NotImplementedException("Carteira deve ser apenas de uma posição.");
+            //Verifica se cedente foi informado
+            if (string.IsNullOrEmpty(boleto.TipoModalidade))
+                throw new NotImplementedException("TipoModalidade não informada.");
+            //Verifica se cedente foi informado
+            if (!string.IsNullOrEmpty(boleto.NossoNumero) && boleto.NossoNumero.Length>7)
+                throw new NotImplementedException("NossoNumero deve ter 7 ou menos caracteres");
+            
+
             //Atribui o nome do banco ao local de pagamento
             boleto.LocalPagamento += Nome + "";
-
 
             //Verifica se data do processamento é valida
 			//if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
 			if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 boleto.DataProcessamento = DateTime.Now;
-
 
             //Verifica se data do documento é valida
 			//if (boleto.DataDocumento.ToString("dd/MM/yyyy") == "01/01/0001")
@@ -315,10 +330,10 @@ namespace BoletoNet
                 {
 
                     case TipoArquivo.CNAB240:
-                        _header = GerarHeaderRemessaCNAB240(int.Parse(numeroConvenio), cedente, numeroArquivoRemessa);
+                        _header = GerarHeaderRemessaCNAB240(cedente, numeroArquivoRemessa);
                         break;
                     case TipoArquivo.CNAB400:
-                        _header = GerarHeaderRemessaCNAB400(int.Parse(numeroConvenio), cedente, numeroArquivoRemessa);
+                        _header = GerarHeaderRemessaCNAB400(cedente, numeroArquivoRemessa);
                         break;
                     case TipoArquivo.Outro:
                         throw new Exception("Tipo de arquivo inexistente.");
@@ -361,7 +376,7 @@ namespace BoletoNet
             }
         }
 
-        private string GerarHeaderRemessaCNAB240(int numeroConvenio, Cedente cedente, int numeroArquivoRemessa)
+        private string GerarHeaderRemessaCNAB240(Cedente cedente, int numeroArquivoRemessa)
         {
             //Variaveis
             try
@@ -378,7 +393,7 @@ namespace BoletoNet
                 header += Utils.FormatCode(cedente.ContaBancaria.DigitoAgencia, "0", 1);  //Posição 058 a 058 Digito Agência
                 header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 12, true);   //Posição 059 a 070
                 header += cedente.ContaBancaria.DigitoConta;  //Posição 071 a 71
-                header += new string('0', 1); //Posição 072 a 72     Dígito Verificador da Ag/Conta: Preencher com zero
+                header += new string('0', 1); //Posição 072 a 72     Dígito Verificador da Ag/Conta: Brancos
                 header += Utils.FormatCode(cedente.Nome, " ", 30);  //Posição 073 a 102      Nome do Banco: SICOOB
                 header += Utils.FormatCode("SICOOB", " ", 30);     //Posição 103 a 132       Nome da Empresa
                 header += Utils.FormatCode("", " ", 10);     //Posição 133 a 142  Uso Exclusivo FEBRABAN / CNAB: Brancos
@@ -399,7 +414,7 @@ namespace BoletoNet
             }
         }
 
-        private string GerarHeaderRemessaCNAB400(int numeroConvenio, Cedente cedente, int numeroArquivoRemessa)
+        private string GerarHeaderRemessaCNAB400(Cedente cedente, int numeroArquivoRemessa)
         {
             //Variaveis
             StringBuilder _header = new StringBuilder();
@@ -539,7 +554,7 @@ namespace BoletoNet
 
                 // Tipo de emissão"Tipo de Emissão: 1 - Cooperativa 2 - Cliente"
                 var tipoDeEmissao = "1";
-                if (boleto.ApenasRegistrar)
+                if (boleto.TipoEmissao == TipoEmissao.EmissaoPeloCedente)
                     tipoDeEmissao = "2";
 
                 _detalhe.Append(Utils.FitStringLength(tipoDeEmissao, 1, 1, '0', 0, true, true, true)); // Posição 106 a 106
@@ -599,7 +614,34 @@ namespace BoletoNet
         /// <returns></returns>
         private string NossoNumeroFormatado( Boleto boleto )
         {
+            /*
+               Se emissão a cargo do Beneficiário (vide planilha ""Contracapa"" deste arquivo):
+                  NumTitulo - 10 posições (1 a 10): Vide planilha ""02.Especificações do Boleto"" deste arquivo item 3.13
+                  Parcela - 02 posições (11 a 12) - ""01"" se parcela única
+                  Modalidade - 02 posições (13 a 14) - vide planilha ""Contracapa"" deste arquivo
+                  Tipo Formulário - 01 posição  (15 a 15):
+                       ""1"" -auto-copiativo
+                       ""3""-auto-envelopável
+                       ""4""-A4 sem envelopamento
+                       ""6""-A4 sem envelopamento 3 vias
+                  Em branco - 05 posições (16 a 20)"
+               
+                          NNNNNNNNNNPPMMT
+                Posicao:  12345678901234567890
+                Invalido: 037851571100004
+                agora:   "003805156001014     
+             */
+
+            if (boleto.ModalidadeCobranca==0)
+                throw new NotImplementedException("ModalidadeCobranca nao pode ser 0");
+
+            if (boleto.NossoNumero.Length>7)
+                throw new NotImplementedException("NossoNumero nao pode ter mais que 7 caracteres");
+
             FormataNossoNumero(boleto);
+
+            if (boleto.NumeroParcela <= 0)
+                boleto.NumeroParcela = 1;
 
             string retorno = Utils.FormatCode(boleto.NossoNumero.Replace("-",""), "0", 10, true); // nosso numero+dg - 10 posicoes
             retorno = retorno + Utils.FormatCode(boleto.NumeroParcela.ToString(), "0", 2, true); // numero parcela - 2 posicoes
@@ -682,7 +724,7 @@ namespace BoletoNet
 
                 detalhe += Utils.FormatCode(vInstrucao1, 2);  //Posição 222 a 223  - Código do protesto
                 detalhe += Utils.FormatCode("0", 1);     //Posição 224  - Código para Baixa/Devolução: "0"
-		detalhe += "   ";//detalhe += Utils.FormatCode(" ", 3); Posição 225 A 227  - Número de Dias para Baixa/Devolução: Brancos
+                detalhe += Utils.FormatCode("" ," ", 3);     //Posição 225 A 227  - Número de Dias para Baixa/Devolução: Brancos
                 detalhe += Utils.FormatCode(boleto.Moeda.ToString(), "0", 2, true); //Posição 228 A 229  - Código da Moeda
                 detalhe += Utils.FormatCode("", "0", 10, true); //Posição 230 A 239    -  Nº do Contrato da Operação de Créd.: "0000000000"
                 detalhe += " ";

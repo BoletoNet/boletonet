@@ -97,6 +97,7 @@
     <Compile Include="Arquivo\Reader\TextPosAttribute.cs" />
     <Compile Include="Arquivo\Reader\TextPosReader.cs" />
     <Compile Include="Banco\AbstractBanco.cs" />
+    <Compile Include="Banco\Banco_C6.cs" />
     <Compile Include="Banco\Banco_CrediSis.cs" />
     <Compile Include="Banco\Banco_Daycoval.cs" />
     <Compile Include="Banco\Banco_Nordeste.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Sicoob.cs" />
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Sicredi.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Banestes.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_C6.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_CrediSIS.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Safra.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Semear.cs" />
@@ -192,6 +194,7 @@
     <Compile Include="Boleto\EspecieDocumento\IEspecieDocumento.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspeciesDocumento.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Banrisul.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_C6.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Unicred.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Uniprime.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_BRB.cs" />
@@ -230,6 +233,7 @@
     <Compile Include="Enums\TipoComplementoLancamento.cs" />
     <Compile Include="Enums\TipoLancamento.cs" />
     <Compile Include="Enums\TipoOcorrenciaRetorno.cs" />
+    <Compile Include="Enums\TipoEmissao.cs" />
     <Compile Include="Enums\TipoPessoa.cs" />
     <Compile Include="Excecoes\BoletoNetException.cs" />
     <Compile Include="Excecoes\NossoNumeroInvalidoException.cs" />
@@ -366,6 +370,7 @@
     <EmbeddedResource Include="Imagens\743.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Imagens\336.jpg" />
     <EmbeddedResource Include="Imagens\136.jpg" />
     <EmbeddedResource Include="Imagens\084.jpg" />
     <Content Include="Imagens\097.jpg" />

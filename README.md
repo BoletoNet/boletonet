@@ -15,6 +15,9 @@ Boleto.Net é um componente desenvolvido em C# e ASP.Net e contempla as seguinte
   * CNAB400
   * CBR643
 
+*** ATENÇÃO ***
+Para adequação de nova funcionalidade de emissão de boletos pelo banco na CEF, a propriedade ApenasRegistrar foi alterada para TipoEmissao do tipo Enum, com as opções válidas 0 - Emissão pelo Cedente (Default) e 1 - Emissão pelo Banco.
+
 Atualmente estamos implementando mais alguns bancos e toda colaboração será importante. Nosso objetivo é implementar todos os bancos brasileiros.
 
 Para instalar o BoletoNet, utilize o Nuget:

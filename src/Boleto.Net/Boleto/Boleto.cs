@@ -1,3 +1,5 @@
+using BoletoNet.Enums;
+
 namespace BoletoNet
 {
 	using System;
@@ -19,7 +21,7 @@ namespace BoletoNet
 		private string _variacaoCarteira = string.Empty;
 		private string _nossoNumero = string.Empty;
 		private string _digitoNossoNumero = string.Empty;
-        private bool _apenasRegistrar = false;
+        private TipoEmissao _tipoEmissao = Enums.TipoEmissao.EmissaoPeloCedente;
 		private DateTime _dataVencimento;
 		private DateTime _dataDocumento;
 		private DateTime _dataProcessamento;
@@ -200,6 +202,19 @@ namespace BoletoNet
 			set { this._valorCobrado = value; }
 		}
 
+
+		/// <summary> 
+		/// Retorna o valor utilizado no cod. de barras 
+		/// </summary>
+		/// <remarks>
+        /// Se o valor ValorCobrado estiver preenchido retorna o ValorCobrado,
+        /// caso contrário retorna o ValorBoleto.
+		/// </remarks>
+		public decimal ValorCodBarra
+        {
+			get { return (this.ValorCobrado > 0) ? this.ValorCobrado : this.ValorBoleto; }
+        }
+
 		/// <summary> 
 		/// Retorna o campo para a 1 linha da instrucao.
 		/// </summary>
@@ -326,14 +341,14 @@ namespace BoletoNet
 			set { this._nossoNumero = value; }
 		}
 
-        /// <summary> 
-        /// Condição para Emissão da Papeleta de Cobrança
-        /// 1 = Banco emite e Processa o registro. 2 = Cliente emite e o Banco somente processa o registro
-        /// </summary>        
-        public bool ApenasRegistrar
+		/// <summary> 
+		/// Condição para Emissão da Papeleta de Cobrança
+		/// 0 = Cliente emite e o Banco somente processa o registro, 1 = Banco emite e Processa o registro. 
+		/// </summary>        
+		public TipoEmissao TipoEmissao
         {
-            get { return _apenasRegistrar; }
-            set { _apenasRegistrar = value; }
+            get { return _tipoEmissao; }
+            set { _tipoEmissao = value; }
         }
 
 		/// <summary> 
