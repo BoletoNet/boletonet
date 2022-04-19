@@ -455,7 +455,7 @@ namespace BoletoNet
         /// </remarks>
         public static long FatorVencimento(Boleto boleto)
         {
-            var dateBase = new DateTime(1997, 10, 7, 0, 0, 0);
+            var dateBase = new DateTime(2022, 01, 1, 0, 0, 0);
 
             //Verifica se a data esta dentro do range utilizavel
             var dataAtual = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);

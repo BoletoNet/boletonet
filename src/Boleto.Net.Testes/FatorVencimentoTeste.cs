@@ -12,10 +12,10 @@ namespace Boleto.Net.Testes
         {
             var fatorVencimento = AbstractBanco.FatorVencimento(new BoletoNet.Boleto
             {
-                DataVencimento = new DateTime(2014, 1, 18, 0, 0, 0)
+                DataVencimento = new DateTime(2023, 1, 18, 0, 0, 0)
             });
 
-            Assert.AreEqual(5947, fatorVencimento);
+            Assert.AreEqual(382, fatorVencimento);
         }
 
         [TestMethod]
@@ -23,10 +23,10 @@ namespace Boleto.Net.Testes
         {
             var fatorVencimento = AbstractBanco.FatorVencimento(new BoletoNet.Boleto
             {
-                DataVencimento = new DateTime(2014, 3, 12, 0, 0, 0)
+                DataVencimento = new DateTime(2025, 3, 12, 0, 0, 0)
             });
 
-            Assert.AreEqual(6000, fatorVencimento);
+            Assert.AreEqual(1166, fatorVencimento);
         }
 
         [TestMethod]
@@ -37,7 +37,7 @@ namespace Boleto.Net.Testes
                 DataVencimento = new DateTime(2025, 2, 21, 0, 0, 0)
             });
 
-            Assert.AreEqual(9999, fatorVencimento);
+            Assert.AreEqual(1147, fatorVencimento);
         }
 
         [TestMethod]
@@ -48,7 +48,7 @@ namespace Boleto.Net.Testes
                 DataVencimento = new DateTime(2025, 2, 22, 0, 0, 0)
             });
 
-            Assert.AreEqual(1000, fatorVencimento);
+            Assert.AreEqual(1148, fatorVencimento);
         }
 
         [TestMethod]
@@ -59,7 +59,7 @@ namespace Boleto.Net.Testes
                 DataVencimento = new DateTime(2025, 2, 23, 0, 0, 0)
             });
 
-            Assert.AreEqual(1001, fatorVencimento);
+            Assert.AreEqual(1149, fatorVencimento);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Boleto.Net.Testes
         {
             _banco = new Banco(BancoBanestesCodigo);
 
-            _boleto = new BoletoNet.Boleto(new DateTime(2014, 1, 18), 2952.95m, "00", "21487805", "123", "1.222.333")
+            _boleto = new BoletoNet.Boleto(new DateTime(2022, 1, 1), 2952.95m, "00", "21487805", "123", "1.222.333")
             {
                 Banco = _banco,
                 NumeroDocumento = "18.030299.01"
@@ -63,7 +63,7 @@ namespace Boleto.Net.Testes
         {
             _boleto.Valida();
 
-            Assert.AreEqual(_boleto.CodigoBarra.Codigo, "02191594700002952952148780500001222333202107");
+            Assert.AreEqual(_boleto.CodigoBarra.Codigo, "02191000002952952148780500001222333202107");
         }
 
         [TestMethod]
@@ -71,7 +71,7 @@ namespace Boleto.Net.Testes
         {
             _boleto.Valida();
 
-            Assert.AreEqual(_boleto.CodigoBarra.LinhaDigitavel, "02192.14871 80500.001229 23332.021072 1 59470000295295");
+            Assert.AreEqual(_boleto.CodigoBarra.LinhaDigitavel, "02192.14871 80500.001229 23332.021072 1 00000295295");
         }
     }
 }
