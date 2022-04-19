@@ -15,7 +15,7 @@ namespace Boleto.Net.Testes
                 DataVencimento = new DateTime(2023, 1, 18, 0, 0, 0)
             });
 
-            Assert.AreEqual(382, fatorVencimento);
+            Assert.AreEqual(9234, fatorVencimento);
         }
 
         [TestMethod]
@@ -26,7 +26,7 @@ namespace Boleto.Net.Testes
                 DataVencimento = new DateTime(2025, 3, 12, 0, 0, 0)
             });
 
-            Assert.AreEqual(1166, fatorVencimento);
+            Assert.AreEqual(1018, fatorVencimento);
         }
 
         [TestMethod]
@@ -37,7 +37,7 @@ namespace Boleto.Net.Testes
                 DataVencimento = new DateTime(2025, 2, 21, 0, 0, 0)
             });
 
-            Assert.AreEqual(1147, fatorVencimento);
+            Assert.AreEqual(9999, fatorVencimento);
         }
 
         [TestMethod]
@@ -48,7 +48,7 @@ namespace Boleto.Net.Testes
                 DataVencimento = new DateTime(2025, 2, 22, 0, 0, 0)
             });
 
-            Assert.AreEqual(1148, fatorVencimento);
+            Assert.AreEqual(1000, fatorVencimento);
         }
 
         [TestMethod]
@@ -59,7 +59,7 @@ namespace Boleto.Net.Testes
                 DataVencimento = new DateTime(2025, 2, 23, 0, 0, 0)
             });
 
-            Assert.AreEqual(1149, fatorVencimento);
+            Assert.AreEqual(1001, fatorVencimento);
         }
     }
 }

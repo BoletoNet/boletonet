@@ -63,7 +63,7 @@ namespace Boleto.Net.Testes
         {
             _boleto.Valida();
 
-            Assert.AreEqual(_boleto.CodigoBarra.Codigo, "02191000002952952148780500001222333202107");
+            Assert.AreEqual(_boleto.CodigoBarra.Codigo, "02192885200002952952148780500001222333202107");
         }
 
         [TestMethod]
@@ -71,7 +71,7 @@ namespace Boleto.Net.Testes
         {
             _boleto.Valida();
 
-            Assert.AreEqual(_boleto.CodigoBarra.LinhaDigitavel, "02192.14871 80500.001229 23332.021072 1 00000295295");
+            Assert.AreEqual(_boleto.CodigoBarra.LinhaDigitavel, "02192.14871 80500.001229 23332.021072 2 88520000295295");
         }
     }
 }
