@@ -30,7 +30,8 @@ namespace BoletoNet
         AlteracaoRejeitada = 30,                                      //30 Alteração rejeitada
         ConfirmacaoDePedidoDeAlteracaoDeOutrosDados = 33,             //33 Confirmação de pedido de alteração de outros dados
         RetiradoDeCartorioEManutencaoEmCarteira = 34,                 //34 Retirado de cartório e manutenção em carteira
-        AceiteDoPagador = 35                                          //35 Aceite do pagador
+        AceiteDoPagador = 35,                                         //35 Aceite do pagador
+        ConfirmacaoDeInstrucaoDeTransferenciaDeCarteira = 48          //48 Confirmação de instrução de transferência de carteira/modalidade de cobrança
     }
 
     public class CodigoMovimento_Sicoob : AbstractCodigoMovimento, ICodigoMovimento
@@ -124,7 +125,8 @@ namespace BoletoNet
             { EnumCodigoMovimento_Sicoob.ConfirmacaoDePedidoDeAlteracaoDeOutrosDados             , "Confirmação de pedido de alteração de outros dados"             },
             { EnumCodigoMovimento_Sicoob.RetiradoDeCartorioEManutencaoEmCarteira                 , "Retirado de cartório e manutenção em carteira"                  },
             { EnumCodigoMovimento_Sicoob.AceiteDoPagador                                         , "Aceite do pagador" },
-            { EnumCodigoMovimento_Sicoob.TituloEmSer                                             , "Título em Ser" }
+            { EnumCodigoMovimento_Sicoob.TituloEmSer                                             , "Título em Ser" },
+            { EnumCodigoMovimento_Sicoob.ConfirmacaoDeInstrucaoDeTransferenciaDeCarteira         , "Confirmação de instrução de transferência de carteira/modalidade de cobrança" },
         };
         #endregion
     }
