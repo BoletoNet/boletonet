@@ -414,7 +414,7 @@ namespace BoletoNet
                 boleto.DataDocumento = DateTime.Now;
 
             if (boleto.Cedente.Codigo.Length > 7)
-                throw new Exception("O código do cedente deve conter apenas 7 dígitos");
+                throw new Exception("O código do cedente deve conter 6 ou 7 dígitos");
 
             //Atribui o nome do banco ao local de pagamento
             //Suélton 23/03/18 - Na homolagação do boleto junto a Caixa solicitaram que o texto do local de pagamento fosse esse
