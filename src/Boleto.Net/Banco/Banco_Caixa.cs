@@ -395,7 +395,7 @@ namespace BoletoNet
 
                 if (!boleto.Cedente.Codigo.Equals("0"))
                 {
-                    string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo, 6);
+                    string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo, 7);
                     string dvCodigoCedente = Mod10(codigoCedente).ToString(); //Base9 
 
                     if (boleto.Cedente.DigitoCedente.Equals(-1))
@@ -413,8 +413,8 @@ namespace BoletoNet
             if (boleto.DataDocumento == DateTime.MinValue)
                 boleto.DataDocumento = DateTime.Now;
 
-            if (boleto.Cedente.Codigo.Length > 6)
-                throw new Exception("O código do cedente deve conter apenas 6 dígitos");
+            if (boleto.Cedente.Codigo.Length > 7)
+                throw new Exception("O código do cedente deve conter 6 ou 7 dígitos");
 
             //Atribui o nome do banco ao local de pagamento
             //Suélton 23/03/18 - Na homolagação do boleto junto a Caixa solicitaram que o texto do local de pagamento fosse esse
