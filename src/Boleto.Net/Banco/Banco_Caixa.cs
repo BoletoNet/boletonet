@@ -93,12 +93,24 @@ namespace BoletoNet
                     //Carteira SR - 24 (cobrança sem registro) || Carteira RG - 14 (cobrança com registro)
                     //Cobrança sem registro, nosso número com 17 dígitos. 
 
-                    //Posição 20 - 25
-                    string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo, 6);
+                    string codigoCedente, dvCodigoCedente;
+                    if (boleto.Cedente.Codigo.Length == 7)//Código cedente/beneficiário com 7 dígitos não usa dv.
+                    {
+                        //Posição 20 - 25
+                        codigoCedente = boleto.Cedente.Codigo.Substring(0, 6);
 
-                    // Posição 26
-                    string dvCodigoCedente = Mod11Base9(codigoCedente).ToString();
+                    	// Posição 26
+                        dvCodigoCedente = boleto.Cedente.Codigo.Substring(6, 1);
+                    }
+		    else
+                    {
+                        //Posição 20 - 25
+                        codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo, 6);
 
+                        // Posição 26
+                        dvCodigoCedente = Mod11Base9(codigoCedente).ToString();
+                    }
+		    
                     //Posição 27 - 29
                     //De acordo com documentação, posição 3 a 5 do nosso numero
                     string primeiraParteNossoNumero = boleto.NossoNumero.Substring(2, 3);
@@ -395,7 +407,7 @@ namespace BoletoNet
 
                 if (!boleto.Cedente.Codigo.Equals("0"))
                 {
-                    string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo, 7);
+                    string codigoCedente = Utils.FormatCode(boleto.Cedente.Codigo, 6);
                     string dvCodigoCedente = Mod10(codigoCedente).ToString(); //Base9 
 
                     if (boleto.Cedente.DigitoCedente.Equals(-1))
