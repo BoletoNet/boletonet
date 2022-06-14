@@ -840,7 +840,10 @@ namespace BoletoNet
                 html.Append(GeraHtmlReciboCedente());
             }
 
-            //html.Append(!FormatoCarne ? !FormatoPropaganda ? GeraHtmlReciboCedente() : GeraHtmlPropaganda(GeraHtmlReciboCedente()) : GeraHtmlCarne(GeraHtmlReciboCedente()));
+ 	    if (Boleto.Banco.Codigo == 104)
+                html.Replace("Mora / Multa", "Mora / Multa / Juros");
+
+	    //html.Append(!FormatoCarne ? !FormatoPropaganda ? GeraHtmlReciboCedente() : GeraHtmlPropaganda(GeraHtmlReciboCedente()) : GeraHtmlCarne(GeraHtmlReciboCedente()));
 
             string dataVencimento = Boleto.DataVencimento.ToString("dd/MM/yyyy");
 
