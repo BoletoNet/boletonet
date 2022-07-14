@@ -232,7 +232,7 @@ namespace BoletoNet
             }
 
             if (boleto.Cedente.Codigo.ToString().Length > 8)
-                throw new NotImplementedException("Código cedente deve ter 8 posições.");
+                throw new NotImplementedException("Código cedente deve ter 8 posições => " + boleto.Cedente.Codigo.ToString());
 
             // Atribui o nome do banco ao local de pagamento
             if (string.IsNullOrEmpty(boleto.LocalPagamento))
