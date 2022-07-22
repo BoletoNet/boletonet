@@ -40,6 +40,30 @@ namespace BoletoNet
 
         #region Métodos de Instância
 
+        private void CalculaDACNossoNumeroContaCorrente(Boleto boleto)
+        {
+            if (boleto.NossoNumero.Length < 8)
+                boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 8);
+
+            // Calcula o DAC da Conta Corrente
+            boleto.Cedente.ContaBancaria.DigitoConta = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta).ToString();
+
+            // Calcula o DAC do Nosso Número a maioria das carteiras
+            // agencia/conta/carteira/nosso numero
+            if (boleto.Carteira == "104" || boleto.Carteira == "112")
+                _dacNossoNumero = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta + boleto.Carteira + boleto.NossoNumero);
+            else if (boleto.Carteira != "126" && boleto.Carteira != "131"
+                                              && boleto.Carteira != "146" && boleto.Carteira != "150"
+                                              && boleto.Carteira != "168" && boleto.Carteira != "138")
+                _dacNossoNumero = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta + boleto.Carteira + boleto.NossoNumero);
+            else
+                // Excessão 126 - 131 - 146 - 150 - 168 - 138
+                // carteira/nosso numero
+                _dacNossoNumero = Mod10(boleto.Carteira + boleto.NossoNumero);
+
+            boleto.DigitoNossoNumero = _dacNossoNumero.ToString();
+        }
+
         /// <summary>
         /// Validações particulares do banco Itaú
         /// </summary>
@@ -77,9 +101,6 @@ namespace BoletoNet
                     throw new NotImplementedException("A quantidade de dígitos do nosso número para a carteira "
                         + boleto.Carteira + ", são 8 números.");
 
-                if (boleto.NossoNumero.Length < 8)
-                    boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 8);
-
                 //É obrigatório o preenchimento do número do documento
                 if (boleto.Carteira == "106" || boleto.Carteira == "107" || boleto.Carteira == "122" || boleto.Carteira == "142" || boleto.Carteira == "143" || boleto.Carteira == "195" || boleto.Carteira == "196" || boleto.Carteira == "198")
                 {
@@ -91,24 +112,7 @@ namespace BoletoNet
                 if (Utils.ToInt32(boleto.NumeroDocumento) > 0)
                     boleto.NumeroDocumento = Utils.FormatCode(boleto.NumeroDocumento, 7);
 
-
-                // Calcula o DAC da Conta Corrente
-                boleto.Cedente.ContaBancaria.DigitoConta = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta).ToString();
-
-                // Calcula o DAC do Nosso Número a maioria das carteiras
-                // agencia/conta/carteira/nosso numero
-                if (boleto.Carteira == "104" || boleto.Carteira == "112")
-                    _dacNossoNumero = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta + boleto.Cedente.ContaBancaria.DigitoConta + boleto.Carteira + boleto.NossoNumero);
-                else if (boleto.Carteira != "126" && boleto.Carteira != "131"
-                    && boleto.Carteira != "146" && boleto.Carteira != "150"
-                    && boleto.Carteira != "168" && boleto.Carteira != "138")
-                    _dacNossoNumero = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta + boleto.Carteira + boleto.NossoNumero);
-                else
-                    // Excessão 126 - 131 - 146 - 150 - 168 - 138
-                    // carteira/nosso numero
-                    _dacNossoNumero = Mod10(boleto.Carteira + boleto.NossoNumero);
-
-                boleto.DigitoNossoNumero = _dacNossoNumero.ToString();
+                CalculaDACNossoNumeroContaCorrente(boleto);
 
                 //Atribui o nome do banco ao local de pagamento
                 if (string.IsNullOrEmpty(boleto.LocalPagamento))
@@ -661,7 +665,7 @@ namespace BoletoNet
             try
             {
                 string header = "341";
-                header += "0001";
+                header += "0000";
                 header += "0";
                 header += Utils.FormatCode("", " ", 9);
                 header += (cedente.CPFCNPJ.Length == 11 ? "1" : "2");
@@ -838,7 +842,9 @@ namespace BoletoNet
         public override string GerarDetalheSegmentoPRemessa(Boleto boleto, int numeroRegistro, string numeroConvenio)
         {
             try
-            {                
+            {
+                CalculaDACNossoNumeroContaCorrente(boleto);
+
                 string _segmentoP;
                 _segmentoP = "341";
                 _segmentoP += "0001";
@@ -864,7 +870,7 @@ namespace BoletoNet
                 _segmentoP += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
                 _segmentoP += Utils.FitStringLength(boleto.ValorBoleto.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 _segmentoP += "00000";
-                _segmentoP += " ";
+                _segmentoP += "0";
                 _segmentoP += "01";
                 _segmentoP += "A";
                 _segmentoP += Utils.FitStringLength(boleto.DataDocumento.ToString("ddMMyyyy"), 8, 8, ' ', 0, true, true, false);
