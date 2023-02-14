@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -345,7 +345,7 @@
   <data name="ReciboCedenteParte10" xml:space="preserve">
     <value>&lt;table class="w666 ctN" style="margin: auto;"&gt;
 				&lt;tr&gt;
-						&lt;td class="pL6  w409"&gt;Sacador / Avalista: @AVALISTA&lt;/td&gt;
+						&lt;td class="pL6  w409"&gt;Beneficiário Final: @AVALISTA&lt;/td&gt;
 						&lt;td class="w250 Ar"&gt;Autenticação mecânica - &lt;b class="cpN"&gt;Ficha de Compensação&lt;/b&gt;&lt;/td&gt;
 				&lt;/tr&gt;
 				&lt;/table&gt;</value>
