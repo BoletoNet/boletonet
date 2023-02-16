@@ -933,13 +933,10 @@ namespace BoletoNet
                 _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.Cidade.TrimStart(' '), 15, 15, ' ', 0, true, true, false).ToUpper();
                 _segmentoQ += Utils.FitStringLength(boleto.Sacado.Endereco.UF, 2, 2, ' ', 0, true, true, false).ToUpper();
 
-                if (boleto.Cedente.CPFCNPJ.Length <= 11)
-                    _segmentoQ += "1";
-                else
-                    _segmentoQ += "2";
+                _segmentoQ += " "; //Tipo de Inscrição do Sacador / Avalista (não pode ser o Cedente)
+                _segmentoQ += new string(' ', 15); //Inscrição do Sacador / Avalista (não pode ser o Cedente)
+                _segmentoQ += new string(' ', 30); //Nome do Sacador / Avalista (não pode ser o Cedente)
 
-                _segmentoQ += Utils.FitStringLength(boleto.Cedente.CPFCNPJ, 15, 15, '0', 0, true, true, true);
-                _segmentoQ += Utils.FitStringLength(boleto.Cedente.Nome.TrimStart(' '), 30, 30, ' ', 0, true, true, false).ToUpper();
                 _segmentoQ += _brancos10;
                 _segmentoQ += "000";
                 _segmentoQ += _brancos28;
