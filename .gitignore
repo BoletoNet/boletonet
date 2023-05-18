@@ -3,6 +3,7 @@
 
 # User-specific files
 *.suo
+*.wsuo
 *.user
 *.sln.docstates
 
@@ -202,3 +203,5 @@ src/.vs/
 src/.vs/config/applicationhost.config
 src/Boleto.Net/Properties/AssemblyInfo.cs
 src/Boleto.Net/Properties/AssemblyInfo.cs
+/.vs/VSWorkspaceState.json
+/.gitignore
