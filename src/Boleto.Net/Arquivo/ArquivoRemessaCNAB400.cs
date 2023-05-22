@@ -119,7 +119,6 @@ namespace BoletoNet
                         if (!string.IsNullOrEmpty(strline) && !string.IsNullOrWhiteSpace(strline))
                         { 
                             incluiLinha.WriteLine(strline);
-                            //numeroRegistro++;
                         }
                     }
                 }
