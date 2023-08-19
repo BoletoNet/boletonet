@@ -64,14 +64,14 @@ namespace BoletoNet
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro durante a geraÁ„o do HEADER do arquivo de REMESSA.", ex);
+                throw new Exception("Erro durante a gera√ß√£o do HEADER do arquivo de REMESSA.", ex);
             }
         }
 
 
         public string GerarHeaderRemessaCNAB240()
         {
-            throw new NotImplementedException("FunÁ„o n„o implementada.");
+            throw new NotImplementedException("Fun√ß√£o n√£o implementada.");
         }
         public string GerarHeaderRemessaCNAB400(int numeroConvenio, Cedente cedente, int numeroArquivoRemessa)
         {
@@ -143,13 +143,13 @@ namespace BoletoNet
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro durante a geraÁ„o do DETALHE arquivo de REMESSA.", ex);
+                throw new Exception("Erro durante a gera√ß√£o do DETALHE arquivo de REMESSA.", ex);
             }
         }
 
         public string GerarDetalheRemessaCNAB240()
         {
-            throw new NotImplementedException("FunÁ„o n„o implementada");
+            throw new NotImplementedException("Fun√ß√£o n√£o implementada");
         }
 
         public string GerarDetalheRemessaCNAB400(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
@@ -161,8 +161,8 @@ namespace BoletoNet
 
 
                 string vCpfCnpjEmi = "00";
-                if (boleto.Cedente.CPFCNPJ.Length.Equals(11)) vCpfCnpjEmi = "01"; //Cpf È sempre 11;
-                else if (boleto.Cedente.CPFCNPJ.Length.Equals(14)) vCpfCnpjEmi = "02"; //Cnpj È sempre 14;
+                if (boleto.Cedente.CPFCNPJ.Length.Equals(11)) vCpfCnpjEmi = "01"; //Cpf √© sempre 11;
+                else if (boleto.Cedente.CPFCNPJ.Length.Equals(14)) vCpfCnpjEmi = "02"; //Cnpj √© sempre 14;
 
 
 
@@ -248,7 +248,7 @@ namespace BoletoNet
 
                 if (ObterCodigoDaOcorrencia(boleto) == "01" && vInstrucao1 == "16")
                 {
-                    // Conforme manual, item 6.1.8, quando operaÁ„o for "entrada de tÌtulo" e a primeira ocorrÍncia for "16", utiliza campo para informar Multa
+                    // Conforme manual, item 6.1.8, quando opera√ß√£o for "entrada de t√≠tulo" e a primeira ocorr√™ncia for "16", utiliza campo para informar Multa
                     reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediDataDDMMAA___________, 0206, 006, 0, boleto.DataMulta, ' '));
                     reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0212, 004, 2, boleto.PercMulta, '0'));
                     reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0216, 003, 0, "000", '0'));
@@ -258,8 +258,8 @@ namespace BoletoNet
 
 
                 string vCpfCnpjPag = "00";
-                if (boleto.Sacado.CPFCNPJ.Length.Equals(11)) vCpfCnpjPag = "01"; //Cpf È sempre 11;
-                else if (boleto.Sacado.CPFCNPJ.Length.Equals(14)) vCpfCnpjPag = "02"; //Cnpj È sempre 14;
+                if (boleto.Sacado.CPFCNPJ.Length.Equals(11)) vCpfCnpjPag = "01"; //Cpf √© sempre 11;
+                else if (boleto.Sacado.CPFCNPJ.Length.Equals(14)) vCpfCnpjPag = "02"; //Cnpj √© sempre 14;
 
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0219, 002, 0, vCpfCnpjPag, '0'));
                 reg.CamposEDI.Add(new TCampoRegistroEDI(TTiposDadoEDI.ediNumericoSemSeparador_, 0221, 014, 0, boleto.Sacado.CPFCNPJ, '0'));
@@ -335,13 +335,13 @@ namespace BoletoNet
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro durante a geraÁ„o do TRAILER do arquivo de REMESSA.", ex);
+                throw new Exception("Erro durante a gera√ß√£o do TRAILER do arquivo de REMESSA.", ex);
             }
         }
 
         public string GerarTrailerRemessa240()
         {
-            throw new NotImplementedException("FunÁ„o n„o implementada");
+            throw new NotImplementedException("Fun√ß√£o n√£o implementada");
         }
 
         public string GerarTrailerRemessa400(int numeroRegistro, decimal vltitulostotal, Cedente cedente)
@@ -363,14 +363,14 @@ namespace BoletoNet
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro durante a geraÁ„o do registro TRAILER do arquivo de REMESSA.", ex);
+                throw new Exception("Erro durante a gera√ß√£o do registro TRAILER do arquivo de REMESSA.", ex);
             }
 
         }
         #endregion
 
 
-        #region MÈtodos de processamento do arquivo retorno CNAB400
+        #region M√©todos de processamento do arquivo retorno CNAB400
 
 
 
@@ -415,28 +415,28 @@ namespace BoletoNet
                 detalhe.Agencia = Utils.ToInt32(registro.Substring(017, 5));
                 detalhe.Conta = Utils.ToInt32(registro.Substring(022, 8));
                 detalhe.DACConta = Utils.ToInt32(registro.Substring(030, 1));
-                //N∫ Controle do Participante
+                //N¬∫ Controle do Participante
                 detalhe.NumeroControle = registro.Substring(37, 25);
 
                 //Carteira
                 detalhe.Carteira = registro.Substring(107, 1);
 
 
-                //IdentificaÁ„o do TÌtulo no Banco
+                //Identifica√ß√£o do T√≠tulo no Banco
                 detalhe.NossoNumero = registro.Substring(62, 8);
                 detalhe.DACNossoNumero = registro.Substring(70, 1);
                 detalhe.NossoNumeroComDV = detalhe.NossoNumero + registro.Substring(70, 1); //DV
 
-                //IdentificaÁ„o de OcorrÍncia
+                //Identifica√ß√£o de Ocorr√™ncia
                 detalhe.CodigoOcorrencia = Convert.ToInt32(registro.Substring(108, 2));
                 detalhe.DescricaoOcorrencia = DescricaoOcorrenciaCnab400(detalhe.CodigoOcorrencia);
 
 
-                //N˙mero do Documento
+                //N√∫mero do Documento
                 detalhe.NumeroDocumento = registro.Substring(116, 10);
                 detalhe.Especie = AjustaEspecieCnab400(registro.Substring(173, 2));
 
-                //Valores do TÌtulo
+                //Valores do T√≠tulo
                 detalhe.ValorTitulo = Convert.ToDecimal(registro.Substring(152, 13)) / 100;
                 detalhe.TarifaCobranca = Convert.ToDecimal(registro.Substring(175, 13)) / 100;
                 detalhe.ValorOutrasDespesas = Convert.ToDecimal(registro.Substring(188, 13)) / 100;
@@ -447,13 +447,13 @@ namespace BoletoNet
                 detalhe.JurosMora = Convert.ToDecimal(registro.Substring(266, 13)) / 100;
                 detalhe.OutrosCreditos = Convert.ToDecimal(registro.Substring(279, 13)) / 100;
 
-                //Data OcorrÍncia no Banco
+                //Data Ocorr√™ncia no Banco
                 detalhe.DataOcorrencia = Utils.ToDateTime(Utils.ToInt32(registro.Substring(110, 6)).ToString("##-##-##"));
 
-                //Data Vencimento do TÌtulo
+                //Data Vencimento do T√≠tulo
                 detalhe.DataVencimento = Utils.ToDateTime(Utils.ToInt32(registro.Substring(146, 6)).ToString("##-##-##"));
 
-                // Data do CrÈdito
+                // Data do Cr√©dito
                 detalhe.DataCredito = Utils.ToDateTime(Utils.ToInt32(registro.Substring(295, 6)).ToString("##-##-##"));
 
                 //// Registro Retorno
@@ -497,17 +497,17 @@ namespace BoletoNet
                 case 3:
                     return "Entrada Rejeitada";
                 case 4:
-                    return "TransferÍncia de Carteira (Entrada)";
+                    return "Transfer√™ncia de Carteira (Entrada)";
                 case 5:
-                    return "TransferÍncia de Carteira (Baixa)";
+                    return "Transfer√™ncia de Carteira (Baixa)";
                 case 6:
-                    return "LiquidaÁ„o normal";
+                    return "Liquida√ß√£o normal";
                 case 9:
                     return "Baixado Automaticamente";
                 case 10:
-                    return "Baixado conforme instruÁıes";
+                    return "Baixado conforme instru√ß√µes";
                 case 11:
-                    return "TÌtulos em Ser (Para Arquivo Mensal)";
+                    return "T√≠tulos em Ser (Para Arquivo Mensal)";
                 case 12:
                     return "Abatimento Concedido";
                 case 13:
@@ -515,41 +515,41 @@ namespace BoletoNet
                 case 14:
                     return "Vencimento Alterado";
                 case 15:
-                    return "LiquidaÁ„o em CartÛrio";
+                    return "Liquida√ß√£o em Cart√≥rio";
                 case 19:
-                    return "ConfirmaÁ„o de instruÁ„o de protesto";
+                    return "Confirma√ß√£o de instru√ß√£o de protesto";
                 case 20:
-                    return "ConfirmaÁ„o de sustar protesto";
+                    return "Confirma√ß√£o de sustar protesto";
                 case 21:
-                    return "TransferÍncia de benefici·rio";
+                    return "Transfer√™ncia de benefici√°rio";
                 case 23:
-                    return "TÌtulo enviado a cartÛrio";
+                    return "T√≠tulo enviado a cart√≥rio";
                 case 40:
-                    return "Baixa de TÌtulo Protestado";
+                    return "Baixa de T√≠tulo Protestado";
                 case 41:
-                    return "LiquidaÁ„o de TÌtulo Baixado";
+                    return "Liquida√ß√£o de T√≠tulo Baixado";
                 case 42:
-                    return "TÌtulo retirado do cartÛrio";
+                    return "T√≠tulo retirado do cart√≥rio";
                 case 43:
-                    return "Despesa de cartÛrio";
+                    return "Despesa de cart√≥rio";
                 case 44:
-                    return "Aceite do tÌtulo DDA pelo pagador";
+                    return "Aceite do t√≠tulo DDA pelo pagador";
                 case 45:
-                    return "N„o aceite do tÌtulo DDA pelo pagador";
+                    return "N√£o aceite do t√≠tulo DDA pelo pagador";
                 case 51:
-                    return "Valor do tÌtulo alterado";
+                    return "Valor do t√≠tulo alterado";
                 case 52:
-                    return "Acerto de Data de emiss„o";
+                    return "Acerto de Data de emiss√£o";
                 case 53:
-                    return "Acerto de cÛdigo de espÈcie de documento";
+                    return "Acerto de c√≥digo de esp√©cie de documento";
                 case 54:
-                    return "AlteraÁ„o de seu n˙mero";
+                    return "Altera√ß√£o de seu n√∫mero";
                 case 56:
-                    return "InstruÁ„o de negativaÁ„o aceita";
+                    return "Instru√ß√£o de negativa√ß√£o aceita";
                 case 57:
-                    return "InstruÁ„o de baixa de negativaÁ„o aceita";
+                    return "Instru√ß√£o de baixa de negativa√ß√£o aceita";
                 case 58:
-                    return "InstruÁ„o n„o negativar aceita";
+                    return "Instru√ß√£o n√£o negativar aceita";
                 default:
                     return "";
             }
@@ -561,22 +561,22 @@ namespace BoletoNet
         public override void ValidaBoleto(Boleto boleto)
         {
 
-            // Calcula o DAC do Nosso N˙mero
+            // Calcula o DAC do Nosso N√∫mero
             _dacNossoNumero = CalcularDigitoNossoNumero(boleto);
 
             // Calcula o DAC da Conta Corrente
             _dacContaCorrente = Mod10(boleto.Cedente.ContaBancaria.Agencia + boleto.Cedente.ContaBancaria.Conta);
 
-            //Verifica se o nosso n˙mero È v·lido
+            //Verifica se o nosso n√∫mero √© v√°lido
             if (Utils.ToInt64(boleto.NossoNumero) == 0)
-                throw new NotImplementedException("Nosso n˙mero inv·lido");
+                throw new NotImplementedException("Nosso n√∫mero inv√°lido");
 
-            //Verifica se data do processamento È valida
+            //Verifica se data do processamento √© valida
             //if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
             if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 boleto.DataProcessamento = DateTime.Now;
 
-            //Verifica se data do documento È valida
+            //Verifica se data do documento √© valida
             //if (boleto.DataDocumento.ToString("dd/MM/yyyy") == "01/01/0001")
             if (boleto.DataDocumento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
                 boleto.DataDocumento = DateTime.Now;
@@ -598,7 +598,7 @@ namespace BoletoNet
 
             if (boleto.NossoNumero.Length < 9)
             {
-                throw new IndexOutOfRangeException("Erro. O campo 'Nosso N˙mero' deve ter mais de 9 digitos. VocÍ digitou " + boleto.NossoNumero);
+                throw new IndexOutOfRangeException("Erro. O campo 'Nosso N√∫mero' deve ter mais de 9 digitos. Voc√™ digitou " + boleto.NossoNumero);
             }
             string sfNossoNumero = boleto.NossoNumero.Substring(0, 8);
             int sfDigitoNossoNumero = Mod11(sfNossoNumero, 9, 0);
@@ -616,9 +616,9 @@ namespace BoletoNet
 
         /// <summary>       
         /// SISTEMA	        020	020	7	FIXO
-        /// CLIENTE	        021	034	C”DIGO DO CLIENTE	C”DIGO/AG NCIA CEDENTE
-        /// N/N⁄MERO	    035	043	NOSSO N⁄MERO	NOSSO N⁄MERO DO TÕTULO
-        /// TIPO COBRAN«A	044	044	2	FIXO
+        /// CLIENTE	        021	034	C√ìDIGO DO CLIENTE	C√ìDIGO/AG√äNCIA CEDENTE
+        /// N/N√öMERO	    035	043	NOSSO N√öMERO	NOSSO N√öMERO DO T√çTULO
+        /// TIPO COBRAN√áA	044	044	2	FIXO
         /// </summary>
         public string CampoLivre(Boleto boleto)
         {
@@ -632,7 +632,7 @@ namespace BoletoNet
 
         public override void FormataNumeroDocumento(Boleto boleto)
         {
-            //throw new NotImplementedException("FunÁ„o n„o implementada.");
+            //throw new NotImplementedException("Fun√ß√£o n√£o implementada.");
             boleto.Cedente.ContaBancaria.Agencia = Utils.FitStringLength(boleto.Cedente.ContaBancaria.Agencia, 5, 5, '0', 0, true, true, true);
             boleto.Cedente.ContaBancaria.Conta = Utils.FitStringLength(boleto.Cedente.ContaBancaria.Conta, 8, 8, '0', 0, true, true, true);
             boleto.Cedente.ContaBancaria.Conta += boleto.Cedente.ContaBancaria.DigitoConta;
@@ -646,18 +646,18 @@ namespace BoletoNet
 
         public override void FormataNossoNumero(Boleto boleto)
         {
-            //throw new NotImplementedException("FunÁ„o n„o implementada.");
+            //throw new NotImplementedException("Fun√ß√£o n√£o implementada.");
             boleto.NossoNumero = Utils.FitStringLength(boleto.NossoNumero, 9, 9, '0', 1, true, true, true);
 
         }
 
         /// <summary>
-        ///	O cÛdigo de barra para cobranÁa contÈm 44 posiÁıes dispostas da seguinte forma:
-        ///    01 a 03 - 3 - IdentificaÁ„o  do  Banco
-        ///    04 a 04 - 1 - CÛdigo da Moeda
-        ///    05 a 05 ñ 1 - DÌgito verificador do CÛdigo de Barras
+        ///	O c√≥digo de barra para cobran√ßa cont√©m 44 posi√ß√µes dispostas da seguinte forma:
+        ///    01 a 03 - 3 - Identifica√ß√£o  do  Banco
+        ///    04 a 04 - 1 - C√≥digo da Moeda
+        ///    05 a 05 ¬ñ 1 - D√≠gito verificador do C√≥digo de Barras
         ///    06 a 19 - 14 - Valor
-        ///    20 a 44 ñ 25 - Campo Livre
+        ///    20 a 44 ¬ñ 25 - Campo Livre
         /// </summary>
         public override void FormataCodigoBarra(Boleto boleto)
         {
@@ -677,9 +677,9 @@ namespace BoletoNet
             codigobarra.CampoLivre = CampoLivre(boleto);
 
             if (codigobarra.CampoLivre.Length != 25)
-                throw new Exception("campo livre (" + codigobarra.CampoLivre + ") deve conter 25 dÌgitos.");
+                throw new Exception("campo livre (" + codigobarra.CampoLivre + ") deve conter 25 d√≠gitos.");
 
-            // formata cÛdigo de barras do boleto
+            // formata c√≥digo de barras do boleto
             codigobarra.CodigoBanco = Utils.FitStringLength(banco.Codigo.ToString(), 3, 3, '0', 0, true, true, true);
             codigobarra.Moeda = boleto.Moeda;
             codigobarra.FatorVencimento = FatorVencimento(boleto);
@@ -730,29 +730,29 @@ namespace BoletoNet
             return (11 - resto).ToString();
         }
         /// <summary>
-        /// A linha digit·vel ser· composta por cinco campos:
-        ///    1∫ CAMPO - Composto pelo cÛdigo do banco ( sem o dÌgito verificador = 422 ), 
-        ///       cÛdigo da moeda, as cinco primeiras posiÁıes do campo livre ou seja, da 
-        ///       posiÁ„o 20 ‡ 24 do cÛdigo de barras, e mais um dÌgito verificador deste campo. 
-        ///       ApÛs os 5 primeiros dÌgitos deste campo separar o conte˙do por um ponto ( . ). 
-        ///    2∫ CAMPO - Composto pelas posiÁıes 6 ‡ 15 do campo livre ou seja, da 
-        ///       posiÁ„o 25 ‡ 34 do cÛdigo de barras e mais um dÌgito verificador deste campo. 
-        ///       ApÛs os 5 primeiros dÌgitos deste campo separar o conte˙do por um ponto ( . ).
-        ///    3∫ CAMPO - Composto pelas posiÁıes 16 ‡ 25 do campo livre ou seja, da 
-        ///       posiÁ„o 35 ‡ 44 do cÛdigo de barras, e mais um dÌgito verificador deste campo. 
-        ///       ApÛs os 5 primeiros dÌgitos deste campo separar o conte˙do por um ponto ( . ).
-        ///    4∫ CAMPO  - Composto pelo dÌgito de autoconferÍncia do cÛdigo de barras.
-        ///    5∫ CAMPO - Composto pelo valor nominal do documento ou seja, pelas 
-        ///       posiÁıes 06 ‡ 19 do cÛdigo de barras, com supress„o de zeros a esquerda e 
-        ///       sem ediÁ„o ( sem ponto e vÌrgula ). Quando se tratar de valor zerado, a 
-        ///       representaÁ„o dever· ser 000 ( trÍs zeros ).
+        /// A linha digit√°vel ser√° composta por cinco campos:
+        ///    1¬∫ CAMPO - Composto pelo c√≥digo do banco ( sem o d√≠gito verificador = 422 ), 
+        ///       c√≥digo da moeda, as cinco primeiras posi√ß√µes do campo livre ou seja, da 
+        ///       posi√ß√£o 20 √† 24 do c√≥digo de barras, e mais um d√≠gito verificador deste campo. 
+        ///       Ap√≥s os 5 primeiros d√≠gitos deste campo separar o conte√∫do por um ponto ( . ). 
+        ///    2¬∫ CAMPO - Composto pelas posi√ß√µes 6 √† 15 do campo livre ou seja, da 
+        ///       posi√ß√£o 25 √† 34 do c√≥digo de barras e mais um d√≠gito verificador deste campo. 
+        ///       Ap√≥s os 5 primeiros d√≠gitos deste campo separar o conte√∫do por um ponto ( . ).
+        ///    3¬∫ CAMPO - Composto pelas posi√ß√µes 16 √† 25 do campo livre ou seja, da 
+        ///       posi√ß√£o 35 √† 44 do c√≥digo de barras, e mais um d√≠gito verificador deste campo. 
+        ///       Ap√≥s os 5 primeiros d√≠gitos deste campo separar o conte√∫do por um ponto ( . ).
+        ///    4¬∫ CAMPO  - Composto pelo d√≠gito de autoconfer√™ncia do c√≥digo de barras.
+        ///    5¬∫ CAMPO - Composto pelo valor nominal do documento ou seja, pelas 
+        ///       posi√ß√µes 06 √† 19 do c√≥digo de barras, com supress√£o de zeros a esquerda e 
+        ///       sem edi√ß√£o ( sem ponto e v√≠rgula ). Quando se tratar de valor zerado, a 
+        ///       representa√ß√£o dever√° ser 000 ( tr√™s zeros ).
         /// </summary>
         public override void FormataLinhaDigitavel(Boleto boleto)
         {
 
             ////AAABC.CCCCX DDDDD.DDDDDY EEEEE.EEEEEZ K VVVVVVVVVVVVVV
 
-            //string LD = string.Empty; //Linha Digit·vel
+            //string LD = string.Empty; //Linha Digit√°vel
 
             //#region Campo 1
 
@@ -824,13 +824,13 @@ namespace BoletoNet
 
             #region Campo 1
 
-            // POSI«√O 1 A 3 DO CODIGO DE BARRAS
+            // POSI√á√ÉO 1 A 3 DO CODIGO DE BARRAS
             var bbb = codigoDeBarras.Substring(0, 3);
-            // POSI«√O 4 DO CODIGO DE BARRAS
+            // POSI√á√ÉO 4 DO CODIGO DE BARRAS
             var m = codigoDeBarras.Substring(3, 1);
-            // POSI«√O 20 A 24 DO CODIGO DE BARRAS
+            // POSI√á√ÉO 20 A 24 DO CODIGO DE BARRAS
             var ccccc = codigoDeBarras.Substring(19, 5);
-            // Calculo do DÌgito
+            // Calculo do D√≠gito
             var d1 = CalcularDvModulo10Safra(bbb + m + ccccc);
             // Formata Grupo 1
             var grupo1 = bbb + m + ccccc.Substring(0, 1) + "." + ccccc.Substring(1, 4) + d1 + " ";
@@ -839,9 +839,9 @@ namespace BoletoNet
 
             #region Campo 2
 
-            //POSI«√O 25 A 34 DO COD DE BARRAS
+            //POSI√á√ÉO 25 A 34 DO COD DE BARRAS
             var d2A = codigoDeBarras.Substring(24, 10);
-            // Calculo do DÌgito
+            // Calculo do D√≠gito
             var d2B = CalcularDvModulo10Safra(d2A).ToString();
             // Formata Grupo 2
             var grupo2 = d2A.Substring(0, 5) + "." + d2A.Substring(5, 5) + d2B + " ";
@@ -850,10 +850,10 @@ namespace BoletoNet
 
             #region Campo 3
 
-            //POSI«√O 35 A 44 DO CODIGO DE BARRAS
+            //POSI√á√ÉO 35 A 44 DO CODIGO DE BARRAS
             var d3A = codigoDeBarras.Substring(34, 10);
-            // Calculo do DÌgito
-            var d3B = CalcularDvModulo10Safra(d3A).ToString();
+            // Calculo do D√≠gito
+            var d3B = Mod10(d3A).ToString();
             // Formata Grupo 3
             var grupo3 = d3A.Substring(0, 5) + "." + d3A.Substring(5, 5) + d3B + " ";
 
@@ -861,7 +861,7 @@ namespace BoletoNet
 
             #region Campo 4
 
-            // DÌgito Verificador do CÛdigo de Barras
+            // D√≠gito Verificador do C√≥digo de Barras
             var grupo4 = codigoBarra.DigitoVerificador + " ";
 
             #endregion Campo 4
@@ -914,7 +914,7 @@ namespace BoletoNet
 
 
         /// <summary>
-        /// Efetua as ValidaÁıes dentro da classe Boleto, para garantir a geraÁ„o da remessa
+        /// Efetua as Valida√ß√µes dentro da classe Boleto, para garantir a gera√ß√£o da remessa
         /// </summary>
         public override bool ValidarRemessa(TipoArquivo tipoArquivo, string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, int numeroArquivoRemessa, out string mensagem)
         {
