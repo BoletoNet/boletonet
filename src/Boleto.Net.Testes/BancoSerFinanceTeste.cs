@@ -22,7 +22,7 @@ namespace BoletoNet.Testes
 
             var sacado = new Sacado("35.342.670/0001-70", "JOSE DA SILVA");
             sacado.Endereco = new Endereco() { End = "AV. DAS ROSAS", Numero = "10", Bairro = "JARDIM FLORIDO", Cidade = "CORNELIO PROCOPIO", CEP = "86300-000", UF = "PR", Email = "teste@boleto.net" };
-            var boleto = new Boleto(DateTime.Today.AddDays(30), 1.00m, "110", "12345678901", cedente);
+            var boleto = new Boleto(DateTime.Today.AddDays(30), 1.00m, "110", "1234567890", cedente);
             boleto.Sacado = sacado;
             boleto.ContaBancaria = new ContaBancaria("00012", "9079509");
             boleto.NumeroDocumento = "DOC 123";
@@ -59,10 +59,9 @@ namespace BoletoNet.Testes
             var dataRemessa = string.Format("{0}{1}{2}", DateTime.Today.Day.ToString("00"), DateTime.Today.Month.ToString("00"), DateTime.Today.Year.ToString("0000"));
             var dataVencimento = boletoBancario.Boleto.DataVencimento;
             var dataVencimentoStr = string.Format("{0}{1}{2}", dataVencimento.Day.ToString("00"), dataVencimento.Month.ToString("00"), dataVencimento.Year.ToString("0000"));
-            var dataProcessamentoStr = string.Format("{0}{1}{2}", DateTime.Today.Day.ToString("00"), DateTime.Today.Month.ToString("00"), DateTime.Today.Year.ToString("0000"));
             var arquivoTeste = "53000000000000000235342670000170444601              00001900000007950200EMPRESA MODELO S A            Ser Finance                             1" + dataRemessa + "02041500000110101600                                                                     \r\n" +
                                "53000011 01  030 2353426700001700444601              00001900000007950200EMPRESA MODELO S A                                                                                            000000000000000000000000                                 \r\n" +
-                               "5300001300001P 01000019000000079502005000001101234567890111211DOC 123        " + dataVencimentoStr + "00000000007778800001901A01010001101010001000000000000000100000000000000000000000000000000000000000000000000000DOC 123                  3002000090000000000 \r\n" +
+                               "5300001300001P 01000019000000079502005000001100123456789011211DOC 123        " + dataVencimentoStr + "00000000007778800001901A01010001101010001000000000000000100000000000000000000000000000000000000000000000000000DOC 123                  3002000090000000000 \r\n" +
                                "5300001320000Q 012035342670000170JOSE DA SILVA                           AV. DAS ROSAS, 10                       JARDIM FLORIDO 86300000CORNELIO PROCOPPR0000000000000000000000000000000000000000000000000000000 000                            \r\n" +
                                "5300001300003R 01100000000000000000000000100000000000000000000000101010001000000000000100                                                                                                                                             0         \r\n" +
                                "53000015         00000500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                                                                                                                             \r\n" +
@@ -75,14 +74,17 @@ namespace BoletoNet.Testes
         [TestMethod]
         public void SerFinance_LerRetorno()
         {
-            var retorno = new ArquivoRetorno(TipoArquivo.CNAB400);
+            var retorno = new ArquivoRetorno(TipoArquivo.CNAB240);
             detalheRetorno = new List<DetalheRetorno>();
             var arquivoTeste = "02RETORNO01COBRANCA       00000000000000000001EMPRESA MODELO S/A            530UNIPRIME NORTE 2206190000000007563                                                                                                                                                                                                                                                                          000000         000001\r\n" +
                                "102023989760001900000009000060097606700000000002              0000000000000000002P          00000000000000090222061900010255190000000000000000002P280719000000000020000000000  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000   000000                 0000000000                                                                  000002\r\n" +
                                "102023989760001900000009000060097606700000000001              00000000000000000011          000000000000000902220619000102551900000000000000000011280619000000000020000000000  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000   000000                 0000000000                                                                  000003\r\n" +
                                "9201084          000000020000006860084600000000          00476000065189902000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                                                                                                                                                                              00000000000000000000000         000557\r\n";
-            var buffer = Encoding.ASCII.GetBytes(arquivoTeste);
-            var mem = new MemoryStream(buffer);
+            //var buffer = Encoding.ASCII.GetBytes(arquivoTeste);
+            //var mem = new MemoryStream(buffer);
+            var mem = File.OpenRead(@"c:\temp\serfinance.txt");
+
+
             retorno.LinhaDeArquivoLida += Retorno_LinhaDeArquivoLida;
             retorno.LerArquivoRetorno(new Banco(530), mem);
             Assert.AreEqual(detalheRetorno[0].IdentificacaoTitulo, "0000000000000000002P");

@@ -400,123 +400,7 @@ namespace BoletoNet
             return d.ToString();
         }
 
-        public override DetalheRetorno LerDetalheRetornoCNAB400(string registro)
-        {
-            try
-            {
-                DetalheRetorno detalhe = new DetalheRetorno(registro)
-                {
-                    // Identificação do Registro ==> 001 a 001
-                    IdentificacaoDoRegistro = Utils.ToInt32(registro.Substring(0, 1)),
-
-                    //Tipo de Inscrição Empresa ==> 002 a 003
-                    CodigoInscricao = Utils.ToInt32(registro.Substring(1, 2)),
-
-                    //Nº Inscrição da Empresa ==> 004 a 017
-                    NumeroInscricao = registro.Substring(3, 14),
-
-                    //Identificação da Empresa Cedente no Banco ==> 021 a 037 = 17 (Igual remessa)
-                    // 0 + Carteira 3 + Agência 5 + Conta 7 + Digito 1 = 17
-                    // ex: 00090750315206870
-                    Agencia = Utils.ToInt32(registro.Substring(24, 5)),
-                    Conta = Utils.ToInt32(registro.Substring(29, 7)),
-                    DACConta = Utils.ToInt32(registro.Substring(36, 1)),
-
-                    //Nº Controle do Participante ==> 038 a 062
-                    NumeroControle = registro.Substring(37, 25),
-
-                    //Identificação do Título no Banco ==> 071 a 081
-                    NossoNumero = registro.Substring(70, 11),//Sem o DV
-
-                    //Identificação do Título no Banco ==> 082 a 082
-                    DACNossoNumero = registro.Substring(81, 1), //DV
-
-                    //Carteira ==> 108 a 108
-                    Carteira = registro.Substring(107, 1),
-
-                    //Identificação de Ocorrência ==> 109 a 110
-                    CodigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2)),
-
-                    //Descrição da ocorrência
-                    DescricaoOcorrencia = this.Ocorrencia(registro.Substring(110, 2)),
-                };
-
-                //Data Ocorrência no Banco ==> 111 a 116
-                int dataOcorrencia = Utils.ToInt32(registro.Substring(110, 6));
-                detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
-
-                //Número do Documento ==> 117 a 126
-                detalhe.NumeroDocumento = registro.Substring(116, 10);
-
-                //Identificação do Título no Banco ==> 127 a 146
-                detalhe.IdentificacaoTitulo = registro.Substring(126, 20);
-
-                //Data Vencimento do Título ==> 147 a 152
-                int dataVencimento = Utils.ToInt32(registro.Substring(146, 6));
-                detalhe.DataVencimento = Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
-
-                //Valor do Título ==> 153 a 165
-                decimal valorTitulo = Convert.ToInt64(registro.Substring(152, 13));
-                detalhe.ValorTitulo = valorTitulo / 100;
-
-                //Banco Cobrador ==> 166 a 168
-                detalhe.CodigoBanco = Utils.ToInt32(registro.Substring(165, 3));
-
-                //Agência Cobradora ==> 169 a 173
-                detalhe.AgenciaCobradora = Utils.ToInt32(registro.Substring(168, 5));
-
-                //Espécie do Título ==> 174 a 175
-                detalhe.Especie = Utils.ToInt32(registro.Substring(173, 2));
-
-                //Despesas de cobrança para os Códigos de Ocorrência (Valor Despesa) ==> 176 a 188
-                decimal valorDespesa = Convert.ToUInt64(registro.Substring(175, 13));
-                detalhe.ValorDespesa = valorDespesa / 100;
-
-                //Outras despesas Custas de Protesto (Valor Outras Despesas) ==> 189 a 201
-                decimal valorOutrasDespesas = Convert.ToUInt64(registro.Substring(188, 13));
-                detalhe.ValorOutrasDespesas = valorOutrasDespesas / 100;
-
-                //Juros Operação em Atraso ==> 202 a 214
-                decimal OutrosCreditos = Convert.ToUInt64(registro.Substring(201, 13));
-                detalhe.OutrosCreditos = OutrosCreditos / 100;
-
-                //Abatimento Concedido sobre o Título (Valor Abatimento Concedido) ==> 228 a 240
-                decimal valorAbatimento = Convert.ToUInt64(registro.Substring(227, 13));
-                detalhe.ValorAbatimento = valorAbatimento / 100;
-
-                //Desconto Concedido (Valor Desconto Concedido) ==> 241 a 253
-                decimal valorDesconto = Convert.ToUInt64(registro.Substring(240, 13));
-                detalhe.Descontos = valorDesconto / 100;
-
-                //Valor Pago ==> 254 a 266
-                decimal valorPago = Convert.ToUInt64(registro.Substring(253, 13));
-                detalhe.ValorPago = valorPago / 100;
-
-                //Juros Mora ==> 267 a 279
-                decimal jurosMora = Convert.ToUInt64(registro.Substring(266, 13));
-                detalhe.JurosMora = jurosMora / 100;
-
-                // Data do Crédito ==> 296 a 301
-                int dataCredito = Utils.ToInt32(registro.Substring(295, 6));
-                detalhe.DataCredito = Utils.ToDateTime(dataCredito.ToString("##-##-##"));
-
-                //Motivos das Rejeições para os Códigos de Ocorrência ==> 319 a 328
-                detalhe.MotivosRejeicao = registro.Substring(318, 10);
-
-                //Nome do Sacado
-                detalhe.NomeSacado = "";
-
-                detalhe.NumeroSequencial = Utils.ToInt32(registro.Substring(394, 6));
-
-                return detalhe;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Erro ao ler detalhe do arquivo de RETORNO / CNAB 240.", ex);
-            }
-        }
-
-        #region gerando remessa
+        #region Remessa
         #region HEADER
         /// <summary>
         /// Gera o HEADER do arquivo remessa de acordo com o lay-out informado
@@ -952,9 +836,68 @@ namespace BoletoNet
             }
         }
 
-        # endregion
-        #endregion 
+        #endregion
+        #endregion
 
+        #region Retorno
+
+        public override DetalheSegmentoTRetornoCNAB240 LerDetalheSegmentoTRetornoCNAB240(string registro)
+        {
+            try
+            {
+                DetalheSegmentoTRetornoCNAB240 segmentoT = new DetalheSegmentoTRetornoCNAB240(registro);
+                segmentoT.CodigoBanco = Convert.ToInt32(registro.Substring(0, 3)); 
+                segmentoT.idCodigoMovimento = Convert.ToInt32(registro.Substring(16, 2)); 
+                segmentoT.Agencia = Convert.ToInt32(registro.Substring(18, 5)); 
+                segmentoT.DigitoAgencia = registro.Substring(23, 1); 
+                segmentoT.Conta = Convert.ToInt64(registro.Substring(24, 11)); 
+                segmentoT.DigitoConta = registro.Substring(36, 1); 
+                segmentoT.DACAgenciaConta = (string.IsNullOrEmpty(registro.Substring(37, 1).Trim())) ? 0 : Convert.ToInt32(registro.Substring(37, 1)); 
+                segmentoT.NossoNumero = registro.Substring(47, 11); 
+                segmentoT.CodigoCarteira = Convert.ToInt32(registro.Substring(58, 1));
+                segmentoT.NumeroDocumento = registro.Substring(59, 15);
+                segmentoT.DataVencimento = registro.Substring(74, 8).ToString() == "00000000" ? DateTime.Now : DateTime.ParseExact(registro.Substring(74, 8), "ddMMyyyy", CultureInfo.InvariantCulture); 
+                segmentoT.ValorTitulo = Convert.ToDecimal(registro.Substring(82, 15)) / 100; 
+                segmentoT.IdentificacaoTituloEmpresa = registro.Substring(106, 25); 
+                segmentoT.TipoInscricao = Convert.ToInt32(registro.Substring(133, 1)); 
+                segmentoT.NumeroInscricao = registro.Substring(134, 15); 
+                segmentoT.NomeSacado = registro.Substring(149, 40); 
+                segmentoT.ValorTarifas = Convert.ToDecimal(registro.Substring(199, 15)) / 100; 
+                segmentoT.CodigoRejeicao = registro.Substring(214, 1) == "A" ? registro.Substring(214, 9) : registro.Substring(214, 10);
+                segmentoT.UsoFebraban = registro.Substring(224, 17);
+
+                return segmentoT;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao processar arquivo de RETORNO - SEGMENTO T.", ex);
+            }
+        }
+        public override DetalheSegmentoURetornoCNAB240 LerDetalheSegmentoURetornoCNAB240(string registro)
+        {
+            try
+            {
+                var segmentoU = new DetalheSegmentoURetornoCNAB240(registro);
+                segmentoU.Servico_Codigo_Movimento_Retorno = Convert.ToDecimal(registro.Substring(15, 2)); //07.3U|Serviço|Cód. Mov.|Código de Movimento Retorno
+                segmentoU.JurosMultaEncargos = Convert.ToDecimal(registro.Substring(17, 15)) / 100;
+                segmentoU.ValorDescontoConcedido = Convert.ToDecimal(registro.Substring(32, 15)) / 100;
+                segmentoU.ValorAbatimentoConcedido = Convert.ToDecimal(registro.Substring(47, 15)) / 100;
+                segmentoU.ValorIOFRecolhido = Convert.ToDecimal(registro.Substring(62, 15)) / 100;
+                segmentoU.ValorOcorrenciaSacado = segmentoU.ValorPagoPeloSacado = Convert.ToDecimal(registro.Substring(77, 15)) / 100;
+                segmentoU.ValorLiquidoASerCreditado = Convert.ToDecimal(registro.Substring(92, 15)) / 100;
+                segmentoU.ValorOutrasDespesas = Convert.ToDecimal(registro.Substring(107, 15)) / 100;
+                segmentoU.ValorOutrosCreditos = Convert.ToDecimal(registro.Substring(122, 15)) / 100;
+                segmentoU.DataOcorrencia = segmentoU.DataOcorrencia = DateTime.ParseExact(registro.Substring(137, 8), "ddMMyyyy", CultureInfo.InvariantCulture);
+                segmentoU.DataCredito = registro.Substring(145, 8).ToString() == "00000000" ? segmentoU.DataOcorrencia : DateTime.ParseExact(registro.Substring(145, 8), "ddMMyyyy", CultureInfo.InvariantCulture);
+                segmentoU.CodigoOcorrenciaSacado = registro.Substring(15, 2);
+                return segmentoU;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao processar arquivo de RETORNO - SEGMENTO U.", ex);
+            }
+        }
+        #endregion
 
         /// <summary>
         /// Efetua as Validações dentro da classe Boleto, para garantir a geração da remessa
