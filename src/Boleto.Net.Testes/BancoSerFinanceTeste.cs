@@ -12,7 +12,7 @@ namespace BoletoNet.Testes
     [TestClass]
     public class BancoSerFinanceTeste
     {
-        List<DetalheRetorno> detalheRetorno;
+        List<DetalheRetornoCNAB240> detalheRetorno;
         private BoletoBancario GerarBoletoCarteira110()
         {
             var cedente = new Cedente("35.342.670/0001-70", "EMPRESA MODELO S/A", "0001", "9", "0079502", "0");
@@ -75,26 +75,30 @@ namespace BoletoNet.Testes
         public void SerFinance_LerRetorno()
         {
             var retorno = new ArquivoRetorno(TipoArquivo.CNAB240);
-            detalheRetorno = new List<DetalheRetorno>();
-            var arquivoTeste = "02RETORNO01COBRANCA       00000000000000000001EMPRESA MODELO S/A            530UNIPRIME NORTE 2206190000000007563                                                                                                                                                                                                                                                                          000000         000001\r\n" +
-                               "102023989760001900000009000060097606700000000002              0000000000000000002P          00000000000000090222061900010255190000000000000000002P280719000000000020000000000  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000   000000                 0000000000                                                                  000002\r\n" +
-                               "102023989760001900000009000060097606700000000001              00000000000000000011          000000000000000902220619000102551900000000000000000011280619000000000020000000000  000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000   000000                 0000000000                                                                  000003\r\n" +
-                               "9201084          000000020000006860084600000000          00476000065189902000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                                                                                                                                                                              00000000000000000000000         000557\r\n";
-            //var buffer = Encoding.ASCII.GetBytes(arquivoTeste);
-            //var mem = new MemoryStream(buffer);
-            var mem = File.OpenRead(@"c:\temp\serfinance.txt");
-
-
+            detalheRetorno = new List<DetalheRetornoCNAB240>();
+            var arquivoTeste = "53000000         212484705000100000000078UNIJUAZEIRO000000078UNIUNIUNIUNIUNIUNIUNIU - UNIUNIUNIUNIUNI SER FINANCE                             21910202300000000000204001600                                                   000000000000000000\r\n" +
+                               "53000011T0100030 2012484705000100000000078UNIJUAZEIRO000000078UNIUNIUNIUNIUNIUNIUNIU - UNIUNIUNIUNIUNIU                                                                                000000021910202300000000                                 \r\n" +
+                               "5300001300001T 02000000078UNIJUAZEIRO000000121000200000171667995         301020230000000000004005300000190371000000000000000667995091000009012307406CAIO HENRIQUE DE LIMA SILVA                       0000000000000000000000000                 \r\n" +
+                               "5300001300002U 020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001810202300000000000000000000000000000000000                              5300000000000000              \r\n" +
+                               "5300001300007T 02000000078UNIJUAZEIRO000000121000200000251667996         301020230000000000005005300000190371000000000000000667996091000009012307406CAIO HENRIQUE DE LIMA SILVA                       0000000000000000000000000                 \r\n" +
+                               "5300001300008U 020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001810202300000000000000000000000000000000000                              5300000000000000              \r\n" +
+                               "53000015         00002200001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000                                                                                                                             \r\n" +
+                               "53099999         000001000024000000                                                                                                                                                                                                             \r\n";
+            var buffer = Encoding.ASCII.GetBytes(arquivoTeste);
+            var mem = new MemoryStream(buffer);
             retorno.LinhaDeArquivoLida += Retorno_LinhaDeArquivoLida;
             retorno.LerArquivoRetorno(new Banco(530), mem);
-            Assert.AreEqual(detalheRetorno[0].IdentificacaoTitulo, "0000000000000000002P");
-            Assert.AreEqual(detalheRetorno[1].IdentificacaoTitulo, "00000000000000000011");
+            Assert.AreEqual(detalheRetorno[0].SegmentoT.IdentificacaoTituloEmpresa, "0371000000000000000667995");
+            Assert.AreEqual(detalheRetorno[1].SegmentoT.IdentificacaoTituloEmpresa, "0371000000000000000667996");
         }
 
         private void Retorno_LinhaDeArquivoLida(object sender, LinhaDeArquivoLidaArgs e)
         {
-            var titulo = (DetalheRetorno)e.Detalhe;
-            detalheRetorno.Add(titulo);
+            var titulo = (DetalheRetornoCNAB240)e.Detalhe;
+            if (e.Detalhe != null)
+            {
+                detalheRetorno.Add(titulo);
+            }
         }
 
         [TestMethod]

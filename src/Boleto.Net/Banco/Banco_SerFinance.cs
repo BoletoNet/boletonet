@@ -847,24 +847,24 @@ namespace BoletoNet
             {
                 DetalheSegmentoTRetornoCNAB240 segmentoT = new DetalheSegmentoTRetornoCNAB240(registro);
                 segmentoT.CodigoBanco = Convert.ToInt32(registro.Substring(0, 3)); 
-                segmentoT.idCodigoMovimento = Convert.ToInt32(registro.Substring(16, 2)); 
-                segmentoT.Agencia = Convert.ToInt32(registro.Substring(18, 5)); 
+                segmentoT.idCodigoMovimento = Convert.ToInt32(registro.Substring(15, 2)); 
+                segmentoT.Agencia = Convert.ToInt32(registro.Substring(17, 5)); 
                 segmentoT.DigitoAgencia = registro.Substring(23, 1); 
-                segmentoT.Conta = Convert.ToInt64(registro.Substring(24, 11)); 
-                segmentoT.DigitoConta = registro.Substring(36, 1); 
-                segmentoT.DACAgenciaConta = (string.IsNullOrEmpty(registro.Substring(37, 1).Trim())) ? 0 : Convert.ToInt32(registro.Substring(37, 1)); 
-                segmentoT.NossoNumero = registro.Substring(47, 11); 
-                segmentoT.CodigoCarteira = Convert.ToInt32(registro.Substring(58, 1));
-                segmentoT.NumeroDocumento = registro.Substring(59, 15);
-                segmentoT.DataVencimento = registro.Substring(74, 8).ToString() == "00000000" ? DateTime.Now : DateTime.ParseExact(registro.Substring(74, 8), "ddMMyyyy", CultureInfo.InvariantCulture); 
-                segmentoT.ValorTitulo = Convert.ToDecimal(registro.Substring(82, 15)) / 100; 
-                segmentoT.IdentificacaoTituloEmpresa = registro.Substring(106, 25); 
-                segmentoT.TipoInscricao = Convert.ToInt32(registro.Substring(133, 1)); 
-                segmentoT.NumeroInscricao = registro.Substring(134, 15); 
-                segmentoT.NomeSacado = registro.Substring(149, 40); 
-                segmentoT.ValorTarifas = Convert.ToDecimal(registro.Substring(199, 15)) / 100; 
-                segmentoT.CodigoRejeicao = registro.Substring(214, 1) == "A" ? registro.Substring(214, 9) : registro.Substring(214, 10);
-                segmentoT.UsoFebraban = registro.Substring(224, 17);
+                //segmentoT.Conta = Convert.ToInt64(registro.Substring(23, 11));  // Suprimido pois a conta é STRING 
+                //segmentoT.DigitoConta = registro.Substring(35, 1); 
+                //segmentoT.DACAgenciaConta = (string.IsNullOrEmpty(registro.Substring(36, 1).Trim())) ? 0 : Convert.ToInt32(registro.Substring(36, 1)); 
+                segmentoT.NossoNumero = registro.Substring(46, 11); 
+                segmentoT.CodigoCarteira = Convert.ToInt32(registro.Substring(57, 1));
+                segmentoT.NumeroDocumento = registro.Substring(58, 15);
+                segmentoT.DataVencimento = registro.Substring(73, 8).ToString() == "00000000" ? DateTime.Now : DateTime.ParseExact(registro.Substring(73, 8), "ddMMyyyy", CultureInfo.InvariantCulture); 
+                segmentoT.ValorTitulo = Convert.ToDecimal(registro.Substring(81, 15)) / 100; 
+                segmentoT.IdentificacaoTituloEmpresa = registro.Substring(105, 25); 
+                segmentoT.TipoInscricao = Convert.ToInt32(registro.Substring(132, 1)); 
+                segmentoT.NumeroInscricao = registro.Substring(133, 15); 
+                segmentoT.NomeSacado = registro.Substring(148, 40); 
+                segmentoT.ValorTarifas = Convert.ToDecimal(registro.Substring(198, 15)) / 100; 
+                segmentoT.CodigoRejeicao = registro.Substring(213, 1) == "A" ? registro.Substring(213, 9) : registro.Substring(213, 10);
+                segmentoT.UsoFebraban = registro.Substring(223, 17);
 
                 return segmentoT;
             }
