@@ -356,6 +356,9 @@ namespace BoletoNet
                     //084 - Uniprime
                     case 84:
                         return new EspecieDocumento_Uniprime().getCodigoEspecieBySigla(sigla);
+                    //530 - Ser Finance
+                    case 530:
+                        return new EspecieDocumento_SerFinance().getCodigoEspecieBySigla(sigla);
                     default:
                         throw new Exception("Código do banco não implementando: " + codigoBanco);
                 }
@@ -388,7 +391,8 @@ namespace BoletoNet
                 { 637, new EspecieDocumento_Sofisa     ()  },
                 { 743, new EspecieDocumento_Semear     ()  },
                 { 21, new EspecieDocumento_Banestes    ()  },
-                { 136, new EspecieDocumento_Unicred    ()  }
+                { 136, new EspecieDocumento_Unicred    ()  },
+                { 530, new EspecieDocumento_SerFinance ()  }
 
         };
     }

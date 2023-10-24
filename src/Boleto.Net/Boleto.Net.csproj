@@ -105,6 +105,7 @@
     <Compile Include="Banco\Banco_Semear.cs" />
     <Compile Include="Banco\Banco_Unicred.cs" />
     <Compile Include="Banco\Banco_Sofisa.cs" />
+    <Compile Include="Banco\Banco_SerFinance.cs" />
     <Compile Include="Banco\Banco_Uniprime.cs" />
     <Compile Include="Banco\Banco_Votorantim.cs" />
     <Compile Include="Banco\Carteiras\BancoCarteiraFactory.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Daycoval.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Nordeste.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Unicred.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_SerFinance.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Uniprime.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Sicoob.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Sofisa.cs" />
@@ -196,6 +198,7 @@
     <Compile Include="Boleto\Instrucao\Instrucao_Banrisul.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_C6.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Unicred.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_SerFinance.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Uniprime.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_BRB.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Caixa.cs" />
@@ -370,6 +373,7 @@
     <EmbeddedResource Include="Imagens\743.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Imagens\530.jpg" />
     <EmbeddedResource Include="Imagens\336.jpg" />
     <EmbeddedResource Include="Imagens\136.jpg" />
     <EmbeddedResource Include="Imagens\084.jpg" />

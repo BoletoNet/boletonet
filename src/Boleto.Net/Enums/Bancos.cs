@@ -19,6 +19,7 @@ namespace BoletoNet.Enums
         Santander = 33,
         Sicredi = 748,
         Semear = 743,
-        C6Bank = 336
+        C6Bank = 336,
+        SerFinance = 530
     }
 }

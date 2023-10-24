@@ -123,6 +123,9 @@ namespace BoletoNet
                     case 84: 
                         _IInstrucao = new Instrucao_Uniprime();
                         break;
+                    case 530:
+                        _IInstrucao = new Instrucao_SerFinance();
+                        break;
                     case ((int) Enums.Bancos.C6Bank):
                         _IInstrucao = new Instrucao_C6();
                         break;
