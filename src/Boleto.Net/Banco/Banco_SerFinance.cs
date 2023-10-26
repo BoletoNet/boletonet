@@ -154,7 +154,7 @@ namespace BoletoNet
             var valorBoleto = boleto.ValorCodBarra.ToString("N2").Replace(",", "").Replace(".", "");
             valorBoleto = Utils.FormatCode(valorBoleto, 10);
 
-            if (boleto.Carteira == "110" || boleto.Carteira == "180")
+            if (boleto.Carteira == "110" || boleto.Carteira == "180" || boleto.Carteira == "121")
             {
                 boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}", Codigo.ToString("000"), boleto.Moeda,
                 FatorVencimento2000(boleto), valorBoleto, FormataCampoLivre(boleto));
@@ -201,7 +201,7 @@ namespace BoletoNet
 
         public override void ValidaBoleto(Boleto boleto)
         {
-            if (boleto.Carteira != "110" && boleto.Carteira != "180")
+            if (boleto.Carteira != "110" && boleto.Carteira != "180" && boleto.Carteira != "121")
                 throw new NotImplementedException("Carteira não implementada.");
 
             //Verifica se o nosso número é válido

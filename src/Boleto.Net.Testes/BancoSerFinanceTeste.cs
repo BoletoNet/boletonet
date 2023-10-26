@@ -109,60 +109,49 @@ namespace BoletoNet.Testes
             cedente.Convenio = 444601;
             cedente.DigitoCedente = 0;
             cedente.Carteira = "110";
-
+            cedente.Instrucoes.Add(new Instrucao(530) { Codigo = 01, Descricao = "Instrução 1" });
+            cedente.Instrucoes.Add(new Instrucao(530) { Codigo = 02, Descricao = "Instrução 2" });
             var sacado = new Sacado("35.342.670/0001-70", "JOSE DA SILVA");
             sacado.Endereco = new Endereco() { End = "AV. DAS ROSAS", Numero = "10", Bairro = "JARDIM FLORIDO", Cidade = "CORNELIO PROCOPIO", CEP = "86300-000", UF = "PR", Email = "teste@boleto.net" };
 
-            // Gera 5 boletos e salva em PDF na pasta TEMP
-            var bolRemessa = new Boletos();
-            for (int i = 1; i <= 5; i++)
+            var i = 157;
+            var boleto = new Boleto()
             {
-                var boleto = new Boleto()
+                NumeroDocumento = "3247669",
+                DataVencimento = DateTime.Today.AddDays(i),
+                ValorBoleto = 1764.43M,
+                NossoNumero = i.ToString("00000000000"),
+                Carteira = "121",
+                Cedente = cedente,
+                Banco = new Banco(530),
+                Sacado = new Sacado()
                 {
-                    NumeroDocumento = "DOC " + i.ToString("00000"),
-                    DataVencimento = DateTime.Today.AddDays(i),
-                    ValorBoleto = 200 * i,
-                    NossoNumero = i.ToString("00000000000"),
-                    Carteira = "110",
-                    Cedente = cedente,
-                    Banco = new Banco(530),
-                    Sacado = new Sacado()
+                    CPFCNPJ = "35.342.670/0001-70",
+                    Nome = "JOSE DA SILVA",
+                    Endereco = new Endereco()
                     {
-                        CPFCNPJ = "35.342.670/0001-70",
-                        Nome = "JOSE DA SILVA",
-                        Endereco = new Endereco()
-                        {
-                            End = "AV. DAS ROSAS",
-                            Numero = "10",
-                            Bairro = "JARDIM FLORIDO",
-                            Cidade = "CORNELIO PROCOPIO",
-                            CEP = "86300-000",
-                            UF = "PR",
-                            Email = "teste@boleto.net"
-                        }
+                        End = "AV. DAS ROSAS",
+                        Numero = "10",
+                        Bairro = "JARDIM FLORIDO",
+                        Cidade = "CORNELIO PROCOPIO",
+                        CEP = "86300-000",
+                        UF = "PR",
+                        Email = "teste@boleto.net"
                     }
-                };
-                bolRemessa.Add(boleto);
-                var boletoBancarioPDF = new BoletoBancario();
-                boletoBancarioPDF.CodigoBanco = 530;
-                boletoBancarioPDF.Boleto = boleto;
-                boletoBancarioPDF.Boleto.Valida();
-                var bytes = boletoBancarioPDF.MontaBytesPDF();
-                var arquivoBoleto = Path.Combine(Path.GetTempPath(), string.Format("Boleto_SerFinance_{0}.pdf",i));
-                if (File.Exists(arquivoBoleto)) File.Delete(arquivoBoleto);
-                var sw = new FileStream(arquivoBoleto, FileMode.CreateNew);
-                sw.Write(bytes, 0, (int)bytes.Length);
-                sw.Flush();
-                sw.Close();
-                boleto.NossoNumero = i.ToString("00000000000");
-            }
-
-            // Gera Remessa e salva na pasta TEMP
-            var remessa = new ArquivoRemessa(TipoArquivo.CNAB400);
-            var arquivoRemessa = Path.Combine(Path.GetTempPath(), string.Format("Remessa_SerFinance_{0}{1}{2}.REM",DateTime.Today.Day.ToString("00"),DateTime.Today.Month.ToString("00"),DateTime.Today.ToString("yy")));
-            if (File.Exists(arquivoRemessa)) File.Delete(arquivoRemessa);
-            var swRemessa = new FileStream(arquivoRemessa, FileMode.CreateNew);
-            remessa.GerarArquivoRemessa(cedente.Convenio.ToString(), new Banco(530), cedente, bolRemessa, swRemessa, 1);
+                }
+            };
+            var boletoBancarioPDF = new BoletoBancario();
+            boletoBancarioPDF.CodigoBanco = 530;
+            boletoBancarioPDF.Boleto = boleto;
+            boletoBancarioPDF.Boleto.Valida();
+            var bytes = boletoBancarioPDF.MontaBytesPDF();
+            var arquivoBoleto = Path.Combine(Path.GetTempPath(), string.Format("Boleto_SerFinance_{0}.pdf",i));
+            if (File.Exists(arquivoBoleto)) File.Delete(arquivoBoleto);
+            var sw = new FileStream(arquivoBoleto, FileMode.CreateNew);
+            sw.Write(bytes, 0, (int)bytes.Length);
+            sw.Flush();
+            sw.Close();
+            boleto.NossoNumero = i.ToString("00000000000");
         }
     }
 }

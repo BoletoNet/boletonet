@@ -796,7 +796,7 @@ namespace BoletoNet
                         break;
 
                     case (int)Bancos.SerFinance:
-                        agenciaCodigoCedente = string.Format("{0}-{1}/{2}-{3}", Cedente.ContaBancaria.Agencia, Cedente.ContaBancaria.DigitoAgencia, Utils.FormatCode(Cedente.ContaBancaria.Conta, 7), Cedente.ContaBancaria.DigitoConta);
+                        agenciaCodigoCedente = string.Format("{0}/{1}-{2}", Cedente.ContaBancaria.Agencia, Utils.FormatCode(Cedente.ContaBancaria.Conta, 8), Cedente.ContaBancaria.DigitoConta);
                         break;
 
                     default:
