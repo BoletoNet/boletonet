@@ -641,10 +641,10 @@ namespace BoletoNet
                 _detalhe += Utils.FormatCode("0", "0", 15); // IOF
                 _detalhe += Utils.FormatCode("0", "0", 15); // Abatimento
                 _detalhe += Utils.FormatCode(boleto.NumeroDocumento, " ", 25);
-                if (boleto.Instrucoes.FirstOrDefault()?.QuantidadeDias > 0) // Protesto
+                if (boleto.Instrucoes.Count > 0 && boleto.Instrucoes[0].QuantidadeDias > 0) // Protesto
                 {
                     _detalhe += "1";
-                    _detalhe += boleto.Instrucoes.FirstOrDefault()?.QuantidadeDias.ToString("00");
+                    _detalhe += boleto.Instrucoes[0].QuantidadeDias.ToString("00");
                 }
                 else
                 {
@@ -669,7 +669,11 @@ namespace BoletoNet
             try
             {
                 string cpf_Cnpj = boleto.Sacado.CPFCNPJ.Replace("/", "").Replace(".", "").Replace("-", "");
-                string cpf_CnpjA = boleto.Avalista?.CPFCNPJ.Replace("/", "").Replace(".", "").Replace("-", "") ?? "0";
+                string cpf_CnpjA = "0";
+                if(boleto.Avalista != null)
+                {
+                    cpf_CnpjA = boleto.Avalista.CPFCNPJ.Replace("/", "").Replace(".", "").Replace("-", "") ?? "0";
+                }
 
                 string _detalhe;
 
@@ -689,7 +693,7 @@ namespace BoletoNet
                 _detalhe += Utils.FormatCode(boleto.Sacado.Endereco.Cidade, " ", 15);
                 _detalhe += Utils.FormatCode(boleto.Sacado.Endereco.UF, " ", 2);
                 _detalhe += cpf_CnpjA;
-                if(!string.IsNullOrEmpty(boleto.Avalista?.CPFCNPJ))
+                if(boleto.Avalista != null && !string.IsNullOrEmpty(boleto.Avalista.CPFCNPJ))
                 {
                     _detalhe += Utils.FormatCode(cpf_CnpjA, "0", 15);
                     _detalhe += Utils.FormatCode(boleto.Avalista.Nome, " ", 40);
