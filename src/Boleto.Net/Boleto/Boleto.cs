@@ -637,6 +637,7 @@ namespace BoletoNet
         public IBancoCarteira BancoCarteira { get; set; }
 
         public string TipoDeCobranca { get; set; }
+        public string QRCode { get; set; }
 
         public DateTime? DataDescontoAntecipacao2 { get; set; }
         public decimal? ValorDescontoAntecipacao2 { get; set; }

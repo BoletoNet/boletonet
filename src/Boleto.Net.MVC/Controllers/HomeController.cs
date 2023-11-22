@@ -24,16 +24,18 @@ namespace Boleto.Net.MVC.Controllers
             return View();
         }
 
-        public ActionResult VisualizarBoleto(int Id)
+        public ActionResult VisualizarBoleto(int Id, string qrcode)
         {
             var boleto = ObterBoletoBancario(Id);
+            boleto.Boleto.QRCode = qrcode;
             ViewBag.Boleto = boleto.MontaHtmlEmbedded();
             return View();
         }
 
-        public ActionResult GerarBoletoPDF(int Id)
+        public ActionResult GerarBoletoPDF(int Id, string qrcode)
         {
             var boleto = ObterBoletoBancario(Id);
+            boleto.Boleto.QRCode = qrcode;
             var pdf = boleto.MontaBytesPDF();
             return File(pdf, "application/pdf");
         }
