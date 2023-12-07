@@ -12,16 +12,21 @@
     <button id="btnGerarPDF">GerarPDF</button>
 </p>
 
+<p>
+    <strong>Pix Copia e Cola:</strong><br />
+    <input type="text" name="qrcode" id="qrcode"style="width: 100%" value="00020101021226770014BR.GOV.BCB.PIX2555api.itau/pix/qr/v2/25b6f436-9f94-4a04-8cc3-f6604c2f16c15204000053039865802BR5920MAXCOY SURF AND TURF6009SAO PAULO62070503***6304116A" />
+</p>
+
 <script type="text/javascript">
     $(document).ready(function () {
 
         $("#btnVisualizar").click(function () {
-            var url = "/Home/VisualizarBoleto/" + $("#bancos").val();
+            var url = "/Home/VisualizarBoleto/" + $("#bancos").val() + "?qrcode=" + $("#qrcode").val();
             abrirPopup(url);
         });
 
         $("#btnGerarPDF").click(function () {
-            var url = "/Home/GerarBoletoPDF/" + $("#bancos").val();
+            var url = "/Home/GerarBoletoPDF/" + $("#bancos").val() + "?qrcode=" + $("#qrcode").val();
             abrirPopup(url);
         });
 
