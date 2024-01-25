@@ -831,7 +831,13 @@ namespace BoletoNet
             // POSIÇÃO 20 A 24 DO CODIGO DE BARRAS
             var ccccc = codigoDeBarras.Substring(19, 5);
             // Calculo do Dígito
-            var d1 = CalcularDvModulo10Safra(bbb + m + ccccc);
+
+            string d1;
+            if (boleto.VariacaoCarteira == "1")
+                d1 = CalcularDvModulo10SafraNovo(bbb + m + ccccc);
+            else
+                d1 = CalcularDvModulo10Safra(bbb + m + ccccc);
+
             // Formata Grupo 1
             var grupo1 = bbb + m + ccccc.Substring(0, 1) + "." + ccccc.Substring(1, 4) + d1 + " ";
 
@@ -842,7 +848,12 @@ namespace BoletoNet
             //POSIÇÃO 25 A 34 DO COD DE BARRAS
             var d2A = codigoDeBarras.Substring(24, 10);
             // Calculo do Dígito
-            var d2B = CalcularDvModulo10Safra(d2A).ToString();
+            string d2B;
+            if (boleto.VariacaoCarteira == "1")
+                d2B = CalcularDvModulo10SafraNovo(d2A).ToString();
+            else
+                d2B = CalcularDvModulo10Safra(d2A).ToString();
+
             // Formata Grupo 2
             var grupo2 = d2A.Substring(0, 5) + "." + d2A.Substring(5, 5) + d2B + " ";
 
@@ -878,6 +889,36 @@ namespace BoletoNet
             #endregion Campo 5
 
             codigoBarra.LinhaDigitavel = grupo1 + grupo2 + grupo3 + grupo4 + grupo5;
+
+        }
+        private static string CalcularDvModulo10SafraNovo(string texto)
+        {
+            int soma = 0, peso = 2;
+
+            for (var i = texto.Length - 1; i >= 0; i--)
+            {
+
+
+                var result = Convert.ToInt32(texto.Substring(i, 1)) * peso;
+                if (result > 9 && peso == 2)
+                {
+                    result = result - 9;
+                }
+
+                soma += result;
+
+                if (peso == 2)
+                    peso = 1;
+                else
+                    peso = peso + 1;
+            }
+
+            var resto = (soma % 10);
+
+            if (resto == 0)
+                return "0";
+
+            return (10 - resto).ToString();
 
         }
         private static string CalcularDvModulo10Safra(string texto)
