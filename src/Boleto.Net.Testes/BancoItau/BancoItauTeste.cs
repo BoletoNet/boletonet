@@ -62,6 +62,18 @@ namespace BoletoNet.Testes.BancoItau
 
             Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.Codigo, codigoBarraValida, "Código de Barra inválido");
         }
+
+        [TestMethod]
+        public void Itau_Carteira_109_Titulo_Avalista()
+        {
+            var boletoBancario = GerarBoletoCarteira109();
+
+            boletoBancario.Boleto.Valida();
+
+            string tituloAvalistaEsperado = "Beneficiário Final";
+
+            Assert.AreEqual(boletoBancario.Boleto.TituloAvalista, tituloAvalistaEsperado, "Título Avalista inválido");
+        }
         #endregion
     }
 }

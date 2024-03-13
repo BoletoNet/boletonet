@@ -936,6 +936,7 @@ namespace BoletoNet
                 .Replace("@ACEITE", Boleto.Aceite)
                 .ToString()
                 .Replace("@ENDERECOCEDENTE", MostrarEnderecoCedente ? enderecoCedente : "")
+                .Replace("@TITULOAVALISTA", Boleto.TituloAvalista)
                 .Replace(
                     "@AVALISTA",
                     string.Format(
