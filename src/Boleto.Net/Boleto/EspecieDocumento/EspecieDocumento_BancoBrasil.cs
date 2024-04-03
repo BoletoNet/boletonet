@@ -30,7 +30,10 @@ namespace BoletoNet
         ApoliceSeguro = 20, //AP –  APÓLICE DE SEGURO
         MensalidadeEscolar = 21, //ME – MENSALIDADE ESCOLAR
         ParcelaConsorcio = 22, //PC –  PARCELA DE CONSÓRCIO
-        Outros = 23 //OUTROS
+        Outros = 23, //OUTROS                
+        DividaAtivaEstadual = 27, //DAE - DÍVIDA ATIVA DO ESTADO
+        DividaAtivaMunicipio = 28, //DAM - DÍVIDA ATIVA DO MUNICIPIO
+        DividaAtivaUniao = 29 //DAU - DÍVIDA ATIVA DA UNIÃO
     }
 
     #endregion
@@ -93,8 +96,10 @@ namespace BoletoNet
                 case EnumEspecieDocumento_BancoBrasil.MensalidadeEscolar: return "21";
                 case EnumEspecieDocumento_BancoBrasil.ParcelaConsorcio: return "22";
                 case EnumEspecieDocumento_BancoBrasil.Outros: return "23";
+                case EnumEspecieDocumento_BancoBrasil.DividaAtivaEstadual: return "27";
+                case EnumEspecieDocumento_BancoBrasil.DividaAtivaMunicipio: return "28";
+                case EnumEspecieDocumento_BancoBrasil.DividaAtivaUniao: return "29";
                 default: return "23";
-
             }
         }
 
@@ -125,7 +130,44 @@ namespace BoletoNet
                 case "21": return EnumEspecieDocumento_BancoBrasil.MensalidadeEscolar;
                 case "22": return EnumEspecieDocumento_BancoBrasil.ParcelaConsorcio;
                 case "23": return EnumEspecieDocumento_BancoBrasil.Outros;
+                case "27": return EnumEspecieDocumento_BancoBrasil.DividaAtivaEstadual;
+                case "28": return EnumEspecieDocumento_BancoBrasil.DividaAtivaMunicipio;
+                case "29": return EnumEspecieDocumento_BancoBrasil.DividaAtivaUniao;
                 default: return EnumEspecieDocumento_BancoBrasil.DuplicataMercantil;
+            }
+        }
+
+        public override string getCodigoEspecieBySigla(string sigla)
+        {
+            switch (sigla)
+            {
+                case "CH": return "1";
+                case "DM": return "2";
+                case "DMI": return "3";
+                case "DS": return "4";
+                case "DSI": return "5";
+                case "DR": return "6";
+                case "LC": return "7";
+                case "NCC": return "8";
+                case "NCE": return "9";
+                case "NCI" : return "10";
+                case "NCR": return "11";
+                case "NP": return "12";
+                case "NPR": return "13";
+                case "TM": return "14";
+                case "TS": return "15";
+                case "NS": return "16";
+                case "RC": return "17";
+                case "FAT": return "18";
+                case "ND": return "19";
+                case "AP": return "20";
+                case "ME": return "21";
+                case "PC": return "22";
+                case "OUTROS": return "23";
+                case "DAE": return "27";
+                case "DAM": return "28";
+                case "DAU": return "29";
+                default: return "0";
             }
         }
 
@@ -252,6 +294,21 @@ namespace BoletoNet
                         this.Especie = "OUTROS";
                         this.Sigla = "OUTROS";
                         break;
+                    case EnumEspecieDocumento_BancoBrasil.DividaAtivaEstadual:
+                        this.Codigo = getCodigoEspecieByEnum(EnumEspecieDocumento_BancoBrasil.DividaAtivaEstadual);
+                        this.Especie = "DÍVIDA ATIVA DO ESTADO";
+                        this.Sigla = "DAE";
+                        break;
+                    case EnumEspecieDocumento_BancoBrasil.DividaAtivaMunicipio:
+                        this.Codigo = getCodigoEspecieByEnum(EnumEspecieDocumento_BancoBrasil.DividaAtivaMunicipio);
+                        this.Especie = "DÍVIDA ATIVA DO MUNICIPIO";
+                        this.Sigla = "DAM";
+                        break;
+                    case EnumEspecieDocumento_BancoBrasil.DividaAtivaUniao:
+                        this.Codigo = getCodigoEspecieByEnum(EnumEspecieDocumento_BancoBrasil.DividaAtivaUniao);
+                        this.Especie = "DÍVIDA ATIVA DA UNIÃO";
+                        this.Sigla = "DAU";
+                        break;
                     default:
                         this.Codigo = "0";
                         this.Especie = "( Selecione )";
@@ -294,6 +351,9 @@ namespace BoletoNet
                 alEspeciesDocumento.Add(new EspecieDocumento_BancoBrasil(ed.getCodigoEspecieByEnum(EnumEspecieDocumento_BancoBrasil.MensalidadeEscolar)));
                 alEspeciesDocumento.Add(new EspecieDocumento_BancoBrasil(ed.getCodigoEspecieByEnum(EnumEspecieDocumento_BancoBrasil.ParcelaConsorcio)));
                 alEspeciesDocumento.Add(new EspecieDocumento_BancoBrasil(ed.getCodigoEspecieByEnum(EnumEspecieDocumento_BancoBrasil.Outros)));
+                alEspeciesDocumento.Add(new EspecieDocumento_BancoBrasil(ed.getCodigoEspecieByEnum(EnumEspecieDocumento_BancoBrasil.DividaAtivaEstadual)));
+                alEspeciesDocumento.Add(new EspecieDocumento_BancoBrasil(ed.getCodigoEspecieByEnum(EnumEspecieDocumento_BancoBrasil.DividaAtivaMunicipio)));
+                alEspeciesDocumento.Add(new EspecieDocumento_BancoBrasil(ed.getCodigoEspecieByEnum(EnumEspecieDocumento_BancoBrasil.DividaAtivaUniao)));
 
                 return alEspeciesDocumento;
             }
@@ -303,6 +363,12 @@ namespace BoletoNet
             }
         }
 
+        public override IEspecieDocumento DuplicataMercantil()
+        {
+            return new EspecieDocumento_BancoBrasil(getCodigoEspecieByEnum(EnumEspecieDocumento_BancoBrasil.DuplicataMercantil));
+        }
+
         #endregion
     }
 }
+

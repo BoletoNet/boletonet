@@ -14,6 +14,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Impressão", "Impressão", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{D42D7DE1-FD70-47FD-903C-1FE7682FE900}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{35783397-4008-4BA3-AEFB-244A091B3B8D}"
+	ProjectSection(SolutionItems) = preProject
+		Leiame.txt = Leiame.txt
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testes", "Testes", "{8C6CE2CA-61F8-489B-A803-27437835E300}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MVC", "MVC", "{717CBD6F-C429-445D-95B0-191CEAA7A088}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Website", "Website", "{057F8124-1BE5-46CB-B2EF-106CD4325B93}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boleto.Net", "Boleto.Net\Boleto.Net.csproj", "{F173E80B-E36B-48AD-B483-A27F8CA86F3C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boleto.Net.Arquivo", "Boleto.Net.Arquivo\Boleto.Net.Arquivo.csproj", "{98AD1B9D-47F5-432C-85BD-49A12FBD7CAD}"
@@ -44,22 +57,9 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Boleto.Net.Site", "Boleto.N
 		SlnRelativePath = "Boleto.Net.Site\"
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{35783397-4008-4BA3-AEFB-244A091B3B8D}"
-	ProjectSection(SolutionItems) = preProject
-		Leiame.txt = Leiame.txt
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testes", "Testes", "{8C6CE2CA-61F8-489B-A803-27437835E300}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boleto.Net.Testes", "Boleto.Net.Testes\Boleto.Net.Testes.csproj", "{92951948-996F-4F22-AB35-74B06C45E1D4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boleto.Net.MVC", "Boleto.Net.MVC\Boleto.Net.MVC.csproj", "{ED82A7C4-89F9-4481-ADE5-8B5F64DF9E5B}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MVC", "MVC", "{717CBD6F-C429-445D-95B0-191CEAA7A088}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Website", "Website", "{057F8124-1BE5-46CB-B2EF-106CD4325B93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -126,12 +126,12 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{717CBD6F-C429-445D-95B0-191CEAA7A088} = {093054D8-8738-4790-87CC-25378443A115}
+		{057F8124-1BE5-46CB-B2EF-106CD4325B93} = {093054D8-8738-4790-87CC-25378443A115}
 		{F173E80B-E36B-48AD-B483-A27F8CA86F3C} = {75FC8289-5B1E-4684-8497-54494382FA55}
 		{98AD1B9D-47F5-432C-85BD-49A12FBD7CAD} = {75C4F877-9574-43BA-9844-EAEC221DC0FA}
 		{3E75E02F-A49C-4C96-8A9E-8A405D8B6167} = {057F8124-1BE5-46CB-B2EF-106CD4325B93}
 		{92951948-996F-4F22-AB35-74B06C45E1D4} = {8C6CE2CA-61F8-489B-A803-27437835E300}
 		{ED82A7C4-89F9-4481-ADE5-8B5F64DF9E5B} = {717CBD6F-C429-445D-95B0-191CEAA7A088}
-		{717CBD6F-C429-445D-95B0-191CEAA7A088} = {093054D8-8738-4790-87CC-25378443A115}
-		{057F8124-1BE5-46CB-B2EF-106CD4325B93} = {093054D8-8738-4790-87CC-25378443A115}
 	EndGlobalSection
 EndGlobal

@@ -98,7 +98,27 @@ namespace BoletoNet
                 default: return EnumEspecieDocumento_Sudameris.Diversos;
             }
         }
-        
+
+        public override string getCodigoEspecieBySigla(string sigla)
+        {
+            switch (sigla)
+            {
+                case "DM": return "1";
+                case "NP": return "2";
+                case "NS": return "3";
+                case "ME": return "4";
+                case "RC": return "5";
+                case "C": return "6";
+                case "CS": return "7";
+                case "DS": return "8";
+                case "LC": return "9";
+                case "ND": return "13";
+                case "DD": return "15";
+                case "EC": return "16";
+                default: return "99";
+            }
+        }
+
         private void carregar(string idCodigo)
         {
             try
@@ -131,7 +151,7 @@ namespace BoletoNet
                     case EnumEspecieDocumento_Sudameris.Recibo:
                         this.Codigo = ed.getCodigoEspecieByEnum(EnumEspecieDocumento_Sudameris.Recibo);
                         this.Especie = "Recibo";
-                        this.Sigla = "R";
+                        this.Sigla = "RC";
                         break;
                     case EnumEspecieDocumento_Sudameris.Contrato:
                         this.Codigo = ed.getCodigoEspecieByEnum(EnumEspecieDocumento_Sudameris.Contrato);
@@ -193,6 +213,11 @@ namespace BoletoNet
                 especiesDocumento.Add(new EspecieDocumento_Sudameris(ed.getCodigoEspecieByEnum(item)));
 
             return especiesDocumento;
+        }
+
+        public override IEspecieDocumento DuplicataMercantil()
+        {
+            return new EspecieDocumento_Sudameris(getCodigoEspecieByEnum(EnumEspecieDocumento_Sudameris.DuplicataMercantil));
         }
 
         #endregion

@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Boleto.Net.MVC.Models;
+using BoletoNet;
 
 namespace Boleto.Net.MVC.Controllers
 {
@@ -15,70 +14,73 @@ namespace Boleto.Net.MVC.Controllers
         public ActionResult Index()
         {
             ViewBag.Message = "Boleto.Net.MVC";
-
             var bancos = from Bancos s in Enum.GetValues(typeof(Bancos))
-                         select new { ID = Convert.ChangeType(s, typeof(int)), Name = s.ToString() };
+                         select new
+                         {
+                             ID = Convert.ChangeType(s, typeof(int)),
+                             Name = s.ToString()
+                         };
             ViewData["bancos"] = new SelectList(bancos, "ID", "Name", Bancos.BancodoBrasil);
-
             return View();
         }
 
-        public ActionResult VisualizarBoleto(int Id)
+        public ActionResult VisualizarBoleto(int Id, string qrcode)
         {
-            Exemplos exemplos = new Exemplos(Id);
+            var boleto = ObterBoletoBancario(Id);
+            boleto.Boleto.QRCode = qrcode;
+            ViewBag.Boleto = boleto.MontaHtmlEmbedded();
+            return View();
+        }
+
+        public ActionResult GerarBoletoPDF(int Id, string qrcode)
+        {
+            var boleto = ObterBoletoBancario(Id);
+            boleto.Boleto.QRCode = qrcode;
+            var pdf = boleto.MontaBytesPDF();
+            return File(pdf, "application/pdf");
+        }
+
+        public BoletoBancario ObterBoletoBancario(int Id)
+        {
+            var exemplos = new Exemplos(Id);
 
             switch ((Bancos)Id)
             {
                 case Bancos.BancodoBrasil:
-                    ViewBag.Boleto = exemplos.BancodoBrasil();
-                    break;
+                    return exemplos.BancodoBrasil();
                 case Bancos.Banrisul:
-                    ViewBag.Boleto = exemplos.Banrisul();
-                    break;
+                    return exemplos.Banrisul();
                 case Bancos.Basa:
-                    ViewBag.Boleto = exemplos.Basa();
-                    break;
+                    return exemplos.Basa();
                 case Bancos.Bradesco:
-                    ViewBag.Boleto = exemplos.Bradesco();
-                    break;
+                    return exemplos.Bradesco();
                 case Bancos.BRB:
-                    ViewBag.Boleto = exemplos.BRB();
-                    break;
+                    return exemplos.BRB();
                 case Bancos.Caixa:
-                    ViewBag.Boleto = exemplos.Caixa();
-                    break;
+                    return exemplos.Caixa();
                 case Bancos.HSBC:
-                    ViewBag.Boleto = exemplos.HSBC();
-                    break;
+                    return exemplos.HSBC();
                 case Bancos.Itau:
-                    ViewBag.Boleto = exemplos.Itau();
-                    break;
+                    return exemplos.Itau();
                 case Bancos.Real:
-                    ViewBag.Boleto = exemplos.Real();
-                    break;
+                    return exemplos.Real();
                 case Bancos.Safra:
-                    ViewBag.Boleto = exemplos.Safra();
-                    break;
+                    return exemplos.Safra();
                 case Bancos.Santander:
-                    ViewBag.Boleto = exemplos.Santander();
-                    break;
+                    return exemplos.Santander();
                 case Bancos.Sicoob:
-                    ViewBag.Boleto = exemplos.Sicoob();
-                    break;
+                    return exemplos.Sicoob();
                 case Bancos.Sicred:
-                    ViewBag.Boleto = exemplos.Sicred();
-                    break;
+                    return exemplos.Sicred();
                 case Bancos.Sudameris:
-                    ViewBag.Boleto = exemplos.Sudameris();
-                    break;
+                    return exemplos.Sudameris();
                 case Bancos.Unibanco:
-                    ViewBag.Boleto = exemplos.Unibanco();
-                    break;
+                    return exemplos.Unibanco();
+                case Bancos.Semear:
+                    return exemplos.Semear();
                 default:
-                    ViewBag.Boleto = "Banco não implementado";
-                    break;
+                    throw new ArgumentException("Banco não implementado");
             }
-            return View();
         }
     }
 }

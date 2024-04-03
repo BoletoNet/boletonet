@@ -38,6 +38,7 @@ namespace BoletoNet.Arquivo
             this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.arquivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,6 +48,7 @@ namespace BoletoNet.Arquivo
             this.gerarToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.impressãoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBoxBancos = new System.Windows.Forms.GroupBox();
+            this.radioButtonBNB = new System.Windows.Forms.RadioButton();
             this.radioButtonBanrisul = new System.Windows.Forms.RadioButton();
             this.radioButtonSicredi = new System.Windows.Forms.RadioButton();
             this.radioButtonCaixa = new System.Windows.Forms.RadioButton();
@@ -63,7 +65,6 @@ namespace BoletoNet.Arquivo
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.radioButtonCNAB240 = new System.Windows.Forms.RadioButton();
             this.radioButtonCNAB400 = new System.Windows.Forms.RadioButton();
-            this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.menuStrip.SuspendLayout();
             this.groupBoxBancos.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -144,6 +145,11 @@ namespace BoletoNet.Arquivo
             this.columnHeader8.Text = "Nosso Número";
             this.columnHeader8.Width = 80;
             // 
+            // columnHeader9
+            // 
+            this.columnHeader9.Text = "Numero Documento";
+            this.columnHeader9.Width = 100;
+            // 
             // openFileDialog
             // 
             this.openFileDialog.FileName = "openFileDialog";
@@ -211,6 +217,7 @@ namespace BoletoNet.Arquivo
             // 
             this.groupBoxBancos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBoxBancos.Controls.Add(this.radioButtonBNB);
             this.groupBoxBancos.Controls.Add(this.radioButtonBanrisul);
             this.groupBoxBancos.Controls.Add(this.radioButtonSicredi);
             this.groupBoxBancos.Controls.Add(this.radioButtonCaixa);
@@ -231,6 +238,17 @@ namespace BoletoNet.Arquivo
             this.groupBoxBancos.TabStop = false;
             this.groupBoxBancos.Text = "Bancos";
             // 
+            // radioButtonBNB
+            // 
+            this.radioButtonBNB.AutoSize = true;
+            this.radioButtonBNB.Location = new System.Drawing.Point(13, 294);
+            this.radioButtonBNB.Name = "radioButtonBNB";
+            this.radioButtonBNB.Size = new System.Drawing.Size(68, 17);
+            this.radioButtonBNB.TabIndex = 31;
+            this.radioButtonBNB.Tag = "4";
+            this.radioButtonBNB.Text = "Nordeste";
+            this.radioButtonBNB.UseVisualStyleBackColor = true;
+            // 
             // radioButtonBanrisul
             // 
             this.radioButtonBanrisul.AutoSize = true;
@@ -249,7 +267,7 @@ namespace BoletoNet.Arquivo
             this.radioButtonSicredi.Name = "radioButtonSicredi";
             this.radioButtonSicredi.Size = new System.Drawing.Size(57, 17);
             this.radioButtonSicredi.TabIndex = 29;
-            this.radioButtonSicredi.Tag = "104";
+            this.radioButtonSicredi.Tag = "748";
             this.radioButtonSicredi.Text = "Sicredi";
             this.radioButtonSicredi.UseVisualStyleBackColor = true;
             // 
@@ -405,11 +423,6 @@ namespace BoletoNet.Arquivo
             this.radioButtonCNAB400.Text = "CNAB 400";
             this.radioButtonCNAB400.UseVisualStyleBackColor = true;
             // 
-            // columnHeader9
-            // 
-            this.columnHeader9.Text = "Numero Documento";
-            this.columnHeader9.Width = 100;
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -473,6 +486,7 @@ namespace BoletoNet.Arquivo
         private System.Windows.Forms.RadioButton radioButtonSicredi;
         private System.Windows.Forms.RadioButton radioButtonBanrisul;
         private System.Windows.Forms.ColumnHeader columnHeader9;
+        private System.Windows.Forms.RadioButton radioButtonBNB;
     }
 }
 

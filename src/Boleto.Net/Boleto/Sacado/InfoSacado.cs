@@ -6,7 +6,7 @@ namespace BoletoNet
 {
     public class InfoSacado 
     {
-        String[] _data;
+        readonly String[] _data;
 
         /// <summary></summary>
         /// <param name="info">Texto da informação</param>

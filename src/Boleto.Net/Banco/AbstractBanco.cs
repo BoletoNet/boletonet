@@ -1,5 +1,6 @@
+using BoletoNet.Enums;
+using BoletoNet.Util;
 using System;
-using System.Threading;
 
 namespace BoletoNet
 {
@@ -12,6 +13,7 @@ namespace BoletoNet
         private string _digito = "0";
         private string _nome = string.Empty;
         private Cedente _cedente = null;
+        protected decimal divisor = 100.0M;
 
         #endregion Variaveis
 
@@ -70,12 +72,12 @@ namespace BoletoNet
         {
             throw new NotImplementedException("Função não implementada");
         }
-        
+
         public virtual bool ValidarRemessa(TipoArquivo tipoArquivo, string numeroConvenio, IBanco banco, Cedente cedente, Boletos boletos, int numeroArquivoRemessa, out string mensagem)
         {
             throw new NotImplementedException("Função não implementada na classe filha. Implemente na classe que está sendo criada.");
         }
-        
+
         /// <summary>
         /// Gera os registros de header do aquivo de remessa
         /// </summary>
@@ -98,6 +100,14 @@ namespace BoletoNet
             return _remessa;
         }
         /// <summary>
+        /// Gera registros de Mensagem Variavel do arquivo remessa
+        /// </summary>
+        public virtual string GerarMensagemVariavelRemessa(Boleto boleto, ref int numeroRegistro, TipoArquivo tipoArquivo)
+        {
+            string _remessa = "";
+            return _remessa;
+        }
+        /// <summary>
         /// Gera os registros de Trailer do arquivo de remessa
         /// </summary>
         public virtual string GerarTrailerRemessa(int numeroRegistro, TipoArquivo tipoArquivo, Cedente cedente, decimal vltitulostotal)
@@ -105,6 +115,18 @@ namespace BoletoNet
             string _trailer = "";
             return _trailer;
         }
+
+        /// <summary>
+        /// Gera os registros de Trailer do arquivo de remessa com total de registros detalhe
+        /// </summary>
+        public virtual string GerarTrailerRemessaComDetalhes(int numeroRegistro, int numeroRegistroDetalhes, TipoArquivo tipoArquivo, Cedente cedente, decimal vltitulostotal)
+        {
+            string _trailer = "";
+            return _trailer;
+        }
+
+
+
         /// <summary>
         /// Gera os registros de header de aquivo do arquivo de remessa
         /// </summary>
@@ -137,6 +159,24 @@ namespace BoletoNet
             string _headerLote = "";
             return _headerLote;
         }
+
+        /// <summary>
+        /// Gera registros de detalhe do arquivo remessa - SEGMENTO A
+        /// </summary>
+        public virtual string GerarDetalheSegmentoARemessa(Boleto boleto, int numeroRegistro)
+        {
+            string _segmentoP = "";
+            return _segmentoP;
+        }
+        /// <summary>
+        /// Gera registros de detalhe do arquivo remessa - SEGMENTO B
+        /// </summary>
+        public virtual string GerarDetalheSegmentoBRemessa(Boleto boleto, int numeroRegistro)
+        {
+            string _segmentoP = "";
+            return _segmentoP;
+        }
+
         /// <summary>
         /// Gera registros de detalhe do arquivo remessa - SEGMENTO P
         /// </summary>
@@ -189,6 +229,14 @@ namespace BoletoNet
         {
             string _segmentoR = "";
             return _segmentoR;
+        }
+        /// <summary>
+        /// Gera registros de detalhe do arquivo remessa - SEGMENTO S
+        /// </summary>
+        public virtual string GerarDetalheSegmentoSRemessa(Boleto boleto, int numeroRegistro, TipoArquivo tipoArquivo)
+        {
+            string _segmentoS = "";
+            return _segmentoS;
         }
         /// <summary>
         /// Gera os registros de Trailer de arquivo do arquivo de remessa
@@ -282,6 +330,15 @@ namespace BoletoNet
             return detalhe;
         }
 
+        public virtual DetalheSegmentoYRetornoCNAB240 LerDetalheSegmentoYRetornoCNAB240(string registro)
+        {
+            var detalhe = new DetalheSegmentoYRetornoCNAB240(registro);
+
+            detalhe.LerDetalheSegmentoYRetornoCNAB240(registro);
+
+            return detalhe;
+        }
+
         public virtual DetalheRetorno LerDetalheRetornoCNAB400(string registro)
         {
             try
@@ -290,23 +347,24 @@ namespace BoletoNet
                 int dataVencimento = Utils.ToInt32(registro.Substring(146, 6));
                 int dataCredito = Utils.ToInt32(registro.Substring(295, 6));
 
-                DetalheRetorno detalhe = new DetalheRetorno(registro);
+                DetalheRetorno detalhe =
+                    new DetalheRetorno(registro)
+                    {
+                        CodigoInscricao = Utils.ToInt32(registro.Substring(1, 2)),
+                        NumeroInscricao = registro.Substring(3, 14),
+                        Agencia = Utils.ToInt32(registro.Substring(17, 4)),
+                        Conta = Utils.ToInt32(registro.Substring(23, 5)),
+                        DACConta = Utils.ToInt32(registro.Substring(28, 1)),
+                        UsoEmpresa = registro.Substring(37, 25),
+                        NossoNumeroComDV = registro.Substring(85, 9),
+                        NossoNumero = registro.Substring(85, 8),
+                        DACNossoNumero = registro.Substring(93, 1),
+                        Carteira = registro.Substring(107, 1),
+                        CodigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2)),
+                        DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##")),
+                        NumeroDocumento = registro.Substring(116, 10)
+                    };
 
-                detalhe.CodigoInscricao = Utils.ToInt32(registro.Substring(1, 2));
-                detalhe.NumeroInscricao = registro.Substring(3, 14);
-                detalhe.Agencia = Utils.ToInt32(registro.Substring(17, 4));
-                detalhe.Conta = Utils.ToInt32(registro.Substring(23, 5));
-                detalhe.DACConta = Utils.ToInt32(registro.Substring(28, 1));
-                detalhe.UsoEmpresa = registro.Substring(37, 25);
-                //
-                detalhe.NossoNumeroComDV = registro.Substring(85, 9);
-                detalhe.NossoNumero = registro.Substring(85, 8); //Sem o DV
-                detalhe.DACNossoNumero = registro.Substring(93, 1); //DV
-                //
-                detalhe.Carteira = registro.Substring(107, 1);
-                detalhe.CodigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2));
-                detalhe.DataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
-                detalhe.NumeroDocumento = registro.Substring(116, 10);
                 detalhe.NossoNumero = registro.Substring(126, 9);
                 detalhe.DataVencimento = Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
                 decimal valorTitulo = Convert.ToInt64(registro.Substring(152, 13));
@@ -346,6 +404,30 @@ namespace BoletoNet
             {
                 throw new Exception("Erro ao ler detalhe do arquivo de RETORNO / CNAB 400.", ex);
             }
+        }
+
+        public virtual HeaderRetorno LerHeaderRetornoCNAB400(string registro)
+        {
+            try
+            {
+                return new HeaderRetorno(registro);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao ler header do arquivo de RETORNO / CNAB 400.", ex);
+            }
+        }
+
+        /// <summary>
+        /// Obtem o código de ocorrência formatado, utiliza '01' - 'Entrada de titulos como padrão'
+        /// </summary>
+        /// <param name="boleto">Boleto</param>
+        /// <returns>Código da ocorrência</returns>
+        protected string ObterCodigoDaOcorrencia(Boleto boleto)
+        {
+            return boleto.Remessa != null && !string.IsNullOrEmpty(boleto.Remessa.CodigoOcorrencia)
+                ? Utils.FormatCode(boleto.Remessa.CodigoOcorrencia, 2)
+                : TipoOcorrenciaRemessa.EntradaDeTitulos.Format();
         }
         # endregion
 
@@ -404,7 +486,7 @@ namespace BoletoNet
 
             for (int i = seq.Length; i > 0; i--)
             {
-                r = (Convert.ToInt32(Microsoft.VisualBasic.Strings.Mid(seq, i, 1)) * p);
+                r = (Convert.ToInt32(seq.Mid(i, 1)) * p);
 
                 if (r > 9)
                     r = (r / 10) + (r % 10);
@@ -464,7 +546,7 @@ namespace BoletoNet
 
             for (int i = seq.Length; i > 0; i--)
             {
-                n = Microsoft.VisualBasic.Strings.Mid(seq, i, 1);
+                n = seq.Mid(i, 1);
 
                 s = s + (Convert.ToInt32(n) * p);
 
@@ -501,7 +583,7 @@ namespace BoletoNet
 
             for (int i = seq.Length; i > 0; i--)
             {
-                s = s + (Convert.ToInt32(Microsoft.VisualBasic.Strings.Mid(seq, i, 1)) * p);
+                s = s + (Convert.ToInt32(seq.Mid(i, 1)) * p);
                 if (p == b)
                     p = 2;
                 else
@@ -574,7 +656,7 @@ namespace BoletoNet
 
             while (pos <= seq.Length)
             {
-                num = Microsoft.VisualBasic.Strings.Mid(seq, pos, 1);
+                num = seq.Mid(pos, 1);
                 total += Convert.ToInt32(num) * mult;
 
                 mult -= 1;
@@ -613,7 +695,7 @@ namespace BoletoNet
 
             while (pos <= seq.Length)
             {
-                num = Microsoft.VisualBasic.Strings.Mid(seq, pos, 1);
+                num = seq.Mid(pos, 1);
                 total += Convert.ToInt32(num) * mult;
 
                 mult -= 1;
@@ -658,5 +740,14 @@ namespace BoletoNet
             return result;
         }
         #endregion Mod
+
+        /// <summary>
+        /// Obtém nosso número sem DV e sem código do Convênio.
+        /// </summary>
+        /// <returns></returns>
+        public virtual long ObterNossoNumeroSemConvenioOuDigitoVerificador(long convenio, string nossoNumero)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

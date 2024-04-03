@@ -18,16 +18,16 @@ namespace BoletoNet
         ApoliceSeguro,
         Cheque,
         NotaPromissoariaDireta
-         //02   DM - DUPLICATA MERCANTIL                 
-         //04   DS - DUPLICATA DE SERVICO                
-         //07	LC - LETRA DE CÂMBIO (SOMENTE PARA BANCO 353)
-         //30	LC - LETRA DE CÂMBIO (SOMENTE PARA BANCO 008)
-         //12   NP - NOTA PROMISSORIA                    
-         //13	NR - NOTA PROMISSORIA RURAL 
-         //17   RC - RECIBO                              
-         //20   AP – APOLICE DE SEGURO                   
-         //97	CH – CHEQUE
-         //98	ND - NOTA PROMISSORIA DIRETA
+        //02   DM - DUPLICATA MERCANTIL                 
+        //04   DS - DUPLICATA DE SERVICO                
+        //07   LC - LETRA DE CÂMBIO (SOMENTE PARA BANCO 353)
+        //30   LC - LETRA DE CÂMBIO (SOMENTE PARA BANCO 008)
+        //12   NP - NOTA PROMISSORIA                    
+        //13   NR - NOTA PROMISSORIA RURAL 
+        //17   RC - RECIBO                              
+        //20   AP – APOLICE DE SEGURO                   
+        //97   CH – CHEQUE
+        //98   ND - NOTA PROMISSORIA DIRETA
     }
 
     #endregion
@@ -68,13 +68,13 @@ namespace BoletoNet
             switch (especie)
             {
                 case EnumEspecieDocumento_Santander.DuplicataMercantil: return "2";
-                case EnumEspecieDocumento_Santander.DuplicataServico:return "4";
+                case EnumEspecieDocumento_Santander.DuplicataServico: return "4";
                 case EnumEspecieDocumento_Santander.LetraCambio353: return "7";
-                case EnumEspecieDocumento_Santander.LetraCambio008:return "30";
-                case EnumEspecieDocumento_Santander.NotaPromissoria:return "12";
-                case EnumEspecieDocumento_Santander.NotaPromissoriaRural:return "13";
+                case EnumEspecieDocumento_Santander.LetraCambio008: return "30";
+                case EnumEspecieDocumento_Santander.NotaPromissoria: return "12";
+                case EnumEspecieDocumento_Santander.NotaPromissoriaRural: return "13";
                 case EnumEspecieDocumento_Santander.Recibo: return "17";
-                case EnumEspecieDocumento_Santander.ApoliceSeguro:return "20";
+                case EnumEspecieDocumento_Santander.ApoliceSeguro: return "20";
                 case EnumEspecieDocumento_Santander.Cheque: return "97";
                 case EnumEspecieDocumento_Santander.NotaPromissoariaDireta: return "98";
                 default: return "2"; //Duplicata Mercantil
@@ -100,6 +100,23 @@ namespace BoletoNet
             }
         }
 
+        public override string getCodigoEspecieBySigla(string sigla)
+        {
+            switch (sigla)
+            {
+                case "DM": return "2";
+                case "DS": return "4";
+                case "LS": return "7";
+                case "NP": return "12";
+                case "NPR": return "13";
+                case "RC": return "17";
+                case "AP": return "20";
+                case "CH": return "97";
+                case "ND": return "98";
+                default: return "2";
+            }
+        }
+
         private void carregar(string idCodigo)
         {
             try
@@ -121,7 +138,7 @@ namespace BoletoNet
                     case EnumEspecieDocumento_Santander.Recibo:
                         this.Codigo = ed.getCodigoEspecieByEnum(EnumEspecieDocumento_Santander.Recibo);
                         this.Especie = "Recibo";
-                        this.Sigla = "R";
+                        this.Sigla = "RC";
                         break;
                     case EnumEspecieDocumento_Santander.LetraCambio353:
                         this.Codigo = ed.getCodigoEspecieByEnum(EnumEspecieDocumento_Santander.LetraCambio353);
@@ -178,6 +195,11 @@ namespace BoletoNet
                 especiesDocumento.Add(new EspecieDocumento_Santander(ed.getCodigoEspecieByEnum(item)));
 
             return especiesDocumento;
+        }
+
+        public override IEspecieDocumento DuplicataMercantil()
+        {
+            return new EspecieDocumento_Santander(getCodigoEspecieByEnum(EnumEspecieDocumento_Santander.DuplicataMercantil));
         }
 
         #endregion

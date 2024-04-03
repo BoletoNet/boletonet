@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BoletoNet
 {
@@ -9,71 +7,30 @@ namespace BoletoNet
 
         #region Variáveis
 
-        private int _codigoInscricao = 0;
         private string _numeroInscricao = string.Empty;
-        private int _conta = 0;
-        private int _codigoBanco = 0;
-        private int _dacConta = 0;
         private string _usoEmpresa = string.Empty;
         private string _dacNossoNumero = string.Empty;
         private string _carteira = string.Empty;
-        private int _codigoOcorrencia = 0;
         private string _descOcorrencia = string.Empty;
-        private int _confirmacaoNossoNumero = 0;
-        private decimal _valorTitulo = 0;
-        private int _agenciaCobradora = 0;
-        private int _dacAgenciaCobradora = 0;
-        private int _especie = 0;
-        private decimal _tarifaCobranca = 0;
-        private decimal _valorAbatimento = 0;
-        private decimal _valorPrincipal = 0;
-        private decimal _jurosMora = 0;
         private DateTime _dataCredito = new DateTime(1, 1, 1);
-        private int _instrucaoCancelada = 0;
-        private string _nomeSacado = string.Empty;
         private string _erros = string.Empty;
         private string _codigoLiquidacao = string.Empty;
-        private int _numeroSequencial = 0;
-        private string _registro = string.Empty;
-        private decimal _valorDespesa = 0;
-        private decimal _valorOutrasDespesas = 0;
+        private readonly string _registro = string.Empty;
         private string _origemPagamento = string.Empty;
-        private string _motivoCodigoOcorrencia = string.Empty;
         private string _identificacaoTitulo = string.Empty;
-        private string _motivosRejeicao = string.Empty;
-        private int _numeroCartorio = 0;
-        private string _numeroProtocolo = string.Empty;
         private string _numeroControle = string.Empty;
 
         #region Propriedades BRB
 
-        private int _identificacaoDoRegistro = 0;
-        private int _tipoInscricao = 0;
         private string _cgcCpf = string.Empty;
-        private int _contaCorrente = 0;
         private string _nossoNumero = string.Empty;
         private string _seuNumero = string.Empty;
-        private int _instrucao = 0;
         private DateTime _dataOcorrencia = new DateTime(1, 1, 1);
         private string _numeroDocumento = string.Empty;
-        private int _codigoRateio = 0;
         private DateTime _dataVencimento = new DateTime(1, 1, 1);
-        private decimal _valoTitulo = 0;
-        private int _bancoCobrador = 0;
-        private int _agencia = 0;
         private string _especieTitulo = string.Empty;
-        private decimal _despeasaDeCobranca = 0;
-        private decimal _outrasDespesas = 0;
-        private decimal _juros = 0;
-        private decimal _iof = 0;
-        private decimal _abatimentos = 0;
-        private decimal _descontos = 0;
-        private decimal _valorPago = 0;
-        private decimal _outrosDebitos = 0;
-        private decimal _outrosCreditos = 0;
         private DateTime _dataLiquidacao = new DateTime(1, 1, 1);
-        private int _sequencial = 0;
-        private string _NossoNumeroComDV;
+
         #endregion
 
         #endregion
@@ -82,22 +39,96 @@ namespace BoletoNet
 
         public DetalheRetorno()
         {
+            Sequencial = 0;
+            Abatimentos = 0;
+            Juros = 0;
+            OutrasDespesas = 0;
+            DespeasaDeCobranca = 0;
+            BancoCobrador = 0;
+            CodigoRateio = 0;
+            Instrucao = 0;
+            ContaCorrente = 0;
+            TipoInscricao = 0;
+            IdentificacaoDoRegistro = 0;
+            NumeroCartorio = 0;
+            ValorPago = 0;
+            ValorOutrasDespesas = 0;
+            ValorDespesa = 0;
+            NumeroSequencial = 0;
+            InstrucaoCancelada = 0;
+            OutrosDebitos = 0;
+            OutrosCreditos = 0;
+            JurosMora = 0;
+            ValorPrincipal = 0;
+            Descontos = 0;
+            ValorAbatimento = 0;
+            IOF = 0;
+            TarifaCobranca = 0;
+            Especie = 0;
+            DACAgenciaCobradora = 0;
+            AgenciaCobradora = 0;
+            CodigoBanco = 0;
+            ValorTitulo = 0;
+            ConfirmacaoNossoNumero = 0;
+            CodigoOcorrencia = 0;
+            DACConta = 0;
+            Conta = 0;
+            Agencia = 0;
+            MotivoCodigoOcorrencia = string.Empty;
+            MotivosRejeicao = string.Empty;
+            NumeroProtocolo = string.Empty;
+            NomeSacado = string.Empty;
         }
 
         public DetalheRetorno(string registro)
         {
+            Sequencial = 0;
+            Abatimentos = 0;
+            Juros = 0;
+            OutrasDespesas = 0;
+            DespeasaDeCobranca = 0;
+            BancoCobrador = 0;
+            CodigoRateio = 0;
+            Instrucao = 0;
+            ContaCorrente = 0;
+            TipoInscricao = 0;
+            IdentificacaoDoRegistro = 0;
+            NumeroCartorio = 0;
+            ValorPago = 0;
+            ValorOutrasDespesas = 0;
+            ValorDespesa = 0;
+            NumeroSequencial = 0;
+            InstrucaoCancelada = 0;
+            OutrosDebitos = 0;
+            OutrosCreditos = 0;
+            JurosMora = 0;
+            ValorPrincipal = 0;
+            Descontos = 0;
+            ValorAbatimento = 0;
+            IOF = 0;
+            TarifaCobranca = 0;
+            Especie = 0;
+            DACAgenciaCobradora = 0;
+            AgenciaCobradora = 0;
+            CodigoBanco = 0;
+            ValorTitulo = 0;
+            ConfirmacaoNossoNumero = 0;
+            CodigoOcorrencia = 0;
+            DACConta = 0;
+            Conta = 0;
+            Agencia = 0;
             _registro = registro;
+            MotivoCodigoOcorrencia = string.Empty;
+            MotivosRejeicao = string.Empty;
+            NumeroProtocolo = string.Empty;
+            NomeSacado = string.Empty;
         }
 
         #endregion
 
         #region Propriedades
 
-        public int CodigoInscricao
-        {
-            get { return _codigoInscricao; }
-            set { _codigoInscricao = value; }
-        }
+        public int CodigoInscricao { get; set; }
 
         public string NumeroInscricao
         {
@@ -107,23 +138,11 @@ namespace BoletoNet
         /// <summary>
         /// Agência com o Dígito Verificador, quando houver
         /// </summary>
-        public int Agencia
-        {
-            get { return _agencia; }
-            set { _agencia = value; }
-        }
+        public int Agencia { get; set; }
 
-        public int Conta
-        {
-            get { return _conta; }
-            set { _conta = value; }
-        }
+        public int Conta { get; set; }
 
-        public int DACConta
-        {
-            get { return _dacConta; }
-            set { _dacConta = value; }
-        }
+        public int DACConta { get; set; }
 
         public string UsoEmpresa
         {
@@ -149,11 +168,7 @@ namespace BoletoNet
         /// <summary>
         /// Nosso Numero Completo Com o Dígito Verificador
         /// </summary>
-        public string NossoNumeroComDV
-        {
-            get { return _NossoNumeroComDV; }
-            set { _NossoNumeroComDV = value; }
-        }
+        public string NossoNumeroComDV { get; set; }
 
         public string Carteira
         {
@@ -161,11 +176,7 @@ namespace BoletoNet
             set { _carteira = value; }
         }
 
-        public int CodigoOcorrencia
-        {
-            get { return _codigoOcorrencia; }
-            set { _codigoOcorrencia = value; }
-        }
+        public int CodigoOcorrencia { get; set; }
 
         public string DescricaoOcorrencia
         {
@@ -185,11 +196,7 @@ namespace BoletoNet
             set { _numeroDocumento = value; }
         }
 
-        public int ConfirmacaoNossoNumero
-        {
-            get { return _confirmacaoNossoNumero; }
-            set { _confirmacaoNossoNumero = value; }
-        }
+        public int ConfirmacaoNossoNumero { get; set; }
 
         public DateTime DataVencimento
         {
@@ -197,83 +204,31 @@ namespace BoletoNet
             set { _dataVencimento = value; }
         }
 
-        public decimal ValorTitulo
-        {
-            get { return _valorTitulo; }
-            set { _valorTitulo = value; }
-        }
+        public decimal ValorTitulo { get; set; }
 
-        public int CodigoBanco
-        {
-            get { return _codigoBanco; }
-            set { _codigoBanco = value; }
-        }
+        public int CodigoBanco { get; set; }
 
-        public int AgenciaCobradora
-        {
-            get { return _agenciaCobradora; }
-            set { _agenciaCobradora = value; }
-        }
+        public int AgenciaCobradora { get; set; }
 
-        public int DACAgenciaCobradora
-        {
-            get { return _dacAgenciaCobradora; }
-            set { _dacAgenciaCobradora = value; }
-        }
+        public int DACAgenciaCobradora { get; set; }
 
-        public int Especie
-        {
-            get { return _especie; }
-            set { _especie = value; }
-        }
+        public int Especie { get; set; }
 
-        public decimal TarifaCobranca
-        {
-            get { return _tarifaCobranca; }
-            set { _tarifaCobranca = value; }
-        }
+        public decimal TarifaCobranca { get; set; }
 
-        public decimal IOF
-        {
-            get { return _iof; }
-            set { _iof = value; }
-        }
+        public decimal IOF { get; set; }
 
-        public decimal ValorAbatimento
-        {
-            get { return _valorAbatimento; }
-            set { _valorAbatimento = value; }
-        }
+        public decimal ValorAbatimento { get; set; }
 
-        public decimal Descontos
-        {
-            get { return _descontos; }
-            set { _descontos = value; }
-        }
+        public decimal Descontos { get; set; }
 
-        public decimal ValorPrincipal
-        {
-            get { return _valorPrincipal; }
-            set { _valorPrincipal = value; }
-        }
+        public decimal ValorPrincipal { get; set; }
 
-        public decimal JurosMora
-        {
-            get { return _jurosMora; }
-            set { _jurosMora = value; }
-        }
+        public decimal JurosMora { get; set; }
 
-        public decimal OutrosCreditos
-        {
-            get { return _outrosCreditos; }
-            set { _outrosCreditos = value; }
-        }
+        public decimal OutrosCreditos { get; set; }
 
-        public decimal OutrosDebitos
-        {
-            get { return _outrosDebitos; }
-            set { _outrosDebitos = value; }
-        }
+        public decimal OutrosDebitos { get; set; }
 
         public DateTime DataCredito
         {
@@ -281,17 +236,9 @@ namespace BoletoNet
             set { _dataCredito = value; }
         }
 
-        public int InstrucaoCancelada
-        {
-            get { return _instrucaoCancelada; }
-            set { _instrucaoCancelada = value; }
-        }
+        public int InstrucaoCancelada { get; set; }
 
-        public string NomeSacado
-        {
-            get { return _nomeSacado; }
-            set { _nomeSacado = value; }
-        }
+        public string NomeSacado { get; set; }
 
         public string Erros
         {
@@ -305,36 +252,20 @@ namespace BoletoNet
             set { _codigoLiquidacao = value; }
         }
 
-        public int NumeroSequencial
-        {
-            get { return _numeroSequencial; }
-            set { _numeroSequencial = value; }
-        }
+        public int NumeroSequencial { get; set; }
 
         public string Registro
         {
             get { return _registro; }
         }
-        public decimal ValorDespesa
-        {
-            get { return _valorDespesa; }
-            set { _valorDespesa = value; }
-        }
-        public decimal ValorOutrasDespesas
-        {
-            get { return _valorOutrasDespesas; }
-            set { _valorOutrasDespesas = value; }
-        }
-        public decimal ValorPago
-        {
-            get { return _valorPago; }
-            set { _valorPago = value; }
-        }
-        public string MotivoCodigoOcorrencia
-        {
-            get { return _motivoCodigoOcorrencia; }
-            set { _motivoCodigoOcorrencia = value; }
-        }
+        public decimal ValorDespesa { get; set; }
+
+        public decimal ValorOutrasDespesas { get; set; }
+
+        public decimal ValorPago { get; set; }
+
+        public string MotivoCodigoOcorrencia { get; set; }
+
         public string OrigemPagamento
         {
             get { return _origemPagamento; }
@@ -345,38 +276,21 @@ namespace BoletoNet
             get { return _identificacaoTitulo; }
             set { _identificacaoTitulo = value; }
         }
-        public string MotivosRejeicao
-        {
-            get { return _motivosRejeicao; }
-            set { _motivosRejeicao = value; }
-        }
-        public string NumeroProtocolo
-        {
-            get { return _numeroProtocolo; }
-            set { _numeroProtocolo = value; }
-        }
-        public int NumeroCartorio
-        {
-            get { return _numeroCartorio; }
-            set { _numeroCartorio = value; }
-        }
+        public string MotivosRejeicao { get; set; }
+
+        public string NumeroProtocolo { get; set; }
+
+        public int NumeroCartorio { get; set; }
+
         public string NumeroControle
         {
             get { return _numeroControle; }
             set { _numeroControle = value; }
         }
 
-        public int IdentificacaoDoRegistro
-        {
-            get { return _identificacaoDoRegistro; }
-            set { _identificacaoDoRegistro = value; }
-        }
+        public int IdentificacaoDoRegistro { get; set; }
 
-        public int TipoInscricao
-        {
-            get { return _tipoInscricao; }
-            set { _tipoInscricao = value; }
-        }
+        public int TipoInscricao { get; set; }
 
         public string CgcCpf
         {
@@ -384,11 +298,7 @@ namespace BoletoNet
             set { _cgcCpf = value; }
         }
 
-        public int ContaCorrente
-        {
-            get { return _contaCorrente; }
-            set { _contaCorrente = value; }
-        }
+        public int ContaCorrente { get; set; }
 
         public string SeuNumero
         {
@@ -396,23 +306,11 @@ namespace BoletoNet
             set { _seuNumero = value; }
         }
 
-        public int Instrucao
-        {
-            get { return _instrucao; }
-            set { _instrucao = value; }
-        }
+        public int Instrucao { get; set; }
 
-        public int CodigoRateio
-        {
-            get { return _codigoRateio; }
-            set { _codigoRateio = value; }
-        }
+        public int CodigoRateio { get; set; }
 
-        public int BancoCobrador
-        {
-            get { return _bancoCobrador; }
-            set { _bancoCobrador = value; }
-        }
+        public int BancoCobrador { get; set; }
 
         public string EspecieTitulo
         {
@@ -420,29 +318,13 @@ namespace BoletoNet
             set { _especieTitulo = value; }
         }
 
-        public decimal DespeasaDeCobranca
-        {
-            get { return _despeasaDeCobranca; }
-            set { _despeasaDeCobranca = value; }
-        }
+        public decimal DespeasaDeCobranca { get; set; }
 
-        public decimal OutrasDespesas
-        {
-            get { return _outrasDespesas; }
-            set { _outrasDespesas = value; }
-        }
+        public decimal OutrasDespesas { get; set; }
 
-        public decimal Juros
-        {
-            get { return _juros; }
-            set { _juros = value; }
-        }
+        public decimal Juros { get; set; }
 
-        public decimal Abatimentos
-        {
-            get { return _abatimentos; }
-            set { _abatimentos = value; }
-        }
+        public decimal Abatimentos { get; set; }
 
         public DateTime DataLiquidacao
         {
@@ -450,11 +332,9 @@ namespace BoletoNet
             set { _dataLiquidacao = value; }
         }
 
-        public int Sequencial
-        {
-            get { return _sequencial; }
-            set { _sequencial = value; }
-        }
+        public int Sequencial { get; set; }
+
+        public decimal ValorMulta { get; set; }
 
         #endregion
 
@@ -468,50 +348,45 @@ namespace BoletoNet
                 int dataVencimento = Utils.ToInt32(registro.Substring(146, 6));
                 int dataCredito = Utils.ToInt32(registro.Substring(295, 6));
 
-                _codigoInscricao = Utils.ToInt32(registro.Substring(1, 2));
+                CodigoInscricao = Utils.ToInt32(registro.Substring(1, 2));
                 _numeroInscricao = registro.Substring(3, 14);
-                _agencia = Utils.ToInt32(registro.Substring(17, 4));
-                _conta = Utils.ToInt32(registro.Substring(23, 5));
-                _dacConta = Utils.ToInt32(registro.Substring(28, 1));
+                Agencia = Utils.ToInt32(registro.Substring(17, 4));
+                Conta = Utils.ToInt32(registro.Substring(23, 5));
+                DACConta = Utils.ToInt32(registro.Substring(28, 1));
                 _usoEmpresa = registro.Substring(37, 25);
                 _nossoNumero = Utils.ToString(registro.Substring(85, 8));
                 _dacNossoNumero = registro.Substring(93, 1);
                 _carteira = registro.Substring(107, 1);
-                _codigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2));
+                CodigoOcorrencia = Utils.ToInt32(registro.Substring(108, 2));
                 _dataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
                 _numeroDocumento = registro.Substring(116, 10);
                 _nossoNumero = Utils.ToString(registro.Substring(126, 9));
                 _dataVencimento = Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
                 decimal valorTitulo = Convert.ToInt64(registro.Substring(152, 13));
-                _valorTitulo = valorTitulo / 100;
-                _codigoBanco = Utils.ToInt32(registro.Substring(165, 3));
-                _agenciaCobradora = Utils.ToInt32(registro.Substring(168, 4));
-                _especie = Utils.ToInt32(registro.Substring(173, 2));
+                ValorTitulo = valorTitulo / 100;
+                CodigoBanco = Utils.ToInt32(registro.Substring(165, 3));
+                BancoCobrador = Utils.ToInt32(registro.Substring(165, 3));
+                AgenciaCobradora = Utils.ToInt32(registro.Substring(168, 4));
+                Especie = Utils.ToInt32(registro.Substring(173, 2));
                 decimal tarifaCobranca = Convert.ToUInt64(registro.Substring(175, 13));
-                _tarifaCobranca = tarifaCobranca / 100;
+                TarifaCobranca = tarifaCobranca / 100;
                 // 26 brancos
                 decimal iof = Convert.ToUInt64(registro.Substring(214, 13));
-                _iof = iof / 100;
+                IOF = iof / 100;
                 decimal valorAbatimento = Convert.ToUInt64(registro.Substring(227, 13));
-                _valorAbatimento = valorAbatimento / 100;
+                ValorAbatimento = valorAbatimento / 100;
                 decimal valorPrincipal = Convert.ToUInt64(registro.Substring(253, 13));
-                _valorPrincipal = valorPrincipal / 100;
+                ValorPrincipal = valorPrincipal / 100;
                 decimal jurosMora = Convert.ToUInt64(registro.Substring(266, 13));
-                _jurosMora = jurosMora / 100;
+                JurosMora = jurosMora / 100;
                 _dataOcorrencia = Utils.ToDateTime(dataOcorrencia.ToString("##-##-##"));
-                // 293 - 3 brancos
                 _dataCredito = Utils.ToDateTime(dataCredito.ToString("##-##-##"));
-                _instrucaoCancelada = Utils.ToInt32(registro.Substring(301, 4));
-                // 306 - 6 brancos
-                // 311 - 13 zeros
-                _nomeSacado = registro.Substring(324, 30);
-                // 354 - 23 brancos
+                InstrucaoCancelada = Utils.ToInt32(registro.Substring(301, 4));
+                NomeSacado = registro.Substring(324, 30);
                 _erros = registro.Substring(377, 8);
-                // 377 - Registros rejeitados ou alegação do sacado
-                // 386 - 7 brancos
 
                 _codigoLiquidacao = registro.Substring(392, 2);
-                _numeroSequencial = Utils.ToInt32(registro.Substring(394, 6));
+                NumeroSequencial = Utils.ToInt32(registro.Substring(394, 6));
 
             }
             catch (Exception ex)

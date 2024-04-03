@@ -130,6 +130,37 @@ namespace BoletoNet
             }
         }
 
+        public override string getCodigoEspecieBySigla(string sigla)
+        {
+            switch (sigla)
+            {
+                case "CH": return "1";
+                case "DM": return "2";
+                case "DMI": return "3";
+                case "DS": return "4";
+                case "DSI": return "5";
+                case "DR": return "6";
+                case "LC": return "7";
+                case "NCC": return "8";
+                case "NCE": return "9";
+                case "NCI": return "10";
+                case "NCR": return "11";
+                case "NP": return "12";
+                case "NPR": return "13";
+                case "TM": return "14";
+                case "TS": return "15";
+                case "NS": return "16";
+                case "RC": return "17";
+                case "FAT": return "18";
+                case "ND": return "19";
+                case "AP": return "20";
+                case "ME": return "21";
+                case "PC": return "22";
+                case "C016": return "23";
+                default: return "2";
+            }
+        }
+
         private void carregar(string idCodigo)
         {
             try
@@ -275,6 +306,11 @@ namespace BoletoNet
                 especiesDocumento.Add(new EspecieDocumento_Real(ed.getCodigoEspecieByEnum(item)));
 
             return especiesDocumento;
+        }
+
+        public override IEspecieDocumento DuplicataMercantil()
+        {
+            return new EspecieDocumento_Real(getCodigoEspecieByEnum(EnumEspecieDocumento_Real.DuplicataMercantil));
         }
 
         #endregion

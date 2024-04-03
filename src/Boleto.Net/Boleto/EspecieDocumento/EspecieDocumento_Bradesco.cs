@@ -74,7 +74,7 @@ namespace BoletoNet
         {
             switch (codigo)
             {
-                case "1": return EnumEspecieDocumento_Bradesco.DuplicataMercantil;
+                case "1" : return EnumEspecieDocumento_Bradesco.DuplicataMercantil;
                 case "2": return EnumEspecieDocumento_Bradesco.NotaPromissoria;
                 case "3": return EnumEspecieDocumento_Bradesco.NotaSeguro;
                 case "4": return EnumEspecieDocumento_Bradesco.CobrancaSeriada;
@@ -84,6 +84,22 @@ namespace BoletoNet
                 case "12": return EnumEspecieDocumento_Bradesco.DuplicataServico;
                 case "99": return EnumEspecieDocumento_Bradesco.Outros;
                 default: return EnumEspecieDocumento_Bradesco.Outros;
+            }
+        }
+
+        public override string getCodigoEspecieBySigla(string sigla)
+        {
+            switch (sigla)
+            {
+                case "DM": return "1";
+                case "NP": return "2";
+                case "NS": return "3";
+                case "CS": return "4";
+                case "RC": return "5";
+                case "LC": return "10";
+                case "ND": return "11";
+                case "DS": return "12";
+                default: return "99";
             }
         }
 
@@ -194,6 +210,11 @@ namespace BoletoNet
             {
                 throw new Exception("Erro ao listar objetos", ex);
             }
+        }
+
+        public override IEspecieDocumento DuplicataMercantil()
+        {
+            return new EspecieDocumento_Bradesco(getCodigoEspecieByEnum(EnumEspecieDocumento_Bradesco.DuplicataMercantil));
         }
 
         #endregion

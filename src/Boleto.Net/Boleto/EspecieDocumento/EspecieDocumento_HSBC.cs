@@ -32,7 +32,9 @@ namespace BoletoNet
         ParcelaConsorcio = 22, //PC –  PARCELA DE CONSÓRCIO
         NotaFiscal = 23, //NF-Nota Fiscal
         DocumentoDivida = 24, //DD-Documento de Dívida
-        Outros = 99 //Outros
+        CobrancaEmissaoCliente = 98,
+        Outros = 99, //Outros
+        PD = 0
     }
 
     #endregion
@@ -96,7 +98,9 @@ namespace BoletoNet
                 case EnumEspecieDocumento_HSBC.ParcelaConsorcio: return "22";
                 case EnumEspecieDocumento_HSBC.NotaFiscal: return "23";
                 case EnumEspecieDocumento_HSBC.DocumentoDivida: return "24";
+                case EnumEspecieDocumento_HSBC.CobrancaEmissaoCliente: return "98";
                 case EnumEspecieDocumento_HSBC.Outros: return "99";
+                case EnumEspecieDocumento_HSBC.PD: return "0";
                 default: return "99";
 
             }
@@ -130,8 +134,45 @@ namespace BoletoNet
                 case "22": return EnumEspecieDocumento_HSBC.ParcelaConsorcio;
                 case "23": return EnumEspecieDocumento_HSBC.NotaFiscal;
                 case "24": return EnumEspecieDocumento_HSBC.DocumentoDivida;
+                case "98": return EnumEspecieDocumento_HSBC.CobrancaEmissaoCliente;
                 case "99": return EnumEspecieDocumento_HSBC.Outros;
+                case "0": return EnumEspecieDocumento_HSBC.PD;
                 default: return EnumEspecieDocumento_HSBC.Outros;
+            }
+        }
+
+        public override string getCodigoEspecieBySigla(string sigla)
+        {
+            switch (sigla)
+            {
+                case "CH": return "1";
+                case "DM": return "2";
+                case "DMI": return "3";
+                case "DS": return "4";
+                case "DSI": return "5";
+                case "DR": return "6";
+                case "LC": return "7";
+                case "NCC": return "8";
+                case "NCE": return "9";
+                case "NCI": return "10";
+                case "NCR": return "11";
+                case "NP": return "12";
+                case "NPR": return "13";
+                case "TM": return "14";
+                case "TS": return "15";
+                case "NS": return "16";
+                case "RC": return "17";
+                case "FAT": return "18";
+                case "ND": return "19";
+                case "AP": return "20";
+                case "ME": return "21";
+                case "PC": return "22";
+                case "NF": return "23";
+                case "DD": return "24";
+                case "CEC": return "98";
+                case "OUTROS": return "99";
+                case "PD": return "0";
+                default: return "99";
             }
         }
 
@@ -139,7 +180,7 @@ namespace BoletoNet
         {
             try
             {
-                this.Banco = new Banco_Brasil();
+                this.Banco = new Banco_HSBC();
 
                 switch (getEnumEspecieByCodigo(idCodigo))
                 {
@@ -268,6 +309,16 @@ namespace BoletoNet
                         this.Especie = "OUTROS";
                         this.Sigla = "OUTROS";
                         break;
+                    case EnumEspecieDocumento_HSBC.CobrancaEmissaoCliente:
+                        this.Codigo = getCodigoEspecieByEnum(EnumEspecieDocumento_HSBC.CobrancaEmissaoCliente);
+                        this.Especie = "COBRANÇA COM EMISSÃO TOTAL DO BLOQUETO PELO CLIENTE";
+                        this.Sigla = "PD";
+                        break;
+                    case EnumEspecieDocumento_HSBC.PD:
+                        this.Codigo = getCodigoEspecieByEnum(EnumEspecieDocumento_HSBC.PD);
+                        this.Especie = "PD";
+                        this.Sigla = "PD";
+                        break;
                     default:
                         this.Codigo = "0";
                         this.Especie = "( Selecione )";
@@ -319,6 +370,11 @@ namespace BoletoNet
             {
                 throw new Exception("Erro ao listar objetos", ex);
             }
+        }
+
+        public override IEspecieDocumento DuplicataMercantil()
+        {
+            return new EspecieDocumento_HSBC(getCodigoEspecieByEnum(EnumEspecieDocumento_HSBC.DuplicataMercantil));
         }
 
         #endregion

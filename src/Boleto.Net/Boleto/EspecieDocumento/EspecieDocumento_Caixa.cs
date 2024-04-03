@@ -77,6 +77,20 @@ namespace BoletoNet
             }
         }
 
+        public override string getCodigoEspecieBySigla(string sigla)
+        {
+            switch (sigla)
+            {
+                case "DM": return "1";
+                case "NP": return "2";
+                case "DS": return "3";
+                case "NS": return "5";
+                case "LC": return "6";
+                case "OU": return "9";
+                default: return "1";
+            }
+        }
+
         private void carregar(string idCodigo)
         {
             try
@@ -136,6 +150,11 @@ namespace BoletoNet
                 especiesDocumento.Add(new EspecieDocumento_Caixa(ed.getCodigoEspecieByEnum(item)));
 
             return especiesDocumento;
+        }
+
+        public override IEspecieDocumento DuplicataMercantil()
+        {
+            return new EspecieDocumento_Caixa(getCodigoEspecieByEnum(EnumEspecieDocumento_Caixa.DuplicataMercantil));
         }
 
         #endregion

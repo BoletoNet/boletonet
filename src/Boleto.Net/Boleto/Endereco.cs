@@ -1,160 +1,128 @@
 namespace BoletoNet
 {
     /// <summary>
-    /// Representa o endereço do Cedente ou Sacado.
+    /// Representa o endereço do Cedente ou Sacado com todas as informações necessárias.
     /// </summary>
     public class Endereco
-    {
-        private string _logradouro;
-        private string _endereco;
-        private string _numero;
-        private string _complemento;
-        private string _bairro;
-        private string _cidade;
-        private string _uf;
+    {        
         private string _cep;
-        private string _email;
 
         /// <summary>
-        /// Retorna o Logradouro
-        /// Exemplo : Rua, Av., Travessa...
+        /// Define o Logradouro
+        /// <remarks>
+        /// Exemplo: Rua, Av., Travessa...
+        /// </remarks>
         /// </summary>        
         public string Logradouro
         {
             get
             {
-                return _logradouro;
-            }
-            set
-            {
-                this._logradouro = value;
+                return End;
             }
         }
 
         /// <summary>
-        /// Retorna o endereço
+        /// Define o endereço completo
+        /// <remarks>
+        /// Exemplo: Barão do Amazonas
+        /// </remarks>
         /// </summary>
-        public string End
-        {
-            get
-            {
-                return _endereco;
-            }
-            set
-            {
-                this._endereco = value;
-            }
-        }
+        public string End { get; set; }
 
         /// <summary>
-        /// Retorna o Número do endereço
+        /// Define o Número do endereço
+        /// <remarks>
+        /// Exemplo: 1025.
+        /// </remarks>
         /// </summary>
-        public string Numero
-        {
-            get
-            {
-                return _numero;
-            }
-            set
-            {
-                this._numero = value;
-            }
-        }
+        public string Numero { get; set; }
 
         /// <summary>
-        /// Retorna o complemento
+        /// Define o complemento
+        /// <remarks>
+        /// Exemplo: Ap, Apartamento, Bloco, Casa, etc.
+        /// </remarks>
         /// </summary>
-        public string Complemento
-        {
-            get
-            {
-                return _complemento;
-            }
-            set
-            {
-                this._complemento = value;
-            }
-        }
+        public string Complemento { get; set; }
 
         /// <summary>
-        /// Retorna o bairro
+        /// Define o bairro
+        /// <remarks>
+        /// Exemplo: Centro.
+        /// </remarks>
         /// </summary>
-        public string Bairro
-        {
-            get
-            {
-                return _bairro;
-            }
-            set
-            {
-                this._bairro = value;
-            }
-        }
+        public string Bairro { get; set; }
 
         /// <summary>
-        /// Retona o nome da Cidade
+        /// Define o nome da Cidade
+        /// <remarks>
+        /// Exemplo: São Paulo
+        /// </remarks>
         /// </summary>
-        public string Cidade
-        {
-            get
-            {
-                return _cidade;
-            }
-            set
-            {
-                this._cidade = value;
-            }
-        }
+        public string Cidade { get; set;}
 
         /// <summary>
-        /// Retorna o UF
-        /// Exemplo :
+        /// Define o Estado (UF)
+        /// <remarks>
+        /// Exemplo:
         /// SP - São Paulo
         /// SC - Santa Catarina
+        /// *Utilizar apenas a sigla (UF)
+        /// </remarks>
         /// </summary>
-        public string UF
-        {
-            get
-            {
-                return _uf;
-            }
-            set
-            {
-                this._uf = value;
-            }
-        }
+        public string UF { get; set;}
 
         /// <summary>
-        /// Retorna o número do CEP
+        /// Define o número do CEP
+        /// <remarks>
+        /// O número do CEP será formatado automaticamente para remover pontos e traços
+        /// </remarks>
         /// </summary>
         public string CEP
         {
             get
             {
-                //return _cep.Replace(".", "").Replace("-", "");
                 return _cep;
             }
             //Flavio(fhlviana@hotmail.com) - o metodo "Set" acontece menos vezes do que o get, por estimativa. Sendo assim, armazenar
             //sem o "." e o "-" faz com que o código tenda a executar os dois Replace uma vez só.
+            //Consistência para evitar NullPointerException. (MarcielTorres)
             set
             {
-                //this._cep = value;
-                this._cep = value.Replace(".", "").Replace("-", "");
+                this._cep = !string.IsNullOrEmpty(value) ? value.Replace(".", "").Replace("-", "") : string.Empty;
             }
         }
 
         /// <summary>
-        /// Retorna o E-Mail
+        /// Define o E-Mail
+        /// <remarks>
+        /// Campo opcional, porém se informado não há consistências para edereços de e-mails válidos
+        /// </remarks>
         /// </summary>
-        public string Email
+        public string Email { get; set; }
+
+        public string EndComNumero {
+            get {
+                if (!string.IsNullOrEmpty(End) && !string.IsNullOrEmpty(Numero))
+                    return string.Format("{0}, {1}", End.Trim(), Numero.Trim());
+
+                return End;
+            }
+        }
+
+        public string EndComNumeroEComplemento
         {
             get
             {
-                return _email;
-            }
-            set
-            {
-                this._email = value;
+                var endComNumeroEComplemento = End;
+
+                if (!string.IsNullOrEmpty(Numero))
+                    endComNumeroEComplemento += " " + Numero;
+
+                if (!string.IsNullOrEmpty(Complemento))
+                    endComNumeroEComplemento += " " + Complemento;
+
+                return endComNumeroEComplemento;
             }
         }
     }

@@ -6,7 +6,6 @@ namespace BoletoNet
 {
     public abstract class AbstractEspecieDocumento : IEspecieDocumento
     {
-
         #region Variaveis
 
         private IBanco _banco;
@@ -44,5 +43,8 @@ namespace BoletoNet
 
         # endregion
 
+        public abstract IEspecieDocumento DuplicataMercantil();
+
+        public abstract string getCodigoEspecieBySigla(string sigla);
     }
 }

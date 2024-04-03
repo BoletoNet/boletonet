@@ -9,7 +9,7 @@ namespace BoletoNet
 
         #region Variaveis
 
-        private ICodigoLiquidacao _ICodigoLiquidacao = null;
+        private readonly ICodigoLiquidacao _ICodigoLiquidacao = null;
 
         #endregion
 

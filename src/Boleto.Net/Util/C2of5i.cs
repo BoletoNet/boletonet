@@ -6,7 +6,7 @@ namespace BoletoNet
     public class C2of5i : BarCodeBase
     {
         #region variables
-        private string[] cPattern = new string[100];
+        private readonly string[] cPattern = new string[100];
         private const string START = "0000";
         private const string STOP = "1000";
         private Bitmap bitmap;

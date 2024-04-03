@@ -2,9 +2,10 @@ using System;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using Microsoft.VisualBasic;
+using BoletoNet.Util;
 using System.Drawing;
 using System.ComponentModel;
+using System.Drawing.Imaging;
 
 namespace BoletoNet
 {
@@ -24,7 +25,7 @@ namespace BoletoNet
             drawing.Dispose();
 
             //create a new image of the right size
-            img = new Bitmap((int)textSize.Width - Convert.ToInt32(font.Size * 1.5), (int)textSize.Height);
+            img = new Bitmap((int)textSize.Width - Convert.ToInt32(font.Size * 1.5), (int)textSize.Height, PixelFormat.Format24bppRgb);
 
             drawing = Graphics.FromImage(img);
 
@@ -96,6 +97,10 @@ namespace BoletoNet
         /// <returns></returns>
         internal static string FormatCode(string text, string with, int length, bool left)
         {
+            // caso tamanho da string maior que desejado , corta a mesma , evitando estouro no tamanho 
+            if (text.Length > length)
+                text = text.Substring(0, length);
+
             //Esse método já existe, é PadLeft e PadRight da string
             length -= text.Length;
             if (left)
@@ -122,27 +127,7 @@ namespace BoletoNet
 
         internal static string FormatCode(string text, int length)
         {
-            return text.PadLeft(length, '0'); 
-        }
-
-        /// <summary>
-        /// Remove todos os acentos das palavras.
-        /// </summary>
-        /// <param name="value">palavra acentuada</param>
-        /// <returns>palavra sem acento</returns>
-        internal static String RemoveAcento(String value)
-        {
-            String normalizedString = value.Normalize(NormalizationForm.FormD);
-            StringBuilder stringBuilder = new StringBuilder();
-
-            for (int i = 0; i < normalizedString.Length; i++)
-            {
-                Char c = normalizedString[i];
-                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
-                    stringBuilder.Append(c);
-            }
-
-            return stringBuilder.ToString();
+            return text.PadLeft(length, '0');
         }
 
         /// <summary>
@@ -249,6 +234,18 @@ namespace BoletoNet
             }
         }
 
+        internal static decimal ToDecimal(string value)
+        {
+            try
+            {
+                return Convert.ToDecimal(value);
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
         internal static string ToString(object value)
         {
             try
@@ -265,7 +262,7 @@ namespace BoletoNet
         {
             try
             {
-                return Convert.ToDateTime(value);
+                return Convert.ToDateTime(value, CultureInfo.GetCultureInfo("pt-BR"));
             }
             catch
             {
@@ -354,11 +351,11 @@ namespace BoletoNet
             try
             {
                 agenciaConta = agencia;
-                if (digitoAgencia != string.Empty)
+                if (!string.IsNullOrEmpty(digitoAgencia))
                     agenciaConta += "-" + digitoAgencia;
 
                 agenciaConta += "/" + conta;
-                if (digitoConta != string.Empty)
+                if (!string.IsNullOrEmpty(digitoConta))
                     agenciaConta += "-" + digitoConta;
 
                 return agenciaConta;
@@ -438,48 +435,28 @@ namespace BoletoNet
             return tipo;
         }
 
-        public static string SubstituiCaracteresEspeciais(string strline)
+        public static string SubstituiCaracteresEspeciais(string text)
         {
-            try
+            if (!string.IsNullOrEmpty(text))
             {
-                strline = strline.Replace("ã", "a");
-                strline = strline.Replace('Ã', 'A');
-                strline = strline.Replace('â', 'a');
-                strline = strline.Replace('Â', 'A');
-                strline = strline.Replace('á', 'a');
-                strline = strline.Replace('Á', 'A');
-                strline = strline.Replace('à', 'a');
-                strline = strline.Replace('À', 'A');
-                strline = strline.Replace('ç', 'c');
-                strline = strline.Replace('Ç', 'C');
-                strline = strline.Replace('é', 'e');
-                strline = strline.Replace('É', 'E');
-                strline = strline.Replace('Ê', 'E');
-                strline = strline.Replace('ê', 'e');
-                strline = strline.Replace('õ', 'o');
-                strline = strline.Replace('Õ', 'O');
-                strline = strline.Replace('ó', 'o');
-                strline = strline.Replace('Ó', 'O');
-                strline = strline.Replace('ô', 'o');
-                strline = strline.Replace('Ô', 'O');
-                strline = strline.Replace('ú', 'u');
-                strline = strline.Replace('Ú', 'U');
-                strline = strline.Replace('ü', 'u');
-                strline = strline.Replace('Ü', 'U');
-                strline = strline.Replace('í', 'i');
-                strline = strline.Replace('Í', 'I');
-                strline = strline.Replace('ª', 'a');
-                strline = strline.Replace('º', 'o');
-                strline = strline.Replace('°', 'o');
-                strline = strline.Replace('&', 'e');
+                var sb = new StringBuilder();
+                var arrayChar = text.Normalize(NormalizationForm.FormD).ToCharArray();
 
-                return strline;
+                foreach (char c in arrayChar)
+                {
+                    if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                        sb.Append(c);
+                }
+                return Regex.Replace(sb.ToString(), @"[^0-9a-zA-Z°ºª&¹²³.,\\@\- ]+", x => new string(' ', x.Length))
+                    .Replace("ª", "a")
+                    .Replace("º", "o")
+                    .Replace("°", "o")
+                    .Replace("&", "e")
+                    .Replace("¹", "1")
+                    .Replace("²", "2")
+                    .Replace("³", "3");
             }
-            catch (Exception ex)
-            {
-                Exception tmpEx = new Exception("Erro ao formatar string.", ex);
-                throw tmpEx;
-            }
+            return string.Empty;
         }
 
         /// <summary>
@@ -529,6 +506,41 @@ namespace BoletoNet
             final = Strings.Right(seq, qtde);
             return FitStringLength(final, qtde, qtde, ch, 0, true, true, completaPelaEsquerda);
             ;
+        }
+
+        public static string Transform(string text, string mask, char charMask = 'X')
+        {
+            string retorno = text;
+
+            if (!string.IsNullOrEmpty(mask))
+            {
+
+                int idx = 0;
+                foreach (var m in mask)
+                {
+                    if (m != charMask)
+                    {
+                        retorno = retorno.Insert(idx, m.ToString());
+                    }
+                    idx++;
+                }
+
+            }
+
+            return retorno;
+        }
+
+
+        public static bool IsNullOrWhiteSpace(String value)
+        {
+            if (value == null) return true;
+
+            for (int i = 0; i < value.Length; i++)
+            {
+                if (!Char.IsWhiteSpace(value[i])) return false;
+            }
+
+            return true;
         }
     }
 }

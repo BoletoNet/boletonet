@@ -11,7 +11,7 @@ namespace Boleto.Net.Testes.BancoBrasil
 
         private BoletoBancario GerarBoletoCarteira18019()
         {
-            DateTime vencimento = new DateTime(2012, 12, 3);
+            DateTime vencimento = new DateTime(2022, 12, 3);
 
             var cedente = new Cedente("00.000.000/0000-00", "Empresa Teste", "0131", "7", "00045110", "X");
 
@@ -80,7 +80,7 @@ namespace Boleto.Net.Testes.BancoBrasil
 
             boletoBancario.Boleto.Valida();
 
-            string linhaDigitavelValida = "00190.00009 01653.205003 10028.528189 2 55360000842000";
+            string linhaDigitavelValida = "00190.00009 01653.205003 10028.528189 2 91880000842000";
 
             Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.LinhaDigitavel, linhaDigitavelValida, "Linha digitável inválida");
         }
@@ -94,7 +94,7 @@ namespace Boleto.Net.Testes.BancoBrasil
 
             boletoBancario.Boleto.Valida();
 
-            string codigoBarraValida = "00192553600008420000000001653205001002852818";
+            string codigoBarraValida = "00192918800008420000000001653205001002852818";
 
             Assert.AreEqual(boletoBancario.Boleto.CodigoBarra.Codigo, codigoBarraValida, "Código de Barra inválido");
         }

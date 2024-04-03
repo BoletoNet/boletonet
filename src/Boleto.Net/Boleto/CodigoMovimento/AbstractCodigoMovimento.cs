@@ -1,3 +1,5 @@
+using BoletoNet.Enums;
+using BoletoNet.Excecoes;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -37,5 +39,14 @@ namespace BoletoNet
 
         # endregion
 
+        public abstract TipoOcorrenciaRetorno ObterCorrespondenteFebraban();
+
+        protected TipoOcorrenciaRetorno ObterCorrespondenteFebraban<T>(Dictionary<T, TipoOcorrenciaRetorno> correspondentesFebraban, T ocorrencia) where T : struct, IConvertible
+        {
+            if (correspondentesFebraban.ContainsKey(ocorrencia))
+                return correspondentesFebraban[ocorrencia];
+
+            throw new BoletoNetException("Não há um movimento correspondente ao Febraban");
+        }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using BoletoNet.Enums;
 
 namespace BoletoNet
 {
@@ -10,23 +8,23 @@ namespace BoletoNet
     /// </summary>
     public class Remessa
     {
-        public enum TipoAmbiemte
+        public enum TipoAmbiente
         {
             Homologacao,
             Producao
         }
         //
         #region Atributos e Propriedades
-        private TipoAmbiemte _Ambiente;
+        private TipoAmbiente _Ambiente;
         /// <summary>
         /// Variável que define se a Remessa é para Testes ou Produção
         /// </summary>
-        public TipoAmbiemte Ambiente
+        public TipoAmbiente Ambiente
         {
             get { return _Ambiente; }
             set { _Ambiente = value; }
         }
-        
+
         private string _TipoDocumento;
         /// <summary>
         /// Tipo Documento Utilizado na geração da remessa. |Identificado no Banrisul by sidneiklein|
@@ -43,11 +41,30 @@ namespace BoletoNet
         /// Código de Ocorrência Utilizado na geração da Remessa.
         /// |Identificado no Banrisul        como "CODIGO OCORRENCIA" by sidneiklein|
         /// |Identificado no Banco do Brasil como "COMANDO"           by sidneiklein|
+        /// |Identificado no Santander como "CÓDIGO DE MOVIMENTO REMESSA"           by Leandro Morais
         /// </summary>
         public string CodigoOcorrencia
         {
             get { return _CodigoOcorrencia; }
             set { _CodigoOcorrencia = value; }
+        }
+
+        private int _NumeroLote;
+        /// <summary>
+        /// Numero do lote de remessa
+        /// </summary>
+        public int NumeroLote
+        {
+            get { return _NumeroLote; }
+            set { _NumeroLote = value; }
+        }
+        #endregion
+
+        #region Constructors
+        public Remessa() { }
+        public Remessa(TipoOcorrenciaRemessa ocorrencia)
+        {
+            CodigoOcorrencia = ocorrencia.Format();
         }
         #endregion
     }

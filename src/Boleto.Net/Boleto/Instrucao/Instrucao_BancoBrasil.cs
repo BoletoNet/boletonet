@@ -9,9 +9,9 @@ namespace BoletoNet
     public enum EnumInstrucoes_BancoBrasil
     {
         Protestar = 9,                      // Emite aviso ao sacado após N dias do vencto, e envia ao cartório após 5 dias úteis
-        NaoProtestar = 10,                  // Inibe protesto, quando houver instrução permanente na conta corrente
+        NaoProtestar = 7,                  // Inibe protesto, quando houver instrução permanente na conta corrente
         ImportanciaporDiaDesconto = 30,
-        Percentual_Multa = 35,
+        Multa = 35,
         ProtestoFinsFalimentares = 42,
         ProtestarAposNDiasCorridos = 81,
         ProtestarAposNDiasUteis = 82,
@@ -54,11 +54,17 @@ namespace BoletoNet
         {
             this.carregar(codigo, valor);
         }
+
+        public Instrucao_BancoBrasil(int codigo, double valor, EnumTipoValor tipoValor)
+        {
+            this.carregar(codigo, valor, tipoValor);
+        }
+
         #endregion
 
         #region Metodos Privados
 
-        private void carregar(int idInstrucao, double valor)
+        private void carregar(int idInstrucao, double valor, EnumTipoValor tipoValor = EnumTipoValor.Percentual)
         {
             try
             {
@@ -67,13 +73,17 @@ namespace BoletoNet
 
                 switch ((EnumInstrucoes_BancoBrasil)idInstrucao)
                 {
-                    case EnumInstrucoes_BancoBrasil.Percentual_Multa:
-                        this.Codigo = (int)EnumInstrucoes_BancoBrasil.Percentual_Multa;
-                        this.Descricao = "Após vencimento cobrar multa de " + valor + " %";
+                    case EnumInstrucoes_BancoBrasil.Multa:
+                        this.Codigo = (int)EnumInstrucoes_BancoBrasil.Multa;
+                        this.Descricao = String.Format("Após vencimento cobrar multa de {0} {1}",
+                            (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("F2")),
+                            (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
                         break;
                     case EnumInstrucoes_BancoBrasil.JurosdeMora:
-                        this.Codigo = (int)EnumInstrucoes_BancoBrasil.JurosdeMora;
-                        this.Descricao = "Após vencimento cobrar R$ " + valor + " por dia de atraso";
+                        this.Codigo = 0;
+                        this.Descricao = String.Format("Após vencimento cobrar juros de {0} {1} por dia de atraso",
+                            (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("F2")),
+                            (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
                         break;
                     default:
                         this.Codigo = 0;

@@ -15,6 +15,8 @@ namespace BoletoNet
         ProtestarAposNDiasUteis = 82,
         NaoReceberAposNDias = 91,
         DevolverAposNDias = 92,
+        ComDesconto = 93,
+        BoletoOriginal = 94,
 
         OutrasInstrucoes_ExibeMensagem_MoraDiaria = 900,
         OutrasInstrucoes_ExibeMensagem_MultaVencimento = 901
@@ -52,26 +54,41 @@ namespace BoletoNet
         {
             this.carregar(codigo, valor);
         }
+
+        public Instrucao_Bradesco(int codigo, double valor, EnumTipoValor tipoValor)
+        {
+            this.carregar(codigo, valor, tipoValor);
+        }
+
+        public Instrucao_Bradesco(int codigo, double valor, DateTime data, EnumTipoValor tipoValor)
+        {
+            this.carregar(codigo, valor, data, tipoValor);
+        }
+
         #endregion Construtores
 
         #region Metodos Privados
 
-        private void carregar(int idInstrucao, double valor)
+        private void carregar(int idInstrucao, double valor, EnumTipoValor tipoValor = EnumTipoValor.Percentual)
         {
             try
             {
-                this.Banco = new Banco_Sicredi();
+                this.Banco = new Banco_Bradesco();
                 this.Valida();
 
                 switch ((EnumInstrucoes_Bradesco)idInstrucao)
                 {
                     case EnumInstrucoes_Bradesco.OutrasInstrucoes_ExibeMensagem_MoraDiaria:
                         this.Codigo = 0;
-                        this.Descricao = "Após vencimento cobrar mora diária de R$ " + valor;
+                        this.Descricao = String.Format("Após vencimento cobrar juros de {0} {1} por dia de atraso",
+                            (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("F2")),
+                            (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
                         break;
                     case EnumInstrucoes_Bradesco.OutrasInstrucoes_ExibeMensagem_MultaVencimento:
                         this.Codigo = 0;
-                        this.Descricao = "Após vencimento cobrar multa de " + valor + "%";
+                        this.Descricao = String.Format("Após vencimento cobrar multa de {0} {1}",
+                            (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("F2")),
+                            (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
                         break;
                     default:
                         this.Codigo = 0;
@@ -135,6 +152,38 @@ namespace BoletoNet
                 throw new Exception("Erro ao carregar objeto", ex);
             }
         }
+
+        private void carregar(int idInstrucao, double valor, DateTime data, EnumTipoValor tipoValor = EnumTipoValor.Reais)
+        {
+            try
+            {
+                this.Banco = new Banco_Bradesco();
+                this.Valida();
+
+                switch ((EnumInstrucoes_Bradesco)idInstrucao)
+                {
+                    case EnumInstrucoes_Bradesco.ComDesconto:
+                        this.Codigo = (int)EnumInstrucoes_Bradesco.ComDesconto;
+                        this.Descricao = String.Format("Desconto de pontualidade no valor de {0} {1} se pago até " + data.ToShortDateString(),
+                            (tipoValor.Equals(EnumTipoValor.Reais) ? "R$ " : valor.ToString("C")),
+                            (tipoValor.Equals(EnumTipoValor.Percentual) ? "%" : valor.ToString("F2")));
+                        break;
+                    case EnumInstrucoes_Bradesco.BoletoOriginal:
+                        this.Codigo = (int)EnumInstrucoes_Bradesco.BoletoOriginal;
+                        this.Descricao = "Vencimento " + data.ToShortDateString() + ", no valor de " + valor.ToString("C") + "";
+                        break;
+                    default:
+                        this.Codigo = 0;
+                        this.Descricao = " (Selecione) ";
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao carregar objeto", ex);
+            }
+        }
+
 
         public override void Valida()
         {
