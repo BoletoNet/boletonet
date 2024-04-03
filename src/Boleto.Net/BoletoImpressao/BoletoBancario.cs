@@ -45,6 +45,7 @@ namespace BoletoNet
         private bool _formatoCarne = false;
         private bool _formatoPropaganda = false;
         private string _imagemPropaganda = "";
+        private string _imagemLogoCliente = "";
         private bool _ajustaTamanhoFonte = false;
         private bool _removeSimboloMoedaValorDocumento = false;
         private string _ajustaTamanhoFonteHtml;
@@ -96,7 +97,8 @@ namespace BoletoNet
         /// exibe o boleto no formato de propaganda
         /// </summary>
         [Browsable(true), Description("Formata o boleto no layout de propaganda")]
-        public bool FormatoPropaganda {
+        public bool FormatoPropaganda
+        {
             get { return _formatoPropaganda; }
             set { _formatoPropaganda = value; }
         }
@@ -105,9 +107,20 @@ namespace BoletoNet
         /// string base64 da imagem
         /// </summary>
         [Browsable(true), Description("string base64 da imagem")]
-        public string ImagemPropaganda {
+        public string ImagemPropaganda
+        {
             get { return _imagemPropaganda; }
             set { _imagemPropaganda = value; }
+        }
+
+        /// <summary>
+        /// string base64 da imagem da logo do cliente, para substituir o banco
+        /// </summary>
+        [Browsable(true), Description("string base64 da imagem da logo do cliente, para substituir o banco")]
+        public string ImagemLogoCliente
+        {
+            get { return _imagemLogoCliente; }
+            set { _imagemLogoCliente = value; }
         }
 
         [Browsable(false)]
@@ -302,7 +315,13 @@ namespace BoletoNet
                 return;
             }
 
-            string urlImagemLogo = Page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens." + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg");
+            // DANIEL CAZE - 03/04/2024
+            // INCLUIR A POSSIBILIDADE DE USAR UMA LOGO PERSONALIDA, COM A IMAGEM DO CLIENTE
+            // AO INVES DA LOGO DO BANCO
+            string urlImagemLogo = string.IsNullOrEmpty(ImagemLogoCliente) ?
+                Page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens." + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg")
+                : string.Format("data:image/gif;base64,{0}", ImagemLogoCliente);
+
             string urlImagemBarra = Page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens.barra.gif");
             //string urlImagemBarraInterna = Page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens.barrainterna.gif");
             //string urlImagemCorte = Page.ClientScript.GetWebResourceUrl(typeof(BoletoBancario), "BoletoNet.Imagens.corte.gif");
@@ -361,7 +380,7 @@ namespace BoletoNet
             html.Append("</style>");
             _ajustaFamiliaFonteHtml = html.ToString().Replace("$1", "{").Replace("$2", "}");
         }
-	
+
         /// <summary>
         /// Ajusta a largura de cada barra do barcode.
         /// </summary>
@@ -370,7 +389,7 @@ namespace BoletoNet
         {
             _tamanhoLarguraBarcode = tamanhoLarguraBarcode;
         }
-	
+
         #region Html
         public string GeraHtmlInstrucoes()
         {
@@ -602,7 +621,7 @@ namespace BoletoNet
             {
                 html.Append(_ajustaTamanhoFonteHtml);
             }
-            if(_ajustaFamiliaFonte)
+            if (_ajustaFamiliaFonte)
             {
                 html.Append(_ajustaFamiliaFonteHtml);
             }
@@ -843,21 +862,23 @@ namespace BoletoNet
             }
 
             ///formatação do recibo do centende
-            if (FormatoCarne){
+            if (FormatoCarne)
+            {
                 html.Append(GeraHtmlCarne(GeraHtmlReciboCedente()));
             }
             else if (FormatoPropaganda)
             {
                 html.Append(GeraHtmlPropaganda(GeraHtmlReciboCedente()));
             }
-            else{
+            else
+            {
                 html.Append(GeraHtmlReciboCedente());
             }
 
- 	    if (Boleto.Banco.Codigo == 104)
+            if (Boleto.Banco.Codigo == 104)
                 html.Replace("Mora / Multa", "Mora / Multa / Juros");
 
-	    //html.Append(!FormatoCarne ? !FormatoPropaganda ? GeraHtmlReciboCedente() : GeraHtmlPropaganda(GeraHtmlReciboCedente()) : GeraHtmlCarne(GeraHtmlReciboCedente()));
+            //html.Append(!FormatoCarne ? !FormatoPropaganda ? GeraHtmlReciboCedente() : GeraHtmlPropaganda(GeraHtmlReciboCedente()) : GeraHtmlCarne(GeraHtmlReciboCedente()));
 
             string dataVencimento = Boleto.DataVencimento.ToString("dd/MM/yyyy");
 
@@ -1239,11 +1260,11 @@ namespace BoletoNet
 
             //if (!System.IO.File.Exists(fnLogo))  Comentado por diego.dariolli pois quando trocava o logo do banco, como já existia no caminho ele não substituia
             //{
-                Stream streamLogo = Assembly.GetExecutingAssembly().GetManifestResourceStream("BoletoNet.Imagens." + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg");
-                using (Stream file = File.Create(fnLogo))
-                {
-                    CopiarStream(streamLogo, file);
-                }
+            Stream streamLogo = Assembly.GetExecutingAssembly().GetManifestResourceStream("BoletoNet.Imagens." + Utils.FormatCode(_ibanco.Codigo.ToString(), 3) + ".jpg");
+            using (Stream file = File.Create(fnLogo))
+            {
+                CopiarStream(streamLogo, file);
+            }
             //}
 
             string fnBarra = fileName + @"BoletoNetBarra.gif";
@@ -1399,7 +1420,12 @@ namespace BoletoNet
             {
                 var assembly = Assembly.GetExecutingAssembly();
 
-                string base64Logo = Convert.ToBase64String(ObterLogoDoBanco(CodigoBanco));
+                // DANIEL CAZE - 03/04/2024
+                // INCLUIR A POSSIBILIDADE DE USAR UMA LOGO PERSONALIDA, COM A IMAGEM DO CLIENTE
+                // AO INVES DA LOGO DO BANCO
+                string base64Logo = string.IsNullOrEmpty(ImagemLogoCliente) ? 
+                    Convert.ToBase64String(ObterLogoDoBanco(CodigoBanco))
+                    : ImagemLogoCliente;
                 string fnLogo = string.Format("data:image/gif;base64,{0}", base64Logo);
 
                 streamBarra = assembly.GetManifestResourceStream("BoletoNet.Imagens.barra.gif");
@@ -1445,7 +1471,7 @@ namespace BoletoNet
         public byte[] MontaBytesPDF(bool convertLinhaDigitavelToImage = false)
         {
             var converter = new NReco.PdfGenerator.HtmlToPdfConverter();
-            converter.Margins = new PageMargins(){ Bottom = 0, Top = 0, Left = 0, Right = 0};
+            converter.Margins = new PageMargins() { Bottom = 0, Top = 0, Left = 0, Right = 0 };
 
             if (!string.IsNullOrWhiteSpace(TempFilesPath))
             {
