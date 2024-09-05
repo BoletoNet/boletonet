@@ -628,7 +628,7 @@ namespace BoletoNet
 
             if (FormatoPropaganda)
             {
-                html.Append(string.Format("<img src='data:image/png;base64, {0}' />", ImagemPropaganda));
+                html.Append(string.Format("<img src='data:image/png;base64, {0}' height=\"600\"/>", ImagemPropaganda));
             }
 
             //Oculta o cabeçalho das instruções do boleto
