@@ -32,7 +32,7 @@ namespace BoletoNet
 		internal Banco_Daycoval()
 		{
 			this.Codigo = 707;
-			this.Digito = "0";
+			this.Digito = "2";
 			this.Nome = "Daycoval";
 		}
 
