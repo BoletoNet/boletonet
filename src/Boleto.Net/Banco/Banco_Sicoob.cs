@@ -382,27 +382,27 @@ namespace BoletoNet
             try
             {
                 //Montagem do header
-                string header = "756"; //Posição 001 a 003   Código do Sicoob na Compensação: "756"
-                header += "0000"; //Posição 004 a 007  Lote de Serviço: "0000"
-                header += "0"; //Posição 008           Tipo de Registro: "0"
-                header += new string(' ', 9); //); //Posição 09 a 017     Uso Exclusivo FEBRABAN / CNAB: Brancos
-                header += cedente.CPFCNPJ.Length == 11 ? "1" : "2"; //Posição 018  1=CPF    2=CGC/CNPJ
-                header += Utils.FormatCode(cedente.CPFCNPJ, "0", 14, true); //Posição 019 a 032   Número de Inscrição da Empresa
-                header += Utils.FormatCode("", " ", 20); //Posição 033 a 052     Código do Convênio no Sicoob: Brancos
-                header += Utils.FormatCode(cedente.ContaBancaria.Agencia, 5);//Posição 053 a 057     Prefixo da Cooperativa: vide planilha "Capa" deste arquivo
-                header += Utils.FormatCode(cedente.ContaBancaria.DigitoAgencia, "0", 1);  //Posição 058 a 058 Digito Agência
-                header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 12, true);   //Posição 059 a 070
-                header += cedente.ContaBancaria.DigitoConta;  //Posição 071 a 71
-                header += new string('0', 1); //Posição 072 a 72     Dígito Verificador da Ag/Conta: Brancos
-                header += Utils.FormatCode(cedente.Nome, " ", 30);  //Posição 073 a 102      Nome do Banco: SICOOB
-                header += Utils.FormatCode("SICOOB", " ", 30);     //Posição 103 a 132       Nome da Empresa
-                header += Utils.FormatCode("", " ", 10);     //Posição 133 a 142  Uso Exclusivo FEBRABAN / CNAB: Brancos
-                header += "1";        //Posição 103 a 142   Código Remessa / Retorno: "1"
-                header += DateTime.Now.ToString("ddMMyyyy");       //Posição 144 a 151       Data de Geração do Arquivo
-                header += Utils.FormatCode("", "0", 6);            //Posição 152 a 157       Hora de Geração do Arquivo
-                header += "000001";         //Posição 158 a 163     Seqüência
-                header += "081";            //Posição 164 a 166    No da Versão do Layout do Arquivo: "081"
-                header += "00000";          //Posição 167 a 171    Densidade de Gravação do Arquivo: "00000"
+                string header = "756";                                                      //Posição 001 a 003  Código do Sicoob na Compensação: "756"
+                header += "0000";                                                           //Posição 004 a 007  Lote de Serviço: "0000"
+                header += "0";                                                              //Posição 008        Tipo de Registro: "0"
+                header += new string(' ', 9); //);                                          //Posição 09 a 017   Uso Exclusivo FEBRABAN / CNAB: Brancos
+                header += cedente.CPFCNPJ.Length == 11 ? "1" : "2";                         //Posição 018  1=CPF 2=CGC/CNPJ
+                header += Utils.FormatCode(cedente.CPFCNPJ, "0", 14, true);                 //Posição 019 a 032  Número de Inscrição da Empresa
+                header += Utils.FormatCode(cedente.Convenio.ToString(), " ", 20);           //Posição 033 a 052  Código do Convênio no Sicoob: Brancos
+                header += Utils.FormatCode(cedente.ContaBancaria.Agencia, 5);               //Posição 053 a 057  Prefixo da Cooperativa: vide planilha "Capa" deste arquivo
+                header += Utils.FormatCode(cedente.ContaBancaria.DigitoAgencia, "0", 1);    //Posição 058 a 058  Digito Agência
+                header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 12, true);     //Posição 059 a 070
+                header += cedente.ContaBancaria.DigitoConta;                                //Posição 071 a 71
+                header += new string(' ', 1);                                               //Posição 072 a 72   Dígito Verificador da Ag/Conta: Brancos
+                header += Utils.FormatCode(cedente.Nome, " ", 30);                          //Posição 073 a 102  Nome do Banco: SICOOB
+                header += Utils.FormatCode("SICOOB", " ", 30);                              //Posição 103 a 132  Nome da Empresa
+                header += Utils.FormatCode("", " ", 10);                                    //Posição 133 a 142  Uso Exclusivo FEBRABAN / CNAB: Brancos
+                header += "1";                                                              //Posição 103 a 142  Código Remessa / Retorno: "1"
+                header += DateTime.Now.ToString("ddMMyyyy");                                //Posição 144 a 151  Data de Geração do Arquivo
+                header += Utils.FormatCode("", "0", 6);                                     //Posição 152 a 157  Hora de Geração do Arquivo
+                header += Utils.FormatCode(numeroArquivoRemessa.ToString(), "0", 6, true);  //Posição 158 a 163  Seqüência
+                header += "081";                                                            //Posição 164 a 166  No da Versão do Layout do Arquivo: "081"
+                header += "00000";                                                          //Posição 167 a 171  Densidade de Gravação do Arquivo: "00000"
                 header += Utils.FormatCode("", " ", 69);
                 header = Utils.SubstituiCaracteresEspeciais(header);
                 //Retorno
@@ -463,7 +463,7 @@ namespace BoletoNet
                 header += new string(' ', 1);    //Posição 017           Uso Exclusivo FEBRABAN/CNAB: Brancos
                 header += (cedente.CPFCNPJ.Length == 11 ? "1" : "2");  //Posição 018        1=CPF    2=CGC/CNPJ
                 header += Utils.FormatCode(cedente.CPFCNPJ, "0", 15, true); //Posição 019 a 033   Número de Inscrição da Empresa
-                header += Utils.FormatCode("", " ", 20); //Posição 034 a 053     Código do Convênio no Sicoob: Brancos
+                header += Utils.FormatCode(cedente.Convenio.ToString(), " ", 20);     //Posição 034 a 053     Código do Convênio no Sicoob: Brancos
                 header += Utils.FormatCode(cedente.ContaBancaria.Agencia, "0", 5, true);//Posição 054 a 058     Prefixo da Cooperativa: vide planilha "Capa" deste arquivo
                 header += Utils.FormatCode(cedente.ContaBancaria.DigitoAgencia, "0", 1, true);//Posição 059 a 059
                 header += Utils.FormatCode(cedente.ContaBancaria.Conta, "0", 12, true);   //Posição 060 a 071
