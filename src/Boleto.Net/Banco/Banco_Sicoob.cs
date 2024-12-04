@@ -747,7 +747,7 @@ namespace BoletoNet
                 detalhe += Utils.FormatCode(numeroRegistro.ToString(), "0", 5, true); //Posição 009 a 013   Número Sequencial
                 detalhe += "Q"; //Posição 014 Cód. Segmento do Registro Detalhe: "P"
                 detalhe += " ";  //Posição 015 Uso Exclusivo FEBRABAN/CNAB: Brancos
-                detalhe += "01"; //Posição 016 a 017       '01'  =  Entrada de Títulos
+                detalhe += Utils.FormatCode(boleto?.Remessa?.CodigoOcorrencia ?? "01", 2); //Posição 016 a 017       '01'  =  Entrada de Títulos
                 detalhe += (boleto.Sacado.CPFCNPJ.Length == 11 ? "1" : "2");  //Posição 018        1=CPF    2=CGC/CNPJ
                 detalhe += Utils.FormatCode(boleto.Sacado.CPFCNPJ, "0", 15, true); //Posição 019 a 033   Número de Inscrição da Empresa
                 detalhe += Utils.FormatCode(boleto.Sacado.Nome, " ", 40);  //Posição 034 a 73      Nome
@@ -1111,7 +1111,8 @@ namespace BoletoNet
                 detalhe.NomeSacado = registro.Substring(148, 40);
                 decimal valorTarifas = Convert.ToUInt64(registro.Substring(198, 15));
                 detalhe.ValorTarifas = valorTarifas / 100;
-
+                detalhe.CodigoRejeicao = registro.Substring(213, 10);
+                detalhe.UsoFebraban = registro.Substring(224, 16);
                 return detalhe;
             }
             catch (Exception ex)
