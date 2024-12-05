@@ -185,7 +185,7 @@ namespace BoletoNet
                 //DataOcorrencia = Convert.ToDateTime(dataOcorrencia.ToString("##-##-####"));
                 DataOcorrencia = DateTime.ParseExact(dataOcorrencia, "ddMMyyyy", CultureInfo.InvariantCulture);
                 string dataCredito = registro.Substring(145, 8);
-                if (!string.IsNullOrEmpty(dataCredito) && (dataCredito) != "00000000")
+                if (!string.IsNullOrWhiteSpace(dataCredito) && dataCredito != "00000000")
                 {
                     //DataCredito = Convert.ToDateTime(dataCredito.ToString("##-##-####"));
                     DataCredito = DateTime.ParseExact(dataCredito, "ddMMyyyy", CultureInfo.InvariantCulture);
@@ -193,7 +193,7 @@ namespace BoletoNet
                
 
                 CodigoOcorrenciaSacado = registro.Substring(153, 4);
-                if (!string.IsNullOrEmpty(dataOcorrenciaSacado) && (dataOcorrenciaSacado) != "00000000")
+                if (!string.IsNullOrWhiteSpace(dataOcorrenciaSacado) && dataOcorrenciaSacado != "00000000")
                 {
                     //DataOcorrenciaSacado = Convert.ToDateTime(dataOcorrenciaSacado.ToString("##-##-####"));
                     DataOcorrenciaSacado = DateTime.ParseExact(dataOcorrenciaSacado, "ddMMyyyy", CultureInfo.InvariantCulture);
