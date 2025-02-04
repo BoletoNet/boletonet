@@ -33,7 +33,7 @@ namespace BoletoNet
             return Mod11Uniprime(boleto.Carteira + Utils.FitStringLength(boleto.NossoNumero, 11, 11, '0', 0, true, true, true), 7);
         }
 
-        public static long FatorVencimento2000(Boleto boleto)
+        public static long FatorVencimento(Boleto boleto)
         {
             var dateBase = new DateTime(2000, 7, 3, 0, 0, 0);
             var dataAtual = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
@@ -118,7 +118,7 @@ namespace BoletoNet
 
             string Grupo5 = string.Empty;
 
-            string FFFF = FatorVencimento2000(boleto).ToString();
+            string FFFF = FatorVencimento(boleto).ToString();
             
             string VVVVVVVVVV = boleto.ValorCodBarra.ToString("N2").Replace(",", "").Replace(".", "");
             VVVVVVVVVV = Utils.FormatCode(VVVVVVVVVV, 10);
@@ -155,7 +155,7 @@ namespace BoletoNet
             if (boleto.Carteira == "02" || boleto.Carteira == "03" || boleto.Carteira == "04" || boleto.Carteira == "09" || boleto.Carteira == "19" || boleto.Carteira == "26") // Com registro
             {
                 boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}", Codigo.ToString("000"), boleto.Moeda,
-                FatorVencimento2000(boleto), valorBoleto, FormataCampoLivre(boleto));
+                FatorVencimento(boleto), valorBoleto, FormataCampoLivre(boleto));
             }
             else if (boleto.Carteira == "06" || boleto.Carteira == "16" || boleto.Carteira == "25") // Sem Registro
             {
@@ -167,7 +167,7 @@ namespace BoletoNet
                 else
                 {
                     boleto.CodigoBarra.Codigo = string.Format("{0}{1}{2}{3}{4}", Codigo.ToString("000"), boleto.Moeda,
-                        FatorVencimento2000(boleto), valorBoleto, FormataCampoLivre(boleto));
+                        FatorVencimento(boleto), valorBoleto, FormataCampoLivre(boleto));
                 }
 
             }
