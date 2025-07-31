@@ -20,6 +20,8 @@ namespace BoletoNet.Enums
         Sicredi = 748,
         Semear = 743,
         C6Bank = 336,
+        [Description("077")]
+        Inter = 77,
         SerFinance = 530
     }
 }

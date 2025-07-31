@@ -102,6 +102,7 @@
     <Compile Include="Arquivo\Reader\TextPosAttribute.cs" />
     <Compile Include="Arquivo\Reader\TextPosReader.cs" />
     <Compile Include="Banco\AbstractBanco.cs" />
+    <Compile Include="Banco\Banco_Inter.cs" />
     <Compile Include="Banco\Banco_C6.cs" />
     <Compile Include="Banco\Banco_CrediSis.cs" />
     <Compile Include="Banco\Banco_Daycoval.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Sicoob.cs" />
     <Compile Include="Boleto\CodigoMovimento\CodigoMovimento_Sicredi.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Banestes.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Inter.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_C6.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_CrediSIS.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Safra.cs" />
@@ -201,6 +203,7 @@
     <Compile Include="Boleto\EspecieDocumento\IEspecieDocumento.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspeciesDocumento.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Banrisul.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_Inter.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_C6.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Unicred.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_SerFinance.cs" />
@@ -383,6 +386,7 @@
     <EmbeddedResource Include="Imagens\336.jpg" />
     <EmbeddedResource Include="Imagens\136.jpg" />
     <EmbeddedResource Include="Imagens\084.jpg" />
+    <EmbeddedResource Include="Imagens\077.jpg" />
     <Content Include="Imagens\097.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

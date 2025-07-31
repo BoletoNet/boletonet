@@ -184,6 +184,10 @@ namespace BoletoNet
                     case ((int)Enums.Bancos.C6Bank):
                         _IEspecieDocumento = new EspecieDocumento_C6(codigoEspecie);
                         break;
+                    //77 - Banco Inter
+                    case ((int)Enums.Bancos.Inter):
+                        _IEspecieDocumento = new EspecieDocumento_Inter(codigoEspecie);
+                        break;
                     default:
                         throw new Exception("Código do banco não implementando: " + codigoBanco);
                 }
@@ -234,6 +238,8 @@ namespace BoletoNet
                         return EspecieDocumento_CrediSIS.CarregaTodas();
                     case (int) Enums.Bancos.C6Bank:
                         return EspecieDocumento_C6.CarregaTodas();
+                    case 77:
+                        return EspecieDocumento_Inter.CarregaTodas();
                     default:
                         throw new Exception("Espécies do Documento não implementado para o banco : " + codigoBanco);
                 }
@@ -356,6 +362,9 @@ namespace BoletoNet
                     //084 - Uniprime
                     case 84:
                         return new EspecieDocumento_Uniprime().getCodigoEspecieBySigla(sigla);
+                    //077 - Banco Inter
+                    case 77:
+                        return new EspecieDocumento_Inter().getCodigoEspecieBySigla(sigla);
                     //530 - Ser Finance
                     case 530:
                         return new EspecieDocumento_SerFinance().getCodigoEspecieBySigla(sigla);
@@ -373,7 +382,7 @@ namespace BoletoNet
         private static readonly Dictionary<int, AbstractEspecieDocumento> especiesDocumentosBancos = new Dictionary<int, AbstractEspecieDocumento>() {
                 { 341, new EspecieDocumento_Itau       ()  },
                 { 479, new EspecieDocumento_BankBoston ()  },
-                { 422, new EspecieDocumento_Safra ()  },
+                { 422, new EspecieDocumento_Safra      ()  },
                 { 1, new EspecieDocumento_BancoBrasil  ()  },
                 { 237, new EspecieDocumento_Bradesco   ()  },
                 { 356, new EspecieDocumento_Real       ()  },
@@ -392,8 +401,8 @@ namespace BoletoNet
                 { 743, new EspecieDocumento_Semear     ()  },
                 { 21, new EspecieDocumento_Banestes    ()  },
                 { 136, new EspecieDocumento_Unicred    ()  },
+                { 77, new EspecieDocumento_Inter       ()  },
                 { 530, new EspecieDocumento_SerFinance ()  }
-
         };
     }
 }
