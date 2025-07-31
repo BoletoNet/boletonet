@@ -19,7 +19,7 @@ namespace BoletoNet {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Html {
@@ -407,7 +407,7 @@ namespace BoletoNet {
         /// <summary>
         ///   Looks up a localized string similar to &lt;table class=&quot;w666 ctN&quot; style=&quot;margin: auto;&quot;&gt;
         ///				&lt;tr&gt;
-        ///						&lt;td class=&quot;pL6  w409&quot;&gt;Sacador / Avalista: @AVALISTA&lt;/td&gt;
+        ///						&lt;td class=&quot;pL6  w409&quot;&gt;@TITULOAVALISTA: @AVALISTA&lt;/td&gt;
         ///						&lt;td class=&quot;w250 Ar&quot;&gt;Autenticação mecânica - &lt;b class=&quot;cpN&quot;&gt;Ficha de Compensação&lt;/b&gt;&lt;/td&gt;
         ///				&lt;/tr&gt;
         ///				&lt;/table&gt;.
@@ -546,16 +546,16 @@ namespace BoletoNet {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;table class=&quot;w666&quot; style=&quot;margin: auto;&quot;&gt;
-        ///				&lt;tr class=&quot;rc6&quot;&gt;
-        ///						&lt;td class=&quot;w478&quot;&gt;
-        ///								&lt;div class=&quot;ctN pL10&quot;&gt;Instruções (Texto de responsabilidade do beneficiário)&lt;/div&gt;
-        ///                &lt;div class=&quot;cpN pL10 it&quot; style=&quot;height:105px; overflow:hidden&quot;&gt;@INSTRUCOES&lt;/div&gt;                
-        ///						&lt;/td&gt;
-        ///						&lt;td class=&quot;w186&quot;&gt;
-        ///								&lt;div class=&quot;t&quot;&gt;(-) Desconto / Abatimentos&lt;/div&gt;
-        ///								&lt;div class=&quot;c BB&quot;&gt;@DESCONTOS&lt;/div&gt;
-        ///								&lt;div class=&quot;t&quot;&gt;(-) Outras deduções&lt;/div&gt;
-        ///								&lt;div class=&quot;c BB&quot;&gt; [rest of string was truncated]&quot;;.
+        ///	&lt;tr class=&quot;rc6&quot;&gt;
+        ///		&lt;td class=&quot;w478&quot;&gt;
+        ///			&lt;div class=&quot;ctN pL10&quot;&gt;Instruções (Texto de responsabilidade do beneficiário)&lt;/div&gt;
+        ///			&lt;table style=&quot;width: 100%; border: none;&quot;&gt;
+        ///   		      &lt;tr style=&quot;border: none;&quot;&gt;
+        ///				&lt;td style=&quot;border: none;&quot;&gt;&lt;div class=&quot;cpN pL10 it&quot; style=&quot;height:px; overflow:hidden; border: none;&quot;&gt;@INSTRUCOES&lt;/div&gt;&lt;/td&gt;
+        ///				&lt;td style=&quot;text-align: right; border: none;&quot;&gt;@QRCODE&lt;/td&gt;                
+        ///			  &lt;/tr&gt;
+        ///			  &lt;tr class=&quot;copiarcolar&quot;&gt;
+        ///			  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReciboCedenteParte6 {
             get {

@@ -176,6 +176,9 @@ namespace BoletoNet
                     case 084:
                         _IBanco = new Banco_Uniprime();
                         break;
+                    case 530:
+                        _IBanco = new Banco_SerFinance();
+                        break;
                     case ((int)Enums.Bancos.Maxima):
                         _IBanco = new Banco_Maxima();
                         break;

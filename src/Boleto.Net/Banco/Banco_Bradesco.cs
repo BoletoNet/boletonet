@@ -1266,6 +1266,9 @@ namespace BoletoNet
                 _detalhe += Utils.FitStringLength(numeroRegistro.ToString(), 6, 6, '0', 0, true, true, true);
 
                 _detalhe = Utils.SubstituiCaracteresEspeciais(_detalhe);
+
+                numeroRegistro++;
+
                 return _detalhe;
             }
             catch (Exception ex)

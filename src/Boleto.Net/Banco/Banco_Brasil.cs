@@ -1529,13 +1529,13 @@ namespace BoletoNet
                 if (boleto.JurosMora > 0)
                 {
                     _segmentoP += "1";
-                    _segmentoP += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
+                    _segmentoP += Utils.FitStringLength(boleto.DataJurosMora > DateTime.MinValue ? boleto.DataJurosMora.ToString("ddMMyyyy") : boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
                     _segmentoP += Utils.FitStringLength(boleto.JurosMora.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 }
                 else if (boleto.PercJurosMora > 0)
                 {
                     _segmentoP += "2";
-                    _segmentoP += Utils.FitStringLength(boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
+                    _segmentoP += Utils.FitStringLength(boleto.DataJurosMora > DateTime.MinValue ? boleto.DataJurosMora.ToString("ddMMyyyy") : boleto.DataVencimento.ToString("ddMMyyyy"), 8, 8, '0', 0, true, true, false);
                     _segmentoP += Utils.FitStringLength(boleto.PercJurosMora.ApenasNumeros(), 15, 15, '0', 0, true, true, true);
                 }
                 else if (boleto.JurosPermanente)

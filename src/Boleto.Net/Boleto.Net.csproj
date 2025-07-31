@@ -58,6 +58,11 @@
       <HintPath>..\packages\NReco.PdfGenerator.1.1.12.0\lib\net20\NReco.PdfGenerator.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="QRCoder, Version=1.4.3.0, Culture=neutral, PublicKeyToken=c4ed5b9ae8358a28, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.4.3\lib\net40\QRCoder.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Design" />
@@ -106,6 +111,7 @@
     <Compile Include="Banco\Banco_Semear.cs" />
     <Compile Include="Banco\Banco_Unicred.cs" />
     <Compile Include="Banco\Banco_Sofisa.cs" />
+    <Compile Include="Banco\Banco_SerFinance.cs" />
     <Compile Include="Banco\Banco_Uniprime.cs" />
     <Compile Include="Banco\Banco_Votorantim.cs" />
     <Compile Include="Banco\Carteiras\BancoCarteiraFactory.cs" />
@@ -129,6 +135,7 @@
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Daycoval.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Nordeste.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Unicred.cs" />
+    <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_SerFinance.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Uniprime.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Sicoob.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspecieDocumento_Sofisa.cs" />
@@ -199,6 +206,7 @@
     <Compile Include="Boleto\Instrucao\Instrucao_Inter.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_C6.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Unicred.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_SerFinance.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Uniprime.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_BRB.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Caixa.cs" />
@@ -277,6 +285,7 @@
     <Compile Include="Boleto\Boletos.cs" />
     <Compile Include="Util\Extensions.cs" />
     <Compile Include="Util\LeitorLinhaPosicao.cs" />
+    <Compile Include="Util\QRCodeHelper.cs" />
     <Compile Include="Util\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -373,6 +382,7 @@
     <EmbeddedResource Include="Imagens\743.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Imagens\530.jpg" />
     <EmbeddedResource Include="Imagens\336.jpg" />
     <EmbeddedResource Include="Imagens\136.jpg" />
     <EmbeddedResource Include="Imagens\084.jpg" />
