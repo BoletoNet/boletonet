@@ -196,6 +196,7 @@
     <Compile Include="Boleto\EspecieDocumento\IEspecieDocumento.cs" />
     <Compile Include="Boleto\EspecieDocumento\EspeciesDocumento.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Banrisul.cs" />
+    <Compile Include="Boleto\Instrucao\Instrucao_Inter.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_C6.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Unicred.cs" />
     <Compile Include="Boleto\Instrucao\Instrucao_Uniprime.cs" />
@@ -375,7 +376,7 @@
     <EmbeddedResource Include="Imagens\336.jpg" />
     <EmbeddedResource Include="Imagens\136.jpg" />
     <EmbeddedResource Include="Imagens\084.jpg" />
-    <Content Include="Imagens\077.jpg" />
+    <EmbeddedResource Include="Imagens\077.jpg" />
     <Content Include="Imagens\097.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
