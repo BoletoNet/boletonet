@@ -96,7 +96,7 @@ namespace BoletoNet
 
             string Grupo4 = string.Empty;
 
-            string D4 = boleto.DigitoNossoNumero.ToString();
+            string D4 = boleto.CodigoBarra.Codigo.Substring(4, 1);
 
             Grupo4 = string.Format("{0} ", D4);
 
@@ -141,15 +141,15 @@ namespace BoletoNet
 
             var codigo = string.Format(
                 "{0}{1}{2}{3}{4}", 
-                Codigo.ToString(), 
+                Codigo.ToString("000"), 
                 boleto.Moeda, 
                 FatorVencimento(boleto), 
                 valorBoleto, 
-                FormataCampoLivre(boleto));
+                FormataCampoLivre(boleto)); 
 
             boleto.CodigoBarra.Codigo = 
                 Strings.Left(codigo, 4) +
-                Mod11Peso2a9(codigo) + 
+                Mod11(codigo, 9) + 
                 Strings.Right(codigo, 39);
         }
 
@@ -167,7 +167,7 @@ namespace BoletoNet
                 boleto.Cedente.ContaBancaria.Agencia.PadLeft(4, '0'), 
                 boleto.Carteira.PadLeft(3, '0'),
                 boleto.Cedente.Convenio.ToString().PadLeft(7, '0'),
-                boleto.NossoNumero.PadLeft(10, '0'), 
+                boleto.NossoNumero.PadLeft(10, '0').Substring(0, 10), 
                 boleto.DigitoNossoNumero);
 
             return FormataCampoLivre;
@@ -194,10 +194,10 @@ namespace BoletoNet
                 throw new NotImplementedException("Carteira não implementada. Carteiras implementadas 110 e 112.");
     
             //Verifica se o nosso número é válido
-            if (boleto.NossoNumero.Length > 11)
-                boleto.NossoNumero = boleto.NossoNumero.Substring(0, 11);           
-            else if (boleto.NossoNumero.Length < 11)
-                boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 11);
+            if (boleto.NossoNumero.Length > 10)
+                boleto.NossoNumero = boleto.NossoNumero.Substring(0, 10);           
+            else if (boleto.NossoNumero.Length < 10)
+                boleto.NossoNumero = Utils.FormatCode(boleto.NossoNumero, 10);
 
             //Verificar se a Agencia esta correta
             if (boleto.Cedente.ContaBancaria.Agencia.Length > 4)
@@ -294,8 +294,9 @@ namespace BoletoNet
                 // Zeros "00000000" ==> 63 a 70
 
                 //Identificação do Título no Banco ==> 71 a 81
-                detalhe.NossoNumero = registro.Substring(70, 11);
-
+                detalhe.NossoNumero = registro.Substring(70, 10);
+                detalhe.DACNossoNumero = registro.Substring(80, 1);
+                 
                 //Branco ==> 82 a 86
 
                 //Carteira ==> 87 a 89 | Já lido acima
@@ -356,8 +357,8 @@ namespace BoletoNet
                 //Motivo da rejeição ==> 241 a 380
                 detalhe.MotivosRejeicao = registro.Substring(240, 140);
 
-                //Núm. da Operação ==> 381 a 394 No Inter, é o código do Convenio, vem nos detalhes
-                //detalhe.NumeroControle = registro.Substring(380, 14); // ???
+                //Núm. da Operação ==> 381 a 394
+                detalhe.NumeroControle = registro.Substring(380, 14); // ???
 
                 //Núm. Sequencial do Registro ==> 395 a 400
                 detalhe.NumeroSequencial = Utils.ToInt32(registro.Substring(394, 6));
@@ -593,7 +594,7 @@ namespace BoletoNet
                 if (boleto.DataLimitePagamento != DateTime.MinValue)
                     _detalhe += Utils.DateDiff(DateInterval.Day, boleto.DataVencimento, boleto.DataLimitePagamento);  //Data Limite para Pagamento (140, 2) 
                 else
-                    _detalhe += "60"; //Data Limite para Pagamento (140, 2) 
+                    _detalhe += "00"; //Data Limite para Pagamento (140, 2) 
 
                 _detalhe += "".PadRight(6, ' '); //Branco (142, 6)
                 _detalhe += "01"; //Espécie do Título (148, 2) - FIXO
