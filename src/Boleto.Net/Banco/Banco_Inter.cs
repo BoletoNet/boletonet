@@ -1,5 +1,6 @@
 using BoletoNet.Util;
 using System;
+using System.Globalization;
 using System.Web.UI;
 
 [assembly: WebResource("BoletoNet.Imagens.077.jpg", "image/jpg")]
@@ -147,9 +148,9 @@ namespace BoletoNet
                 FormataCampoLivre(boleto));
 
             boleto.CodigoBarra.Codigo = 
-                Strings.Left(boleto.CodigoBarra.Codigo, 4) +
-                Mod11Peso2a9(boleto.CodigoBarra.Codigo) + 
-                Strings.Right(boleto.CodigoBarra.Codigo, 39);
+                Strings.Left(codigo, 4) +
+                Mod11Peso2a9(codigo) + 
+                Strings.Right(codigo, 39);
         }
 
         ///<summary>
@@ -284,7 +285,8 @@ namespace BoletoNet
 
                 //Agência do Cedente ==> 24 a 27 + Conta Cedente ==> 28 a 37
                 detalhe.Agencia = Utils.ToInt32(registro.Substring(23, 4));
-                detalhe.Conta = Utils.ToInt32(registro.Substring(27, 10));
+                detalhe.Conta = Utils.ToInt32(registro.Substring(27, 9));
+                detalhe.DACConta = Utils.ToInt32(registro.Substring(36, 1));
 
                 //Nº Controle do Participante ==> 38 a 62
                 detalhe.NumeroControle = registro.Substring(37, 25);
@@ -337,9 +339,9 @@ namespace BoletoNet
                 decimal valorPago = Convert.ToUInt64(registro.Substring(159, 13));
                 detalhe.ValorPago = valorPago / 100;
 
-                // Data do Crédito ==> 173 a 178
-                int dataCredito = Utils.ToInt32(registro.Substring(172, 6));
-                detalhe.DataCredito = Utils.ToDateTime(dataCredito.ToString("##-##-##"));
+                // Data do Crédito ==> 173 a 178                
+                int dataCredito = Utils.ToInt32(registro.Substring(172, 6));  
+                detalhe.DataCredito = dataCredito == 0 ? DateTime.MinValue : Utils.ToDateTime(dataVencimento.ToString("##-##-##"));
 
                 //Branco ==> 179 a 181
 
@@ -387,16 +389,16 @@ namespace BoletoNet
         {
             try
             {
-                return new HeaderRetorno(registro)
+                return new HeaderRetorno()
                 {
                     TipoRegistro = Utils.ToInt32(registro.Substring(0, 1)),
                     CodigoRetorno = Utils.ToInt32(registro.Substring(1, 1)),
                     LiteralRetorno = registro.Substring(2, 7),
                     CodigoServico = Utils.ToInt32(registro.Substring(9, 2)),
                     LiteralServico = registro.Substring(11, 15),
-                    ComplementoRegistro1 = Utils.ToInt32(registro.Substring(26, 10)),
-                    Conta = Utils.ToInt32(registro.Substring(36, 9)),
-                    DACConta = Utils.ToInt32(registro.Substring(45, 1)),
+                    ComplementoRegistro1 = Utils.ToInt32("0" + registro.Substring(26, 10)),
+                    Conta = Utils.ToInt32("0" + registro.Substring(36, 9)),
+                    DACConta = Utils.ToInt32("0" + registro.Substring(45, 1)),
                     NomeEmpresa = registro.Substring(46, 30),
                     CodigoBanco = Utils.ToInt32(registro.Substring(76, 3)),
                     NomeBanco = registro.Substring(79, 15),

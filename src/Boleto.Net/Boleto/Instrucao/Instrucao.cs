@@ -126,6 +126,10 @@ namespace BoletoNet
                     case ((int) Enums.Bancos.C6Bank):
                         _IInstrucao = new Instrucao_C6();
                         break;
+                    //77 - Banco Inter
+                    case 77:
+                        _IInstrucao = new Instrucao_Inter();
+                        break;
                     default:
                         throw new Exception("Código do banco não implementando: " + codigoBanco);
                 }
