@@ -39,6 +39,7 @@ namespace BoletoNet
 		private string _especie = "R$";
 		private int _moeda = 9;
 		private string _usoBanco = string.Empty;
+		private string _tituloAvalista = "Beneficiário Final";
 
 		private Cedente _cedente;
 		private int _categoria;
@@ -634,16 +635,28 @@ namespace BoletoNet
             set { _numeroControle = value; }
         }
 
+		/// <summary>
+		/// Retorna o título (Label) do Avalista, definido como padrão: "Beneficiário final"
+		/// </summary>
+        public string TituloAvalista
+        {
+            get { return _tituloAvalista; }
+            set { _tituloAvalista = value; }
+        }
+
+
         public IBancoCarteira BancoCarteira { get; set; }
 
         public string TipoDeCobranca { get; set; }
+        public string QRCode { get; set; }
 
         public DateTime? DataDescontoAntecipacao2 { get; set; }
         public decimal? ValorDescontoAntecipacao2 { get; set; }
 
         public DateTime? DataDescontoAntecipacao3 { get; set; }
         public decimal? ValorDescontoAntecipacao3 { get; set; }
-        
+
+
         #endregion Properties
 
         public void Valida()

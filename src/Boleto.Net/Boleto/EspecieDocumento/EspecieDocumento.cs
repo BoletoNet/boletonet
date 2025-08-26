@@ -365,6 +365,9 @@ namespace BoletoNet
                     //077 - Banco Inter
                     case 77:
                         return new EspecieDocumento_Inter().getCodigoEspecieBySigla(sigla);
+                    //530 - Ser Finance
+                    case 530:
+                        return new EspecieDocumento_SerFinance().getCodigoEspecieBySigla(sigla);
                     default:
                         throw new Exception("Código do banco não implementando: " + codigoBanco);
                 }
@@ -398,8 +401,8 @@ namespace BoletoNet
                 { 743, new EspecieDocumento_Semear     ()  },
                 { 21, new EspecieDocumento_Banestes    ()  },
                 { 136, new EspecieDocumento_Unicred    ()  },
-                { 77, new EspecieDocumento_Inter       ()  }
-
+                { 77, new EspecieDocumento_Inter       ()  },
+                { 530, new EspecieDocumento_SerFinance ()  }
         };
     }
 }

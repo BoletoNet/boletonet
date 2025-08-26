@@ -61,7 +61,7 @@ namespace BoletoNet
                 _mensagemRemessa = Registro.Substring(171, 20).Trim();
                 _numeroRemessa = Utils.FormatCode(Registro.Substring(157, 6).Trim(), "0", 6);
                 _dataRemessa = Convert.ToDecimal(Registro.Substring(143, 8)).ToString("00/00/0000");
-                _horaRemessa = Convert.ToDecimal(Registro.Substring(151, 6)).ToString("00:00:00");
+                _horaRemessa = Convert.ToDecimal("0" + Registro.Substring(151, 6)).ToString("00:00:00");
 
             }
             catch (Exception ex)

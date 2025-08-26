@@ -35,6 +35,9 @@ namespace BoletoNet
 
         public static long FatorVencimento2000(Boleto boleto)
         {
+            if(boleto.DataVencimento >= new DateTime(2025, 2, 22))
+                return FatorVencimento(boleto);
+                
             var dateBase = new DateTime(2000, 7, 3, 0, 0, 0);
             var dataAtual = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             long rangeUtilizavel = Utils.DateDiff(DateInterval.Day, dataAtual, boleto.DataVencimento);

@@ -136,12 +136,10 @@ namespace BoletoNet
                 #region Campo 1
 
                 //Campo 1
-                Metade1 = string.Empty;
                 string M = boleto.Moeda.ToString();
                 string AAA = boleto.Cedente.ContaBancaria.Agencia.Substring(0, 3);
                 Metade1 = "041" + M + "2";
 
-                Metade2 = string.Empty;
                 Metade2 = "1" + AAA;
                 string d1 = Mod10Banri(Metade1 + Metade2).ToString();
                 Campo1 = Metade1 + "." + Metade2 + d1;
@@ -151,13 +149,11 @@ namespace BoletoNet
                 #region Campo 2
 
                 //Campo 2
-                Metade1 = string.Empty;
                 //Metade1 = Cedente.Substring(0, 5);
                 string A = boleto.Cedente.ContaBancaria.Agencia.Substring(3, 1);
                 string CCCC = boleto.Cedente.ContaBancaria.Conta.Substring(0, 4);
                 Metade1 = A + CCCC;
 
-                Metade2 = string.Empty;
                 //Metade2 = Cedente.Substring(5, 2) + NossoNumero.Substring(0, 3);
                 string CCC = boleto.Cedente.ContaBancaria.Conta.Substring(4, 3);
                 string NN = NossoNumero.Substring(0, 2);
@@ -170,11 +166,9 @@ namespace BoletoNet
                 #region Campo 3
 
                 //Campo 3
-                Metade1 = string.Empty;
                 string NNNNN = NossoNumero.Substring(2, 5);
                 Metade1 = NNNNN;
 
-                Metade2 = string.Empty;
                 string XX = _primDigito.ToString() + _segDigito.ToString();
                 string N = NossoNumero.Substring(7, 1);
                 Metade2 = N + "40" + XX;
@@ -207,8 +201,6 @@ namespace BoletoNet
                 #region Campo 1
 
                 //Campo 1
-                Metade1 = string.Empty;
-                Metade2 = string.Empty;
                 string M = boleto.Moeda.ToString();
                 string AAA = boleto.Cedente.ContaBancaria.Agencia.Substring(1, 3);
                 Metade1 = "041" + M + "2";
@@ -221,8 +213,6 @@ namespace BoletoNet
                 #region Campo 2
 
                 //Campo 2
-                Metade1 = string.Empty;
-                Metade2 = string.Empty;
                 Metade1 = Cedente.Substring(0, 5);
                 //Metade2 = Cedente.Substring(5, 2) + NossoNumero.Substring(0, 2);
                 Metade2 = Cedente.Substring(5, 2) + NossoNumero.Substring(0, 3);
@@ -234,8 +224,6 @@ namespace BoletoNet
                 #region Campo 3
 
                 //Campo 3
-                Metade1 = string.Empty;
-                Metade2 = string.Empty;
                 string XX = _primDigito.ToString() + _segDigito.ToString();
                 //Metade1 = NossoNumero.Substring(2, 5);
                 Metade1 = NossoNumero.Substring(3, 5);

@@ -4,6 +4,8 @@
 [![Join the chat at https://gitter.im/BoletoNet](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/BoletoNet?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![MyGet Ultimo PR](https://img.shields.io/myget/boletonetbuild/v/boleto.net.svg)](https://www.myget.org/gallery/boletonetbuild)
 
+![Alt](https://repobeats.axiom.co/api/embed/739032b0b4224eb3643af4e9e96f19a6b39b14f7.svg "Repobeats analytics image")
+
 Boleto.Net é um componente desenvolvido em C# e ASP.Net e contempla as seguintes funcionalidades:
 
 * Emissão e Impressão de Boletos Bancários
