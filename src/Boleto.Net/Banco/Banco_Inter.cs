@@ -212,14 +212,12 @@ namespace BoletoNet
                 boleto.Cedente.ContaBancaria.Conta = Utils.FormatCode(boleto.Cedente.ContaBancaria.Conta, 7);
 
             //Verifica se data do processamento é valida
-            //if (boleto.DataProcessamento.ToString("dd/MM/yyyy") == "01/01/0001")
-            if (boleto.DataProcessamento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
+            if (boleto.DataProcessamento == DateTime.MinValue) 
                 boleto.DataProcessamento = DateTime.Now;
 
 
             //Verifica se data do documento é valida
-            //if (boleto.DataDocumento.ToString("dd/MM/yyyy") == "01/01/0001")
-            if (boleto.DataDocumento == DateTime.MinValue) // diegomodolo (diego.ribeiro@nectarnet.com.br)
+            if (boleto.DataDocumento == DateTime.MinValue) 
                 boleto.DataDocumento = DateTime.Now;
 
             boleto.QuantidadeMoeda = 0;
