@@ -196,7 +196,7 @@ namespace BoletoNet
                         numeroRegistro++;
                         numeroRegistroDetalhe++;
 
-                        if (boletos[0].Remessa.CodigoOcorrencia == "01")
+                        if (boleto.Remessa.CodigoOcorrencia == "01")
                         {
                             strline = boleto.Banco.GerarDetalheSegmentoQRemessa(boleto, numeroRegistroDetalhe, TipoArquivo.CNAB240);
                             incluiLinha.WriteLine(strline);
