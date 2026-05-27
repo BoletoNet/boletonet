@@ -473,7 +473,7 @@ namespace BoletoNet
         public static long FatorVencimento(Boleto boleto)
         {
             if (boleto.DataVencimento == null)
-                throw new ArgumentNullException(nameof(boleto), "A data de vencimento não pode ser nula.");
+                throw new ArgumentNullException("A data de vencimento não pode ser nula.");
 
             // Remove informações de hora para garantir o cálculo exato de dias
             DateTime dataVencimento = boleto.DataVencimento.Date;
