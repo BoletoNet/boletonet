@@ -429,7 +429,7 @@ namespace BoletoNet
                 ? Utils.FormatCode(boleto.Remessa.CodigoOcorrencia, 2)
                 : TipoOcorrenciaRemessa.EntradaDeTitulos.Format();
         }
-        # endregion
+        #endregion
 
         /// <summary>
         /// Fator de vencimento do boleto.
@@ -453,21 +453,56 @@ namespace BoletoNet
         ///         ...
         ///         05/03/2025 = 1011
         /// </remarks>
+        //public static long FatorVencimento(Boleto boleto)
+        //{
+        //    var dateBase = new DateTime(1997, 10, 7, 0, 0, 0);
+
+        //    //Verifica se a data esta dentro do range utilizavel
+        //    var dataAtual = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+        //    long rangeUtilizavel = Utils.DateDiff(DateInterval.Day, dataAtual, boleto.DataVencimento);
+
+        //    if (rangeUtilizavel > 5500 || rangeUtilizavel < -3000)
+        //        throw new Exception("Data do vencimento fora do range de utilização proposto pela CENEGESC. Comunicado FEBRABAN de n° 082/2012 de 14/06/2012");
+
+        //    while (boleto.DataVencimento > dateBase.AddDays(9999))
+        //        dateBase = boleto.DataVencimento.AddDays(-(((Utils.DateDiff(DateInterval.Day, dateBase, boleto.DataVencimento) - 9999) - 1) + 1000));
+
+        //    return Utils.DateDiff(DateInterval.Day, dateBase, boleto.DataVencimento);
+        //}
+
         public static long FatorVencimento(Boleto boleto)
         {
-            var dateBase = new DateTime(1997, 10, 7, 0, 0, 0);
+            if (boleto.DataVencimento == null)
+                throw new ArgumentNullException("A data de vencimento não pode ser nula.");
 
-            //Verifica se a data esta dentro do range utilizavel
-            var dataAtual = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-            long rangeUtilizavel = Utils.DateDiff(DateInterval.Day, dataAtual, boleto.DataVencimento);
+            // Remove informações de hora para garantir o cálculo exato de dias
+            DateTime dataVencimento = boleto.DataVencimento.Date;
+            DateTime dataDivisor = new DateTime(2025, 2, 21);
 
-            if (rangeUtilizavel > 5500 || rangeUtilizavel < -3000)
-                throw new Exception("Data do vencimento fora do range de utilização proposto pela CENEGESC. Comunicado FEBRABAN de n° 082/2012 de 14/06/2012");
+            if (dataVencimento <= dataDivisor)
+            {
+                // Regra Antiga (Vencimentos até 21/02/2025)
+                DateTime dateBaseAntiga = new DateTime(1997, 10, 7);
+                long fator = (long)(dataVencimento - dateBaseAntiga).TotalDays;
 
-            while (boleto.DataVencimento > dateBase.AddDays(9999))
-                dateBase = boleto.DataVencimento.AddDays(-(((Utils.DateDiff(DateInterval.Day, dateBase, boleto.DataVencimento) - 9999) - 1) + 1000));
+                if (fator < 0)
+                    throw new Exception("Data de vencimento anterior à data base de 1997.");
 
-            return Utils.DateDiff(DateInterval.Day, dateBase, boleto.DataVencimento);
+                return fator;
+            }
+            else
+            {
+                // Nova Regra FEBRABAN (Vencimentos a partir de 22/02/2025)
+                // O fator reinicia em 1000 no dia 22/02/2025.
+                DateTime dateBaseNova = new DateTime(2025, 2, 22);
+                long fator = 1000 + (long)(dataVencimento - dateBaseNova).TotalDays;
+
+                // O novo teto é 9999 (acontecerá em 13/10/2049)
+                if (fator > 9999)
+                    throw new Exception("Data de vencimento além do limite permitido pela nova regra da FEBRABAN (Fator > 9999).");
+
+                return fator;
+            }
         }
 
         #region Mod
