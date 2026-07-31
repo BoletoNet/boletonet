@@ -705,24 +705,55 @@ namespace BoletoNet
                 detalhe += Utils.FormatCode(boleto.IOF.ToString(), 15);//Posição 166 a 180   -  Valor do IOF a ser Recolhido
                 detalhe += Utils.FormatCode(boleto.Abatimento.ToString(), 15);//Posição 181 a 195   - Valor do Abatimento
                 detalhe += Utils.FormatCode(boleto.NumeroDocumento, " ", 25); //Posição 196 a 220  - Identificação do título
-                detalhe += "3"; //Posição 221  - Código do protesto 3 = Nao Protestar
 
-                #region Instruções
+                #region Instrução de Protesto/Negativação
 
-                string vInstrucao1 = "00"; //2ª instrução (2, N) Caso Queira colocar um cod de uma instrução. ver no Manual caso nao coloca 00
+                // Posição 221         - Código do protesto: '1' = Protestar dias corridos, '2' = Protestar dias úteis,
+                //                        '3' = Não Protestar/Não Negativar, '8' = Negativação sem Protesto,
+                //                        '9' = Cancelamento Protesto/Negativação Automática (exige Código de Ocorrência '31')
+                // Posição 222 a 223   - Número de dias para início do protesto/negativação a partir do vencimento: '00' = Não protestar
+                string vCodigoProtesto = "3";
+                string vDiasProtesto = "00";
                 foreach (IInstrucao instrucao in boleto.Instrucoes)
                 {
                     switch ((EnumInstrucoes_Sicoob)instrucao.Codigo)
                     {
-                        case EnumInstrucoes_Sicoob.CobrarJuros:
-                            vInstrucao1 = Utils.FitStringLength(instrucao.QuantidadeDias.ToString(), 2, 2, '0', 0, true, true, true);
+                        case EnumInstrucoes_Sicoob.ProtestarAposNDiasCorridos:
+                            vCodigoProtesto = "1";
+                            vDiasProtesto = Utils.FitStringLength(instrucao.QuantidadeDias.ToString(), 2, 2, '0', 0, true, true, true);
+                            break;
+                        case EnumInstrucoes_Sicoob.ProtestarAposNDiasUteis:
+                        case EnumInstrucoes_Sicoob.Protestar3DiasUteis:
+                        case EnumInstrucoes_Sicoob.Protestar4DiasUteis:
+                        case EnumInstrucoes_Sicoob.Protestar5DiasUteis:
+                        case EnumInstrucoes_Sicoob.Protestar10DiasUteis:
+                        case EnumInstrucoes_Sicoob.Protestar15DiasUteis:
+                        case EnumInstrucoes_Sicoob.Protestar20DiasUteis:
+                            vCodigoProtesto = "2";
+                            vDiasProtesto = Utils.FitStringLength(instrucao.QuantidadeDias.ToString(), 2, 2, '0', 0, true, true, true);
+                            break;
+                        case EnumInstrucoes_Sicoob.NaoProtestar:
+                            vCodigoProtesto = "3";
+                            vDiasProtesto = "00";
+                            break;
+                        case EnumInstrucoes_Sicoob.NegativacaoSemProtesto:
+                            vCodigoProtesto = "8";
+                            vDiasProtesto = Utils.FitStringLength(instrucao.QuantidadeDias.ToString(), 2, 2, '0', 0, true, true, true);
+                            break;
+                        case EnumInstrucoes_Sicoob.CancelamentoProtestoNegativacaoAutomatica:
+                            if (boleto.Remessa == null || boleto.Remessa.CodigoOcorrencia != "31")
+                                throw new Exception("O código de protesto '9' (Cancelamento Protesto/Negativação Automática) só pode ser utilizado quando o Código de Ocorrência da remessa for '31' (Alteração de Outros Dados).");
+                            vCodigoProtesto = "9";
+                            vDiasProtesto = "00";
                             break;
                     }
                 }
 
+                detalhe += Utils.FormatCode(vCodigoProtesto, 1); //Posição 221  - Código do protesto
+
                 #endregion
 
-                detalhe += Utils.FormatCode(vInstrucao1, 2);  //Posição 222 a 223  - Código do protesto
+                detalhe += Utils.FormatCode(vDiasProtesto, 2);  //Posição 222 a 223  - Número de dias para protesto
                 detalhe += Utils.FormatCode("0", 1);     //Posição 224  - Código para Baixa/Devolução: "0"
                 detalhe += Utils.FormatCode("", " ", 3);     //Posição 225 A 227  - Número de Dias para Baixa/Devolução: Brancos
                 detalhe += Utils.FormatCode(boleto.Moeda.ToString(), "0", 2, true); //Posição 228 A 229  - Código da Moeda
