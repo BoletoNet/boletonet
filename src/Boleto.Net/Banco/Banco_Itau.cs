@@ -883,8 +883,39 @@ namespace BoletoNet
                 _segmentoP += Utils.FitStringLength("0", 15, 15, '0', 0, true, true, true);
                 _segmentoP += Utils.FitStringLength("0", 15, 15, '0', 0, true, true, true);
                 _segmentoP += Utils.FitStringLength(boleto.NumeroDocumento, 25, 25, ' ', 0, true, true, false);
-                _segmentoP += "0";
-                _segmentoP += "00";
+
+                // Código para Protesto: '1' = Protestar dias corridos, '2' = Protestar dias úteis, '3' = Não protestar
+                // Número de dias para Protesto
+                string vCodigoProtesto = "0";
+                string vDiasProtesto = "00";
+                if (boleto.Instrucoes != null)
+                {
+                    foreach (IInstrucao instrucao in boleto.Instrucoes)
+                    {
+                        if (instrucao.Codigo == (int)EnumInstrucoes_Itau.ProtestarAposNDiasCorridos)
+                        {
+                            vCodigoProtesto = "1";
+                            vDiasProtesto = instrucao.QuantidadeDias.ToString("00");
+                            break;
+                        }
+                        else if (instrucao.Codigo == (int)EnumInstrucoes_Itau.ProtestarAposNDiasUteis ||
+                                 instrucao.Codigo == (int)EnumInstrucoes_Itau.Protestar)
+                        {
+                            vCodigoProtesto = "2";
+                            vDiasProtesto = instrucao.QuantidadeDias.ToString("00");
+                            break;
+                        }
+                        else if (instrucao.Codigo == (int)EnumInstrucoes_Itau.NaoProtestar)
+                        {
+                            vCodigoProtesto = "3";
+                            vDiasProtesto = "00";
+                            break;
+                        }
+                    }
+                }
+
+                _segmentoP += vCodigoProtesto;
+                _segmentoP += vDiasProtesto;
                 _segmentoP += "0";
                 _segmentoP += "00";
                 _segmentoP += "0000000000000";
