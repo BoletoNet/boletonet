@@ -71,8 +71,8 @@ namespace BoletoNet
         {
             try
             {
-                //Carteiras válidas
-                int[] cv = new int[] { 175, 176, 178, 109, 198, 107, 122, 142, 143, 196, 126, 131, 146, 150, 169, 121, 112, 104, 138, 115};//MarcielTorres - adicionado a carteira 112
+                //Carteiras válidas -> MarcielTorres - adicionado a carteira 112; Felipe Silveira - add 157
+                int[] cv = new int[] { 175, 176, 178, 109, 198, 107, 122, 142, 143, 196, 126, 131, 146, 150, 169, 121, 112, 104, 138, 115, 157};
                 bool valida = false;
 
                 foreach (int c in cv)
