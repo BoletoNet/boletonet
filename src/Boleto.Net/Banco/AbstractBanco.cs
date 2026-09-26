@@ -552,7 +552,7 @@ namespace BoletoNet
 
             for (int i = 0; i < seq.Length; i++)
             {
-                s = s + (Convert.ToInt32(seq[i]) * p);
+                s = s + (Convert.ToInt32(Convert.ToString(seq[i])) * p);
                 if (p < b)
                     p = p + 1;
                 else

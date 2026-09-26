@@ -62,4 +62,22 @@ namespace Boleto.Net.Testes
             Assert.AreEqual(1001, fatorVencimento);
         }
     }
+
+    [TestClass]
+    public class Mod11DigitoTeste
+    {
+        private class Probe : AbstractBanco
+        {
+            public int Digito(string seq)
+            {
+                return Mod11(seq);
+            }
+        }
+
+        [TestMethod]
+        public void Mod11_reads_the_digit_not_the_character_code()
+        {
+            Assert.AreEqual(8, new Probe().Digito("1234567"));
+        }
+    }
 }
